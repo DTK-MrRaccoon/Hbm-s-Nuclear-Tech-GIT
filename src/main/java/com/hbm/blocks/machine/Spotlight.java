@@ -310,6 +310,38 @@ public class Spotlight extends Block implements ISpotlight, INBTBlockTransformab
 		propagateBeam(world, x, y, z, dir, distance, meta);
 	}
 
+	// Overloaded method for powered spotlights - uses PoweredSpotlightBeam
+	public static void propagateBeam(World world, int x, int y, int z, ForgeDirection dir, int distance) {
+		distance--;
+		if(distance <= 0)
+			return;
+
+		x += dir.offsetX;
+		y += dir.offsetY;
+		z += dir.offsetZ;
+
+		Block block = world.getBlock(x, y, z);
+		if(!block.isAir(world, x, y, z))
+			return;
+
+		if(!(block instanceof SpotlightBeam) && !(block instanceof PoweredSpotlightBeam)) {
+			world.setBlock(x, y, z, ModBlocks.powered_spotlight_beam, 0, 3);
+		}
+
+		// If we encounter an existing beam, add a new INCOMING direction to the
+		// metadata, and cancel propagation if something goes wrong
+		int result = 0;
+		if(block instanceof PoweredSpotlightBeam) {
+			result = PoweredSpotlightBeam.setDirection(world, x, y, z, dir, true);
+		} else {
+			result = SpotlightBeam.setDirection(world, x, y, z, dir, true);
+		}
+		
+		if (result == 0) return;
+
+		propagateBeam(world, x, y, z, dir, distance);
+	}
+
 	// Recursively delete beam blocks, if they aren't still illuminated from a different direction
 	public static void unpropagateBeam(World world, int x, int y, int z, ForgeDirection dir) {
 		x += dir.offsetX;

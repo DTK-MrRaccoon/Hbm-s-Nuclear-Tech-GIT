@@ -1191,9 +1191,9 @@ public class ModItems {
 	public static Item blueprints;
 	public static Item blueprint_folder;
 	public static Item template_folder;
-	@Deprecated public static Item assembly_template;
-	@Deprecated public static Item chemistry_template;
-	@Deprecated public static Item chemistry_icon;
+	public static Item assembly_template;
+	public static Item chemistry_template;
+	public static Item chemistry_icon;
 	public static Item crucible_template;
 	public static Item fluid_identifier_multi;
 	public static Item fluid_icon;

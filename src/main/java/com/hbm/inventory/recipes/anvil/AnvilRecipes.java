@@ -232,6 +232,15 @@ public class AnvilRecipes extends SerializableRecipe {
 						exp ? new ComparableStack(ModItems.circuit, 2, EnumCircuitType.ANALOG) : new ComparableStack(ModItems.circuit, 4, EnumCircuitType.VACUUM_TUBE)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_assembly_machine))).setTier(2));
 
+		// Legacy assembler recipe
+		constructionRecipes.add(new AnvilConstructionRecipe(
+				new AStack[] {
+						new OreDictStack(STEEL.ingot(), 6),
+						new OreDictStack(CU.plate(), 2),
+						new ComparableStack(ModItems.motor, 1),
+						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.VACUUM_TUBE.ordinal())
+				}, new AnvilOutput(new ItemStack(ModBlocks.machine_assembler))).setTier(1));
+
 		constructionRecipes.add(new AnvilConstructionRecipe(
 				new AStack[] {
 						new OreDictStack(KEY_COBBLESTONE, 8),

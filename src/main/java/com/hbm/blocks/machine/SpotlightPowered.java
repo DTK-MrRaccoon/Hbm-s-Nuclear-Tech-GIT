@@ -137,7 +137,10 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		if(world.isRemote) return;
-		updateBeam(world, x, y, z);
+		// Only create beam if this is an "on" variant
+		if(isOn) {
+			updateBeam(world, x, y, z);
+		}
 	}
 
 	@Override
@@ -153,7 +156,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if(world.isRemote) return;
-		if(neighborBlock instanceof SpotlightBeam) return;
+		if(neighborBlock instanceof SpotlightBeam || neighborBlock instanceof PoweredSpotlightBeam) return;
 
 		ForgeDirection dir = getDirection(world, x, y, z);
 
@@ -163,7 +166,10 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			return;
 		}
 
-		updateBeam(world, x, y, z);
+		// Only update beam if this is an "on" variant
+		if(isOn) {
+			updateBeam(world, x, y, z);
+		}
 	}
 
 	@Override
@@ -185,6 +191,13 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 
 	private void updateBeam(World world, int x, int y, int z) {
 		if(!isOn) return;
+		
+		// Check if the tile entity has power before creating beam
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(te instanceof TileEntitySpotlightPowered) {
+			TileEntitySpotlightPowered spotlight = (TileEntitySpotlightPowered) te;
+			if(spotlight.power < spotlight.powerConsumption) return;
+		}
 
 		ForgeDirection dir = getDirection(world, x, y, z);
 		Spotlight.propagateBeam(world, x, y, z, dir, beamLength);
@@ -283,6 +296,12 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			
 			if(block == targetBlock) return;
 			
+			// Clear beam when turning off
+			if(!turnOn && spotlight.isOn) {
+				ForgeDirection dir = getDirection();
+				Spotlight.unpropagateBeam(worldObj, xCoord, yCoord, zCoord, dir);
+			}
+			
 			NBTTagCompound data = new NBTTagCompound();
 			this.writeToNBT(data);
 			
@@ -293,6 +312,45 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			if(newTE instanceof TileEntitySpotlightPowered) {
 				((TileEntitySpotlightPowered) newTE).readFromNBT(data);
 				newTE.validate();
+				
+				// Create beam when turning on
+				if(turnOn) {
+					SpotlightPowered newSpotlight = (SpotlightPowered) targetBlock;
+					if(newSpotlight.isOn) {
+						ForgeDirection dir = ((TileEntitySpotlightPowered) newTE).getDirection();
+						Spotlight.propagateBeam(worldObj, xCoord, yCoord, zCoord, dir, newSpotlight.beamLength);
+					}
+				}
+				
+				// Notify nearby controllers about the state change
+				notifyNearbyControllers();
+			}
+		}
+		
+		private void notifyNearbyControllers() {
+			// Search for nearby PoweredLightsController blocks
+			int radius = 64; // Search radius for controllers
+			for(int dx = -radius; dx <= radius; dx++) {
+				for(int dy = -radius; dy <= radius; dy++) {
+					for(int dz = -radius; dz <= radius; dz++) {
+						int x = xCoord + dx;
+						int y = yCoord + dy;
+						int z = zCoord + dz;
+						
+						if(!worldObj.blockExists(x, y, z)) continue;
+						
+						Block block = worldObj.getBlock(x, y, z);
+						if(block instanceof PoweredLightsController) {
+							TileEntity te = worldObj.getTileEntity(x, y, z);
+							if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
+								PoweredLightsController.TileEntityPoweredLightsController controller = 
+									(PoweredLightsController.TileEntityPoweredLightsController) te;
+								// Force immediate refresh of the controller's cache
+								controller.forceRefresh();
+							}
+						}
+					}
+				}
 			}
 		}
 		

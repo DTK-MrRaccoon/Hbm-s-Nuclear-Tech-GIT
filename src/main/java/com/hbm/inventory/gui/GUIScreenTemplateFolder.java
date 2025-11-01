@@ -10,8 +10,11 @@ import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
+import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.recipes.AssemblerRecipes;
+import com.hbm.inventory.recipes.ChemplantRecipes;
 import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.items.machine.ItemAssemblyTemplate;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCassette;
 import com.hbm.items.machine.ItemStamp;
@@ -68,8 +71,22 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
 			}
 		}
+		
+		// Assembly Templates
+		for(int i = 0; i < AssemblerRecipes.recipeList.size(); i++) {
+			ComparableStack comp = AssemblerRecipes.recipeList.get(i);
+			AssemblerRecipes.AssemblerRecipe recipe = AssemblerRecipes.recipes.get(comp);
+			if(recipe != null && recipe.folders.contains(item)) {
+				allStacks.add(ItemAssemblyTemplate.writeType(new ItemStack(ModItems.assembly_template, 1, i), comp));
+			}
+		}
 
 		if(!this.isJournal) {
+			// Chemistry Templates
+			for(int i = 0; i < ChemplantRecipes.recipes.size(); i++) {
+				ChemplantRecipes.ChemRecipe chem = ChemplantRecipes.recipes.get(i);
+				allStacks.add(new ItemStack(ModItems.chemistry_template, 1, chem.getId()));
+			}
 			
 			// Crucible Templates
 			for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {

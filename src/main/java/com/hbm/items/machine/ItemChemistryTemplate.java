@@ -15,7 +15,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.StatCollector;
 
-@Deprecated
 public class ItemChemistryTemplate extends Item {
 
 	public ItemChemistryTemplate() {
