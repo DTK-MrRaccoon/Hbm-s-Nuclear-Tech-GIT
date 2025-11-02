@@ -258,6 +258,10 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		public long power;
 		public long powerConsumption;
 
+		// NEW FLAG: whether this light is managed by a controller
+		// Controller will set this field when it registers the light.
+		private boolean controllerManaged = false;
+
 		public TileEntitySpotlightPowered() {
 			this.powerConsumption = 40;
 		}
@@ -274,6 +278,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				SpotlightPowered spotlight = (SpotlightPowered) block;
 				this.powerConsumption = spotlight.powerConsumption;
 				
+				// For modular variants, sharing logic is implemented in their subclass.
 				if(power >= powerConsumption) {
 					power -= powerConsumption;
 					if(!spotlight.isOn) {
@@ -345,7 +350,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 							if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
 								PoweredLightsController.TileEntityPoweredLightsController controller = 
 									(PoweredLightsController.TileEntityPoweredLightsController) te;
-								// Force immediate refresh of the controller's cache
+								// Force immediate refresh of the controller's cache (this is lightweight)
 								controller.forceRefresh();
 							}
 						}
@@ -412,6 +417,12 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.readFromNBT(nbt);
 			this.power = nbt.getLong("power");
 			this.powerConsumption = nbt.getLong("powerConsumption");
+			// Read controller-managed flag
+			if(nbt.hasKey("controllerManaged")) {
+				this.controllerManaged = nbt.getBoolean("controllerManaged");
+			} else {
+				this.controllerManaged = false;
+			}
 		}
 
 		@Override
@@ -419,6 +430,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.writeToNBT(nbt);
 			nbt.setLong("power", power);
 			nbt.setLong("powerConsumption", powerConsumption);
+			// Save controller-managed flag
+			nbt.setBoolean("controllerManaged", controllerManaged);
 		}
 
 		@Override public long getPower() { return power; }
@@ -427,5 +440,16 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 
 		private boolean isLoaded = true;
 		@Override public boolean isLoaded() { return isLoaded; }
+
+		// Controller-managed accessors
+		public boolean isControllerManaged() {
+			return controllerManaged;
+		}
+
+		public void setControllerManaged(boolean val) {
+			this.controllerManaged = val;
+			// mark dirty so it persists
+			this.markDirty();
+		}
 	}
 }
