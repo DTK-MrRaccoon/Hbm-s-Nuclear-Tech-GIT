@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SpotlightPowered.TileEntitySpotlightPowered;
-import com.hbm.lib.Library;
 
 import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
@@ -77,66 +76,69 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 
 	public static class TileEntityPoweredLightsController extends TileEntity implements IEnergyReceiverMK2 {
 
-		// Changed max power to 500000 as requested
+		// PERF: Increased buffer
 		public static final long maxPower = 500000L;
 		public long power;
 		public int lightCount;
 		public long totalPowerUsage;
 
 		// In-memory cache of loaded TileEntitySpotlightPowered references.
-		private List<TileEntitySpotlightPowered> cachedLights = new ArrayList<TileEntitySpotlightPowered>();
+		private final List<TileEntitySpotlightPowered> cachedLights = new ArrayList<TileEntitySpotlightPowered>();
 
-		// Persistent saved positions (x,y,z). This is saved to NBT and not regenerated from scans.
-		private List<int[]> savedLightPositions = new ArrayList<int[]>();
+		// Persistent saved positions (x,y,z). This is saved to NBT and NOT regenerated from scans automatically.
+		private final List<int[]> savedLightPositions = new ArrayList<int[]>();
 
-		public int refreshTimer = 0;
-		private static final int MAX_SAVED_LIGHTS = 350; // cap
+		private static final int MAX_SAVED_LIGHTS = 350; // PERF: cap
+
+		// PERF: track whether saved positions were changed and need a write
+		private boolean savedPositionsDirty = false;
+
+		private long lastCacheBuildTime = -1L;
+
+		// === NEW: reentrancy guard to avoid infinite recursion between TE <-> controller ===
+		private boolean processingNotification = false;
 
 		public void forceRefresh() {
-			// Rebuild the in-memory cache from saved positions only (no scanning)
-			refreshCachedLights();
+			// PERF: Rebuild cache from saved positions (cheap: limited to saved list)
+			refreshCachedLights(true);
 		}
 
 		@Override
 		public void updateEntity() {
 			if(!worldObj.isRemote) {
-				// Keep neighbor subscription lightweight
+				// PERF: Keep neighbor subscription minimal (cheap)
 				for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 					this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
 				}
 
-				// If cache is empty but there are saved positions, restore them (fast - only checks listed positions)
+				// PERF: Build / validate cache only once after load or when explicitly requested.
 				if(cachedLights.isEmpty() && !savedLightPositions.isEmpty()) {
-					refreshCachedLights();
+					refreshCachedLights(false); // don't force an NBT write
 				}
 
-				// Keep occasional refresh of positions (does NOT rescan world) - this will only verify saved positions still point to valid spotlight blocks
-				refreshTimer++;
-				if(refreshTimer >= 2000) { // every 100 seconds (reduced frequency)
-					refreshTimer = 0;
-					if(!savedLightPositions.isEmpty()) {
-						refreshCachedLights();
-					}
-				}
-
-				// Distribute buffered power to cached lights
+				// PERF: power distribution uses in-memory cache only (no refresh each tick)
 				distributePower();
+
+				// PERF: flush saved positions to disk only when changed
+				if(savedPositionsDirty) {
+					markDirty();
+					savedPositionsDirty = false;
+				}
 			}
 		}
 
 		/**
-		 * Scans world for lights and saves them to the controller.
-		 * NOTE: This is an expensive operation and should only be triggered manually (screwdriver).
-		 * We cap saved results to MAX_SAVED_LIGHTS (350).
+		 * Manual scan (triggered by screwdriver). This is expensive by nature and is intentionally manual.
+		 * It will set each found light's controller coordinates and mark them controller-managed.
 		 */
 		public void scanForLights() {
-			// EXPLICIT MANUAL SCAN - user requested. We will cap results to avoid huge lists.
+			// PERF: manual expensive operation only
 			cachedLights.clear();
 			savedLightPositions.clear();
 			lightCount = 0;
 			totalPowerUsage = 0;
 
-			int radius = 48; // keep the previous radius (manual call only)
+			int radius = 48;
 
 			outer:
 			for(int dx = -radius; dx <= radius; dx++) {
@@ -159,8 +161,9 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 							TileEntity te = worldObj.getTileEntity(x, y, z);
 							if(te instanceof TileEntitySpotlightPowered) {
 								TileEntitySpotlightPowered light = (TileEntitySpotlightPowered) te;
-								// Mark this light as controller-managed so modular sharing can be disabled.
+								// PERF: mark light as controller-managed & store controller coords on the light TE
 								light.setControllerManaged(true);
+								light.setControllerPos(this.xCoord, this.yCoord, this.zCoord);
 								light.markDirty();
 
 								cachedLights.add(light);
@@ -168,7 +171,6 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 								lightCount++;
 								totalPowerUsage += light.powerConsumption;
 
-								// Cap saved positions to avoid unbounded lists and long saves
 								if(savedLightPositions.size() >= MAX_SAVED_LIGHTS) {
 									break outer;
 								}
@@ -177,22 +179,89 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 					}
 				}
 			}
-			
-			// Save the scan results immediately
+
+			// PERF: mark saved positions dirty and persist
+			savedPositionsDirty = true;
 			markDirty();
 		}
 
-		private void loadLightsFromSavedPositions() {
-			// Just rebuild the cachedLights list from the savedLightPositions (no scanning)
-			refreshCachedLights();
+		/**
+		 * Called by a light when it changes state or when it unloads/removes itself.
+		 * PERF: This updates only the single entry corresponding to the given light position.
+		 * This avoids scanning the whole world and avoids heavy operations on toggles.
+		 */
+		public void onLightStateChanged(int lx, int ly, int lz) {
+			// === Reentrancy guard: ignore re-entrant notifications while processing one ===
+			if (processingNotification) {
+				// already handling a notification; drop this one to avoid recursive loops
+				return;
+			}
+			processingNotification = true;
+			try {
+				// PERF: find index in saved positions (list <= 350 so linear search is fine)
+				int idx = -1;
+				for(int i = 0; i < savedLightPositions.size(); i++) {
+					int[] pos = savedLightPositions.get(i);
+					if(pos[0] == lx && pos[1] == ly && pos[2] == lz) {
+						idx = i;
+						break;
+					}
+				}
+
+				// If not found, this light isn't managed by us — nothing to do.
+				if(idx == -1) return;
+
+				// Try to get fresh TileEntity reference, may be null if chunk unloaded or block removed
+				if(!worldObj.blockExists(lx, ly, lz)) {
+					// keep the saved position for future (we remember it) but remove runtime reference
+					if(idx < cachedLights.size()) {
+						cachedLights.set(idx, null);
+					}
+					return;
+				}
+
+				TileEntity te = worldObj.getTileEntity(lx, ly, lz);
+				if(te instanceof TileEntitySpotlightPowered) {
+					TileEntitySpotlightPowered light = (TileEntitySpotlightPowered) te;
+
+					// Ensure controller coords are set on the light
+					light.setControllerPos(this.xCoord, this.yCoord, this.zCoord);
+					light.setControllerManaged(true);
+					light.markDirty();
+
+					// Update cachedLights (keep index in sync)
+					if(idx < cachedLights.size()) {
+						cachedLights.set(idx, light);
+					} else {
+						// Ensure lists are in sync; add nulls if needed
+						while(cachedLights.size() < idx) cachedLights.add(null);
+						cachedLights.add(light);
+					}
+				} else {
+					// light removed — prune saved position and cached reference
+					if(idx < cachedLights.size()) {
+						cachedLights.remove(idx);
+					}
+					savedLightPositions.remove(idx);
+					savedPositionsDirty = true;
+					// update counts
+					lightCount = cachedLights.size();
+					// recalc totalPowerUsage lazily
+					recalculateTotalUsage();
+					markDirty();
+				}
+			} finally {
+				processingNotification = false;
+			}
 		}
 
+		/**
+		 * Distribute power among cached lights. PERF: does not revalidate saved positions.
+		 */
 		private void distributePower() {
+			// PERF: fast path
 			if(cachedLights.isEmpty()) return;
-			
-			// Refresh the cached lights pointers to ensure we have up-to-date TileEntity references
-			refreshCachedLights();
-			
+
 			long powerNeeded = 0;
 			for(TileEntitySpotlightPowered light : cachedLights) {
 				if(light == null || light.isInvalid()) continue;
@@ -202,7 +271,8 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 
 			if(powerNeeded > 0 && power > 0) {
 				long powerToDistribute = Math.min(power, powerNeeded);
-				
+
+				// PERF: do single-pass fill (no heavy locking)
 				for(TileEntitySpotlightPowered light : cachedLights) {
 					if(light == null || light.isInvalid()) continue;
 					long needed = light.maxPower - light.power;
@@ -212,7 +282,7 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 						power -= transfer;
 						powerToDistribute -= transfer;
 						light.markDirty();
-						
+
 						if(powerToDistribute <= 0) break;
 					}
 				}
@@ -220,24 +290,26 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		}
 
 		/**
-		 * Rebuild cachedLights and prune savedLightPositions to valid ones
-		 * This DOES NOT scan the world; it only checks the saved positions.
+		 * Rebuild cachedLights and prune savedLightPositions to valid ones.
+		 * If forceWrite is true we will markDirty() if saved list changed.
 		 */
-		private void refreshCachedLights() {
-			List<TileEntitySpotlightPowered> validLights = new ArrayList<TileEntitySpotlightPowered>();
-			List<int[]> validPositions = new ArrayList<int[]>();
-			
+		private void refreshCachedLights(boolean forceWrite) {
+			boolean changed = false;
+
+			List<TileEntitySpotlightPowered> newCached = new ArrayList<TileEntitySpotlightPowered>();
+			List<int[]> newPositions = new ArrayList<int[]>();
+
 			for(int i = 0; i < savedLightPositions.size(); i++) {
 				int[] pos = savedLightPositions.get(i);
 				int x = pos[0], y = pos[1], z = pos[2];
-				
-				// If chunk not loaded, keep the position in saved list (we want to remember it)
+
 				if(!worldObj.blockExists(x, y, z)) {
-					// Keep the saved position, but we cannot obtain the tile entity now.
-					validPositions.add(pos);
+					// keep the saved position (remember it) but no tile entity ref
+					newPositions.add(pos);
+					newCached.add(null);
 					continue;
 				}
-				
+
 				Block block = worldObj.getBlock(x, y, z);
 				if(block == ModBlocks.spotlight_incandescent_powered || 
 				   block == ModBlocks.spotlight_incandescent_powered_off ||
@@ -245,36 +317,55 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 				   block == ModBlocks.spotlight_fluoro_powered_off ||
 				   block == ModBlocks.spotlight_halogen_powered ||
 				   block == ModBlocks.spotlight_halogen_powered_off) {
-					
+
 					TileEntity te = worldObj.getTileEntity(x, y, z);
 					if(te instanceof TileEntitySpotlightPowered) {
 						TileEntitySpotlightPowered light = (TileEntitySpotlightPowered) te;
-						validLights.add(light);
-						validPositions.add(pos);
+						newCached.add(light);
+						newPositions.add(pos);
 						continue;
 					}
 				}
-				
-				// If block isn't a spotlight or tile entity missing, we drop the saved position (light was removed)
+
+				// block removed: drop saved position
+				changed = true;
 			}
-			
-			// Keep up to MAX_SAVED_LIGHTS positions
-			if(validPositions.size() > MAX_SAVED_LIGHTS) {
-				validPositions = validPositions.subList(0, MAX_SAVED_LIGHTS);
+
+			// cap to MAX_SAVED_LIGHTS
+			if(newPositions.size() > MAX_SAVED_LIGHTS) {
+				newPositions = newPositions.subList(0, MAX_SAVED_LIGHTS);
+				newCached = newCached.subList(0, MAX_SAVED_LIGHTS);
+				changed = true;
 			}
-			
-			cachedLights = validLights;
-			savedLightPositions = validPositions;
-			lightCount = validLights.size();
-			
-			// Recalculate total power usage for cachedLights
+
+			// replace
+			cachedLights.clear();
+			cachedLights.addAll(newCached);
+
+			// if position list changed, mark dirty to persist removal
+			if(changed) {
+				savedLightPositions.clear();
+				savedLightPositions.addAll(newPositions);
+				savedPositionsDirty = true;
+				if(forceWrite) markDirty();
+			}
+
+			lightCount = 0;
 			totalPowerUsage = 0;
 			for(TileEntitySpotlightPowered light : cachedLights) {
+				if(light == null) continue;
+				lightCount++;
 				totalPowerUsage += light.powerConsumption;
 			}
-			
-			// Persist any removals of invalid positions immediately
-			markDirty();
+			lastCacheBuildTime = worldObj.getTotalWorldTime();
+		}
+
+		private void recalculateTotalUsage() {
+			totalPowerUsage = 0;
+			for(TileEntitySpotlightPowered light : cachedLights) {
+				if(light == null) continue;
+				totalPowerUsage += light.powerConsumption;
+			}
 		}
 
 		@Override
@@ -307,9 +398,9 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 				savedLightPositions.add(pos);
 			}
 
-			// If world exists and server-side, refresh cache pointers immediately (no scanning)
+			// Rebuild cache references (cheap, bounded)
 			if(this.worldObj != null && !this.worldObj.isRemote) {
-				refreshCachedLights();
+				refreshCachedLights(false);
 			}
 		}
 

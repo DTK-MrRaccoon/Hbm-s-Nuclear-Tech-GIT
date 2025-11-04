@@ -66,7 +66,7 @@ public class SpotlightModularPowered extends SpotlightPowered {
 				SpotlightPowered spotlight = (SpotlightPowered) block;
 				this.powerConsumption = spotlight.powerConsumption;
 
-				// If this light is controller-managed, do not share power with connected lights.
+				// PERF: do not share power with connected modulars if controller-managed
 				if(!this.isControllerManaged()) {
 					sharePowerWithConnected();
 				}
@@ -105,7 +105,7 @@ public class SpotlightModularPowered extends SpotlightPowered {
 						if(te instanceof TileEntitySpotlightModularPowered) {
 							TileEntitySpotlightModularPowered adjacent = (TileEntitySpotlightModularPowered) te;
 
-							// Prevent sharing if the adjacent is controller-managed OR this is controller-managed.
+							// PERF: Prevent sharing if the adjacent is controller-managed OR this is controller-managed.
 							if(this.isControllerManaged() || adjacent.isControllerManaged()) continue;
 
 							if(adjacent.power < adjacent.maxPower && this.power > 0) {

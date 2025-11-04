@@ -23,6 +23,7 @@ public class PoweredSpotlightBeam extends BlockBeamBase {
 		updateLightLevel(world, x, y, z);
 	}
 
+	// FIX: added parameter name for World to avoid compile error
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block neighborBlock) {
 		if (world.isRemote) return;

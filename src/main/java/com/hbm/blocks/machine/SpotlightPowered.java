@@ -258,9 +258,12 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		public long power;
 		public long powerConsumption;
 
-		// NEW FLAG: whether this light is managed by a controller
-		// Controller will set this field when it registers the light.
+		// PERF: Controller-managed flag
 		private boolean controllerManaged = false;
+		// PERF: controller coordinates - stored in each light so we can notify directly (avoid large scans)
+		private int controllerX = Integer.MIN_VALUE;
+		private int controllerY = Integer.MIN_VALUE;
+		private int controllerZ = Integer.MIN_VALUE;
 
 		public TileEntitySpotlightPowered() {
 			this.powerConsumption = 40;
@@ -278,7 +281,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				SpotlightPowered spotlight = (SpotlightPowered) block;
 				this.powerConsumption = spotlight.powerConsumption;
 				
-				// For modular variants, sharing logic is implemented in their subclass.
 				if(power >= powerConsumption) {
 					power -= powerConsumption;
 					if(!spotlight.isOn) {
@@ -307,6 +309,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				Spotlight.unpropagateBeam(worldObj, xCoord, yCoord, zCoord, dir);
 			}
 			
+			// PERF: Preserve TE data across block swap
 			NBTTagCompound data = new NBTTagCompound();
 			this.writeToNBT(data);
 			
@@ -327,35 +330,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 					}
 				}
 				
-				// Notify nearby controllers about the state change
-				notifyNearbyControllers();
-			}
-		}
-		
-		private void notifyNearbyControllers() {
-			// Search for nearby PoweredLightsController blocks
-			int radius = 64; // Search radius for controllers
-			for(int dx = -radius; dx <= radius; dx++) {
-				for(int dy = -radius; dy <= radius; dy++) {
-					for(int dz = -radius; dz <= radius; dz++) {
-						int x = xCoord + dx;
-						int y = yCoord + dy;
-						int z = zCoord + dz;
-						
-						if(!worldObj.blockExists(x, y, z)) continue;
-						
-						Block block = worldObj.getBlock(x, y, z);
-						if(block instanceof PoweredLightsController) {
-							TileEntity te = worldObj.getTileEntity(x, y, z);
-							if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
-								PoweredLightsController.TileEntityPoweredLightsController controller = 
-									(PoweredLightsController.TileEntityPoweredLightsController) te;
-								// Force immediate refresh of the controller's cache (this is lightweight)
-								controller.forceRefresh();
-							}
-						}
-					}
-				}
+				// PERF: notify the controller directly (no scanning)
+				((TileEntitySpotlightPowered) newTE).notifyControllerLightChanged();
 			}
 		}
 		
@@ -376,6 +352,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 						Spotlight.unpropagateBeam(worldObj, xCoord, yCoord, zCoord, dir);
 					}
 				}
+				// PERF: Tell controller that this light is going away (so it can prune)
+				notifyControllerLightChanged();
 			}
 		}
 		
@@ -393,6 +371,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				}
 			}
 			this.isLoaded = false;
+			// chunk unload: inform controller (we still remember position, controller will keep it)
+			notifyControllerLightChanged();
 		}
 
 		private ForgeDirection getDirection() {
@@ -417,12 +397,11 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.readFromNBT(nbt);
 			this.power = nbt.getLong("power");
 			this.powerConsumption = nbt.getLong("powerConsumption");
-			// Read controller-managed flag
-			if(nbt.hasKey("controllerManaged")) {
-				this.controllerManaged = nbt.getBoolean("controllerManaged");
-			} else {
-				this.controllerManaged = false;
-			}
+			// controller-managed flag
+			this.controllerManaged = nbt.getBoolean("controllerManaged");
+			this.controllerX = nbt.hasKey("controllerX") ? nbt.getInteger("controllerX") : Integer.MIN_VALUE;
+			this.controllerY = nbt.hasKey("controllerY") ? nbt.getInteger("controllerY") : Integer.MIN_VALUE;
+			this.controllerZ = nbt.hasKey("controllerZ") ? nbt.getInteger("controllerZ") : Integer.MIN_VALUE;
 		}
 
 		@Override
@@ -430,8 +409,13 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.writeToNBT(nbt);
 			nbt.setLong("power", power);
 			nbt.setLong("powerConsumption", powerConsumption);
-			// Save controller-managed flag
+			// controller-managed flag & pos
 			nbt.setBoolean("controllerManaged", controllerManaged);
+			if(controllerX != Integer.MIN_VALUE) {
+				nbt.setInteger("controllerX", controllerX);
+				nbt.setInteger("controllerY", controllerY);
+				nbt.setInteger("controllerZ", controllerZ);
+			}
 		}
 
 		@Override public long getPower() { return power; }
@@ -448,8 +432,45 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 
 		public void setControllerManaged(boolean val) {
 			this.controllerManaged = val;
-			// mark dirty so it persists
 			this.markDirty();
+		}
+
+		public void setControllerPos(int cx, int cy, int cz) {
+			this.controllerX = cx;
+			this.controllerY = cy;
+			this.controllerZ = cz;
+			this.markDirty();
+		}
+
+		public void clearControllerPos() {
+			this.controllerX = Integer.MIN_VALUE;
+			this.controllerY = Integer.MIN_VALUE;
+			this.controllerZ = Integer.MIN_VALUE;
+			this.controllerManaged = false;
+			this.markDirty();
+		}
+
+		/**
+		 * PERF: Notify the controller (if any) about a light state/unload/change.
+		 * This avoids expensive scanning by using the stored controller coordinates.
+		 */
+		public void notifyControllerLightChanged() {
+			if(!controllerManaged) return;
+			if(controllerX == Integer.MIN_VALUE) return;
+			if(worldObj == null) return;
+
+			if(!worldObj.blockExists(controllerX, controllerY, controllerZ)) {
+				// controller chunk not loaded — nothing to call right now (controller remembers pos)
+				return;
+			}
+
+			TileEntity te = worldObj.getTileEntity(controllerX, controllerY, controllerZ);
+			if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
+				PoweredLightsController.TileEntityPoweredLightsController controller = 
+						(PoweredLightsController.TileEntityPoweredLightsController) te;
+				// PERF: notify single controller entry (cheap: <=350 linear search)
+				controller.onLightStateChanged(xCoord, yCoord, zCoord);
+			}
 		}
 	}
 }
