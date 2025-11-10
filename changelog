@@ -31,6 +31,7 @@
 * Defusing creepers now also works if the creeper hasn't lit its fuse yet
 * Defused creepers are now permanently harmless, they can no longer be manually re-ignited at all
 * Manual defusers now also affect big man johnson
+  * Defusing only works if the timer is active
   * The glpyhid will explode instantly, but only about as powerful as a conventional rocket, not destroying blocks
   * Doing so will also drop one usable demolition mini nuke
 * The painsaw ability no longer plays the blood splash particle effect
@@ -40,6 +41,10 @@
   * The recipes are part of a shared auto switch group, meaning that even if different rod types are produced, only one PUREX is necessary
 * Grass is no longer a valid paint block for paintable cables and ducts
 * Multiblocks are no longer affected by collapses caused by nuclear explosions
+* The old NITAN powder chests have been removed
+  * In their place, there's now a different, more useful structure with similar but not identical spawn rules
+* ROR controller torches can now set the threshold of particle accelerator dipoles
+* Removed the legacy recipes from the terra drills
 
 ## Fixed
 * Fixed arc furnace only allowing electrodes to be inserted when the lid is down instead of up
@@ -52,3 +57,4 @@
 * Fixed creepers regaining their exploding AI task upon relog, if defused
 * Fixed assembly and chemical factories not properly saving their recipe fluid buffers
 * Fixed light blue and light gray dyes not working when dyeing cables
+* Fixed bismuth armor not having a valid repair material
