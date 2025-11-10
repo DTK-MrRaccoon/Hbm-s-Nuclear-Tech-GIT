@@ -1438,10 +1438,6 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:tile.sand_uranium");
 		ignoreMappings.add("hbm:tile.sand_polonium");
 		ignoreMappings.add("hbm:tile.sand_quartz");
-		ignoreMappings.add("hbm:tile.hadron_power_10m");
-		ignoreMappings.add("hbm:tile.hadron_power_100m");
-		ignoreMappings.add("hbm:tile.hadron_power_1g");
-		ignoreMappings.add("hbm:tile.hadron_power_10g");
 		ignoreMappings.add("hbm:item.bob_metalworks");
 		ignoreMappings.add("hbm:item.bob_assembly");
 		ignoreMappings.add("hbm:item.bob_chemistry");
