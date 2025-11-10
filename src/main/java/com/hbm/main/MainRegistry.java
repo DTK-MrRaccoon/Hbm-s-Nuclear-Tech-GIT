@@ -305,6 +305,7 @@ public class MainRegistry {
 		aMatSecurity.customCraftingMaterial = ModItems.plate_kevlar;
 		aMatCobalt.customCraftingMaterial = ModItems.ingot_cobalt;
 		aMatStarmetal.customCraftingMaterial = ModItems.ingot_starmetal;
+		aMatBismuth.customCraftingMaterial = ModItems.plate_bismuth;
 		tMatSchrab.setRepairItem(new ItemStack(ModItems.ingot_schrabidium));
 		tMatHammmer.setRepairItem(new ItemStack(Item.getItemFromBlock(ModBlocks.block_schrabidium)));
 		tMatChainsaw.setRepairItem(new ItemStack(ModItems.ingot_steel));
@@ -1437,6 +1438,15 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:tile.sand_uranium");
 		ignoreMappings.add("hbm:tile.sand_polonium");
 		ignoreMappings.add("hbm:tile.sand_quartz");
+		ignoreMappings.add("hbm:tile.hadron_power_10m");
+		ignoreMappings.add("hbm:tile.hadron_power_100m");
+		ignoreMappings.add("hbm:tile.hadron_power_1g");
+		ignoreMappings.add("hbm:tile.hadron_power_10g");
+		ignoreMappings.add("hbm:item.bob_metalworks");
+		ignoreMappings.add("hbm:item.bob_assembly");
+		ignoreMappings.add("hbm:item.bob_chemistry");
+		ignoreMappings.add("hbm:item.bob_oil");
+		ignoreMappings.add("hbm:item.bob_nuclear");
 
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);
