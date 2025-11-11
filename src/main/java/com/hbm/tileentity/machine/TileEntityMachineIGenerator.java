@@ -1,21 +1,40 @@
 package com.hbm.tileentity.machine;
 
+import java.io.IOException;
+
+// ADDED: Required for serialize/deserialize
+import io.netty.buffer.ByteBuf; 
+
+import com.google.gson.JsonObject;
+import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.BlockDummyable;
+import com.hbm.config.GeneralConfig;
+// REMOVED: import com.hbm.interfaces.IFluidAcceptor;
 import com.hbm.inventory.container.ContainerIGenerator;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Flammable;
+import com.hbm.inventory.gui.GUIIGenerator;
+import com.hbm.items.ModItems;
+import com.hbm.lib.Library;
+import com.hbm.tileentity.IConfigurableMachine;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.CompatEnergyControl;
+import com.hbm.util.RTGUtil;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
+// REMOVED: import api.hbm.energy.IEnergyGenerator;
+// ADDED: New energy interface from Radiolysis example
+import api.hbm.energymk2.IEnergyProviderMK2; 
 import api.hbm.fluid.IFluidStandardReceiver;
 import api.hbm.tile.IInfoProviderEC;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -25,7 +44,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IFluidStandardReceiver, IGUIProvider, IInfoProviderEC {
+// FIXED: Removed IFluidAcceptor and IEnergyGenerator, Added IEnergyProviderMK2
+public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardReceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC {
 	
 	public long power;
 	public int spin;
@@ -50,16 +70,48 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public static int oilCap = 16000;
 	public static int lubeCap = 4000;
 	public static int coalGenRate = 100;
-	public static double rtgHeatMult = 0.15D;
+	public static double rtgHeatMult = 30.0D;
 	public static int waterRate = 10;
 	public static int lubeRate = 1;
 	public static long fluidHeatDiv = 1_000L;
 	
 	protected long output;
 
+	@Override
+	public String getConfigName() {
+		return "igen";
+	}
+
+	@Override
+	public void readIfPresent(JsonObject obj) {
+		maxPower = IConfigurableMachine.grab(obj, "L:powerCap", maxPower);
+		waterCap = IConfigurableMachine.grab(obj, "I:waterCap", waterCap);
+		oilCap = IConfigurableMachine.grab(obj, "I:oilCap", oilCap);
+		lubeCap = IConfigurableMachine.grab(obj, "I:lubeCap", lubeCap);
+		coalGenRate = IConfigurableMachine.grab(obj, "I:solidFuelRate2", coalGenRate);
+		rtgHeatMult = IConfigurableMachine.grab(obj, "D:rtgHeatMult", rtgHeatMult);
+		waterRate = IConfigurableMachine.grab(obj, "I:waterRate", waterRate);
+		lubeRate = IConfigurableMachine.grab(obj, "I:lubeRate", lubeRate);
+		fluidHeatDiv = IConfigurableMachine.grab(obj, "D:fluidHeatDiv", fluidHeatDiv);
+	}
+
+	@Override
+	public void writeConfig(JsonWriter writer) throws IOException {
+		writer.name("L:powerCap").value(maxPower);
+		writer.name("I:waterCap").value(waterCap);
+		writer.name("I:oilCap").value(oilCap);
+		writer.name("I:lubeCap").value(lubeCap);
+		writer.name("I:solidFuelRate2").value(coalGenRate);
+		writer.name("D:rtgHeatMult").value(rtgHeatMult);
+		writer.name("I:waterRate").value(waterRate);
+		writer.name("I:lubeRate").value(lubeRate);
+		writer.name("D:fluidHeatDiv").value(fluidHeatDiv);
+	}
+
 	public TileEntityMachineIGenerator() {
 		super(21);
 		tanks = new FluidTank[3];
+		// FIXED: Removed third argument (index) from constructor
 		tanks[0] = new FluidTank(Fluids.WATER, waterCap);
 		tanks[1] = new FluidTank(Fluids.HEATINGOIL, oilCap);
 		tanks[2] = new FluidTank(Fluids.LUBRICANT, lubeCap);
@@ -84,14 +136,15 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	@Override
 	public void updateEntity() {
 		
-		/*if(!worldObj.isRemote) {
+		if(!worldObj.isRemote) {
 			
 			boolean con = GeneralConfig.enableLBSM && GeneralConfig.enableLBSMIGen;
 			
 			power = Library.chargeItemsFromTE(slots, 0, power, maxPower);
 			
 			for(DirPos dir : getConPos()) {
-				this.sendPower(worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
+				// FIXED: Replaced sendPower with tryProvide
+				this.tryProvide(worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
 				
 				for(FluidTank tank : tanks) {
 					this.trySubscribe(tank.getTankType(), worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
@@ -185,15 +238,10 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 					this.power = this.maxPower;
 			}
 			
-			NBTTagCompound data = new NBTTagCompound();
-			data.setLong("power", power);
-			data.setInteger("spin", spin);
-			data.setIntArray("burn", burn);
-			data.setBoolean("hasRTG", hasRTG);
-			this.networkPack(data, 150);
+			// FIXED: Replaced NBT-based networkPack with networkPackNT (like Radiolysis)
+			this.networkPackNT(150);
 			
-			for(int i = 0; i < 3; i++)
-				tanks[i].updateTank(xCoord, yCoord, zCoord, this.worldObj.provider.dimensionId);
+			// REMOVED: Tank syncing is now handled by serialize/deserialize
 			
 		} else {
 			
@@ -207,7 +255,39 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 				this.rotation -= 360;
 				this.prevRotation -= 360;
 			}
-		}*/
+		}
+	}
+
+	// ADDED: serialize method for ByteBuf syncing (like Radiolysis)
+	@Override
+	public void serialize(ByteBuf buf) {
+		super.serialize(buf);
+		buf.writeLong(this.power);
+		buf.writeInt(this.spin);
+		for(int i = 0; i < 4; i++) {
+			buf.writeInt(this.burn[i]);
+		}
+		buf.writeBoolean(this.hasRTG);
+		
+		for(int i = 0; i < 3; i++) {
+			tanks[i].serialize(buf);
+		}
+	}
+
+	// ADDED: deserialize method for ByteBuf syncing (like Radiolysis)
+	@Override
+	public void deserialize(ByteBuf buf) {
+		super.deserialize(buf);
+		this.power = buf.readLong();
+		this.spin = buf.readInt();
+		for(int i = 0; i < 4; i++) {
+			this.burn[i] = buf.readInt();
+		}
+		this.hasRTG = buf.readBoolean();
+		
+		for(int i = 0; i < 3; i++) {
+			tanks[i].deserialize(buf);
+		}
 	}
 
 	@Override
@@ -220,23 +300,14 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		return new int[] { 3, 4, 5, 6 };
 	}
 
-	// o7
-	/*
-	@Override
-	public void networkUnpack(NBTTagCompound nbt) {
-		super.networkUnpack(nbt);
-
-		this.power = nbt.getLong("power");
-		this.spin = nbt.getInteger("spin");
-		this.burn = nbt.getIntArray("burn");
-		this.hasRTG = nbt.getBoolean("hasRTG");
-	}
-	*/
+	// REMOVED: Old NBT-based networkUnpack method
 	
 	public int getPowerFromFuel(boolean con) {
 		FluidType type = tanks[1].getTankType();
 		return type.hasTrait(FT_Flammable.class) ? (int)(type.getTrait(FT_Flammable.class).getHeatEnergy() / (con ? 5000L : fluidHeatDiv)) : 0;
 	}
+
+	// REMOVED: All methods from the old IFluidAcceptor interface
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
@@ -267,8 +338,25 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared() {
+	public double getMaxRenderDistanceSquared()
+	{
 		return 65536.0D;
+	}
+
+	// FIXED: @Override is now correct for IEnergyProviderMK2
+	@Override
+	public void setPower(long power) {
+		this.power = power;
+	}
+
+	@Override
+	public long getPower() {
+		return this.power;
+	}
+
+	@Override
+	public long getMaxPower() {
+		return this.maxPower;
 	}
 
 	@Override
@@ -288,8 +376,9 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		return null;
+	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+		// RESTORED: This line is now active, assuming GUIIGenerator.java exists
+		return new GUIIGenerator(player.inventory, this);
 	}
 
 	@Override

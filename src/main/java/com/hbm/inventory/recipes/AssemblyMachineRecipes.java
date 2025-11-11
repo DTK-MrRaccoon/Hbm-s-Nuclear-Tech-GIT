@@ -385,6 +385,8 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.radgen").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_radgen, 1)).setPools(GenericRecipes.POOL_PREFIX_DISCOVER + "radgen")
 				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(STEEL.plate(), 32), new ComparableStack(ModItems.coil_magnetized_tungsten, 6), new OreDictStack(MAGTUNG.wireFine(), 24), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC), new ComparableStack(ModItems.reactor_core, 3), new OreDictStack(STAR.ingot(), 1), new OreDictStack(KEY_RED, 1))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.HEAVY_FRAME), new ComparableStack(ModItems.coil_magnetized_tungsten, 16), new ComparableStack(ModItems.reactor_core, 3), new OreDictStack(STAR.ingot(), 1), new OreDictStack(KEY_RED, 1), new ComparableStack(ModItems.item_expensive, 3, EnumExpensiveType.CIRCUIT)));
+		this.register(new GenericRecipe("ass.igen").setup(800, 5).outputItems(new ItemStack(ModBlocks.machine_industrial_generator, 1))
+				.inputItems(new ComparableStack(ModItems.piston_selenium, 1), new OreDictStack(STEEL.plateCast(), 6), new ComparableStack(ModItems.tank_steel, 3), new OreDictStack(ANY_RUBBER.ingot(), 8), new ComparableStack(ModItems.rtg_unit, 12), new ComparableStack(ModItems.thermo_element, 4), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.ANALOG)));
 
 		// condensers
 		this.register(new GenericRecipe("ass.hpcondenser").setup(600, 100).outputItems(new ItemStack(ModBlocks.machine_condenser_powered, 1))
