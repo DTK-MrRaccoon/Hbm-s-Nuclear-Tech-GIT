@@ -1056,6 +1056,12 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.circuit, 64, EnumCircuitType.CONTROLLER_QUANTUM),
 						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.COMPUTER),
 						new ComparableStack(ModItems.coin_ufo, 1)).setPools(GenericRecipes.POOL_PREFIX_DISCOVER + "gerald"));
+		this.register(new GenericRecipe("ass.solarpanel").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_solar, 1))
+				.inputItems(
+						new OreDictStack(STEEL.plate(), 4),
+						new ComparableStack(ModItems.photo_panel, 4),
+						new OreDictStack(ANY_PLASTIC.ingot(), 2),
+						new OreDictStack(MINGRADE.wireFine(), 8)));
 
 		this.register(new GenericRecipe("ass.emptypackage").setup(40, 100).outputItems(new ItemStack(ModItems.fluid_pack_empty, 1))
 				.inputItems(new OreDictStack(TI.plate(), 4), new OreDictStack(ANY_PLASTIC.ingot(), 2)));
