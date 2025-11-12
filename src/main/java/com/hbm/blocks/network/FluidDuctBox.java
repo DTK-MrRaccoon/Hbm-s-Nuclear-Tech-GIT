@@ -4,11 +4,10 @@ import com.hbm.blocks.IBlockMulti;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.lib.Library;
 import com.hbm.lib.RefStrings;
-import com.hbm.render.block.RenderBoxDuct;
 import com.hbm.tileentity.network.TileEntityPipeBaseNT;
 import com.hbm.util.i18n.I18nUtil;
 
-import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -47,9 +46,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerBlockIcons(IIconRegister iconRegister) {
-		// runtime guard - avoid accidental execution on server
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return;
-
 		super.registerBlockIcons(iconRegister);
 
 		int count = materials.length;
@@ -74,8 +70,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
-		// extra runtime guard
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return null;
 
 		TileEntity te = world.getTileEntity(x, y, z);
 
@@ -127,9 +121,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
-		// runtime guard
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return;
-
 		for(int i = 0; i < 15; ++i) {
 			list.add(new ItemStack(item, 1, i));
 		}
@@ -139,21 +130,11 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		return meta % 15;
 	}
 
+	public static int renderID = RenderingRegistry.getNextAvailableRenderId();
+
 	@Override
 	public int getRenderType() {
-		// Safe: don't attempt to load client-only RenderBoxDuct on the server.
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) {
-			return 0; // fallback - normal block rendering on server side
-		}
-
-		// Use reflection to avoid any accidental static linking/loading of the client-only class on server.
-		try {
-			Class<?> cls = Class.forName("com.hbm.render.block.RenderBoxDuct");
-			return cls.getField("renderID").getInt(null);
-		} catch (Exception e) {
-			// If anything goes wrong, fall back safely.
-			return 0;
-		}
+		return renderID;
 	}
 
 	@Override
@@ -169,8 +150,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess p_149646_1_, int p_149646_2_, int p_149646_3_, int p_149646_4_, int p_149646_5_) {
-		// runtime guard
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return false;
 		return true;
 	}
 
@@ -182,7 +161,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	public void addCollisionBoxesToList(World world, int x, int y, int z, AxisAlignedBB entityBounding, List list, Entity entity) {
 
-		List<AxisAlignedBB> bbs = new ArrayList<AxisAlignedBB>();
+		List<AxisAlignedBB> bbs = new ArrayList();
 
 		TileEntity te = world.getTileEntity(x, y, z);
 
@@ -251,10 +230,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World world, int x, int y, int z) {
-		// runtime guard
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT)
-			return getCollisionBoundingBoxFromPool(world, x, y, z);
-
 		setBlockBoundsBasedOnState(world, x, y, z);
 		return AxisAlignedBB.getBoundingBox(x + this.minX, y + this.minY, z + this.minZ, x + this.maxX, y + this.maxY, z + this.maxZ);
 	}
@@ -336,7 +311,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 		TileEntityPipeBaseNT duct = (TileEntityPipeBaseNT) te;
 
-		List<String> text = new ArrayList<String>();
+		List<String> text = new ArrayList();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
@@ -346,8 +321,6 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess world, int x, int y, int z) {
-		// runtime guard
-		if (FMLCommonHandler.instance().getEffectiveSide() != Side.CLIENT) return cachedColor;
 		return cachedColor;
 	}
 }
