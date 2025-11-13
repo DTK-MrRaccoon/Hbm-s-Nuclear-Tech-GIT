@@ -152,8 +152,8 @@ public class ModBlocks {
 	public static Block ore_bedrock_oil;
 	public static Block ore_lignite;
 	public static Block ore_asbestos;
-	@Deprecated public static Block ore_coal_oil;
-	@Deprecated public static Block ore_coal_oil_burning;
+	public static Block ore_coal_oil;
+	public static Block ore_coal_oil_burning;
 
 	public static Block ore_tikite;
 
