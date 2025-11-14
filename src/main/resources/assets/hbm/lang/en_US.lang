@@ -6443,6 +6443,7 @@ upgrade.overheatChance=Overheat chance %s
 upgrade.productivity=Productivity %s
 upgrade.range=Range %s
 upgrade.speed=Process speed %s
+upgrade.radius=Mining Radius: %s
 
 upgrade.gui.title=§lAcceptable Upgrades:§r
 upgrade.gui.afterburner= * §dAfterburner§r: Stacks to level %s

@@ -223,9 +223,6 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 1, EnumExpensiveType.STEEL_PLATING), new OreDictStack(CU.plate(), 4), new ComparableStack(ModItems.motor, 2)));
 		this.register(new GenericRecipe("ass.assembler").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_assembly_machine, 1))
 				.inputItems(new OreDictStack(STEEL.ingot(), 4), new OreDictStack(CU.plate(), 4), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ANALOG)));
-		this.register(new GenericRecipe("ass.chemplant").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_chemical_plant, 1))
-				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(CU.pipe(), 2), new ComparableStack(ModItems.plate_polymer, 16), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.coil_tungsten, 2), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ANALOG))
-				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 3, EnumExpensiveType.STEEL_PLATING), new OreDictStack(CU.pipe(), 2), new ComparableStack(ModItems.plate_polymer, 16), new ComparableStack(ModItems.motor, 2), new ComparableStack(ModItems.coil_tungsten, 2), new ComparableStack(ModItems.circuit, 3, EnumCircuitType.ANALOG)));
 		this.register(new GenericRecipe("ass.purex").setup(300, 100).outputItems(new ItemStack(ModBlocks.machine_purex, 1))
 				.inputItems(new OreDictStack(STEEL.shell(), 4), new OreDictStack(RUBBER.pipe(), 8), new OreDictStack(PB.plateCast(), 4), new ComparableStack(ModItems.motor_desh, 1), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.BASIC))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 2, EnumExpensiveType.LEAD_PLATING), new OreDictStack(STEEL.shell(), 4), new OreDictStack(RUBBER.pipe(), 12), new ComparableStack(ModItems.motor_desh, 3), new ComparableStack(ModItems.item_expensive, 2, EnumExpensiveType.CIRCUIT)));
@@ -352,6 +349,24 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(DURA.ingot(), 16), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new OreDictStack(CU.pipe(), 8), new ComparableStack(ModItems.motor_desh, 4), new ComparableStack(ModItems.coil_tungsten, 16), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.HEAVY_FRAME), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 16), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new OreDictStack(CU.pipe(), 16), new ComparableStack(ModItems.motor_desh, 16), new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.CIRCUIT)));
 
+
+                // Legacy machine recipes
+		this.register(new GenericRecipe("ass.assembler_legacy").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_assembler, 1))
+				.inputItems(new OreDictStack(STEEL.ingot(), 6), new OreDictStack(CU.plate(), 2), new ComparableStack(ModItems.motor, 1), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ANALOG)));
+		this.register(new GenericRecipe("ass.chemplant_legacy").setup(150, 100).outputItems(new ItemStack(ModBlocks.machine_chemplant, 1))
+				.inputItems(new OreDictStack(STEEL.ingot(), 6), new OreDictStack(CU.pipe(), 1), new ComparableStack(ModItems.plate_polymer, 8), new ComparableStack(ModItems.motor, 1), new ComparableStack(ModItems.coil_tungsten, 1), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ANALOG)));
+		this.register(new GenericRecipe("ass.assemfac_legacy").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_assemfac, 1))
+				.inputItems(new OreDictStack(STEEL.ingot(), 48), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(B.ingot(), 4), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(KEY_ANYPANE, 64), new ComparableStack(ModItems.motor, 18), new OreDictStack(W.bolt(), 16), new OreDictStack(STEEL.pipe(), 8), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC))
+				.inputItemsEx(new OreDictStack(STEEL.heavyComp(), 2), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(B.ingot(), 4), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(KEY_ANYPANE, 64), new ComparableStack(ModItems.motor, 18), new OreDictStack(W.bolt(), 16), new OreDictStack(STEEL.pipe(), 8), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC)));
+		this.register(new GenericRecipe("ass.chemfac_legacy").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_chemfac, 1))
+				.inputItems(new OreDictStack(STEEL.ingot(), 48), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(NB.ingot(), 4), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new ComparableStack(ModItems.tank_steel, 8), new ComparableStack(ModItems.motor_desh, 4), new ComparableStack(ModItems.coil_tungsten, 24), new OreDictStack(STEEL.pipe(), 8), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC))
+				.inputItemsEx(new OreDictStack(STEEL.heavyComp(), 2), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(NB.ingot(), 4), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new ComparableStack(ModItems.tank_steel, 8), new ComparableStack(ModItems.motor_desh, 4), new ComparableStack(ModItems.coil_tungsten, 24), new OreDictStack(STEEL.pipe(), 8), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC)));
+		this.register(new GenericRecipe("ass.igen_legacy").setup(800, 5).outputItems(new ItemStack(ModBlocks.machine_industrial_generator, 1))
+				.inputItems(new ComparableStack(ModItems.piston_selenium, 4), new OreDictStack(STEEL.plateCast(), 6), new ComparableStack(ModItems.tank_steel, 3), new OreDictStack(ANY_RUBBER.ingot(), 8), new ComparableStack(ModItems.rtg_unit, 12), new ComparableStack(ModItems.thermo_element, 4), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.ANALOG)));
+		this.register(new GenericRecipe("ass.drill_legacy").setup(300, 100).outputItems(new ItemStack(ModBlocks.machine_drill, 1))
+				.inputItems(new ComparableStack(ModBlocks.steel_scaffold, 16), new OreDictStack(STEEL.plateWelded(), 4), new OreDictStack(TI.ingot(), 32), new ComparableStack(ModItems.motor, 4), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.VACUUM_TUBE)));
+
+
 		// generators
 		this.register(new GenericRecipe("ass.dieselgen").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_diesel, 1))
 				.inputItems(new OreDictStack(STEEL.shell(), 1), new OreDictStack(CU.plateCast(), 2), new ComparableStack(ModItems.coil_copper, 4))
@@ -385,8 +400,6 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.radgen").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_radgen, 1)).setPools(GenericRecipes.POOL_PREFIX_DISCOVER + "radgen")
 				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(STEEL.plate(), 32), new ComparableStack(ModItems.coil_magnetized_tungsten, 6), new OreDictStack(MAGTUNG.wireFine(), 24), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC), new ComparableStack(ModItems.reactor_core, 3), new OreDictStack(STAR.ingot(), 1), new OreDictStack(KEY_RED, 1))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.HEAVY_FRAME), new ComparableStack(ModItems.coil_magnetized_tungsten, 16), new ComparableStack(ModItems.reactor_core, 3), new OreDictStack(STAR.ingot(), 1), new OreDictStack(KEY_RED, 1), new ComparableStack(ModItems.item_expensive, 3, EnumExpensiveType.CIRCUIT)));
-		this.register(new GenericRecipe("ass.igen").setup(800, 5).outputItems(new ItemStack(ModBlocks.machine_industrial_generator, 1))
-				.inputItems(new ComparableStack(ModItems.piston_selenium, 1), new OreDictStack(STEEL.plateCast(), 6), new ComparableStack(ModItems.tank_steel, 3), new OreDictStack(ANY_RUBBER.ingot(), 8), new ComparableStack(ModItems.rtg_unit, 12), new ComparableStack(ModItems.thermo_element, 4), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.ANALOG)));
 
 		// condensers
 		this.register(new GenericRecipe("ass.hpcondenser").setup(600, 100).outputItems(new ItemStack(ModBlocks.machine_condenser_powered, 1))

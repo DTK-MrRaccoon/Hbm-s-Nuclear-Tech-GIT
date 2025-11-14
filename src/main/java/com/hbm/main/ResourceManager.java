@@ -186,6 +186,10 @@ public class ResourceManager {
 	public static final IModelCustom mining_drill = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/mining_drill.obj")).asVBO();
 	public static final IModelCustom ore_slopper = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/ore_slopper.obj")).asVBO();
 
+	//Mining Drill Legacy
+	public static final IModelCustom drill_body = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/auto_drill_main_legacy.obj"));
+	public static final IModelCustom drill_bolt = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/auto_drill_bolt_legacy.obj"));
+
 	//Laser Miner
 	public static final IModelCustom mining_laser = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/mining_laser.obj")).asVBO();
 
@@ -630,6 +634,10 @@ public class ResourceManager {
 	//Mining Drill
 	public static final ResourceLocation mining_drill_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mining_drill.png");
 	public static final ResourceLocation ore_slopper_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/ore_slopper.png");
+
+	//Mining Drill Legacy
+	public static final ResourceLocation drill_body_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/auto_mining_drill_legacy.png");
+	public static final ResourceLocation drill_bolt_tex = new ResourceLocation(RefStrings.MODID, "textures/blocks/block_titanium.png");
 
 	//Laser Miner
 	public static final ResourceLocation mining_laser_base_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mining_laser_base.png");

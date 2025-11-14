@@ -108,6 +108,7 @@ public class TileMappings {
 		put(TileEntityMachineCyclotron.class, "tileentity_cyclotron");
 		put(TileEntityMachineExposureChamber.class, "tileentity_exposure_chamber");
 		put(TileEntityMachineRTG.class, "tileentity_machine_rtg");
+	        put(TileEntityMachineMiningDrill.class, "tileentity_mining_drill");
 		put(TileEntityMachineExcavator.class, "tileentity_ntm_excavator");
 		put(TileEntityMachineOreSlopper.class, "tileentity_ore_slopper");
 		put(TileEntityMachineDrain.class, "tileentity_fluid_drain");
