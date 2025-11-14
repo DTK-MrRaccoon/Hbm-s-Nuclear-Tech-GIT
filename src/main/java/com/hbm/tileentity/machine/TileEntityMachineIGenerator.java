@@ -1,15 +1,11 @@
 package com.hbm.tileentity.machine;
 
 import java.io.IOException;
-
-// ADDED: Required for serialize/deserialize
-import io.netty.buffer.ByteBuf; 
-
+import io.netty.buffer.ByteBuf;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.config.GeneralConfig;
-// REMOVED: import com.hbm.interfaces.IFluidAcceptor;
 import com.hbm.inventory.container.ContainerIGenerator;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -24,10 +20,7 @@ import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.RTGUtil;
 import com.hbm.util.fauxpointtwelve.DirPos;
-
-// REMOVED: import api.hbm.energy.IEnergyGenerator;
-// ADDED: New energy interface from Radiolysis example
-import api.hbm.energymk2.IEnergyProviderMK2; 
+import api.hbm.energymk2.IEnergyProviderMK2;
 import api.hbm.fluid.IFluidStandardReceiver;
 import api.hbm.tile.IInfoProviderEC;
 import cpw.mods.fml.relauncher.Side;
@@ -44,7 +37,6 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-// FIXED: Removed IFluidAcceptor and IEnergyGenerator, Added IEnergyProviderMK2
 public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardReceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC {
 	
 	public long power;
@@ -52,16 +44,12 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public int[] burn = new int[4];
 	public boolean hasRTG = false;
 	public int[] RTGSlots = new int[]{ 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
-
 	@SideOnly(Side.CLIENT)
 	public float rotation;
 	@SideOnly(Side.CLIENT)
 	public float prevRotation;
-	
 	public FluidTank[] tanks;
-	
 	public int age = 0;
-	
 	public static final int coalConRate = 75;
 	
 	/* CONFIGURABLE */
@@ -76,6 +64,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public static long fluidHeatDiv = 1_000L;
 	
 	protected long output;
+	public int soundCycle = 0;
 
 	@Override
 	public String getConfigName() {
@@ -111,7 +100,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public TileEntityMachineIGenerator() {
 		super(21);
 		tanks = new FluidTank[3];
-		// FIXED: Removed third argument (index) from constructor
 		tanks[0] = new FluidTank(Fluids.WATER, waterCap);
 		tanks[1] = new FluidTank(Fluids.HEATINGOIL, oilCap);
 		tanks[2] = new FluidTank(Fluids.LUBRICANT, lubeCap);
@@ -143,7 +131,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 			power = Library.chargeItemsFromTE(slots, 0, power, maxPower);
 			
 			for(DirPos dir : getConPos()) {
-				// FIXED: Replaced sendPower with tryProvide
 				this.tryProvide(worldObj, dir.getX(), dir.getY(), dir.getZ(), dir.getDir());
 				
 				for(FluidTank tank : tanks) {
@@ -238,11 +225,18 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 					this.power = this.maxPower;
 			}
 			
-			// FIXED: Replaced NBT-based networkPack with networkPackNT (like Radiolysis)
+			// Sound system - similar to shredder
+			if(this.spin > 0) {
+				if(soundCycle == 0)
+					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.igeneratorOperate", getVolume(1.0F), 0.75F);
+				soundCycle++;
+				if(soundCycle >= 50)
+					soundCycle = 0;
+			} else {
+				soundCycle = 0;
+			}
+			
 			this.networkPackNT(150);
-			
-			// REMOVED: Tank syncing is now handled by serialize/deserialize
-			
 		} else {
 			
 			this.prevRotation = this.rotation;
@@ -258,7 +252,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		}
 	}
 
-	// ADDED: serialize method for ByteBuf syncing (like Radiolysis)
 	@Override
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
@@ -274,7 +267,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		}
 	}
 
-	// ADDED: deserialize method for ByteBuf syncing (like Radiolysis)
 	@Override
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
@@ -300,15 +292,11 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		return new int[] { 3, 4, 5, 6 };
 	}
 
-	// REMOVED: Old NBT-based networkUnpack method
-	
 	public int getPowerFromFuel(boolean con) {
 		FluidType type = tanks[1].getTankType();
 		return type.hasTrait(FT_Flammable.class) ? (int)(type.getTrait(FT_Flammable.class).getHeatEnergy() / (con ? 5000L : fluidHeatDiv)) : 0;
 	}
 
-	// REMOVED: All methods from the old IFluidAcceptor interface
-	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
@@ -343,7 +331,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 		return 65536.0D;
 	}
 
-	// FIXED: @Override is now correct for IEnergyProviderMK2
 	@Override
 	public void setPower(long power) {
 		this.power = power;
@@ -377,7 +364,6 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiScreen provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
-		// RESTORED: This line is now active, assuming GUIIGenerator.java exists
 		return new GUIIGenerator(player.inventory, this);
 	}
 

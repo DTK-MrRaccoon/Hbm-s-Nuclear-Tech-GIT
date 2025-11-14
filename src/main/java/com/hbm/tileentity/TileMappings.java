@@ -216,6 +216,7 @@ public class TileMappings {
 		put(TileEntitySpotlightPowered.class, "tileentity_spotlight_powered");
 		put(TileEntitySpotlightModularPowered.class, "tileentity_spotlight_modular_powered");
 		put(TileEntityPoweredLightsController.class, "tileentity_powered_lights_controller");
+
 		put(TileEntityStorageDrum.class, "tileentity_waste_storage_drum");
 		put(TileEntityMachineBAT9000.class, "tileentity_bat9000");
 		put(TileEntityMachineOrbus.class, "tileentity_orbus");
