@@ -12,7 +12,7 @@ import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.client.IItemRenderer;
 
-public class RenderFusionKlystron extends TileEntitySpecialRenderer implements IItemRendererProvider {
+public class RenderFusionMHDT extends TileEntitySpecialRenderer implements IItemRendererProvider {
 
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double x, double y, double z, float interp) {
@@ -28,48 +28,48 @@ public class RenderFusionKlystron extends TileEntitySpecialRenderer implements I
 		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
 		}
 		
-		GL11.glTranslated(-1, 0, 0);
-		
 		GL11.glShadeModel(GL11.GL_SMOOTH);
-		bindTexture(ResourceManager.fusion_klystron_tex);
-		ResourceManager.fusion_klystron.renderPart("Klystron");
+		bindTexture(ResourceManager.fusion_mhdt_tex);
+		ResourceManager.fusion_mhdt.renderPart("Turbine");
 		
 		GL11.glPushMatrix();
-		double rot = (System.currentTimeMillis() / 10) % 360D;
-		GL11.glTranslated(0, 2.5, 0);
+		double rot = (System.currentTimeMillis() / 10) % 30D;
+		rot -= 15;
+		GL11.glTranslated(0, 1.5, 0);
 		GL11.glRotated(rot, 1, 0, 0);
-		GL11.glTranslated(0, -2.5, 0);
-		ResourceManager.fusion_klystron.renderPart("Rotor");
-		GL11.glShadeModel(GL11.GL_FLAT);
+		GL11.glTranslated(0, -1.5, 0);
+		ResourceManager.fusion_mhdt.renderPart("Coils");
 		GL11.glPopMatrix();
+		
+		GL11.glShadeModel(GL11.GL_FLAT);
 		
 		GL11.glPopMatrix();
 	}
 
 	@Override
 	public Item getItemForRenderer() {
-		return Item.getItemFromBlock(ModBlocks.fusion_klystron);
+		return Item.getItemFromBlock(ModBlocks.fusion_mhdt);
 	}
 
 	@Override
 	public IItemRenderer getRenderer() {
 		return new ItemRenderBase() {
 			public void renderInventory() {
-				GL11.glTranslated(0, -3, 1);
-				GL11.glScaled(3.5, 3.5, 3.5);
+				GL11.glScaled(2.5, 2.5, 2.5);
 				GL11.glRotated(90, 0, 1, 0);
 			}
 			public void renderCommon() {
 				GL11.glScaled(0.5, 0.5, 0.5);
 				GL11.glRotatef(90, 0F, 1F, 0F);
 				GL11.glShadeModel(GL11.GL_SMOOTH);
-				bindTexture(ResourceManager.fusion_klystron_tex);
-				ResourceManager.fusion_klystron.renderPart("Klystron");
-				double rot = (System.currentTimeMillis() / 10) % 360D;
-				GL11.glTranslated(0, 2.5, 0);
+				bindTexture(ResourceManager.fusion_mhdt_tex);
+				ResourceManager.fusion_mhdt.renderPart("Turbine");
+				double rot = (System.currentTimeMillis() / 10) % 30D;
+				rot -= 15;
+				GL11.glTranslated(0, 1.5, 0);
 				GL11.glRotated(rot, 1, 0, 0);
-				GL11.glTranslated(0, -2.5, 0);
-				ResourceManager.fusion_klystron.renderPart("Rotor");
+				GL11.glTranslated(0, -1.5, 0);
+				ResourceManager.fusion_mhdt.renderPart("Coils");
 				GL11.glShadeModel(GL11.GL_FLAT);
 			}};
 	}
