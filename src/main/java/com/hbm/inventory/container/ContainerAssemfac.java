@@ -10,7 +10,6 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 
-@Deprecated
 public class ContainerAssemfac extends Container {
 	
 	private TileEntityMachineAssemfac assemfac;
