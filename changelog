@@ -71,6 +71,8 @@
 * Rewrote the ore layer generator (hematite, bauxite) to be way more performant during worldgen
 * The mining laser can now be stopped by applying a redstone signal to one of the ports
 * Ionized particles can no longer be liquefacted into helium-4, helium is now a direct liquid byproduct of several fusion reactor recipes
+* Adjusted schrabidic acid recipe to account for higher ionized particle yield
+* Increases the ICF's stellar flux output by a factor of four
 
 ## Fixed
 * Fixed arc furnace only allowing electrodes to be inserted when the lid is down instead of up
@@ -88,3 +90,4 @@
 * Fixed many NTM structure spawn conditions being hardcoded (again) preventing them from spawning in modded biomes that would otherwise be a fit
 * Fixed spawn offset for some structures which caused them to float in the air
 * Fixed icons in the QMAW title bar often times being too dark when rendered with a 3D model
+* Fixed rocket artillery modes having incorrect tooltips
