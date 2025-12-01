@@ -4,6 +4,7 @@ import org.lwjgl.opengl.GL11;
 
 import com.hbm.main.ResourceManager;
 import com.hbm.tileentity.machine.TileEntityReactorResearch;
+import com.hbm.tileentity.machine.TileEntityMachineReactorSmall;
 
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -19,12 +20,29 @@ public class RenderSmallReactor extends TileEntitySpecialRenderer {
 		GL11.glDisable(GL11.GL_CULL_FACE);
 		GL11.glRotatef(180, 0F, 1F, 0F);
 
-		TileEntityReactorResearch reactor = (TileEntityReactorResearch) tileEntity;
-
 		bindTexture(ResourceManager.reactor_small_base_tex);
 		ResourceManager.reactor_small_base.renderAll();
 		
-		double level = (reactor.lastLevel + (reactor.level - reactor.lastLevel) * f);
+		double level = 0;
+		int totalFlux = 0;
+		boolean isSubmerged = false;
+		
+		if(tileEntity instanceof TileEntityReactorResearch) {
+			TileEntityReactorResearch reactor = (TileEntityReactorResearch) tileEntity;
+			level = (reactor.lastLevel + (reactor.level - reactor.lastLevel) * f);
+			totalFlux = reactor.totalFlux;
+			isSubmerged = reactor.isSubmerged();
+		} else if(tileEntity instanceof TileEntityMachineReactorSmall) {
+			TileEntityMachineReactorSmall reactor = (TileEntityMachineReactorSmall) tileEntity;
+			level = reactor.rods / 100D;
+			// Calculate total flux from all rods
+			for(int i = 0; i < 12; i++) {
+				if(reactor.rodLocked[i]) {
+					totalFlux += reactor.rodFlux[i];
+				}
+			}
+			isSubmerged = reactor.isSubmerged();
+		}
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(0.0D, level, 0.0D);
@@ -34,7 +52,7 @@ public class RenderSmallReactor extends TileEntitySpecialRenderer {
 
 		GL11.glPopMatrix();
 
-		if(reactor.totalFlux > 10 && reactor.isSubmerged()) {
+		if(totalFlux > 1000 && isSubmerged) {
 
 			GL11.glDisable(GL11.GL_TEXTURE_2D);
 			GL11.glEnable(GL11.GL_BLEND);
@@ -47,7 +65,7 @@ public class RenderSmallReactor extends TileEntitySpecialRenderer {
 			for(double d = 0.285; d < 0.7; d += 0.025) {
 
 				tess.startDrawingQuads();
-				tess.setColorRGBA_F(0.4F, 0.9F, 1.0F, 0.025F + (float) (Math.random() * 0.015F) + (0.125F * reactor.totalFlux / 1000F));
+				tess.setColorRGBA_F(0.4F, 0.9F, 1.0F, 0.025F + (float) (Math.random() * 0.015F) + (0.125F * totalFlux / 1000F));
 
 				double top = 1.375;
 				double bottom = 1.375;

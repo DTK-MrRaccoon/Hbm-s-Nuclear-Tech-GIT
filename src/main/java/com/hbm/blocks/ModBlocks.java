@@ -1089,6 +1089,8 @@ public class ModBlocks {
 	public static Block machine_weapon_table;
 
 	public static Block reactor_research;
+	public static Block machine_reactor_small;
+	public static final int guiID_reactor_small = 65;
 	public static Block reactor_zirnox;
 	public static Block zirnox_destroyed;
 
@@ -1271,6 +1273,9 @@ public class ModBlocks {
 
 	public static Block dummy_block_drill;
 	public static Block dummy_port_drill;
+
+	public static Block dummy_block_reactor_small;
+	public static Block dummy_port_reactor_small;
 
 	public static Block ntm_dirt;
 
@@ -2323,6 +2328,7 @@ public class ModBlocks {
 		machine_conveyor_press = new MachineConveyorPress(Material.iron).setBlockName("machine_conveyor_press").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_ammo_press = new MachineAmmoPress().setBlockName("machine_ammo_press").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		reactor_research = new ReactorResearch(Material.iron).setBlockName("machine_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":machine_reactor_small");
+		machine_reactor_small = new MachineReactorSmall(Material.iron).setBlockName("machine_reactor_small_new").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		reactor_zirnox = new ReactorZirnox(Material.iron).setBlockName("machine_zirnox").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		zirnox_destroyed = new ZirnoxDestroyed(Material.iron).setBlockName("zirnox_destroyed").setHardness(100.0F).setResistance(800.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_controller = new MachineReactorControl(Material.iron).setBlockName("machine_controller").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null);
@@ -2467,6 +2473,8 @@ public class ModBlocks {
 
 		dummy_block_drill = new DummyBlockDrill(Material.iron, false).setBlockName("dummy_block_drill").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_lead");
 		dummy_port_drill = new DummyBlockDrill(Material.iron, true).setBlockName("dummy_port_drill").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_lead");
+		dummy_block_reactor_small = new DummyBlockMachine(Material.iron, machine_reactor_small, false).setBlockName("dummy_block_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		dummy_port_reactor_small = new DummyBlockMachine(Material.iron, machine_reactor_small, true).setBlockName("dummy_port_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_steel");
 
 		ntm_dirt = new BlockNTMDirt().setBlockName("ntm_dirt").setHardness(0.5F).setStepSound(Block.soundTypeGravel).setCreativeTab(null).setBlockTextureName("dirt");
 
@@ -3205,6 +3213,7 @@ public class ModBlocks {
 		register(machine_combustion_engine);
 		GameRegistry.registerBlock(machine_controller, machine_controller.getUnlocalizedName());
 		GameRegistry.registerBlock(reactor_research, reactor_research.getUnlocalizedName());
+		GameRegistry.registerBlock(machine_reactor_small, machine_reactor_small.getUnlocalizedName());
 		GameRegistry.registerBlock(reactor_zirnox, reactor_zirnox.getUnlocalizedName());
 		GameRegistry.registerBlock(zirnox_destroyed, zirnox_destroyed.getUnlocalizedName());
 		GameRegistry.registerBlock(machine_industrial_generator, machine_industrial_generator.getUnlocalizedName());
@@ -3636,6 +3645,8 @@ public class ModBlocks {
 
 		GameRegistry.registerBlock(dummy_block_drill, dummy_block_drill.getUnlocalizedName());
 		GameRegistry.registerBlock(dummy_port_drill, dummy_port_drill.getUnlocalizedName());
+		GameRegistry.registerBlock(dummy_block_reactor_small, dummy_block_reactor_small.getUnlocalizedName());
+		GameRegistry.registerBlock(dummy_port_reactor_small, dummy_port_reactor_small.getUnlocalizedName());
 
 		//Other Technical Blocks
 		GameRegistry.registerBlock(oil_pipe, oil_pipe.getUnlocalizedName());
