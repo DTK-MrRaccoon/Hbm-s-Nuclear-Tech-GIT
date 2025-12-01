@@ -50,7 +50,6 @@ public class ItemChemistryTemplate extends Item {
 	
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
-		list.add(EnumChatFormatting.RED + "Deprecated");
 
 		if(!(stack.getItem() instanceof ItemChemistryTemplate))
 			return;
