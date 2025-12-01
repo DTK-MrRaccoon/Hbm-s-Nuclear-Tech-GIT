@@ -17,9 +17,16 @@ public class NEIRegistry {
 
 		handlers.add(new AnvilRecipeHandler());
 		handlers.add(new SmithingRecipeHandler());
+		handlers.add(new PressRecipeHandler());
 		handlers.add(new AlloyFurnaceRecipeHandler());
 		handlers.add(new ShredderRecipeHandler());
-		handlers.add(new PressRecipeHandler());
+		handlers.add(new CrucibleSmeltingHandler());
+		handlers.add(new CrucibleAlloyingHandler());
+		handlers.add(new CrucibleCastingHandler());
+		handlers.add(new AssemblyMachineRecipeHandler());
+		handlers.add(new PrecAssRecipeHandler());
+		handlers.add(new ChemicalPlantRecipeHandler());
+		handlers.add(new RefineryRecipeHandler());
 		handlers.add(new CentrifugeRecipeHandler());
 		handlers.add(new GasCentrifugeRecipeHandler());
 		handlers.add(new BreederRecipeHandler());
@@ -43,9 +50,6 @@ public class NEIRegistry {
 		handlers.add(new FuelPoolHandler());
 		handlers.add(new RBMKRodDisassemblyHandler());
 		handlers.add(new RBMKWasteDecayHandler());
-		handlers.add(new CrucibleSmeltingHandler());
-		handlers.add(new CrucibleAlloyingHandler());
-		handlers.add(new CrucibleCastingHandler());
 		handlers.add(new ToolingHandler());
 		handlers.add(new ConstructionHandler());
 		handlers.add(new SatelliteHandler());
