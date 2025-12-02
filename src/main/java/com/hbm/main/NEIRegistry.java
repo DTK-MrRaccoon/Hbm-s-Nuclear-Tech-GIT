@@ -33,6 +33,8 @@ public class NEIRegistry {
 		handlers.add(new CyclotronRecipeHandler());
 		handlers.add(new VacuumRecipeHandler());
 		handlers.add(new CrackingHandler());
+		handlers.add(new AlkylationHandler());
+		handlers.add(new CryoHandler());
 		handlers.add(new RadiolysisRecipeHandler());
 		handlers.add(new ReformingHandler());
 		handlers.add(new HydrotreatingHandler());
@@ -48,6 +50,7 @@ public class NEIRegistry {
 		handlers.add(new ToolingHandler());
 		handlers.add(new ConstructionHandler());
 		handlers.add(new SatelliteHandler());
+		handlers.add(new DairyHandler());
 
 		//universal boyes
 		handlers.add(new ZirnoxRecipeHandler());

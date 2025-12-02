@@ -135,6 +135,8 @@ public class ShredderRecipes extends SerializableRecipe {
 	public void registerDefaults() {
 
 		/* Primary recipes */
+		ShredderRecipes.setRecipe(Items.wheat, new ItemStack(ModItems.flour));
+
 		ShredderRecipes.setRecipe(ModItems.scrap, new ItemStack(ModItems.dust));
 		ShredderRecipes.setRecipe(ModItems.dust, new ItemStack(ModItems.dust));
 		ShredderRecipes.setRecipe(ModItems.dust_tiny, new ItemStack(ModItems.dust_tiny));
@@ -204,6 +206,7 @@ public class ShredderRecipes extends SerializableRecipe {
 		ShredderRecipes.setRecipe(Items.reeds, new ItemStack(Items.sugar, 3));
 		ShredderRecipes.setRecipe(Items.apple, new ItemStack(Items.sugar, 1));
 		ShredderRecipes.setRecipe(Items.carrot, new ItemStack(Items.sugar, 1));
+		ShredderRecipes.setRecipe(ModItems.bean_roast,  new ItemStack(ModItems.powder_coffee, 2));
 		ShredderRecipes.setRecipe(ModItems.can_empty, new ItemStack(ModItems.powder_aluminium, 2));
 		ShredderRecipes.setRecipe(DictFrame.fromOne(ModItems.chunk_ore, EnumChunkType.RARE), new ItemStack(ModItems.powder_desh_mix));
 		ShredderRecipes.setRecipe(Blocks.sand, new ItemStack(ModItems.dust, 2));

@@ -85,6 +85,7 @@ public abstract class SerializableRecipe {
 		recipeHandlers.add(new AssemblerRecipes());
 		//AFTER Assembler
 		recipeHandlers.add(new AnvilRecipes());
+		recipeHandlers.add(new AlkylationRecipes());
 		recipeHandlers.add(new PedestalRecipes());
 		
 		//GENERIC
@@ -93,6 +94,8 @@ public abstract class SerializableRecipe {
 		recipeHandlers.add(PUREXRecipes.INSTANCE);
 		recipeHandlers.add(FusionRecipes.INSTANCE);
 		recipeHandlers.add(PrecAssRecipes.INSTANCE);
+
+		recipeHandlers.add(new CryoRecipes());
 
 		recipeHandlers.add(new MatDistribution());
 		recipeHandlers.add(new CustomMachineRecipes());

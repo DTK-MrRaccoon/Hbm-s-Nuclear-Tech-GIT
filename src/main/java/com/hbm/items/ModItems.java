@@ -47,12 +47,14 @@ import com.hbm.util.RTGUtil;
 import api.hbm.block.IToolable.ToolType;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraft.item.ItemFood;
+import net.minecraft.item.ItemSeedFood;
 import net.minecraft.item.ItemSoup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
@@ -113,6 +115,9 @@ public class ModItems {
 	public static Item powder_ash;
 	public static Item powder_limestone;
 	public static Item powder_cement;
+
+	public static Item butter;
+	public static Item s_cream;
 
 	public static Item niter;
 	public static Item ingot_copper;
@@ -551,6 +556,10 @@ public class ModItems {
 	public static Item chunk_ore;
 
 	public static Item biomass;
+	public static Item flesh;
+	public static Item flesh_wafer;
+	public static Item grilled_flesh;
+	public static Item flesh_burger;
 	public static Item biomass_compressed;
 	public static Item bio_wafer;
 	public static Item plant_item;
@@ -966,6 +975,18 @@ public class ModItems {
 	public static ItemEnumMulti canned_conserve;
 	public static Item can_key;
 
+	public static Item glass_empty;
+	public static Item glass_smilk;
+	public static Item strawberry;
+	public static Item teaseeds;
+	public static Item tea_leaf;
+	public static Item bean_raw;
+	public static Item bean_roast;
+	public static Item powder_coffee;
+	public static Item cmug_empty;
+	public static Item teacup;
+	public static Item teacup_empty;
+
 	public static Item boat_rubber;
 	public static Item cart;
 	public static Item train;
@@ -1153,6 +1174,7 @@ public class ModItems {
 	public static Item ball_tnt;
 	public static Item ball_tatb;
 	public static Item ball_fireclay;
+	public static Item ammonium_nitrate;
 
 	public static Item pellet_cluster;
 	public static Item powder_fire;
@@ -1575,6 +1597,7 @@ public class ModItems {
 	public static Item glyphid_meat;
 	public static Item glyphid_meat_grilled;
 	public static Item egg_glyphid;
+	public static Item flour;
 
 	public static Item med_ipecac;
 	public static Item med_ptsd;
@@ -2481,6 +2504,9 @@ public class ModItems {
 		powder_limestone = new Item().setUnlocalizedName("powder_limestone").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_limestone");
 		powder_cement = new ItemLemon(2, 0.5F, false).setUnlocalizedName("powder_cement").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_cement");
 
+		butter = new Item().setUnlocalizedName("butter").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":ingot_butter");
+		s_cream	= new ItemLemon(8, 1.0F, false).setUnlocalizedName("s_cream").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":ice_cream_s");
+
 		ingot_gh336 = new ItemCustomLore().setRarity(EnumRarity.epic).setUnlocalizedName("ingot_gh336").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_gh336");
 		nugget_gh336 = new ItemCustomLore().setRarity(EnumRarity.epic).setUnlocalizedName("nugget_gh336").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_gh336");
 
@@ -2692,7 +2718,11 @@ public class ModItems {
 
 		biomass = new Item().setUnlocalizedName("biomass").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":biomass");
 		biomass_compressed = new Item().setUnlocalizedName("biomass_compressed").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":biomass_compressed");
-		bio_wafer = new ItemLemon(4, 2F, false).setUnlocalizedName("bio_wafer").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":bio_wafer");
+		bio_wafer = new ItemLemon(4, 0.6F, false).setUnlocalizedName("bio_wafer").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":bio_wafer");
+		flesh = new Item().setUnlocalizedName("flesh").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":flesh");
+		flesh_wafer = new ItemLemon(5, 0.6F, false).setUnlocalizedName("flesh_wafer").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":blood_wafer");
+		grilled_flesh = new ItemLemon(6, 0.8F, false).setUnlocalizedName("grilled_flesh").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":blood_patty");
+		flesh_burger = new ItemLemon(7, 1.0F, false).setUnlocalizedName("flesh_burger").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":blood_burger");
 		plant_item = new ItemEnumMulti(EnumPlantType.class, true, true).setUnlocalizedName("plant_item").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plant_item");
 
 		coil_copper = new Item().setUnlocalizedName("coil_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":coil_copper");
@@ -3091,6 +3121,18 @@ public class ModItems {
 		coffee = new ItemEnergy().setUnlocalizedName("coffee").setTextureName(RefStrings.MODID + ":coffee");
 		coffee_radium = new ItemEnergy().setUnlocalizedName("coffee_radium").setTextureName(RefStrings.MODID + ":coffee_radium");
 		chocolate = new ItemPill(0).setUnlocalizedName("chocolate").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":chocolate");
+
+		glass_smilk = new ItemEnergy().makeGlass().setUnlocalizedName("glass_smilk").setTextureName(RefStrings.MODID + ":glass_smilk");
+		glass_empty = new Item().setUnlocalizedName("glass_empty").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":glass_empty");
+		strawberry = new ItemSeedFood(3, 0.4F, ModBlocks.crop_strawberry, Blocks.farmland).setUnlocalizedName("strawberry").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":strawberry");
+		bean_raw = new ItemSeedFood(1, 0.2F, ModBlocks.crop_coffee, Blocks.farmland).setUnlocalizedName("bean_raw").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":coffeebeanraw");
+		powder_coffee = new ItemCustomLore().setUnlocalizedName("powder_coffee").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":powder_coffee");
+		bean_roast = new Item().setUnlocalizedName("bean_roast").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":coffeebeanroast");
+		cmug_empty = new Item().setUnlocalizedName("cmug_empty").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":mug_empty");
+		teaseeds = new ItemSeedFood(0, 0, ModBlocks.crop_tea, Blocks.farmland).setUnlocalizedName("teaseeds").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":teaseeds");
+		tea_leaf = new Item().setUnlocalizedName("tea_leaf").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":tea_leaf");
+		teacup_empty = new Item().setUnlocalizedName("teacup_empty").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":teacup");
+		teacup = new ItemEnergy().makeGlass().setUnlocalizedName("teacup").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":teacup_full");
 		canned_conserve = (ItemEnumMulti) new ItemConserve().setUnlocalizedName("canned_conserve").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":canned");
 		can_key = new Item().setUnlocalizedName("can_key").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":can_key");
 
@@ -3515,6 +3557,7 @@ public class ModItems {
 		powder_poison = new ItemCustomLore().setUnlocalizedName("powder_poison").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_poison");
 		powder_thermite = new ItemCustomLore().setUnlocalizedName("powder_thermite").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_thermite");
 		cordite = new Item().setUnlocalizedName("cordite").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":cordite");
+		ammonium_nitrate = new Item().setUnlocalizedName("ammonium_nitrate").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ammonium_nitrate");
 		ballistite = new Item().setUnlocalizedName("ballistite").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ballistite");
 		ball_dynamite = new Item().setUnlocalizedName("ball_dynamite").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ball_dynamite");
 		ball_tnt = new Item().setUnlocalizedName("ball_tnt").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ball_tnt");
@@ -3827,6 +3870,7 @@ public class ModItems {
 		glyphid_meat = new ItemLemon(3, 0.5F, true).setUnlocalizedName("glyphid_meat").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":glyphid_meat");
 		glyphid_meat_grilled = new ItemLemon(8, 0.75F, true).setPotionEffect(Potion.damageBoost.id, 180, 1, 1F).setUnlocalizedName("glyphid_meat_grilled").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":glyphid_meat_grilled");
 		egg_glyphid = new Item().setUnlocalizedName("egg_glyphid").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":egg_glyphid");
+		flour = new Item().setUnlocalizedName("flour").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":flour");
 
 		defuser = new ItemDefuser(ToolType.DEFUSER, 100).setUnlocalizedName("defuser").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.nukeTab).setTextureName(RefStrings.MODID + ":defuser");
 		reacher = new Item().setUnlocalizedName("reacher").setMaxStackSize(1).setFull3D().setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":reacher");
@@ -5271,6 +5315,7 @@ public class ModItems {
 		GameRegistry.registerItem(powder_thermite, powder_thermite.getUnlocalizedName());
 		GameRegistry.registerItem(powder_power, powder_power.getUnlocalizedName());
 		GameRegistry.registerItem(cordite, cordite.getUnlocalizedName());
+		GameRegistry.registerItem(ammonium_nitrate, ammonium_nitrate.getUnlocalizedName());
 		GameRegistry.registerItem(ballistite, ballistite.getUnlocalizedName());
 		GameRegistry.registerItem(ball_dynamite, ball_dynamite.getUnlocalizedName());
 		GameRegistry.registerItem(ball_tnt, ball_tnt.getUnlocalizedName());
@@ -5346,6 +5391,10 @@ public class ModItems {
 		GameRegistry.registerItem(biomass_compressed, biomass_compressed.getUnlocalizedName());
 		//delicious!
 		GameRegistry.registerItem(bio_wafer, bio_wafer.getUnlocalizedName());
+		GameRegistry.registerItem(flesh, flesh.getUnlocalizedName());
+		GameRegistry.registerItem(flesh_wafer, flesh_wafer.getUnlocalizedName());
+		GameRegistry.registerItem(grilled_flesh, grilled_flesh.getUnlocalizedName());
+		GameRegistry.registerItem(flesh_burger, flesh_burger.getUnlocalizedName());
 
 		//Nuggets
 		GameRegistry.registerItem(nugget_uranium, nugget_uranium.getUnlocalizedName());
@@ -6639,6 +6688,8 @@ public class ModItems {
 		GameRegistry.registerItem(static_sandwich, static_sandwich.getUnlocalizedName());
 		GameRegistry.registerItem(pudding, pudding.getUnlocalizedName());
 		GameRegistry.registerItem(pancake, pancake.getUnlocalizedName());
+		GameRegistry.registerItem(butter, butter.getUnlocalizedName());
+		GameRegistry.registerItem(s_cream, s_cream.getUnlocalizedName());
 		GameRegistry.registerItem(nugget, nugget.getUnlocalizedName());
 		GameRegistry.registerItem(peas, peas.getUnlocalizedName());
 		GameRegistry.registerItem(marshmallow, marshmallow.getUnlocalizedName());
@@ -6652,6 +6703,7 @@ public class ModItems {
 		GameRegistry.registerItem(canteen_vodka, canteen_vodka.getUnlocalizedName());
 		GameRegistry.registerItem(mucho_mango, mucho_mango.getUnlocalizedName());
 		GameRegistry.registerItem(chocolate, chocolate.getUnlocalizedName());
+		GameRegistry.registerItem(flour, flour.getUnlocalizedName());
 
 		//Energy Drinks
 		GameRegistry.registerItem(can_empty, can_empty.getUnlocalizedName());
@@ -6723,6 +6775,18 @@ public class ModItems {
 		GameRegistry.registerItem(cigarette, cigarette.getUnlocalizedName());
 		GameRegistry.registerItem(crackpipe, crackpipe.getUnlocalizedName());
 		GameRegistry.registerItem(bdcl, bdcl.getUnlocalizedName());
+
+		GameRegistry.registerItem(glass_smilk, glass_smilk.getUnlocalizedName());
+		GameRegistry.registerItem(glass_empty, glass_empty.getUnlocalizedName());
+		GameRegistry.registerItem(strawberry, strawberry.getUnlocalizedName());
+		GameRegistry.registerItem(teaseeds, teaseeds.getUnlocalizedName());
+		GameRegistry.registerItem(tea_leaf, tea_leaf.getUnlocalizedName());
+		GameRegistry.registerItem(powder_coffee, powder_coffee.getUnlocalizedName());
+		GameRegistry.registerItem(bean_raw, bean_raw.getUnlocalizedName());
+		GameRegistry.registerItem(bean_roast, bean_roast.getUnlocalizedName());
+		GameRegistry.registerItem(cmug_empty, cmug_empty.getUnlocalizedName());
+		GameRegistry.registerItem(teacup_empty, teacup_empty.getUnlocalizedName());
+		GameRegistry.registerItem(teacup, teacup.getUnlocalizedName());
 
 		//Armor mods
 		GameRegistry.registerItem(attachment_mask, attachment_mask.getUnlocalizedName());

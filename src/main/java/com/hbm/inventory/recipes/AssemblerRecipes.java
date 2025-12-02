@@ -1173,6 +1173,15 @@ public class AssemblerRecipes extends SerializableRecipe {
 				new ComparableStack(ModItems.coil_copper, 4)
 				}, 200);
 
+		makeRecipe(new ComparableStack(ModBlocks.machine_cryo_distill), new AStack[] {
+				new OreDictStack(ANY_CONCRETE.any(), 4),
+				new OreDictStack(STEEL.plate(), 12),
+				new OreDictStack(ANY_PLASTIC.ingot(), 4),
+				new ComparableStack(ModItems.tank_steel, 4),
+				new ComparableStack(ModBlocks.machine_battery, 1),
+				new ComparableStack(ModItems.coil_copper, 4),
+				}, 200);
+
 		makeRecipe(new ComparableStack(ModBlocks.machine_radiolysis), new AStack[] {
 				new OreDictStack(ANY_RESISTANTALLOY.ingot(), 4),
 				new OreDictStack(RUBBER.ingot(), 8),
@@ -1180,6 +1189,15 @@ public class AssemblerRecipes extends SerializableRecipe {
 				new OreDictStack(CU.plateCast(), 4),
 				new OreDictStack(STEEL.shell(), 2),
 				new ComparableStack(ModItems.thermo_element, 8)
+			}, 200);
+
+		makeRecipe(new ComparableStack(ModBlocks.machine_alkylation), new AStack[] {
+				new OreDictStack(ANY_CONCRETE.any(), 12),
+				new OreDictStack(STEEL.plate(), 12),
+				new OreDictStack(STEEL.shell(), 6),
+				new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CAPACITOR),
+				new ComparableStack(ModItems.catalyst_clay, 12),
+				new ComparableStack(ModItems.coil_tungsten, 4)
 			}, 200);
 
 		makeRecipe(new ComparableStack(ModBlocks.transition_seal, 1), new AStack[]{
@@ -1201,6 +1219,13 @@ public class AssemblerRecipes extends SerializableRecipe {
 				new OreDictStack(DURA.bolt(), 16),
 				new ComparableStack(ModItems.motor, 2)
 		}, 200);
+
+		makeRecipe(new ComparableStack(ModBlocks.machine_milk_reformer, 1), new AStack[] {
+				new OreDictStack(STEEL.plateCast(), 14),
+				new OreDictStack(STEEL.ingot(), 2),
+				new ComparableStack(ModItems.motor, 2),
+				new OreDictStack(STEEL.pipe(), 8)
+		}, 300);
 		
 		makeRecipe(new ComparableStack(ModBlocks.large_vehicle_door, 1), new AStack[]{new OreDictStack(STEEL.plateCast(), 16), new ComparableStack(ModItems.plate_polymer, 4), new ComparableStack(ModItems.motor, 4), new OreDictStack(DURA.bolt(), 16), new OreDictStack("dyeGreen", 4)}, 400);
 		makeRecipe(new ComparableStack(ModBlocks.water_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 16), new OreDictStack(DURA.bolt(), 4), new OreDictStack("dyeRed", 1)}, 200);
@@ -1211,6 +1236,17 @@ public class AssemblerRecipes extends SerializableRecipe {
 		makeRecipe(new ComparableStack(ModBlocks.sliding_seal_door, 1), new AStack[]{new OreDictStack(STEEL.plate(), 12), new ComparableStack(ModItems.plate_polymer, 4), new ComparableStack(ModItems.motor, 2), new OreDictStack(DURA.bolt(), 4), new OreDictStack("dyeWhite", 2)}, 200);
 		makeRecipe(new ComparableStack(ModBlocks.silo_hatch, 1), new AStack[]{new OreDictStack(STEEL.plateWelded(), 4), new ComparableStack(ModItems.plate_polymer, 4), new ComparableStack(ModItems.motor, 2), new OreDictStack(STEEL.bolt(), 16), new OreDictStack(KEY_GREEN, 4)}, 200);
 		makeRecipe(new ComparableStack(ModBlocks.silo_hatch_large, 1), new AStack[]{new OreDictStack(STEEL.plateWelded(), 6), new ComparableStack(ModItems.plate_polymer, 8), new ComparableStack(ModItems.motor, 2), new OreDictStack(STEEL.bolt(), 16), new OreDictStack(KEY_GREEN, 8)}, 200);
+
+		makeRecipe(new ComparableStack(ModBlocks.hydrobay, 1), new AStack[] {
+				new OreDictStack(STEEL.plate(), 16),
+				new OreDictStack(Fluids.WATER.getDict(16_000)),
+				new OreDictStack(STEEL.pipe(), 6),
+				new OreDictStack(KEY_CLEARGLASS, 8),
+				new ComparableStack(Blocks.dirt, 8),
+				new ComparableStack(ModItems.tank_steel, 2),
+				new OreDictStack(ANY_PLASTIC.ingot(), 2),
+		}, 400);
+
 
 		if(GeneralConfig.enableMekanismChanges && Loader.isModLoaded("Mekanism")) {
 

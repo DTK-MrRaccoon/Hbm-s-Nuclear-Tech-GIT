@@ -48,6 +48,14 @@ public class FusionRecipes extends GenericRecipes<FusionRecipe> {
 				.inputFluids(new FluidStack(Fluids.DEUTERIUM, 10), new FluidStack(Fluids.OXYGEN, 10))
 				.outputItems(new ItemStack(ModItems.pellet_charged)));
 		
+		// 10MHE/s to 60MHE/s
+		this.register((FusionRecipe) new FusionRecipe("fus.nd").setInputEnergy(600_000).setOutputEnergy(3_000_000).setOutputFlux(breederCapacity / 150)
+				.setRGB(0.0F, 0.8F, 1.0F) // Cyan/Blue for Nitrogen
+				.setNamed().setIcon(new ItemStack(ModItems.gas_full, 1, Fluids.NITROGEN.getID()))
+				.setPower(solenoid).setDuration(100)
+				.inputFluids(new FluidStack(Fluids.NITROGEN, 10), new FluidStack(Fluids.DEUTERIUM, 10))
+				.outputFluids(new FluidStack(Fluids.HEAVYWATER, 1_000)));
+		
 		// medium fuel
 		// 15MHE/s to 75MHE/s
 		this.register((FusionRecipe) new FusionRecipe("fus.dt").setInputEnergy(750_000).setOutputEnergy(3_750_000).setOutputFlux(breederCapacity / 100)
@@ -82,7 +90,7 @@ public class FusionRecipes extends GenericRecipes<FusionRecipe> {
 				.setPower(solenoid).setDuration(100)
 				.inputFluids(new FluidStack(Fluids.TRITIUM, 10), new FluidStack(Fluids.HELIUM4, 10))
 				.outputItems(new ItemStack(ModItems.pellet_charged)));
-
+		
 		// high fuel, ignition exceeds klystron power, requires TH4 or H3
 		// 75MHE/s to 200MHE/s
 		this.register((FusionRecipe) new FusionRecipe("fus.cl").setInputEnergy(3_750_000).setOutputEnergy(10_000_000).setOutputFlux(breederCapacity / 10)
@@ -110,6 +118,14 @@ public class FusionRecipes extends GenericRecipes<FusionRecipe> {
 				.inputFluids(new FluidStack(Fluids.BALEFIRE, 15), new FluidStack(Fluids.AMAT, 5)) // do we kick the antimatter requirement or maybe change it?
 				.outputItems(new ItemStack(ModItems.powder_balefire)));
 
+		// 15MHE/s to 350MHE/s
+		this.register((FusionRecipe) new FusionRecipe("fus.kp").setInputEnergy(6_000_000).setOutputEnergy(17_500_000).setOutputFlux(breederCapacity / 8)
+				.setRGB(0.8F, 0.4F, 1.0F) // Pink/Violet for Krypton glow
+				.setNamed().setIcon(new ItemStack(ModItems.gas_full, 1, Fluids.KRYPTON.getID()))
+				.setPower(solenoid).setDuration(100)
+				.inputFluids(new FluidStack(Fluids.KRYPTON, 20))
+				.outputItems(new ItemStack(ModItems.pellet_charged)));
+		
 		// high fuel, high ignition point
 		// 200MHE/s/s to 1GHE/s
 		this.register((FusionRecipe) new FusionRecipe("fus.stellar").setInputEnergy(10_000_000).setOutputEnergy(50_000_000).setOutputFlux(breederCapacity / 1)

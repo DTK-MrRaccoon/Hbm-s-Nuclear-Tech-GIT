@@ -191,6 +191,23 @@ public class Fluids {
 	public static FluidType ALUMINA;
 	public static FluidType CONCRETE;
 	public static FluidType DHC;
+	public static FluidType NITROGEN;
+	public static FluidType KRYPTON;
+	public static FluidType AMMONIA;
+	public static FluidType HYDRAZINE;
+	public static FluidType BLOODGAS;
+	public static FluidType METHANOL;
+	public static FluidType DICYANOACETYLENE;
+	public static FluidType AQUEOUS_COPPER;
+	public static FluidType COPPERSULFATE;
+	public static FluidType SODIUM_HYDROXIDE;
+	public static FluidType COFFEE;
+	public static FluidType TEA;
+	public static FluidType MILK;
+	public static FluidType SMILK;
+	public static FluidType EMILK;
+	public static FluidType CMILK;
+	public static FluidType CREAM;
 
 	/* Lagacy names for compatibility purposes */
 	@Deprecated public static FluidType ACID;	//JAOPCA uses this, apparently
@@ -409,6 +426,23 @@ public class Fluids {
 		AIR =					new FluidType("AIR",				0xE7EAEB, 0, 0, 0, EnumSymbol.NONE).addTraits(GASEOUS);
 		CONCRETE =				new FluidType("CONCRETE",			0xA2A2A2, 0, 0, 0, EnumSymbol.NONE).addTraits(LIQUID);
 		DHC =					new FluidType(153, "DHC",			0xD2AFFF, 0, 0, 0, EnumSymbol.NONE).addTraits(GASEOUS);
+		NITROGEN =				new FluidType("NITROGEN",			0xB3C6D2, 1, 0, 0, EnumSymbol.CROYGENIC).setTemp(-90).addTraits(LIQUID, EVAP);
+		KRYPTON = 				new FluidType("KRYPTON",			0x9AC6E6, 0, 0, 0, EnumSymbol.CROYGENIC).addTraits(GASEOUS);
+		AMMONIA =				new FluidType("AMMONIA",			0x00A0F7, 2, 0, 1, EnumSymbol.ASPHYXIANT).addTraits(new FT_Poison(true, 4), GASEOUS);
+		HYDRAZINE =				new FluidType("HYDRAZINE",			0x31517D, 2, 3, 2, EnumSymbol.NONE).addContainers(new CD_Canister(0x31517D)).addTraits((new FT_Flammable(500_000)), new FT_Combustible(FuelGrade.HIGH, 1_250_000), new FT_Corrosive(30), LIQUID);
+		BLOODGAS =				new FluidType("BLOODGAS",			0x591000, 3, 1, 1, EnumSymbol.NONE).addContainers(new CD_Canister(0x591000)).addTraits(new FT_Flammable(1_000_000), new FT_Combustible(FuelGrade.AERO, 2_500_000)).addTraits(LIQUID);
+		METHANOL =				new FluidType("METHANOL",			0x88739F, 3, 4, 0, EnumSymbol.NONE).addTraits(GASEOUS).addTraits(new FT_Flammable(35_000)).addTraits(new FT_Combustible(FuelGrade.HIGH, 125_000), new FT_Polluting().release(PollutionType.POISON, POISON_MINOR), LIQUID);
+		DICYANOACETYLENE =			new FluidType("DICYANOACETYLENE",	0x675A9F, 1, 2, 1, EnumSymbol.NONE).addTraits(new FT_Flammable(4_000_000), GASEOUS);
+		AQUEOUS_COPPER =			new FluidType("AQUEOUS_COPPER",		0x4CC2A2, 0, 0, 0, EnumSymbol.NONE).addTraits(LIQUID, VISCOUS);
+		COPPERSULFATE =				new FluidType("COPPERSULFATE",		0x55E5CF, 0, 0, 0, EnumSymbol.NONE).addTraits(LIQUID, VISCOUS);
+		SODIUM_HYDROXIDE =			new FluidType("SODIUM_HYDROXIDE",       0x9FD3A2, 2, 1, 1, EnumSymbol.NONE).addContainers(new CD_Canister(0x9FD3A2)).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.POISON, POISON_EXTREME));
+		COFFEE =				new FluidType("COFFEE",				0x57493D, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);
+		TEA =					new FluidType("TEA",				0x76523C, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);
+		MILK =					new FluidType("MILK",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
+		SMILK =					new FluidType("SMILK",				0xF5DEE4, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);
+		EMILK =					new FluidType("EMILK",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
+		CMILK =					new FluidType("CMILK",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
+		CREAM =					new FluidType("CREAM",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
 
 		// ^ ^ ^ ^ ^ ^ ^ ^
 		//ADD NEW FLUIDS HERE
@@ -446,6 +480,7 @@ public class Fluids {
 		metaOrder.add(MUG);
 		metaOrder.add(MUG_HOT);
 		metaOrder.add(BLOOD);
+		metaOrder.add(BLOODGAS);
 		metaOrder.add(BLOOD_HOT);
 		metaOrder.add(SODIUM);
 		metaOrder.add(SODIUM_HOT);
@@ -456,12 +491,14 @@ public class Fluids {
 		metaOrder.add(THORIUM_SALT_DEPLETED);
 		//pure elements, cyogenic gasses
 		metaOrder.add(HYDROGEN);
+		metaOrder.add(NITROGEN);
 		metaOrder.add(DEUTERIUM);
 		metaOrder.add(TRITIUM);
 		metaOrder.add(HELIUM3);
 		metaOrder.add(HELIUM4);
 		metaOrder.add(OXYGEN);
 		metaOrder.add(XENON);
+		metaOrder.add(KRYPTON);
 		metaOrder.add(CHLORINE);
 		metaOrder.add(MERCURY);
 		//oils, fuels
@@ -520,11 +557,14 @@ public class Fluids {
 		metaOrder.add(BIOGAS);
 		metaOrder.add(BIOFUEL);
 		metaOrder.add(ETHANOL);
+		metaOrder.add(METHANOL);
 		metaOrder.add(FISHOIL);
 		metaOrder.add(SUNFLOWEROIL);
 		metaOrder.add(NITAN);
+		metaOrder.add(HYDRAZINE);
 		metaOrder.add(DHC);
 		metaOrder.add(BALEFIRE);
+		metaOrder.add(DICYANOACETYLENE);
 		//processing fluids
 		metaOrder.add(SALIENT);
 		metaOrder.add(SEEDSLURRY);
@@ -532,11 +572,6 @@ public class Fluids {
 		metaOrder.add(VITRIOL);
 		metaOrder.add(SLOP);
 		metaOrder.add(IONGEL);
-		metaOrder.add(PEROXIDE);
-		metaOrder.add(SULFURIC_ACID);
-		metaOrder.add(NITRIC_ACID);
-		metaOrder.add(SOLVENT);
-		metaOrder.add(RADIOSOLVENT);
 		metaOrder.add(SCHRABIDIC);
 		metaOrder.add(UF6);
 		metaOrder.add(PUF6);
@@ -556,8 +591,18 @@ public class Fluids {
 		metaOrder.add(CALCIUM_SOLUTION);
 		metaOrder.add(SODIUM_ALUMINATE);
 		metaOrder.add(BAUXITE_SOLUTION);
+		metaOrder.add(AQUEOUS_COPPER);
+		metaOrder.add(COPPERSULFATE);
 		metaOrder.add(ALUMINA);
 		metaOrder.add(CONCRETE);
+		//acids solvents
+		metaOrder.add(PEROXIDE);
+		metaOrder.add(SULFURIC_ACID);
+		metaOrder.add(SODIUM_HYDROXIDE);
+		metaOrder.add(NITRIC_ACID);
+		metaOrder.add(AMMONIA);
+		metaOrder.add(SOLVENT);
+		metaOrder.add(RADIOSOLVENT);
 		//solutions and working fluids
 		metaOrder.add(FRACKSOL);
 		metaOrder.add(LYE);
@@ -591,6 +636,14 @@ public class Fluids {
 		//bug meth
 		metaOrder.add(PHEROMONE);
 		metaOrder.add(PHEROMONE_M);
+		//food stuff
+		metaOrder.add(TEA);
+		metaOrder.add(COFFEE);
+		metaOrder.add(MILK);
+		metaOrder.add(SMILK);
+		metaOrder.add(EMILK);
+		metaOrder.add(CMILK);
+		metaOrder.add(CREAM);
 
 		//ANY INTERNAL RENAMING MUST BE REFLECTED HERE - DON'T FORGET TO CHANGE: LANG FILES + TYPE'S STRING ID + NAME OF TANK/GUI TEXTURE FILES!
 		// V
@@ -655,10 +708,10 @@ public class Fluids {
 		HEAVYWATER.addTraits(new FT_Heatable().setEff(HeatingType.PWR, 1.0D).addStep(300, 1, HEAVYWATER_HOT, 1), new FT_PWRModerator(1.25D));
 		HEAVYWATER_HOT.addTraits(new FT_Coolable(HEAVYWATER, 1, 1, 300).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 
-		SODIUM.addTraits(new FT_Heatable().setEff(HeatingType.PWR, 2.5D).setEff(HeatingType.ICF, 3D).addStep(400, 1, SODIUM_HOT, 1));
+		SODIUM.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).setEff(HeatingType.PWR, 2.5D).setEff(HeatingType.ICF, 3D).addStep(400, 1, SODIUM_HOT, 1));
 		SODIUM_HOT.addTraits(new FT_Coolable(SODIUM, 1, 1, 400).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 		/* Fuck you, this is final now. If you had any concerns, you could have told me like a normal person instead of shitting on in-dev values that change every other day */
-		LEAD.addTraits(new FT_Heatable().setEff(HeatingType.PWR, 0.75D).setEff(HeatingType.ICF, 4D).addStep(800, 1, LEAD_HOT, 1), new FT_PWRModerator(0.75D));
+		LEAD.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).setEff(HeatingType.PWR, 0.75D).setEff(HeatingType.ICF, 4D).addStep(800, 1, LEAD_HOT, 1), new FT_PWRModerator(0.75D));
 		/* Or maybe not, because I blocked your sorry ass. Guess why that is? */
 		LEAD_HOT.addTraits(new FT_Coolable(LEAD, 1, 1, 680).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 		/* Maybe shittalking me in some corner where you thought I wouldn't listen was not that bright of an idea afterall? */

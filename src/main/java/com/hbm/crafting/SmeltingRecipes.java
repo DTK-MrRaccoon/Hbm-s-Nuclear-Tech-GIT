@@ -27,6 +27,8 @@ public class SmeltingRecipes {
 	{
 		GameRegistry.addSmelting(ModItems.glyphid_meat, new ItemStack(ModItems.glyphid_meat_grilled), 1.0F);
 
+		GameRegistry.addSmelting(ModItems.flour, new ItemStack(Items.bread), 1.0F);
+
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_thorium), new ItemStack(ModItems.ingot_th232), 3.0F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium), new ItemStack(ModItems.ingot_uranium), 6.0F);
 		GameRegistry.addSmelting(Item.getItemFromBlock(ModBlocks.ore_uranium_scorched), new ItemStack(ModItems.ingot_uranium), 6.0F);
@@ -110,6 +112,8 @@ public class SmeltingRecipes {
 		GameRegistry.addSmelting(ModItems.powder_cadmium, new ItemStack(ModItems.ingot_cadmium), 1.0F);
 		GameRegistry.addSmelting(ModItems.ball_resin, new ItemStack(ModItems.ingot_biorubber), 0.1F);
 
+		GameRegistry.addSmelting(ModItems.bean_raw, new ItemStack(ModItems.bean_roast), 1.0F);
+
 		GameRegistry.addSmelting(DictFrame.fromOne(ModItems.arc_electrode_burnt, EnumElectrodeType.GRAPHITE), new ItemStack(ModItems.ingot_graphite), 3.0F);
 		GameRegistry.addSmelting(DictFrame.fromOne(ModItems.arc_electrode_burnt, EnumElectrodeType.LANTHANIUM), new ItemStack(ModItems.ingot_lanthanium), 3.0F);
 		GameRegistry.addSmelting(DictFrame.fromOne(ModItems.arc_electrode_burnt, EnumElectrodeType.DESH), new ItemStack(ModItems.ingot_desh), 3.0F);
@@ -119,6 +123,7 @@ public class SmeltingRecipes {
 		GameRegistry.addSmelting(ModItems.rag_damp, new ItemStack(ModItems.rag), 0.1F);
 		GameRegistry.addSmelting(ModItems.rag_piss, new ItemStack(ModItems.rag), 0.1F);
 		GameRegistry.addSmelting(DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.TOBACCO), DictFrame.fromOne(ModItems.plant_item, EnumPlantType.TOBACCO), 0.1F);
+		GameRegistry.addSmelting(ModItems.flesh_wafer, new ItemStack(ModItems.grilled_flesh), 1.0F);
 		GameRegistry.addSmelting(ModItems.ball_fireclay, new ItemStack(ModItems.ingot_firebrick), 0.1F);
 
 		//GameRegistry.addSmelting(Items.bone, new ItemStack(Items.slime_ball, 3), 0.0F);

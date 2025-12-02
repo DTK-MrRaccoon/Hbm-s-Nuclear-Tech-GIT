@@ -83,6 +83,10 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("chem.ethanol").setupNamed(50, 100).setIcon(ModItems.canister_full, Fluids.ETHANOL.getID())
 				.inputItems(new ComparableStack(Items.sugar, 10))
 				.outputFluids(new FluidStack(Fluids.ETHANOL, 1000)));
+
+		this.register(new GenericRecipe("chem.methanol").setupNamed(50, 100).setIcon(ModItems.canister_full, Fluids.METHANOL.getID())
+				.inputItems(new ComparableStack(Items.sugar, 10))
+				.outputFluids(new FluidStack(Fluids.METHANOL, 4000)));
 		
 		this.register(new GenericRecipe("chem.biogas").setupNamed(60, 100).setIcon(ModItems.gas_full, Fluids.BIOGAS.getID())
 				.inputItems(new ComparableStack(ModItems.biomass, 16))
@@ -353,6 +357,76 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.PEROXIDE, 1_000, 5))
 				.outputFluids(new FluidStack(Fluids.DEATH, 1_000, 0)));
 		
+		/// NEW STUFF ///
+		this.register(new GenericRecipe("chem.coppersulf").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.COPPERSULFATE.getID())
+				.inputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 500))
+				.outputItems(new ItemStack(ModItems.powder_copper, 2))
+				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
+
+		this.register(new GenericRecipe("chem.sodiumhydroxide").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.SODIUM_HYDROXIDE.getID())
+				.inputItems(new ComparableStack(ModItems.powder_sodium, 4))
+				.inputFluids(new FluidStack(Fluids.WATER, 1000))
+				.outputFluids(new FluidStack(Fluids.SODIUM_HYDROXIDE, 1000)));
+
+		this.register(new GenericRecipe("chem.hydrazine").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.HYDRAZINE.getID())
+				.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 2_000), new FluidStack(Fluids.AMMONIA, 1_000))
+				.outputFluids(new FluidStack(Fluids.HYDRAZINE, 800)));
+
+		this.register(new GenericRecipe("chem.ammonia").setup(50, 100)
+				.inputFluids(new FluidStack(Fluids.NITROGEN, 600), new FluidStack(Fluids.WATER, 1_000))
+				.outputFluids(new FluidStack(Fluids.AMMONIA, 800)));
+
+		this.register(new GenericRecipe("chem.nitricacidalt").setupNamed(50, 1_000)
+				.inputFluids(new FluidStack(Fluids.WATER, 500), new FluidStack(Fluids.AMMONIA, 1000))
+				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
+
+		this.register(new GenericRecipe("chem.bloodfuel").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.BLOODGAS.getID())
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 350), new FluidStack(Fluids.BLOOD, 800))
+				.outputFluids(new FluidStack(Fluids.BLOODGAS, 1000)));
+
+		this.register(new GenericRecipe("chem.ammoniumnitrate").setup(250, 1_000)
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 500), new FluidStack(Fluids.NITROGEN, 1000))
+				.outputItems(new ItemStack(ModItems.ammonium_nitrate, 4)));
+
+		this.register(new GenericRecipe("chem.soil").setup(100, 1_000)
+				.inputFluids(new FluidStack(Fluids.WATER, 4000))
+				.inputItems(new ComparableStack(ModItems.ammonium_nitrate, 1), new ComparableStack(Blocks.gravel, 8))
+				.outputItems(new ItemStack(Blocks.dirt, 8)));
+		
+		/// COOKING ///
+		this.register(new GenericRecipe("chem.masscake").setup(200,250)
+				.inputFluids(new FluidStack(Fluids.CMILK, 4000), new FluidStack(Fluids.CREAM, 1000)) // why not regular milk? well its because the refined products allow for higher mass cakes while still needing less milk
+				.inputItems(
+						new ComparableStack(Items.sugar, 8),				// if there is a hole in my logic i will shoot myself
+						new ComparableStack(Items.egg, 4))				//ex: since a cake needs 3 buckets of milk, c-milk is more dense, leading to it being only 4 buckets of condensed milk, thats 1 bucket per cake.
+				.outputItems(new ItemStack(Items.cake, 4)));
+		
+		this.register(new GenericRecipe("chem.butter").setup(100, 250)
+				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
+				.outputItems(new ItemStack(ModItems.butter)));
+		
+		this.register(new GenericRecipe("chem.strawberryicecream").setup(150, 250)
+				.inputFluids(new FluidStack(Fluids.CREAM, 1000))
+				.inputItems(new ComparableStack(ModItems.butter, 2), new ComparableStack(Blocks.packed_ice, 1), new ComparableStack(ModItems.strawberry, 4))
+				.outputItems(new ItemStack(ModItems.s_cream, 4)));
+
+		this.register(new GenericRecipe("chem.cheese").setup(100, 250)
+				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
+				.outputItems(new ItemStack(ModItems.cheese, 4)));
+
+		this.register(new GenericRecipe("chem.cannedcheese").setup(100, 250)
+				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4), new ComparableStack(ModItems.cheese, 2))
+				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 4)));
+
+		this.register(new GenericRecipe("chem.cannedemilk").setup(100, 250)
+				.inputFluids(new FluidStack(Fluids.EMILK, 750))
+				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
+				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 6)));
+
+		this.register(new GenericRecipe("chem.cannedyogurt").setup(100, 250)
+				.inputFluids(new FluidStack(Fluids.EMILK, 500))
+				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
+				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 15)));
 	}
 	
 	public static HashMap getRecipes() {

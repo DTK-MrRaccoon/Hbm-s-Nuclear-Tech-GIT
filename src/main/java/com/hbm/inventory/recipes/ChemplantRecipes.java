@@ -377,17 +377,60 @@ public class ChemplantRecipes extends SerializableRecipe {
 						new ItemStack(ModItems.nugget_u233, 1),
 						new ItemStack(ModItems.nuclear_waste_tiny, 1)));
 
-		recipes.add(new ChemRecipe(103, "MEAT_PROCESSING", 200)
-				.inputItems(new OreDictStack(KEY_GLYPHID_MEAT, 3))
-				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 1000))
-				.outputItems(new ItemStack(ModItems.sulfur, 4),
-						new ItemStack(ModItems.niter, 3))
-				.outputFluids(new FluidStack(Fluids.SALIENT, 250)));
+		recipes.add(new ChemRecipe(103, "MASS_CAKE", 30)
+				.inputFluids(new FluidStack(Fluids.CMILK, 4000), new FluidStack(Fluids.CREAM, 1000)) // why not regular milk? well its because the refined products allow for higher mass cakes while still needing less milk
+				.inputItems(
+						new ComparableStack(Items.sugar, 8),				// if there is a hole in my logic i will shoot myself
+						new ComparableStack(Items.egg, 4))				//ex: since a cake needs 3 buckets of milk, c-milk is more dense, leading to it being only 4 buckets of condensed milk, thats 1 bucket per cake.
+				.outputItems(
+						new ItemStack(Items.cake, 4)));
 
-		recipes.add(new ChemRecipe(104, "RUSTY_DECO_STEEL", 100)
+		recipes.add(new ChemRecipe(104, "BUTTER", 50)
+				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
+				.outputItems(
+						new ItemStack(ModItems.butter)));
+		recipes.add(new ChemRecipe(105, "STRAWICE", 50)
+				.inputFluids(new FluidStack(Fluids.CREAM, 1000))
+				.inputItems(
+						new ComparableStack(ModItems.butter, 2),
+						new ComparableStack(Blocks.packed_ice, 1),
+						new ComparableStack(ModItems.strawberry, 4))
+				.outputItems(
+						new ItemStack(ModItems.s_cream, 4)));
+
+		recipes.add(new ChemRecipe(106, "RUSTY_DECO_STEEL", 100)
 			.inputItems(new ComparableStack(ModBlocks.deco_steel, 8))
 			.inputFluids(new FluidStack(Fluids.WATER, 1000))
 			.outputItems(new ItemStack(ModBlocks.deco_rusty_steel, 8)));
+
+		// new things
+
+		recipes.add(new ChemRecipe(107, "NITROACID", 100)
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 1000), new FluidStack(Fluids.WATER, 500))
+				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1000)));
+		recipes.add(new ChemRecipe(108, "HYDRAZINE", 250)
+				.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 2000), new FluidStack(Fluids.AMMONIA, 1000))
+				.outputFluids(new FluidStack(Fluids.HYDRAZINE, 800)));
+		recipes.add(new ChemRecipe(109, "AMONGUS", 250)
+				.inputFluids(new FluidStack(Fluids.NITROGEN, 600), new FluidStack(Fluids.WATER, 1000))
+				.outputFluids(new FluidStack(Fluids.AMMONIA, 800)));
+		recipes.add(new ChemRecipe(110, "BLOODFUEL", 250)
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 350), new FluidStack(Fluids.BLOOD, 800))
+				.outputFluids(new FluidStack(Fluids.BLOODGAS, 1000)));
+		recipes.add(new ChemRecipe(111, "AMMONIUM", 250)
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 500), new FluidStack(Fluids.NITROGEN, 1000))
+				.outputItems(new ItemStack(ModItems.ammonium_nitrate, 4)));
+
+		recipes.add(new ChemRecipe(112, "SOIL", 100)
+				.inputFluids(new FluidStack(Fluids.WATER, 4000))
+				.inputItems(
+						new ComparableStack(ModItems.ammonium_nitrate, 1),
+						new ComparableStack(Blocks.gravel, 8))
+				.outputItems(new ItemStack(Blocks.dirt, 8)));
+
+		recipes.add(new ChemRecipe(113, "METHANOL", 50)
+				.inputItems(new ComparableStack(Items.sugar, 10))
+				.outputFluids(new FluidStack(Fluids.METHANOL, 4000)));
 	}
 
 	public static void registerOtherOil() {

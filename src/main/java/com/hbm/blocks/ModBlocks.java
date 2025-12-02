@@ -505,6 +505,10 @@ public class ModBlocks {
 		@Override public int getMaterialMobility() { return 1; }
 	};
 
+	public static Block crop_strawberry;
+	public static Block crop_coffee;
+	public static Block crop_tea;
+
 	public static Block waste_earth;
 	public static Block waste_mycelium;
 	public static Block waste_trinitite;
@@ -1001,6 +1005,11 @@ public class ModBlocks {
 	public static Block machine_coker;
 	public static Block machine_pyrooven;
 
+	public static Block machine_cryo_distill;
+	public static Block machine_alkylation;
+	public static Block machine_milk_reformer;
+	public static Block hydrobay;
+
 	public static Block machine_boiler_off;
 
 	public static Block machine_steam_engine;
@@ -1276,6 +1285,8 @@ public class ModBlocks {
 
 	public static Block dummy_block_reactor_small;
 	public static Block dummy_port_reactor_small;
+
+	public static Block dummy_beam;
 
 	public static Block ntm_dirt;
 
@@ -1744,6 +1755,10 @@ public class ModBlocks {
 		plant_dead = new BlockDeadPlant().setBlockName("plant_dead").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeGrass).setHardness(0.0F);
 		reeds = new BlockReeds().setBlockName("plant_reeds").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeGrass).setHardness(0.0F);
 		vine_phosphor = new BlockHangingVine(thick_foliage).setBlockName("vine_phosphor").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeGrass).setHardness(0.5F);
+
+		crop_strawberry = new BlockCrop(Blocks.farmland, true).setBlockName("crop_strawberry").setStepSound(Block.soundTypeGrass).setHardness(0.0F).setBlockTextureName(RefStrings.MODID + ":strawberry");
+		crop_coffee = new BlockCrop(Blocks.farmland, true).setBlockName("crop_coffee").setStepSound(Block.soundTypeGrass).setHardness(0.0F).setBlockTextureName(RefStrings.MODID + ":coffee");
+		crop_tea = new BlockCrop(Blocks.farmland, true).setBlockName("crop_tea").setStepSound(Block.soundTypeGrass).setHardness(0.0F).setBlockTextureName(RefStrings.MODID + ":tea");
 
 		waste_earth = new WasteEarth(Material.ground, true).setBlockName("waste_earth").setStepSound(Block.soundTypeGrass).setCreativeTab(MainRegistry.blockTab).setHardness(0.6F).setBlockTextureName(RefStrings.MODID + ":waste_earth");
 		waste_mycelium = new WasteEarth(Material.ground, true).setBlockName("waste_mycelium").setStepSound(Block.soundTypeGrass).setLightLevel(1F).setCreativeTab(MainRegistry.blockTab).setHardness(0.6F).setBlockTextureName(RefStrings.MODID + ":waste_mycelium_side");
@@ -2296,6 +2311,10 @@ public class ModBlocks {
 		machine_hydrotreater = new MachineHydrotreater(Material.iron).setBlockName("machine_hydrotreater").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_coker = new MachineCoker(Material.iron).setBlockName("machine_coker").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_pyrooven = new MachinePyroOven(Material.iron).setBlockName("machine_pyrooven").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		machine_cryo_distill = new MachineCryoDistill(Material.iron).setBlockName("machine_cryo_distill").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		machine_alkylation = new MachineAlkylation(Material.iron).setBlockName("machine_alkylation").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel_machine");
+		machine_milk_reformer = new MachineMilkReformer(Material.iron).setBlockName("machine_milk_reformer").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		hydrobay = new MachineHydroponic(Material.iron).setBlockName("hydrobay").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel_machine");
 		machine_autosaw = new MachineAutosaw().setBlockName("machine_autosaw").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_drill = new MachineMiningDrill(Material.iron).setBlockName("machine_drill").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":auto_machine_drill_legacy");
 		drill_pipe = new BlockNoDrop(Material.iron).setBlockName("drill_pipe").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":auto_drill_pipe_legacy");
@@ -2473,8 +2492,11 @@ public class ModBlocks {
 
 		dummy_block_drill = new DummyBlockDrill(Material.iron, false).setBlockName("dummy_block_drill").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_lead");
 		dummy_port_drill = new DummyBlockDrill(Material.iron, true).setBlockName("dummy_port_drill").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_lead");
+
 		dummy_block_reactor_small = new DummyBlockMachine(Material.iron, machine_reactor_small, false).setBlockName("dummy_block_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		dummy_port_reactor_small = new DummyBlockMachine(Material.iron, machine_reactor_small, true).setBlockName("dummy_port_reactor_small").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":block_steel");
+
+		dummy_beam = new BlockDummyableBeam(Material.iron).setBlockName("dummy_beam").setHardness(10.0F).setResistance(20.0F).setBlockTextureName(RefStrings.MODID + ":block_steel_machine");
 
 		ntm_dirt = new BlockNTMDirt().setBlockName("ntm_dirt").setHardness(0.5F).setStepSound(Block.soundTypeGravel).setCreativeTab(null).setBlockTextureName("dirt");
 
@@ -2955,6 +2977,9 @@ public class ModBlocks {
 		register(plant_dead);
 		register(reeds);
 		register(vine_phosphor);
+		register(crop_strawberry);
+		register(crop_coffee);
+		register(crop_tea);
 		GameRegistry.registerBlock(mush, mush.getUnlocalizedName());
 		GameRegistry.registerBlock(mush_block, mush_block.getUnlocalizedName());
 		GameRegistry.registerBlock(mush_block_stem, mush_block_stem.getUnlocalizedName());
@@ -3445,6 +3470,10 @@ public class ModBlocks {
 		register(machine_coker);
 		register(machine_drill);
 		register(machine_pyrooven);
+		register(machine_cryo_distill);
+		GameRegistry.registerBlock(machine_alkylation, machine_alkylation.getUnlocalizedName());
+		register(machine_milk_reformer);
+		register(hydrobay);
 		register(machine_autosaw);
 		register(machine_excavator);
 		register(machine_ore_slopper);
@@ -3645,8 +3674,11 @@ public class ModBlocks {
 
 		GameRegistry.registerBlock(dummy_block_drill, dummy_block_drill.getUnlocalizedName());
 		GameRegistry.registerBlock(dummy_port_drill, dummy_port_drill.getUnlocalizedName());
+
 		GameRegistry.registerBlock(dummy_block_reactor_small, dummy_block_reactor_small.getUnlocalizedName());
 		GameRegistry.registerBlock(dummy_port_reactor_small, dummy_port_reactor_small.getUnlocalizedName());
+
+		register(dummy_beam);
 
 		//Other Technical Blocks
 		GameRegistry.registerBlock(oil_pipe, oil_pipe.getUnlocalizedName());

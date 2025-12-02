@@ -15,6 +15,7 @@ import com.hbm.util.ContaminationUtil.HazardType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.EnumAction;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -34,6 +35,7 @@ public class ItemEnergy extends Item {
 		this.setCreativeTab(MainRegistry.consumableTab);
 	}
 	
+	
 	public ItemEnergy makeCan() {
 		this.container = ModItems.can_empty;
 		this.cap = ModItems.ring_pull;
@@ -41,13 +43,18 @@ public class ItemEnergy extends Item {
 		this.setContainerItem(this.container);
 		return this;
 	}
-	
+	 
 	public ItemEnergy makeBottle(Item bottle, Item cap) {
 		this.container = bottle;
 		this.cap = cap;
 		this.requiresOpener = true;
 		this.setContainerItem(this.container);
 		this.setCreativeTab(MainRegistry.consumableTab);
+		return this;
+	}
+	
+	public ItemEnergy makeGlass() {
+		this.requiresOpener = false;
 		return this;
 	}
 
@@ -97,6 +104,8 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(Potion.resistance.id, 30 * 20, 2));
 				player.addPotionEffect(new PotionEffect(Potion.damageBoost.id, 30 * 20, 1));
 				player.addPotionEffect(new PotionEffect(Potion.regeneration.id, 30 * 20, 2));
+				System.out.println(this.container);
+
 			}
 			if(this == ModItems.can_bepis) {
 				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 30 * 20, 3));
@@ -123,6 +132,19 @@ public class ItemEnergy extends Item {
 				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 30 * 20, 0));
 				player.addPotionEffect(new PotionEffect(Potion.jump.id, 30 * 20, 2));
 				ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
+			}
+			if(this == ModItems.glass_smilk) {
+				player.heal(6F); //ideas welcome pls thanks
+				this.setContainerItem(ModItems.glass_empty);
+				this.container = ModItems.glass_empty;
+				//System.out.println(this.container);
+			}
+			if(this == ModItems.teacup) {
+				player.heal(3F); 				
+				player.addPotionEffect(new PotionEffect(Potion.resistance.id, 30 * 20, 4));
+
+				this.setContainerItem(ModItems.teacup_empty);
+				this.container = ModItems.teacup_empty;
 			}
 			if(this == ModItems.bottle_quantum) {
 				player.heal(10F);
@@ -163,6 +185,9 @@ public class ItemEnergy extends Item {
 			if(this == ModItems.coffee) {
 				player.heal(10);
 				player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 60 * 20, 2));
+				this.setContainerItem(ModItems.cmug_empty);
+				this.container = ModItems.cmug_empty;
+				System.out.println(this.container);
 			}
 			if(this == ModItems.coffee_radium) {
 				player.heal(10);

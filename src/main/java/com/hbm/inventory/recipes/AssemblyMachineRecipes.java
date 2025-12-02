@@ -279,6 +279,14 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.pyrooven").setup(300, 100).outputItems(new ItemStack(ModBlocks.machine_pyrooven, 1))
 				.inputItems(new OreDictStack(STEEL.plateWelded(), 16), new OreDictStack(ANY_HARDPLASTIC.ingot(), 16), new ComparableStack(ModItems.ingot_cft, 4), new OreDictStack(CU.pipe(), 12), new ComparableStack(ModItems.motor_desh, 1), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.BISMOID))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 6, EnumExpensiveType.BRONZE_TUBES), new OreDictStack(ANY_HARDPLASTIC.ingot(), 32), new ComparableStack(ModItems.ingot_cft, 4), new ComparableStack(ModItems.motor_bismuth, 4), new ComparableStack(ModItems.circuit, 4, EnumCircuitType.BISMOID), new ComparableStack(ModItems.item_expensive, 2, EnumExpensiveType.COMPUTER)));
+		this.register(new GenericRecipe("ass.milkreformer").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_milk_reformer, 1))
+				.inputItems(new OreDictStack(STEEL.plateCast(), 14), new OreDictStack(STEEL.ingot(), 2), new ComparableStack(ModItems.motor, 2), new OreDictStack(STEEL.pipe(), 8)));
+		this.register(new GenericRecipe("ass.hydrobay").setup(400, 100).outputItems(new ItemStack(ModBlocks.hydrobay, 1))
+				.inputItems( new OreDictStack(STEEL.plate(), 16), new OreDictStack(Fluids.WATER.getDict(16_000)), new OreDictStack(STEEL.pipe(), 6), new OreDictStack(KEY_CLEARGLASS, 8), new ComparableStack(Blocks.dirt, 8), new OreDictStack(ANY_PLASTIC.ingot(), 2)));
+		this.register(new GenericRecipe("ass.alkylation").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_alkylation))
+				.inputItems( new OreDictStack(ANY_CONCRETE.any(), 12), new OreDictStack(STEEL.plate(), 12), new OreDictStack(STEEL.shell(), 6), new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CAPACITOR), new ComparableStack(ModItems.catalyst_clay, 12), new ComparableStack(ModItems.coil_tungsten, 4)));
+		this.register(new GenericRecipe("ass.cryodistil").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_cryo_distill))
+				.inputItems(new OreDictStack(STEEL.plateCast(), 2), new OreDictStack(ANY_CONCRETE.any(), 4), new OreDictStack(STEEL.plate(), 12), new OreDictStack(ANY_PLASTIC.ingot(), 4), new ComparableStack(ModBlocks.machine_battery, 1), new ComparableStack(ModItems.coil_copper, 4)));
 		this.register(new GenericRecipe("ass.liquefactor").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_liquefactor, 1))
 				.inputItems(new OreDictStack(STEEL.shell(), 4), new OreDictStack(CU.plate528(), 12), new OreDictStack(ANY_TAR.any(), 4), new ComparableStack(ModItems.circuit, 12, EnumCircuitType.CAPACITOR), new ComparableStack(ModItems.coil_tungsten, 8))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 1, EnumExpensiveType.HEAVY_FRAME), new OreDictStack(ANY_TAR.any(), 16), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CAPACITOR)));

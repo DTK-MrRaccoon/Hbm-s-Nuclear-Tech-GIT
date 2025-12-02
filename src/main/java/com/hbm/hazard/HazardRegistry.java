@@ -161,6 +161,8 @@ public class HazardRegistry {
 		HazardSystem.register(Blocks.tnt, makeData(EXPLOSIVE, 4F));
 		HazardSystem.register(Items.pumpkin_pie, makeData(EXPLOSIVE, 1F));
 		
+		HazardSystem.register(ModItems.ammonium_nitrate, makeData(EXPLOSIVE, 4F));
+		
 		HazardSystem.register(ball_dynamite, makeData(EXPLOSIVE, 2F));
 		HazardSystem.register(stick_dynamite, makeData(EXPLOSIVE, 1F));
 		HazardSystem.register(stick_tnt, makeData(EXPLOSIVE, 1.5F));
