@@ -70,6 +70,8 @@ public class FluidContainerRegistry {
 		FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModItems.coffee), new ItemStack(ModItems.cmug_empty), Fluids.COFFEE, 100));
 		FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModItems.teacup), new ItemStack(ModItems.teacup_empty), Fluids.TEA, 100));
 
+		FluidContainerRegistry.registerContainer(new FluidContainer(new ItemStack(ModBlocks.dry_ice), null, Fluids.CARBONDIOXIDE, 1000)); //literal block of carbon dioxide
+
 		FluidType[] fluids = Fluids.getAll();
 		for(int i = 1; i < fluids.length; i++) {
 

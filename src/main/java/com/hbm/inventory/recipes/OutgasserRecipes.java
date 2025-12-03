@@ -35,17 +35,22 @@ public class OutgasserRecipes extends SerializableRecipe {
 		recipes.put(new OreDictStack(LI.block()),		new OutgasserRecipe(null, new FluidStack(Fluids.TRITIUM, 10_000)));
 		recipes.put(new OreDictStack(LI.ingot()),		new OutgasserRecipe(null, new FluidStack(Fluids.TRITIUM, 1_000)));
 		recipes.put(new OreDictStack(LI.dust()),		new OutgasserRecipe(null, new FluidStack(Fluids.TRITIUM, 1_000)));
-		recipes.put(new OreDictStack(LI.dustTiny()),	new OutgasserRecipe(null, new FluidStack(Fluids.TRITIUM, 100)));
+		recipes.put(new OreDictStack(LI.dustTiny()),		new OutgasserRecipe(null, new FluidStack(Fluids.TRITIUM, 100)));
 
 		/* gold to gold-198 */
 		recipes.put(new OreDictStack(GOLD.ingot()),		new OutgasserRecipe(new ItemStack(ModItems.ingot_au198), null));
-		recipes.put(new OreDictStack(GOLD.nugget()),	new OutgasserRecipe(new ItemStack(ModItems.nugget_au198), null));
+		recipes.put(new OreDictStack(GOLD.nugget()),		new OutgasserRecipe(new ItemStack(ModItems.nugget_au198), null));
 		recipes.put(new OreDictStack(GOLD.dust()),		new OutgasserRecipe(new ItemStack(ModItems.powder_au198), null));
 
 		/* thorium to thorium fuel */
 		recipes.put(new OreDictStack(TH232.ingot()),	new OutgasserRecipe(new ItemStack(ModItems.ingot_thorium_fuel), null));
 		recipes.put(new OreDictStack(TH232.nugget()),	new OutgasserRecipe(new ItemStack(ModItems.nugget_thorium_fuel), null));
 		recipes.put(new OreDictStack(TH232.billet()),	new OutgasserRecipe(new ItemStack(ModItems.billet_thorium_fuel), null));
+
+		/* uranium to plutonium */
+		recipes.put(new OreDictStack(U.ingot()),	new OutgasserRecipe(new ItemStack(ModItems.ingot_plutonium), null));
+		recipes.put(new OreDictStack(U.nugget()),	new OutgasserRecipe(new ItemStack(ModItems.nugget_plutonium), null));
+		recipes.put(new OreDictStack(U.billet()),	new OutgasserRecipe(new ItemStack(ModItems.billet_plutonium), null));
 
 		/* mushrooms to glowing mushrooms */
 		recipes.put(new ComparableStack(Blocks.brown_mushroom),	new OutgasserRecipe(new ItemStack(ModBlocks.mush), null));

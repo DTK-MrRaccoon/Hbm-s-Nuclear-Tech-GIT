@@ -77,8 +77,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.plateweaponsteel").setup(60, 100).outputItems(new ItemStack(ModItems.plate_weaponsteel, 1)).inputItems(new OreDictStack(WEAPONSTEEL.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
 		this.register(new GenericRecipe("ass.platesaturnite").setup(60, 100).outputItems(new ItemStack(ModItems.plate_saturnite, 1)).inputItems(new OreDictStack(BIGMT.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
 		this.register(new GenericRecipe("ass.platedura").setup(60, 100).outputItems(new ItemStack(ModItems.plate_dura_steel, 1)).inputItems(new OreDictStack(DURA.ingot())).setPools(GenericRecipes.POOL_PREFIX_ALT + "plates").setGroup(autoPlate, this));
-		this.register(new GenericRecipe("ass.platemixed").setup(50, 100).outputItems(new ItemStack(ModItems.plate_mixed, 4))
-				.inputItems(new OreDictStack(ALLOY.plate(), 2), new OreDictStack(OreDictManager.getReflector(), 1), new OreDictStack(BIGMT.plate(), 1)));
+		this.register(new GenericRecipe("ass.platemixed").setup(50, 100).outputItems(new ItemStack(ModItems.plate_mixed, 4)).inputItems(new OreDictStack(ALLOY.plate(), 2), new OreDictStack(OreDictManager.getReflector(), 1), new OreDictStack(BIGMT.plate(), 1)));
 		this.register(new GenericRecipe("ass.dalekanium").setup(200, 100).outputItems(new ItemStack(ModItems.plate_dalekanium, 1))
 				.inputItems(new ComparableStack(ModBlocks.block_meteor, 1)));
 		this.register(new GenericRecipe("ass.platedesh").setup(200, 100).outputItems(new ItemStack(ModItems.plate_desh, 4))
@@ -111,6 +110,11 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new ComparableStack(ModItems.item_expensive, 3, EnumExpensiveType.HEAVY_FRAME), new ComparableStack(ModItems.item_expensive, 1, EnumExpensiveType.FERRO_PLATING), new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 4), new OreDictStack(ZR.plateWelded(), 1))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 4_000))
 				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 4_000)));
+
+		this.register(new GenericRecipe("ass.tritiumblock").setup(3000, 100).outputItems(new ItemStack(ModBlocks.block_tritium, 1))
+				.inputItems(new ComparableStack(ModItems.cell_tritium, 16)));
+		this.register(new GenericRecipe("ass.tritiumblockdis").setup(3000, 100).outputItems(new ItemStack(ModItems.cell_tritium, 16))
+				.inputItems(new ComparableStack(ModBlocks.block_tritium, 1)));
 
 		// cloth
 		this.register(new GenericRecipe("ass.hazcloth").setup(50, 100).outputItems(new ItemStack(ModItems.hazmat_cloth, 4))

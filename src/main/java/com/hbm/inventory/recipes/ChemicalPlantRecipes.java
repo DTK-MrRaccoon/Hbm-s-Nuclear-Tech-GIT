@@ -45,6 +45,10 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.WATER, 8_000))
 				.outputFluids(new FluidStack(Fluids.HYDROGEN, 500)));
 		
+		this.register(new GenericRecipe("chem.hydrogenoxygen").setupNamed(200, 4000).setIcon(ModItems.gas_full, Fluids.HYDROGEN.getID())
+				.inputFluids(new FluidStack(Fluids.WATER, 16_000), new FluidStack(Fluids.AIR, 24_000))
+				.outputFluids(new FluidStack(Fluids.HYDROGEN, 750), new FluidStack(Fluids.OXYGEN, 500)));
+		
 		this.register(new GenericRecipe("chem.hydrogencoke").setupNamed(20, 400).setIcon(ModItems.gas_full, Fluids.HYDROGEN.getID())
 				.inputItems(new OreDictStack(ANY_COKE.gem(), 1))
 				.inputFluids(new FluidStack(Fluids.WATER, 8_000))
@@ -75,6 +79,11 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.PETROLEUM, 1_000), new FluidStack(Fluids.UNSATURATEDS, 500))
 				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 1_000)));
 		
+		this.register(new GenericRecipe("chem.coppersulf").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.COPPERSULFATE.getID())
+				.inputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 500))
+				.outputItems(new ItemStack(ModItems.powder_copper, 2))
+				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
+		
 		this.register(new GenericRecipe("chem.cccentrifuge").setup(200, 100)
 				.inputFluids(new FluidStack(Fluids.CHLOROCALCITE_CLEANED, 500), new FluidStack(Fluids.SULFURIC_ACID, 8_000))
 				.outputFluids(new FluidStack(Fluids.POTASSIUM_CHLORIDE, 250), new FluidStack(Fluids.CALCIUM_CHLORIDE, 250)));
@@ -96,6 +105,14 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("chem.biofuel").setupNamed(60, 100).setIcon(ModItems.canister_full, Fluids.BIOFUEL.getID())
 				.inputFluids(new FluidStack(Fluids.BIOGAS, 1_500), new FluidStack(Fluids.ETHANOL, 250))
 				.outputFluids(new FluidStack(Fluids.BIOFUEL, 1_000)));
+		
+		this.register(new GenericRecipe("chem.bloodfuel").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.BLOODGAS.getID())
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 350), new FluidStack(Fluids.BLOOD, 800))
+				.outputFluids(new FluidStack(Fluids.BLOODGAS, 1000)));
+		
+		this.register(new GenericRecipe("chem.hydrazine").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.HYDRAZINE.getID())
+				.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 2_000), new FluidStack(Fluids.AMMONIA, 1_000))
+				.outputFluids(new FluidStack(Fluids.HYDRAZINE, 800)));
 		
 		this.register(new GenericRecipe("chem.reoil").setupNamed(40, 100).setIcon(ModItems.canister_full, Fluids.RECLAIMED.getID())
 				.inputFluids(new FluidStack(Fluids.SMEAR, 1_000))
@@ -190,6 +207,15 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.UNSATURATEDS, 250, GeneralConfig.enable528 ? 2 : 0), new FluidStack(Fluids.CHLORINE, 250, GeneralConfig.enable528 ? 2 : 0))
 				.outputItems(new ItemStack(ModItems.ingot_pvc, 2)));
 		
+		this.register(new GenericRecipe("chem.ammoniumnitrate").setup(250, 1_000)
+				.inputFluids(new FluidStack(Fluids.AMMONIA, 500), new FluidStack(Fluids.NITROGEN, 1000))
+				.outputItems(new ItemStack(ModItems.ammonium_nitrate, 4)));
+		
+		this.register(new GenericRecipe("chem.soil").setup(100, 1_000)
+				.inputFluids(new FluidStack(Fluids.WATER, 4000))
+				.inputItems(new ComparableStack(ModItems.ammonium_nitrate, 1), new ComparableStack(Blocks.gravel, 8))
+				.outputItems(new ItemStack(Blocks.dirt, 8)));
+		
 		this.register(new GenericRecipe("chem.kevlar").setup(60, 300)
 				.inputFluids(new FluidStack(Fluids.AROMATICS, 200), new FluidStack(Fluids.NITRIC_ACID, 100), new FluidStack(GeneralConfig.enable528 ? Fluids.PHOSGENE : Fluids.CHLORINE, 100))
 				.outputItems(new ItemStack(ModItems.plate_kevlar, 4)));
@@ -233,6 +259,10 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.outputItems(new ItemStack(ModItems.arc_electrode, 1)).setPools(GenericRecipes.POOL_PREFIX_ALT + ".electrodes"));
 
 		/// ACIDS ///
+		this.register(new GenericRecipe("chem.ammonia").setup(50, 100)
+				.inputFluids(new FluidStack(Fluids.NITROGEN, 600), new FluidStack(Fluids.WATER, 1_000))
+				.outputFluids(new FluidStack(Fluids.AMMONIA, 800)));
+		
 		this.register(new GenericRecipe("chem.peroxide").setup(50, 100)
 				.inputFluids(new FluidStack(Fluids.WATER, 1_000))
 				.outputFluids(new FluidStack(Fluids.PEROXIDE, 1_000)));
@@ -242,9 +272,18 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.PEROXIDE, 1_000), new FluidStack(Fluids.WATER, 1_000))
 				.outputFluids(new FluidStack(Fluids.SULFURIC_ACID, 2_000)));
 		
+		this.register(new GenericRecipe("chem.sodiumhydroxide").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.SODIUM_HYDROXIDE.getID())
+				.inputItems(new ComparableStack(ModItems.powder_sodium, 4))
+				.inputFluids(new FluidStack(Fluids.WATER, 1000))
+				.outputFluids(new FluidStack(Fluids.SODIUM_HYDROXIDE, 1000)));
+		
 		this.register(new GenericRecipe("chem.nitricacid").setup(50, 100)
 				.inputItems(new OreDictStack(KNO.dust()))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 500))
+				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
+		
+		this.register(new GenericRecipe("chem.nitricacidalt").setupNamed(50, 1_000)
+				.inputFluids(new FluidStack(Fluids.WATER, 500), new FluidStack(Fluids.AMMONIA, 1000))
 				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
 		
 		this.register(new GenericRecipe("chem.birkeland").setupNamed(200, 5_000)
@@ -356,42 +395,6 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new ComparableStack(ModItems.powder_paleogenite), new OreDictStack(F.dust(), 8), new ComparableStack(ModItems.nugget_bismuth, 4))
 				.inputFluids(new FluidStack(Fluids.PEROXIDE, 1_000, 5))
 				.outputFluids(new FluidStack(Fluids.DEATH, 1_000, 0)));
-		
-		/// NEW STUFF ///
-		this.register(new GenericRecipe("chem.coppersulf").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.COPPERSULFATE.getID())
-				.inputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 500))
-				.outputItems(new ItemStack(ModItems.powder_copper, 2))
-				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
-
-		this.register(new GenericRecipe("chem.sodiumhydroxide").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.SODIUM_HYDROXIDE.getID())
-				.inputItems(new ComparableStack(ModItems.powder_sodium, 4))
-				.inputFluids(new FluidStack(Fluids.WATER, 1000))
-				.outputFluids(new FluidStack(Fluids.SODIUM_HYDROXIDE, 1000)));
-
-		this.register(new GenericRecipe("chem.hydrazine").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.HYDRAZINE.getID())
-				.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 2_000), new FluidStack(Fluids.AMMONIA, 1_000))
-				.outputFluids(new FluidStack(Fluids.HYDRAZINE, 800)));
-
-		this.register(new GenericRecipe("chem.ammonia").setup(50, 100)
-				.inputFluids(new FluidStack(Fluids.NITROGEN, 600), new FluidStack(Fluids.WATER, 1_000))
-				.outputFluids(new FluidStack(Fluids.AMMONIA, 800)));
-
-		this.register(new GenericRecipe("chem.nitricacidalt").setupNamed(50, 1_000)
-				.inputFluids(new FluidStack(Fluids.WATER, 500), new FluidStack(Fluids.AMMONIA, 1000))
-				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
-
-		this.register(new GenericRecipe("chem.bloodfuel").setup(250, 1_000).setIcon(ModItems.canister_full, Fluids.BLOODGAS.getID())
-				.inputFluids(new FluidStack(Fluids.AMMONIA, 350), new FluidStack(Fluids.BLOOD, 800))
-				.outputFluids(new FluidStack(Fluids.BLOODGAS, 1000)));
-
-		this.register(new GenericRecipe("chem.ammoniumnitrate").setup(250, 1_000)
-				.inputFluids(new FluidStack(Fluids.AMMONIA, 500), new FluidStack(Fluids.NITROGEN, 1000))
-				.outputItems(new ItemStack(ModItems.ammonium_nitrate, 4)));
-
-		this.register(new GenericRecipe("chem.soil").setup(100, 1_000)
-				.inputFluids(new FluidStack(Fluids.WATER, 4000))
-				.inputItems(new ComparableStack(ModItems.ammonium_nitrate, 1), new ComparableStack(Blocks.gravel, 8))
-				.outputItems(new ItemStack(Blocks.dirt, 8)));
 		
 		/// COOKING ///
 		this.register(new GenericRecipe("chem.masscake").setup(200,250)

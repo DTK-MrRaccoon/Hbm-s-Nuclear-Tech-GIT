@@ -415,6 +415,8 @@ public class ModBlocks {
 
 	public static Block moon_turf;
 
+	public static Block dry_ice;
+
 	public static Block brick_jungle;
 	public static Block brick_jungle_cracked;
 	public static Block brick_jungle_fragile;
@@ -1671,6 +1673,7 @@ public class ModBlocks {
 		meteor_spawner = new BlockCybercrab(Material.rock).setBlockName("meteor_spawner").setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(360.0F);
 		meteor_battery = new BlockPillar(Material.rock, RefStrings.MODID + ":meteor_power").setBlockName("meteor_battery").setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(360.0F).setBlockTextureName(RefStrings.MODID + ":meteor_spawner_side");
 		moon_turf = new BlockFalling(Material.sand).setBlockName("moon_turf").setStepSound(Block.soundTypeSand).setCreativeTab(MainRegistry.blockTab).setHardness(0.5F).setBlockTextureName(RefStrings.MODID + ":moon_turf");
+		dry_ice = new BlockGeneric(Material.ice).setBlockName("dry_ice").setStepSound(Block.soundTypeStone).setCreativeTab(MainRegistry.blockTab).setHardness(0.5F).setBlockTextureName(RefStrings.MODID + ":ice_dry");
 
 		brick_jungle = new BlockGeneric(Material.rock).setBlockName("brick_jungle").setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(360.0F).setBlockTextureName(RefStrings.MODID + ":brick_jungle");
 		brick_jungle_cracked = new BlockGeneric(Material.rock).setBlockName("brick_jungle_cracked").setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(360.0F).setBlockTextureName(RefStrings.MODID + ":brick_jungle_cracked");
@@ -2986,6 +2989,7 @@ public class ModBlocks {
 		register(glyphid_base);
 		register(glyphid_spawner);
 		GameRegistry.registerBlock(moon_turf, moon_turf.getUnlocalizedName());
+		GameRegistry.registerBlock(dry_ice, dry_ice.getUnlocalizedName());
 
 		//Waste
 		GameRegistry.registerBlock(waste_earth, waste_earth.getUnlocalizedName());
