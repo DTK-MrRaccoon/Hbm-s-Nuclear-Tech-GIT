@@ -617,6 +617,7 @@ chem.CC_OIL=Coal Liquefaction
 chem.CIRCUIT_4=Overclocked Circuit Production
 chem.CIRCUIT_5=High Performance Circuit Production
 chem.CO2=Carbon Dioxide Production
+chem.co2fromcoke=Carbon Dioxide Production from Coke
 chem.COALGAS_LEADED=Leaded Coal Gasoline Mixing
 chem.COLTAN_CLEANING=Coltan Purifying
 chem.COLTAN_CRYSTAL=Tantalium Crystallizing

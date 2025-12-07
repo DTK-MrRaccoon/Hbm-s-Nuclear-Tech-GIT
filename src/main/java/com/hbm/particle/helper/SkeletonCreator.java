@@ -13,9 +13,6 @@ import com.hbm.util.Vec3NT;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.EntityClientPlayerMP;
-import net.minecraft.client.entity.EntityOtherPlayerMP;
-import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -169,9 +166,9 @@ public class SkeletonCreator implements IParticleCreator {
 	};
 	
 	public static void init() {
-		skullanizer.put(EntityOtherPlayerMP.class.getSimpleName(), BONES_BIPED);
-		skullanizer.put(EntityClientPlayerMP.class.getSimpleName(), BONES_BIPED);
-		skullanizer.put(EntityPlayerSP.class.getSimpleName(), BONES_BIPED);
+		skullanizer.put("EntityOtherPlayerMP", BONES_BIPED);
+		skullanizer.put("EntityClientPlayerMP", BONES_BIPED);
+		skullanizer.put("EntityPlayerSP", BONES_BIPED);
 
 		skullanizer.put(EntityZombie.class.getSimpleName(), BONES_ZOMBIE);
 		skullanizer.put(EntitySkeleton.class.getSimpleName(), BONES_ZOMBIE);

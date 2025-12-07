@@ -70,8 +70,13 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new ComparableStack(ModBlocks.moon_turf, 1))
 				.outputFluids(new FluidStack(Fluids.HELIUM3, 125)));
 		
-		this.register(new GenericRecipe("chem.co2").setup(60, 100)
+		this.register(new GenericRecipe("chem.co2").setup(60, 1_000)
 				.inputFluids(new FluidStack(Fluids.GAS, 1_000))
+				.outputFluids(new FluidStack(Fluids.CARBONDIOXIDE, 1_000)));
+
+		this.register(new GenericRecipe("chem.co2fromcoke").setup(400, 5_000)
+				.inputItems(new OreDictStack(ANY_COKE.gem(), 1))
+				.inputFluids(new FluidStack(Fluids.WATER, 2_000), new FluidStack(Fluids.AIR, 12_000))
 				.outputFluids(new FluidStack(Fluids.CARBONDIOXIDE, 1_000)));
 		
 		this.register(new GenericRecipe("chem.perfluoromethyl").setup(20, 100)
