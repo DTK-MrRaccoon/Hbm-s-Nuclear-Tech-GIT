@@ -1,30 +1,10 @@
-## Added
-* Precision assembler
-
 ## Changed
-* New fusion reactor and particle accelerator parts now have OpenComputers compat
-* Irradiation recipe config now has the `fusionOnly` flag, preventing the recipe from being done in the RBMK irradiation channel
-* Removed legacy fusion reactor parts from the creative inventory
-* Removed the legacy fusion reactor core components
-* If a legacy fusion reactor explodes, it is now destroyed forever and cannot be reassembled
-* Legacy fusion reactors no longer disassemble when being mined, rather they drop as one block
-* Legacy templates are no longer listed in the creative tab
-* Removed the old meltdown achievement
-* Eating canned fists now hurts
-* Due to repeated incidents regarding canned black holes, the mechanics have changed
-  * Vortices spawned now have a flag set that prevents them from breaking blocks entirely
-  * Vortices decay 4x faster than those spawned by singularity items, it should last about 2.5 seconds in total
-  * It will still very much kill you instantly and destroy your items
-* Storage crates can no longer be placed into containment boxes
-* Expensive mode now has a new microcrafting item, being made from multiple types of plastic
-* Fusion reactor parts now have expensive mode recipes
-* Both types of blueprint booklets are now obtainable via precision assembler
-  * The recipes are lengthy, require a lot of power and have a low chance of succeeding
-  * Recipes require the divine pufferfish, driver of all innovation
-  * Where can you get this much pufferfish? Go figure it out
-* Chance output stacks no longer do an RNG call to determine if the whole stack is provided or none, rather, each single item of the stack has its own RNG call
+* Updated russian localization
+* Changed the recipe change button on the mixer to be bright red with arrows on it (since the "C" looked too much like it meant "clear")
+* The refinery and the vacuum refinery now have working recipe configs
+* Recipe autogen for foundry casting now deprioritizes fragments, preventing them from being casted when nuggets of that material are available
 
 ## Fixed
-* Fixed gamebreaking issue causing crashes and world corruption where the multi detonator had its tooltip misspelled
-* Fixed panzerschreck equip animation not speeding up with the sawed off mod
-* Fixed FENSU not keeping its charge when broken
+* Fixed atomic clock precision assembler recipe not working
+* Fixed ICF parts using 528 mode templates in normal mode
+* Fixed arc furnace queue slots inserting too many items, causing the output to exceed max stack size
