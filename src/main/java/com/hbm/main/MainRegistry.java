@@ -552,7 +552,6 @@ public class MainRegistry {
 		MagicRecipes.register();
 		LemegetonRecipes.register();
 		SILEXRecipes.register();
-		RefineryRecipes.registerRefinery();
 		GasCentrifugeRecipes.register();
 
 		CustomMachineConfigJSON.initialize();
@@ -1452,6 +1451,8 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:item.multitool_decon");
 		ignoreMappings.add("hbm:tile.struct_iter_core");
 		ignoreMappings.add("hbm:tile.struct_plasma_core");
+		ignoreMappings.add("hbm:tile.machine_amgen");
+		ignoreMappings.add("hbm:tile.machine_geo");
 
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);
