@@ -53,6 +53,29 @@ public class ConstructionHandler extends NEIUniversalHandler {
 		bufferedRecipes.put(watz, new ItemStack(ModBlocks.watz));
 		bufferedTools.put(watz, new ItemStack(ModBlocks.struct_watz_core));
 		
+		/* ITER */
+		ItemStack[] iter = new ItemStack[] {
+				new ItemStack(ModBlocks.fusion_conductor, 36),
+//				ItemStackUtil.addTooltipToStack(new ItemStack(ModBlocks.fusion_conductor, 256), EnumChatFormatting.RED + "4x64"),
+				new ItemStack(ModItems.plate_cast, 36, Mats.MAT_STEEL.id),
+//				ItemStackUtil.addTooltipToStack(new ItemStack(ModItems.plate_cast, 256, Mats.MAT_STEEL.id), EnumChatFormatting.RED + "4x64"),
+				new ItemStack(ModBlocks.fusion_center, 64),
+				new ItemStack(ModBlocks.fusion_motor, 4),
+				new ItemStack(ModBlocks.reinforced_glass, 8),
+				new ItemStack(ModItems.blowtorch)};
+
+		bufferedRecipes.put(iter, new ItemStack(ModBlocks.iter));
+		bufferedTools.put(iter, new ItemStack(ModBlocks.struct_iter_core));
+
+		/* PLASMA HEATER */
+		ItemStack[] heater = new ItemStack[] {
+				new ItemStack(ModBlocks.fusion_heater, 7),
+				new ItemStack(ModBlocks.fusion_heater, 64),
+				new ItemStack(ModBlocks.fusion_heater, 64) };
+
+		bufferedRecipes.put(heater, new ItemStack(ModBlocks.plasma_heater));
+		bufferedTools.put(heater, new ItemStack(ModBlocks.struct_plasma_core));
+		
 		/* COMPACT LAUNCHER */
 		ItemStack[] launcher = new ItemStack[] { new ItemStack(ModBlocks.struct_launcher, 8) };
 
