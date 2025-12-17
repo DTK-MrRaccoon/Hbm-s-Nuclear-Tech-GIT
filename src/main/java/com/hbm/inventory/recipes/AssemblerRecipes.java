@@ -1107,6 +1107,16 @@ public class AssemblerRecipes extends SerializableRecipe {
 					new ComparableStack(ModItems.circuit, 10, EnumCircuitType.CAPACITOR_BOARD),
 				}, 300);
 
+			makeRecipe(new ComparableStack(ModBlocks.hadron_core, 1), new AStack[] {
+					new ComparableStack(ModBlocks.hadron_coil_alloy, 24),
+					new OreDictStack(STEEL.ingot(), 8),
+					new OreDictStack(ANY_PLASTIC.ingot(), 16),
+					new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8),
+					new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BISMOID),
+					new ComparableStack(ModItems.circuit, 192, EnumCircuitType.CAPACITOR_BOARD),
+					new ComparableStack(ModItems.crt_display, 1),
+				}, 300);
+
 			makeRecipe(new ComparableStack(ModBlocks.struct_launcher_core, 1), new AStack[] {
 					new ComparableStack(ModBlocks.machine_battery, 3),
 					new ComparableStack(ModBlocks.steel_scaffold, 10),
