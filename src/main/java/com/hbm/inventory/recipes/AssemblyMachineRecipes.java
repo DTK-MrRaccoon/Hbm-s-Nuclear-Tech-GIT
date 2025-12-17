@@ -566,6 +566,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 1, EnumExpensiveType.LEAD_PLATING), new OreDictStack(ZR.plateWelded(), 1), new ComparableStack(ModItems.billet_ra226be, 3)));
 		
 		// fusion reactor
+
 		this.register(new GenericRecipe("ass.fusionconductor").setup(100, 100).outputItems(new ItemStack(ModBlocks.fusion_conductor, 1))
 				.inputItems(new ComparableStack(ModItems.coil_advanced_alloy, 5)));
 
