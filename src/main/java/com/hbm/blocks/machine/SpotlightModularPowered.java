@@ -37,7 +37,6 @@ public class SpotlightModularPowered extends SpotlightPowered {
     public boolean canConnectTo(IBlockAccess world, int x, int y, int z, int myX, int myY, int myZ) {
         if(world.getBlock(x, y, z) != this) return false;
         
-        // Check if both lights are mounted in the same direction (parallel)
         int myMeta = world.getBlockMetadata(myX, myY, myZ);
         int theirMeta = world.getBlockMetadata(x, y, z);
         
@@ -66,7 +65,6 @@ public class SpotlightModularPowered extends SpotlightPowered {
 				SpotlightPowered spotlight = (SpotlightPowered) block;
 				this.powerConsumption = spotlight.powerConsumption;
 
-				// PERF: do not share power with connected modulars if controller-managed
 				if(!this.isControllerManaged()) {
 					sharePowerWithConnected();
 				}
@@ -105,7 +103,6 @@ public class SpotlightModularPowered extends SpotlightPowered {
 						if(te instanceof TileEntitySpotlightModularPowered) {
 							TileEntitySpotlightModularPowered adjacent = (TileEntitySpotlightModularPowered) te;
 
-							// PERF: Prevent sharing if the adjacent is controller-managed OR this is controller-managed.
 							if(this.isControllerManaged() || adjacent.isControllerManaged()) continue;
 
 							if(adjacent.power < adjacent.maxPower && this.power > 0) {

@@ -5,6 +5,8 @@ import com.hbm.blocks.ISpotlight;
 import com.hbm.main.ResourceManager;
 import com.hbm.world.gen.nbt.INBTBlockTransformable;
 
+import api.hbm.block.IToolable;
+import api.hbm.block.IToolable.ToolType;
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,7 +29,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.model.obj.WavefrontObject;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class SpotlightPowered extends BlockContainer implements ISpotlight, INBTBlockTransformable {
+public class SpotlightPowered extends BlockContainer implements ISpotlight, INBTBlockTransformable, IToolable {
 
 	public int beamLength;
 	public LightType type;
@@ -74,8 +76,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		}
 	}
 
-
-
 	@Override
 	public boolean isOpaqueCube() {
 		return false;
@@ -94,7 +94,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 	@Override
 	public MapColor getMapColor(int meta) {
         return MapColor.airColor;
-    }
+        }
 
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World p_149668_1_, int p_149668_2_, int p_149668_3_, int p_149668_4_) {
@@ -137,7 +137,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
 		if(world.isRemote) return;
-		// Only create beam if this is an "on" variant
 		if(isOn) {
 			updateBeam(world, x, y, z);
 		}
@@ -151,6 +150,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		if(world.isRemote) return;
 
 		Spotlight.unpropagateBeam(world, x, y, z, dir);
+		world.func_147451_t(x, y, z);
+		world.notifyBlocksOfNeighborChange(x, y, z, this);
 	}
 
 	@Override
@@ -166,7 +167,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			return;
 		}
 
-		// Only update beam if this is an "on" variant
 		if(isOn) {
 			updateBeam(world, x, y, z);
 		}
@@ -192,7 +192,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 	private void updateBeam(World world, int x, int y, int z) {
 		if(!isOn) return;
 		
-		// Check if the tile entity has power before creating beam
 		TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TileEntitySpotlightPowered) {
 			TileEntitySpotlightPowered spotlight = (TileEntitySpotlightPowered) te;
@@ -252,15 +251,49 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		return this;
 	}
 
+	@Override
+	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, int side, float fX, float fY, float fZ, ToolType tool) {
+		if (tool != ToolType.SCREWDRIVER) return false;
+
+		if (!world.isRemote && player.isSneaking()) {
+			TileEntity te = world.getTileEntity(x, y, z);
+			if (te instanceof TileEntitySpotlightPowered) {
+				TileEntitySpotlightPowered spotlight = (TileEntitySpotlightPowered) te;
+				if (spotlight.isControllerManaged()) {
+					spotlight.clearControllerPos();
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean canConnectToWire(IBlockAccess world, int x, int y, int z, ForgeDirection dir) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(te instanceof TileEntitySpotlightPowered) {
+			return ((TileEntitySpotlightPowered) te).canConnect(dir);
+		}
+		return true;
+	}
+
+	@Override
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(te instanceof TileEntitySpotlightPowered) {
+			if(((TileEntitySpotlightPowered) te).isControllerManaged()) {
+				return false;
+			}
+		}
+		return super.isSideSolid(world, x, y, z, side);
+	}
+
 	public static class TileEntitySpotlightPowered extends TileEntity implements IEnergyReceiverMK2 {
 
 		public static final long maxPower = 1000;
 		public long power;
 		public long powerConsumption;
 
-		// PERF: Controller-managed flag
 		private boolean controllerManaged = false;
-		// PERF: controller coordinates - stored in each light so we can notify directly (avoid large scans)
 		private int controllerX = Integer.MIN_VALUE;
 		private int controllerY = Integer.MIN_VALUE;
 		private int controllerZ = Integer.MIN_VALUE;
@@ -272,8 +305,10 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		@Override
 		public void updateEntity() {
 			if(!worldObj.isRemote) {
-				ForgeDirection dir = getDirection().getOpposite();
-				this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				if (!this.controllerManaged) {
+					ForgeDirection dir = getDirection().getOpposite();
+					this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+				}
 
 				Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
 				if(!(block instanceof SpotlightPowered)) return;
@@ -293,6 +328,10 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				}
 			}
 		}
+
+		public boolean canConnect(ForgeDirection dir) {
+			return !this.controllerManaged;
+		}
 		
 		protected void switchToState(boolean turnOn) {
 			Block block = worldObj.getBlock(xCoord, yCoord, zCoord);
@@ -303,13 +342,11 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			
 			if(block == targetBlock) return;
 			
-			// Clear beam when turning off
 			if(!turnOn && spotlight.isOn) {
 				ForgeDirection dir = getDirection();
 				Spotlight.unpropagateBeam(worldObj, xCoord, yCoord, zCoord, dir);
 			}
 			
-			// PERF: Preserve TE data across block swap
 			NBTTagCompound data = new NBTTagCompound();
 			this.writeToNBT(data);
 			
@@ -321,7 +358,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				((TileEntitySpotlightPowered) newTE).readFromNBT(data);
 				newTE.validate();
 				
-				// Create beam when turning on
 				if(turnOn) {
 					SpotlightPowered newSpotlight = (SpotlightPowered) targetBlock;
 					if(newSpotlight.isOn) {
@@ -330,7 +366,8 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 					}
 				}
 				
-				// PERF: notify the controller directly (no scanning)
+				worldObj.func_147451_t(xCoord, yCoord, zCoord);
+				
 				((TileEntitySpotlightPowered) newTE).notifyControllerLightChanged();
 			}
 		}
@@ -352,7 +389,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 						Spotlight.unpropagateBeam(worldObj, xCoord, yCoord, zCoord, dir);
 					}
 				}
-				// PERF: Tell controller that this light is going away (so it can prune)
 				notifyControllerLightChanged();
 			}
 		}
@@ -371,7 +407,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 				}
 			}
 			this.isLoaded = false;
-			// chunk unload: inform controller (we still remember position, controller will keep it)
 			notifyControllerLightChanged();
 		}
 
@@ -397,7 +432,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.readFromNBT(nbt);
 			this.power = nbt.getLong("power");
 			this.powerConsumption = nbt.getLong("powerConsumption");
-			// controller-managed flag
 			this.controllerManaged = nbt.getBoolean("controllerManaged");
 			this.controllerX = nbt.hasKey("controllerX") ? nbt.getInteger("controllerX") : Integer.MIN_VALUE;
 			this.controllerY = nbt.hasKey("controllerY") ? nbt.getInteger("controllerY") : Integer.MIN_VALUE;
@@ -409,7 +443,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			super.writeToNBT(nbt);
 			nbt.setLong("power", power);
 			nbt.setLong("powerConsumption", powerConsumption);
-			// controller-managed flag & pos
 			nbt.setBoolean("controllerManaged", controllerManaged);
 			if(controllerX != Integer.MIN_VALUE) {
 				nbt.setInteger("controllerX", controllerX);
@@ -425,14 +458,19 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		private boolean isLoaded = true;
 		@Override public boolean isLoaded() { return isLoaded; }
 
-		// Controller-managed accessors
 		public boolean isControllerManaged() {
 			return controllerManaged;
 		}
 
 		public void setControllerManaged(boolean val) {
+			boolean changed = (this.controllerManaged != val);
 			this.controllerManaged = val;
 			this.markDirty();
+
+			if(changed && this.worldObj != null) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, this.getBlockType());
+			}
 		}
 
 		public void setControllerPos(int cx, int cy, int cz) {
@@ -443,24 +481,35 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		}
 
 		public void clearControllerPos() {
+			if(this.controllerManaged && this.controllerX != Integer.MIN_VALUE && this.worldObj != null) {
+				if(this.worldObj.blockExists(this.controllerX, this.controllerY, this.controllerZ)) {
+					TileEntity te = this.worldObj.getTileEntity(this.controllerX, this.controllerY, this.controllerZ);
+					if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
+						PoweredLightsController.TileEntityPoweredLightsController controller =
+								(PoweredLightsController.TileEntityPoweredLightsController) te;
+						controller.removeSavedLightPosition(this.xCoord, this.yCoord, this.zCoord);
+					}
+				}
+			}
+
 			this.controllerX = Integer.MIN_VALUE;
 			this.controllerY = Integer.MIN_VALUE;
 			this.controllerZ = Integer.MIN_VALUE;
 			this.controllerManaged = false;
 			this.markDirty();
+
+			if(this.worldObj != null) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, this.getBlockType());
+			}
 		}
 
-		/**
-		 * PERF: Notify the controller (if any) about a light state/unload/change.
-		 * This avoids expensive scanning by using the stored controller coordinates.
-		 */
 		public void notifyControllerLightChanged() {
 			if(!controllerManaged) return;
 			if(controllerX == Integer.MIN_VALUE) return;
 			if(worldObj == null) return;
 
 			if(!worldObj.blockExists(controllerX, controllerY, controllerZ)) {
-				// controller chunk not loaded — nothing to call right now (controller remembers pos)
 				return;
 			}
 
@@ -468,7 +517,6 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 			if(te instanceof PoweredLightsController.TileEntityPoweredLightsController) {
 				PoweredLightsController.TileEntityPoweredLightsController controller = 
 						(PoweredLightsController.TileEntityPoweredLightsController) te;
-				// PERF: notify single controller entry (cheap: <=350 linear search)
 				controller.onLightStateChanged(xCoord, yCoord, zCoord);
 			}
 		}
