@@ -33,6 +33,9 @@ public class ChemplantRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 
+		//6-30, formerly oil cracking, coal liquefaction and solidification
+		registerOtherOil();
+
 		recipes.add(new ChemRecipe(36, "COOLANT", 50)
 				.inputItems(new OreDictStack(KNO.dust()))
 				.inputFluids(new FluidStack(Fluids.WATER, 1800))
