@@ -667,6 +667,7 @@ public class MainRegistry {
 		event.registerServerCommand(new CommandReloadServer());
 		event.registerServerCommand(new CommandLocate());
 		event.registerServerCommand(new CommandCustomize());
+		event.registerServerCommand(new CommandReapNetworks());
 		ArcFurnaceRecipes.registerFurnaceSmeltables(); // because we have to wait for other mods to take their merry ass time to register recipes
 	}
 
@@ -1454,6 +1455,11 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:item.multitool_decon");
 		ignoreMappings.add("hbm:tile.machine_amgen");
 		ignoreMappings.add("hbm:tile.machine_geo");
+		ignoreMappings.add("hbm:tile.block_weidanium");
+		ignoreMappings.add("hbm:tile.block_reiium");
+		ignoreMappings.add("hbm:tile.block_unobtainium");
+		ignoreMappings.add("hbm:tile.block_daffergon");
+		ignoreMappings.add("hbm:tile.block_verticium");
 
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);

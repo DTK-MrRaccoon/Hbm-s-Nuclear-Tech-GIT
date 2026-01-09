@@ -27,6 +27,7 @@ import com.hbm.items.ItemEnums.EnumExpensiveType;
 import com.hbm.items.ItemEnums.EnumSecretType;
 import com.hbm.items.ItemGenericPart.EnumPartType;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
 import com.hbm.items.machine.ItemDrillbit.EnumDrillType;
 import com.hbm.items.machine.ItemPACoil.EnumCoilType;
@@ -440,7 +441,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(DESH.ingot(), 16), new OreDictStack(NP237.dust(), 12), new OreDictStack(SA326.dust(), 12)));
 		this.register(new GenericRecipe("ass.batterydnt").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_dineutronium_battery, 1))
 				.inputItems(new OreDictStack(DNT.ingot(), 24), new ComparableStack(ModItems.powder_spark_mix, 12), new ComparableStack(ModItems.battery_spark_cell_1000, 1), new OreDictStack(CMB.ingot(), 32)));
-		this.register(new GenericRecipe("ass.fensusan").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_fensu, 1))
+		this.register(new GenericRecipe("ass.fensusanlegacy").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_fensu, 1))
 				.inputItems(new ComparableStack(ModItems.ingot_electronium, 32),
 						new ComparableStack(ModBlocks.machine_dineutronium_battery, 16),
 						new OreDictStack(ANY_RESISTANTALLOY.plateWelded(), 64),
@@ -462,6 +463,54 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.coil_magnetized_tungsten, 24),
 						new ComparableStack(ModItems.powder_magic, 64),
 						new ComparableStack(ModItems.plate_dineutronium, 24),
+						new ComparableStack(ModItems.ingot_u238m2),
+						new ComparableStack(ModItems.ingot_cft, 64),
+						new ComparableStack(ModItems.ingot_cft, 64)));
+
+		// batteries new
+		this.register(new GenericRecipe("ass.capacitorgold").setup(100, 100).outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_GOLD.ordinal()))
+				.inputItems(new OreDictStack(STEEL.plate(), 8),
+						new OreDictStack(GOLD.wireDense(), 16)));
+		this.register(new GenericRecipe("ass.capacitorniobium").setup(100, 1_000).outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_NIOBIUM.ordinal()))
+				.inputItems(new OreDictStack(ANY_PLASTIC.ingot(), 12),
+						new OreDictStack(NB.wireDense(), 24)));
+		this.register(new GenericRecipe("ass.capacitortantalum").setup(100, 10_000).outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_TANTALUM.ordinal()))
+				.inputItems(new OreDictStack(ANY_HARDPLASTIC.ingot(), 16),
+						new OreDictStack(TA.ingot(), 24)));
+		this.register(new GenericRecipe("ass.capacitorbismuth").setup(100, 25_000).outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_BISMUTH.ordinal()))
+				.inputItems(new OreDictStack(ANY_HARDPLASTIC.ingot(), 24),
+						new OreDictStack(BI.ingot(), 24),
+						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.CHIP_QUANTUM)));
+		this.register(new GenericRecipe("ass.capacitorspark").setup(100, 100_000).outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_SPARK.ordinal()))
+				.inputItems(new OreDictStack(CMB.plateCast(), 12),
+						new ComparableStack(ModItems.powder_spark_mix, 32),
+						new ComparableStack(ModItems.pellet_charged, 32),
+						new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CHIP_QUANTUM))
+				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 8_000))
+				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 8_000)));
+		
+		this.register(new GenericRecipe("ass.fensusan").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_battery_redd, 1))
+				.inputItems(new ComparableStack(ModItems.ingot_electronium, 64),
+						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
+						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
+						new OreDictStack(CMB.plateCast(), 32),
+						new OreDictStack(MAGTUNG.wireDense(), 32),
+						new ComparableStack(ModItems.plate_dineutronium, 64),
+						new ComparableStack(ModItems.powder_magic, 64),
+						new ComparableStack(ModItems.ingot_u238m2),
+						new ComparableStack(ModItems.ingot_cft, 64),
+						new ComparableStack(ModItems.ingot_cft, 64))
+				.inputItemsEx(new ComparableStack(ModItems.ingot_electronium, 64),
+						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
+						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.BRONZE_TUBES),
+						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.FERRO_PLATING),
+						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
+						new OreDictStack(CMB.plateCast(), 64),
 						new ComparableStack(ModItems.ingot_u238m2),
 						new ComparableStack(ModItems.ingot_cft, 64),
 						new ComparableStack(ModItems.ingot_cft, 64)));

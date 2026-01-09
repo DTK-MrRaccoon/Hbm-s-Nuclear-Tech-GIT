@@ -768,10 +768,10 @@ public class ModBlocks {
 
 	public static Block machine_electric_furnace_off;
 	public static Block machine_electric_furnace_on;
-
 	public static Block machine_microwave;
 
-	//public static Block machine_deuterium;
+	public static Block machine_battery_socket;
+	public static Block machine_battery_redd;
 
 	public static Block machine_battery_potato;
 	public static Block machine_battery;
@@ -816,6 +816,7 @@ public class ModBlocks {
 	public static Block fluid_duct_paintable_block_exhaust;
 	public static Block pipe_anchor;
 	public static Block fluid_valve;
+	public static Block fluid_counter_valve;
 	public static Block fluid_switch;
 	public static Block fluid_pump;
 	public static Block machine_drain;
@@ -1949,6 +1950,9 @@ public class ModBlocks {
 		machine_arc_furnace = new MachineArcFurnaceLarge().setBlockName("machine_arc_furnace").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_microwave = new MachineMicrowave(Material.iron).setBlockName("machine_microwave").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":machine_microwave");
 
+		machine_battery_socket = new MachineBatterySocket().setBlockName("machine_battery_socket").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		machine_battery_redd = new MachineBatteryREDD().setBlockName("machine_battery_redd").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+
 		machine_battery_potato = new MachineBattery(Material.iron, 10_000).setBlockName("machine_battery_potato").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		machine_battery = new MachineBattery(Material.iron, 1_000_000).setBlockName("machine_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		machine_lithium_battery = new MachineBattery(Material.iron, 50_000_000).setBlockName("machine_lithium_battery").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
@@ -2005,6 +2009,7 @@ public class ModBlocks {
 		fluid_duct_paintable = new FluidDuctPaintable().setBlockName("fluid_duct_paintable").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		fluid_duct_gauge = new FluidDuctGauge().setBlockName("fluid_duct_gauge").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		fluid_valve = new FluidValve(Material.iron).setBlockName("fluid_valve").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+		fluid_counter_valve = new FluidCounterValve(Material.iron).setBlockName("fluid_counter_valve").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		fluid_switch = new FluidSwitch(Material.iron).setBlockName("fluid_switch").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		fluid_pump = new FluidPump(Material.iron).setBlockName("fluid_pump").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_drain = new MachineDrain(Material.iron).setBlockName("machine_drain").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":concrete");
@@ -3349,6 +3354,7 @@ public class ModBlocks {
 		register(pipe_anchor);
 		register(fluid_duct_gauge);
 		register(fluid_valve);
+		register(fluid_counter_valve);
 		register(fluid_switch);
 		register(fluid_pump);
 		register(machine_drain);
@@ -3404,6 +3410,8 @@ public class ModBlocks {
 		register(barrel_steel);
 		register(barrel_tcalloy);
 		register(barrel_antimatter);
+		register(machine_battery_socket);
+		register(machine_battery_redd);
 		register(machine_battery_potato);
 		register(machine_battery);
 		register(machine_lithium_battery);
