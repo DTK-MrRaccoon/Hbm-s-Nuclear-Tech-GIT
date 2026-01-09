@@ -15,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.oredict.OreDictionary;
 
+import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
+
 //TODO: clean this shit up
 @Spaghetti("i cannot sleep well at night knowing that this class still exists")
 public class MachineRecipes {
@@ -74,6 +76,15 @@ public class MachineRecipes {
 		fuels.add(new ItemStack(ModItems.battery_spark_cell_power));
 		fuels.add(new ItemStack(ModItems.fusion_core));
 		fuels.add(new ItemStack(ModItems.energy_core));
+		for(EnumBatteryPack num : EnumBatteryPack.values()) fuels.add(new ItemStack(ModItems.battery_pack, 1, num.ordinal()));
+		fuels.add(new ItemStack(ModItems.battery_creative));
+		fuels.add(new ItemStack(ModItems.battery_sc_uranium));
+		fuels.add(new ItemStack(ModItems.battery_sc_technetium));
+		fuels.add(new ItemStack(ModItems.battery_sc_plutonium));
+		fuels.add(new ItemStack(ModItems.battery_sc_polonium));
+		fuels.add(new ItemStack(ModItems.battery_sc_gold));
+		fuels.add(new ItemStack(ModItems.battery_sc_lead));
+		fuels.add(new ItemStack(ModItems.battery_sc_americium));
 		return fuels;
 	}
 
