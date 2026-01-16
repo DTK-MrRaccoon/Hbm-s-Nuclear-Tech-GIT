@@ -48,7 +48,7 @@ public class TileEntityFusionMHDT extends TileEntityLoadedBase implements IEnerg
 
 	public static final double PLASMA_EFFICIENCY = 1.35D;
 	public static final int COOLANT_USE = 50;
-	public static long MINIMUM_PLASMA = 5_000_000L;
+	public static long MINIMUM_PLASMA = 15_000_000L;
 
 	public FluidTank[] tanks;
 	private AudioWrapper audio;

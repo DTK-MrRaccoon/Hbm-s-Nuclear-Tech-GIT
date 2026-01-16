@@ -65,10 +65,10 @@ public class TileEntityChungus extends TileEntityLoadedBase implements IEnergyPr
 	private float audioDesync;
 
 	//Configurable values
-	public static long maxPower = 100000000000L;
+	public static long maxPower = 1000000000L;
 	public static int inputTankSize = 1_000_000_000;
 	public static int outputTankSize = 1_000_000_000;
-	public static double efficiency = 0.85D;
+	public static double efficiency = 0.75D;
 
 	public boolean damaged;
 	public Explosion lastExplosion;

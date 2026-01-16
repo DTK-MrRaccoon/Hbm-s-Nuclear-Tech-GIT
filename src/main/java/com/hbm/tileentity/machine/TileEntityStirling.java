@@ -36,10 +36,10 @@ public class TileEntityStirling extends TileEntityLoadedBase implements IBufPack
 
 	/* CONFIGURABLE CONSTANTS */
 	public static double diffusion = 0.1D;
-	public static double efficiency = 0.5D;
+	public static double efficiency = 0.35D;
 	public static int maxHeatNormal = 300;
 	public static int maxHeatSteel = 1500;
-	public static int overspeedLimit = 300;
+	public static int overspeedLimit = 350;
 
 	@Override
 	public void updateEntity() {

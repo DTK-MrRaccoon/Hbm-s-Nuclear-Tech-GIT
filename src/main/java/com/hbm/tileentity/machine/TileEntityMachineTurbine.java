@@ -58,11 +58,11 @@ public class TileEntityMachineTurbine extends TileEntityLoadedBase implements IS
 	protected double[] info = new double[3];
 
 	//Configurable values
-	public static long maxPower = 1_000_000;
+	public static long maxPower = 100_000;
 	public static int inputTankSize = 64_000;
-	public static int outputTankSize = 128_000;
+	public static int outputTankSize = 12_800;
 	public static int maxSteamPerTick = 6_000;
-	public static double efficiency = 0.85D;
+	public static double efficiency = 0.15D;
 
 	public TileEntityMachineTurbine() {
 		slots = new ItemStack[7];

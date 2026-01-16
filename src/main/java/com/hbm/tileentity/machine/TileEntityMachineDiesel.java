@@ -156,7 +156,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 				}
 
 				audio.keepAlive();
-				audio.updateVolume(this.getVolume(1F));
+				audio.updateVolume(this.getVolume(3F));
 
 			} else {
 
@@ -170,7 +170,7 @@ public class TileEntityMachineDiesel extends TileEntityMachinePolluting implemen
 
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.engine", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F, 10);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.engine", xCoord, yCoord, zCoord, 3.0F, 25F, 1.0F, 10);
 	}
 
 	@Override
