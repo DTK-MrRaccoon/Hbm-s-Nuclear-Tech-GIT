@@ -62,7 +62,7 @@ public class TileEntityMachineLargeTurbine extends TileEntityMachineBase impleme
 	public static long maxPower = 100000000;
 	public static int inputTankSize = 512_000;
 	public static int outputTankSize = 10_240_000;
-	public static double efficiency = 1.0;
+	public static double efficiency = 0.95;
 
 
 	public TileEntityMachineLargeTurbine() {

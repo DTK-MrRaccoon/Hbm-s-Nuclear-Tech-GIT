@@ -40,9 +40,9 @@ public class TileEntitySteamEngine extends TileEntityLoadedBase implements IEner
 	private float acceleration = 0F;
 
 	/* CONFIGURABLE */
-	private static int steamCap = 2_000;
-	private static int ldsCap = 20;
-	private static double efficiency = 0.85D;
+	private static int steamCap = 20_000;
+	private static int ldsCap = 200;
+	private static double efficiency = 0.65D;
 
 	public TileEntitySteamEngine() {
 

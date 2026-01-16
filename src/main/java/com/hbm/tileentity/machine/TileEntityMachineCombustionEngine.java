@@ -48,6 +48,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 	private int playersUsing = 0;
 	public int setting = 0;
 	public boolean wasOn = false;
+	private boolean redstonePowered = false;
 
 	public float doorAngle = 0;
 	public float prevDoorAngle = 0;
@@ -79,8 +80,11 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 			wasOn = false;
 
+			boolean currentRedstonePowered = this.worldObj.isBlockIndirectlyGettingPowered(xCoord, yCoord, zCoord);
+			redstonePowered = currentRedstonePowered;
+
 			int fill = tank.getFill() * 10 + tenth;
-			if(isOn && setting > 0 && slots[2] != null && slots[2].getItem() == ModItems.piston_set && fill > 0 && tank.getTankType().hasTrait(FT_Combustible.class)) {
+			if(isOn && setting > 0 && slots[2] != null && slots[2].getItem() == ModItems.piston_set && fill > 0 && tank.getTankType().hasTrait(FT_Combustible.class) && !redstonePowered) {
 				EnumPistonType piston = EnumUtil.grabEnumSafely(EnumPistonType.class, slots[2].getItemDamage());
 				FT_Combustible trait = tank.getTankType().getTrait(FT_Combustible.class);
 
@@ -134,7 +138,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 			this.doorAngle = MathHelper.clamp_float(this.doorAngle, 0F, 135F);
 
-			if(wasOn) {
+			if(wasOn && !redstonePowered) {
 
 				if(audio == null) {
 					audio = createAudioLoop();
@@ -144,7 +148,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 				}
 
 				audio.keepAlive();
-				audio.updateVolume(this.getVolume(1F));
+				audio.updateVolume(this.getVolume(3F));
 
 			} else {
 
@@ -170,7 +174,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 
 	@Override
 	public AudioWrapper createAudioLoop() {
-		return MainRegistry.proxy.getLoopedSound("hbm:block.igeneratorOperate", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F, 20);
+		return MainRegistry.proxy.getLoopedSound("hbm:block.igeneratorOperate", xCoord, yCoord, zCoord, 3.0F, 20F, 1.0F, 20);
 	}
 
 	@Override
@@ -210,6 +214,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 		buf.writeLong(this.power);
 		buf.writeBoolean(this.isOn);
 		buf.writeBoolean(this.wasOn);
+		buf.writeBoolean(this.redstonePowered);
 		tank.serialize(buf);
 	}
 
@@ -221,6 +226,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 		this.power = buf.readLong();
 		this.isOn = buf.readBoolean();
 		this.wasOn = buf.readBoolean();
+		this.redstonePowered = buf.readBoolean();
 		tank.deserialize(buf);
 	}
 
@@ -230,6 +236,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 		this.setting = nbt.getInteger("setting");
 		this.power = nbt.getLong("power");
 		this.isOn = nbt.getBoolean("isOn");
+		this.redstonePowered = nbt.getBoolean("redstonePowered");
 		this.tank.readFromNBT(nbt, "tank");
 		this.tenth = nbt.getInteger("tenth");
 	}
@@ -240,6 +247,7 @@ public class TileEntityMachineCombustionEngine extends TileEntityMachinePollutin
 		nbt.setInteger("setting", setting);
 		nbt.setLong("power", power);
 		nbt.setBoolean("isOn", isOn);
+		nbt.setBoolean("redstonePowered", redstonePowered);
 		tank.writeToNBT(nbt, "tank");
 		nbt.setInteger("tenth", tenth);
 	}

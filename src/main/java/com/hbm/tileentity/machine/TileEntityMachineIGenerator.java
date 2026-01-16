@@ -22,6 +22,7 @@ import com.hbm.util.RTGUtil;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import api.hbm.energymk2.IEnergyProviderMK2;
 import api.hbm.fluid.IFluidStandardReceiver;
+import api.hbm.fluid.IFluidStandardTransceiver;
 import api.hbm.tile.IInfoProviderEC;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -37,7 +38,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardReceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC {
+public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardTransceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC {
 	
 	public long power;
 	public int spin;
@@ -118,6 +119,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 				new DirPos(xCoord + dir.offsetX * -1, yCoord - 1, zCoord + dir.offsetZ * -1, ForgeDirection.DOWN),
 				new DirPos(xCoord, yCoord - 1, zCoord, ForgeDirection.DOWN),
 				new DirPos(xCoord + dir.offsetX * 3, yCoord, zCoord + dir.offsetZ * 3, dir),
+				new DirPos(xCoord, yCoord - 1, zCoord, ForgeDirection.DOWN)
 		};
 	}
 
@@ -199,7 +201,7 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 				}
 			}
 			
-			// RTG ///
+			// RTG //
 			this.hasRTG = RTGUtil.hasHeat(slots, RTGSlots);
 			this.spin += RTGUtil.updateRTGs(slots, RTGSlots) * (con ? 0.2 : rtgHeatMult);
 			
@@ -352,8 +354,18 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	}
 
 	@Override
+	public FluidTank[] getSendingTanks() {
+		return new FluidTank[0]; // No fluid output tanks
+	}
+
+	@Override
 	public FluidTank[] getAllTanks() {
 		return tanks;
+	}
+
+	@Override
+	public boolean canConnect(FluidType type, ForgeDirection dir) {
+		return dir != ForgeDirection.UNKNOWN && dir != ForgeDirection.UP;
 	}
 
 	@Override
