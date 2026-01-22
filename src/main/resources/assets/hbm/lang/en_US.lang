@@ -5436,6 +5436,7 @@ tile.concrete_slab.concrete_smooth.name=Concrete Slab
 tile.concrete_slab.ducrete.name=Ducrete Tile Slab
 tile.concrete_slab.ducrete_smooth.name=Ducrete Slab
 tile.concrete_smooth.name=Concrete
+tile.concrete_smooth_cracked.name=Cracked Concrete
 tile.concrete_smooth_stairs.name=Concrete Stairs
 tile.concrete_stairs.name=Concrete Tile Stairs
 tile.concrete_super.name=Über Concrete
