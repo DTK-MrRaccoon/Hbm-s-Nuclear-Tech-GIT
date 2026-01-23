@@ -974,6 +974,7 @@ public class ModItems {
 	//public static Item canned_bark;
 	public static ItemEnumMulti canned_conserve;
 	public static Item can_key;
+	public static Item food_can_empty;
 
 	public static Item glass_empty;
 	public static Item glass_smilk;
@@ -3138,6 +3139,7 @@ public class ModItems {
 		teacup = new ItemEnergy().makeGlass().setUnlocalizedName("teacup").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":teacup_full");
 		canned_conserve = (ItemEnumMulti) new ItemConserve().setUnlocalizedName("canned_conserve").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":canned");
 		can_key = new Item().setUnlocalizedName("can_key").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":can_key");
+		food_can_empty = new Item().setUnlocalizedName("food_can_empty").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":food_can_empty");
 
 		boat_rubber = new ItemBoatRubber().setUnlocalizedName("boat_rubber").setTextureName(RefStrings.MODID + ":boat_rubber");
 		cart = new ItemModMinecart().setUnlocalizedName("cart");
@@ -6732,6 +6734,7 @@ public class ModItems {
 		GameRegistry.registerItem(cap_fritz, cap_fritz.getUnlocalizedName());
 		GameRegistry.registerItem(ring_pull, ring_pull.getUnlocalizedName());
 		GameRegistry.registerItem(can_key, can_key.getUnlocalizedName());
+		GameRegistry.registerItem(food_can_empty, food_can_empty.getUnlocalizedName());
 		GameRegistry.registerItem(coin_creeper, coin_creeper.getUnlocalizedName());
 		GameRegistry.registerItem(coin_radiation,coin_radiation.getUnlocalizedName());
 		GameRegistry.registerItem(coin_maskman, coin_maskman.getUnlocalizedName());

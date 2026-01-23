@@ -210,6 +210,18 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.glass_empty, 1), new Object[] { "G G", "GGG", " G ", 'G', Blocks.glass });
 		addShapelessAuto(new ItemStack(ModItems.teacup_empty, 1), new Object[] {Items.clay_ball, ModItems.powder_calcium});
 
+		addRecipeAuto(new ItemStack(ModItems.can_key, 3), new Object[] { " W ", " W ", "  W", 'W', STEEL.wireFine() });
+		addRecipeAuto(new ItemStack(ModItems.food_can_empty, 1), new Object[] { "   ", "P P", " P ", 'P', STEEL.plate() });
+
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.STEW), new Object[] { ModBlocks.mush, ModItems.food_can_empty, ModItems.can_key });
+
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.NEWBEEF), new Object[] { Items.beef, Items.beef, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.CARROT), new Object[] { Items.carrot, Items.carrot, Items.carrot, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.POTATO), new Object[] { Items.potato, Items.potato, Items.potato, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.BREAD), new Object[] { Items.bread, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.APPLE), new Object[] { Items.apple, Items.apple, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MYSTERYV2), new Object[] { Items.rotten_flesh, Items.rotten_flesh, ModItems.food_can_empty, ModItems.can_key });
+
 		addShapelessAuto(new ItemStack(ModItems.powder_poison), new Object[] { DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.NIGHTSHADE) });
 		addShapelessAuto(new ItemStack(ModItems.syringe_metal_stimpak), new Object[] { ModItems.syringe_metal_empty, Items.carrot, DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.FOXGLOVE) }); //xander root and broc flower
 		addShapelessAuto(new ItemStack(ModItems.pill_herbal), new Object[] { COAL.dust(), Items.poisonous_potato, Items.nether_wart, DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.FOXGLOVE) });

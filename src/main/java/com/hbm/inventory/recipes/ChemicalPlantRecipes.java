@@ -19,6 +19,7 @@ import com.hbm.items.ItemEnums.EnumFuelAdditive;
 import com.hbm.items.ItemGenericPart.EnumPartType;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
 
 import net.minecraft.init.Blocks;
@@ -453,19 +454,20 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
 				.outputItems(new ItemStack(ModItems.cheese, 4)));
 
-		this.register(new GenericRecipe("chem.cannedcheese").setup(100, 250)
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4), new ComparableStack(ModItems.cheese, 2))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 4)));
-
-		this.register(new GenericRecipe("chem.cannedemilk").setup(100, 250)
+		this.register(new GenericRecipe("chem.cannedemilk").setup(160, 300)
 				.inputFluids(new FluidStack(Fluids.EMILK, 750))
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 6)));
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MILK).copy().splitStack(2)));
 
-		this.register(new GenericRecipe("chem.cannedyogurt").setup(100, 250)
+		this.register(new GenericRecipe("chem.cannedyogurt").setup(160, 300)
 				.inputFluids(new FluidStack(Fluids.EMILK, 500))
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 15)));
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.YOGURT).copy().splitStack(2)));
+
+		this.register(new GenericRecipe("chem.cannedcoffee").setup(160, 300)
+				.inputFluids(new FluidStack(Fluids.COFFEE, 1000))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.COFFEE).copy().splitStack(2)));
 	}
 	
 	public static HashMap getRecipes() {

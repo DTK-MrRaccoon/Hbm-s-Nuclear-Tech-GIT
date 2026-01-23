@@ -25,6 +25,7 @@ import com.hbm.items.ModItems;
 import com.hbm.items.ItemEnums.EnumCasingType;
 import com.hbm.items.ItemEnums.EnumExpensiveType;
 import com.hbm.items.ItemEnums.EnumSecretType;
+import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.ItemGenericPart.EnumPartType;
 import com.hbm.items.machine.ItemFluidIcon;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
@@ -1214,6 +1215,48 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.circuit, 64, EnumCircuitType.CONTROLLER_QUANTUM),
 						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.COMPUTER),
 						new ComparableStack(ModItems.coin_ufo, 1)).setPools(GenericRecipes.POOL_PREFIX_DISCOVER + "gerald"));
+
+		// food
+
+		this.register(new GenericRecipe("ass.cankey").setup(160, 600).outputItems(new ItemStack(ModItems.can_key, 3))
+				.inputItems(new OreDictStack(STEEL.wireFine(), 3)));
+		this.register(new GenericRecipe("ass.foodcanempty").setup(160, 600).outputItems(new ItemStack(ModItems.food_can_empty, 2))
+				.inputItems(new OreDictStack(STEEL.plate(), 3)));
+
+		this.register(new GenericRecipe("ass.cannedcheese").setup(160, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.CHEESE).copy().splitStack(2))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2), new ComparableStack(ModItems.cheese, 2)));
+		this.register(new GenericRecipe("ass.cannedcasbestos").setup(160, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.ASBESTOS).copy().splitStack(3))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 3), new ComparableStack( ModItems.can_key, 3), new OreDictStack(ASBESTOS.ingot(), 6)));
+		this.register(new GenericRecipe("ass.canneddiesel").setup(160, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.DIESEL).copy().splitStack(1))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 1), new ComparableStack( ModItems.can_key, 1))
+				.inputFluids(new FluidStack(Fluids.DIESEL, 750)));
+		this.register(new GenericRecipe("ass.cannedkerosene").setup(160, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.KEROSENE).copy().splitStack(1))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 1), new ComparableStack( ModItems.can_key, 1))
+				.inputFluids(new FluidStack(Fluids.KEROSENE, 750)));
+
+		this.register(new GenericRecipe("ass.cannednewbeef").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.NEWBEEF).copy().splitStack(1))
+				.inputItems(new ComparableStack(Items.beef, 2), new ComparableStack(ModItems.food_can_empty, 1), new ComparableStack(ModItems.can_key, 1)));
+		this.register(new GenericRecipe("ass.cannedcarrot").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.CARROT).copy().splitStack(2))
+				.inputItems(new ComparableStack(Items.carrot, 3), new ComparableStack(ModItems.food_can_empty, 2), new ComparableStack(ModItems.can_key, 2)));
+		this.register(new GenericRecipe("ass.cannedpotato").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.POTATO).copy().splitStack(3))
+				.inputItems(new ComparableStack(Items.potato, 3), new ComparableStack(ModItems.food_can_empty, 3), new ComparableStack(ModItems.can_key, 3)));
+		this.register(new GenericRecipe("ass.cannedbread").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.BREAD).copy().splitStack(3))
+				.inputItems(new ComparableStack(Items.bread, 2), new ComparableStack(ModItems.food_can_empty, 3), new ComparableStack(ModItems.can_key, 3)));
+		this.register(new GenericRecipe("ass.cannedapple").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.APPLE).copy().splitStack(1))
+				.inputItems(new ComparableStack(Items.apple, 2), new ComparableStack(ModItems.food_can_empty, 1), new ComparableStack(ModItems.can_key, 1)));
+		this.register(new GenericRecipe("ass.canneddust").setup(80, 300).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.DUST).copy().splitStack(1))
+				.inputItems(new ComparableStack(ModItems.dust, 4), new ComparableStack(ModItems.food_can_empty, 1), new ComparableStack(ModItems.can_key, 1)));
+		this.register(new GenericRecipe("ass.cannedbiomass").setup(320, 600).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.BIOMASS).copy().splitStack(8))
+				.inputItems(new ComparableStack(ModItems.biomass_compressed, 64), new ComparableStack(ModItems.food_can_empty, 8), new ComparableStack(ModItems.can_key, 8))
+				.inputFluids(new FluidStack(Fluids.WATER, 250)));
+		this.register(new GenericRecipe("ass.cannedfish").setup(320, 600).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.FISH).copy().splitStack(8))
+				.inputItems(new ComparableStack(Items.fish, 16), new ComparableStack(ModItems.food_can_empty, 8), new ComparableStack(ModItems.can_key, 8)));
+		this.register(new GenericRecipe("ass.cannedsoup").setup(320, 600).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.SOUP).copy().splitStack(6))
+				.inputItems(new ComparableStack(Items.carrot, 6), new ComparableStack(Items.potato, 3), new ComparableStack(Items.beef, 3), new ComparableStack(ModItems.food_can_empty, 6), new ComparableStack(ModItems.can_key, 6))
+				.inputFluids(new FluidStack(Fluids.WATER, 250)));
+		this.register(new GenericRecipe("ass.cannedmystery").setup(320, 600).outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MYSTERYV2).copy().splitStack(3))
+				.inputItems(new ComparableStack(Items.rotten_flesh, 4), new ComparableStack(ModItems.food_can_empty, 3), new ComparableStack(ModItems.can_key, 3)));
+
 
 		this.register(new GenericRecipe("ass.emptypackage").setup(40, 100).outputItems(new ItemStack(ModItems.fluid_pack_empty, 1))
 				.inputItems(new OreDictStack(TI.plate(), 4), new OreDictStack(ANY_PLASTIC.ingot(), 2)));
