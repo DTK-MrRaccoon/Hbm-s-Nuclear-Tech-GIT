@@ -208,6 +208,12 @@ public class Fluids {
 	public static FluidType EMILK;
 	public static FluidType CMILK;
 	public static FluidType CREAM;
+	public static FluidType NUTRIENTPASTE;
+	public static FluidType PHOSPHORIC_ACID;
+	public static FluidType HYDROFLUORIC_ACID;
+	public static FluidType LIQUID_FLUORITE;
+	public static FluidType FLUORINE_GAS;
+	public static FluidType URANIUM_OXIDE_SLURRY;
 
 	/* Lagacy names for compatibility purposes */
 	@Deprecated public static FluidType ACID;	//JAOPCA uses this, apparently
@@ -443,6 +449,13 @@ public class Fluids {
 		EMILK =					new FluidType("EMILK",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
 		CMILK =					new FluidType("CMILK",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
 		CREAM =					new FluidType("CREAM",				0xCFCFCF, 0, 0, 0, EnumSymbol.NONE).addTraits(DELICIOUS, LIQUID);//F5DEE4
+		NUTRIENTPASTE =				new FluidType("NUTRIENTPASTE",				0x00AD82, 2, 0, 1, EnumSymbol.ACID).addTraits(new FT_Corrosive(30), VISCOUS);
+		PHOSPHORIC_ACID	=			new FluidType("PHOSPHORIC_ACID", 0xF5F5DC, 3, 0, 2, EnumSymbol.ACID).addTraits(new FT_Corrosive(40), LIQUID);
+		HYDROFLUORIC_ACID =			new FluidType("HYDROFLUORIC_ACID", 0x89CFF0, 3, 0, 1, EnumSymbol.ACID).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.POISON, POISON_MINOR));
+		LIQUID_FLUORITE	=			new FluidType("LIQUID_FLUORITE", 0x90EE90, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F));
+		FLUORINE_GAS =				new FluidType("FLUORINE_GAS", 0xD5DEAD, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(GASEOUS, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.POISON, POISON_EXTREME));
+		URANIUM_OXIDE_SLURRY =			new FluidType("URANIUM_OXIDE_SLURRY", 0xA9A9A9, 3, 0, 1, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(40), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.2F));
+
 
 		// ^ ^ ^ ^ ^ ^ ^ ^
 		//ADD NEW FLUIDS HERE
@@ -573,6 +586,8 @@ public class Fluids {
 		metaOrder.add(SLOP);
 		metaOrder.add(IONGEL);
 		metaOrder.add(SCHRABIDIC);
+		metaOrder.add(FLUORINE_GAS);
+		metaOrder.add(URANIUM_OXIDE_SLURRY);
 		metaOrder.add(UF6);
 		metaOrder.add(PUF6);
 		metaOrder.add(SAS3);
@@ -600,6 +615,9 @@ public class Fluids {
 		metaOrder.add(SULFURIC_ACID);
 		metaOrder.add(SODIUM_HYDROXIDE);
 		metaOrder.add(NITRIC_ACID);
+		metaOrder.add(PHOSPHORIC_ACID);
+		metaOrder.add(HYDROFLUORIC_ACID);
+		metaOrder.add(LIQUID_FLUORITE);
 		metaOrder.add(AMMONIA);
 		metaOrder.add(SOLVENT);
 		metaOrder.add(RADIOSOLVENT);
@@ -644,6 +662,7 @@ public class Fluids {
 		metaOrder.add(EMILK);
 		metaOrder.add(CMILK);
 		metaOrder.add(CREAM);
+		metaOrder.add(NUTRIENTPASTE);
 
 		//ANY INTERNAL RENAMING MUST BE REFLECTED HERE - DON'T FORGET TO CHANGE: LANG FILES + TYPE'S STRING ID + NAME OF TANK/GUI TEXTURE FILES!
 		// V

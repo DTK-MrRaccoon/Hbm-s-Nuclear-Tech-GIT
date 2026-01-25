@@ -166,6 +166,9 @@ public class ResourceManager {
 	public static final IModelCustom chemical_factory = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/chemical_factory.obj")).asVBO();
 	public static final IModelCustom purex = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/purex.obj")).asVBO();
 
+	//Mixing Vat
+	public static final IModelCustom mixingvat = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/mixingvat.obj")).asVBO();
+
 	//Mixer
 	public static final IModelCustom mixer = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/mixer.obj"));
 
@@ -184,6 +187,7 @@ public class ResourceManager {
 	//Centrifuge
 	public static final IModelCustom centrifuge = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/centrifuge.obj")).asVBO();
 	public static final IModelCustom gascent = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/gascent.obj")).asVBO();
+	public static final IModelCustom advanced_centrifuge = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/adv_centrifuge.obj")).asVBO();
 	public static final IModelCustom silex = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/silex.obj")).asVBO();
 	public static final IModelCustom fel = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/fel.obj")).asVBO();
 
@@ -632,6 +636,10 @@ public class ResourceManager {
 	public static final ResourceLocation chemical_factory_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/chemical_factory.png");
 	public static final ResourceLocation purex_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/purex.png");
 
+	//Mixing Vat
+	public static final ResourceLocation mixing_vat_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mixingvat.png");
+	public static final ResourceLocation mixing_vat_fluid_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mixingvat_fluid.png");
+
 	//Mixer
 	public static final ResourceLocation mixer_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mixer.png");
 
@@ -651,6 +659,7 @@ public class ResourceManager {
 	//Centrifuge
 	public static final ResourceLocation centrifuge_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/centrifuge.png");
 	public static final ResourceLocation gascent_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/gascent.png");
+	public static final ResourceLocation advanced_centrifuge_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/adv_centrifuge.png");
 	public static final ResourceLocation fel_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/fel.png");
 	public static final ResourceLocation silex_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/silex.png");
 

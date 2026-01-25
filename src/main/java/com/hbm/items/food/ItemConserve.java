@@ -80,6 +80,9 @@ public class ItemConserve extends ItemEnumMulti {
 			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 10 * 20, 0));
 			ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
 
+		} else if(num == EnumFoodType.NUTRIENTPASTE) {
+			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 15 * 20, 0));
+
 		}
 	}
 	
@@ -172,7 +175,8 @@ public class ItemConserve extends ItemEnumMulti {
 		FISH(5, 0.75F),
 		SOUP(10, 0.95F),
 		COFFEE(2, 0.5F),
-		MYSTERYV2(6, 0.5F);
+		MYSTERYV2(6, 0.5F),
+		NUTRIENTPASTE(7, 0.35F);
 		
 		protected int foodLevel;
 		protected float saturation;

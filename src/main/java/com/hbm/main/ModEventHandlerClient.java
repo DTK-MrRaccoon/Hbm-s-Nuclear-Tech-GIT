@@ -978,6 +978,8 @@ public class ModEventHandlerClient {
 					ModItems.crucible_template,
 					ModItems.chemistry_template,
 					ModItems.chemistry_icon,
+					ModItems.mixing_vat_template,
+					ModItems.mixing_vat_icon,
 					ModItems.achievement_icon,
 					Items.spawn_egg,
 					Item.getItemFromBlock(Blocks.mob_spawner)
