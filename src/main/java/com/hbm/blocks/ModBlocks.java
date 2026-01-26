@@ -358,6 +358,7 @@ public class ModBlocks {
 	public static Block brick_compound;
 	public static Block brick_asbestos;
 	public static Block brick_fire;
+	public static Block hazmat;
 
 	public static Block lightstone;
 	public static Block brick_forgotten;
@@ -1625,6 +1626,8 @@ public class ModBlocks {
 		brick_asbestos = new BlockOutgas(Material.rock, true, 5, true).setBlockName("brick_asbestos").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(40.0F).setBlockTextureName(RefStrings.MODID + ":brick_asbestos");
 		brick_fire = new BlockGeneric(Material.rock).setBlockName("brick_fire").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(35.0F).setBlockTextureName(RefStrings.MODID + ":brick_fire");
 
+		hazmat = new BlockGeneric(Material.cloth).setBlockName("hazmat").setStepSound(Block.soundTypeCloth).setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":hazmat");
+
 		ducrete_smooth = new BlockGeneric(Material.rock).setBlockName("ducrete_smooth").setCreativeTab(MainRegistry.blockTab).setHardness(20.0F).setResistance(225.0F).setBlockTextureName(RefStrings.MODID + ":ducrete");
 		ducrete = new BlockGeneric(Material.rock).setBlockName("ducrete").setCreativeTab(MainRegistry.blockTab).setHardness(20.0F).setResistance(225.0F).setBlockTextureName(RefStrings.MODID + ":ducrete_tile");
 		brick_ducrete = new BlockGeneric(Material.rock).setBlockName("brick_ducrete").setCreativeTab(MainRegistry.blockTab).setHardness(15.0F).setResistance(250.0F).setBlockTextureName(RefStrings.MODID + ":brick_ducrete");
@@ -2863,6 +2866,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(brick_light, ItemBlockBlastInfo.class, brick_light.getUnlocalizedName());
 		GameRegistry.registerBlock(brick_asbestos, brick_asbestos.getUnlocalizedName());
 		GameRegistry.registerBlock(brick_fire, ItemBlockBlastInfo.class, brick_fire.getUnlocalizedName());
+		GameRegistry.registerBlock(hazmat, ItemBlockBlastInfo.class, hazmat.getUnlocalizedName());
 
 		//Lightstone and its stair/slab variants
 		register(lightstone);
