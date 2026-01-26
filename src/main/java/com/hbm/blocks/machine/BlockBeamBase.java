@@ -13,7 +13,7 @@ public abstract class BlockBeamBase extends BlockContainer {
 
 	public BlockBeamBase() {
 		super(Material.air);
-		setLightLevel(1.0F);
+		setLightLevel(0.9F);
 		setLightOpacity(0);
 		setHardness(-1);
 		setResistance(1_000_000);

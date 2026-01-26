@@ -51,7 +51,7 @@ public class Spotlight extends Block implements ISpotlight, INBTBlockTransformab
 
 		this.setHardness(0.5F);
 
-		if(isOn) setLightLevel(1.0F);
+		if(isOn) setLightLevel(0.9F);
 	}
 
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();

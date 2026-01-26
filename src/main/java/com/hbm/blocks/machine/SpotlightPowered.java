@@ -46,7 +46,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 
 		this.setHardness(0.5F);
 		
-		if(isOn) setLightLevel(1.0F);
+		if(isOn) setLightLevel(0.9F);
 	}
 
 	@Override
@@ -299,7 +299,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		private int controllerZ = Integer.MIN_VALUE;
 
 		public TileEntitySpotlightPowered() {
-			this.powerConsumption = 40;
+			this.powerConsumption = 20;
 		}
 
 		@Override

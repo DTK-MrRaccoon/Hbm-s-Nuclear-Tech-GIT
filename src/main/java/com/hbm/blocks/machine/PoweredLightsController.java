@@ -7,7 +7,6 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.SpotlightPowered.TileEntitySpotlightPowered;
 
 import api.hbm.block.IToolable;
-import api.hbm.block.IToolable.ToolType;
 import api.hbm.energymk2.IEnergyReceiverMK2;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -23,6 +22,7 @@ import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChatComponentText;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -74,24 +74,25 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		return true;
 	}
 
+	@Override
+	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+		return true;
+	}
+
 	public static class TileEntityPoweredLightsController extends TileEntity implements IEnergyReceiverMK2 {
 
-		public static final long maxPower = 500000L;
+		public static final long maxPower = 50000L;
 		public long power;
 		public int lightCount;
 		public long totalPowerUsage;
 
 		private final List<TileEntitySpotlightPowered> cachedLights = new ArrayList<TileEntitySpotlightPowered>();
-
 		private final List<int[]> savedLightPositions = new ArrayList<int[]>();
-
 		private static final int MAX_SAVED_LIGHTS = 350;
 
 		private boolean savedPositionsDirty = false;
-
-		private long lastCacheBuildTime = -1L;
-
 		private boolean processingNotification = false;
+		private boolean needsInitialization = true;
 
 		public boolean redstoneDisabled = false;
 		private boolean lastRedstonePower = false;
@@ -103,6 +104,14 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		@Override
 		public void updateEntity() {
 			if(!worldObj.isRemote) {
+				
+				if(needsInitialization) {
+					if(!savedLightPositions.isEmpty()) {
+						refreshCachedLights(false);
+					}
+					needsInitialization = false;
+				}
+
 				for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
 					this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
 				}
@@ -119,10 +128,6 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 						restoreManagedLights();
 						markDirty();
 					}
-				}
-
-				if(cachedLights.isEmpty() && !savedLightPositions.isEmpty()) {
-					refreshCachedLights(false);
 				}
 
 				distributePower();
@@ -197,22 +202,18 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 			if (idx == -1) return;
 
 			savedLightPositions.remove(idx);
-
 			if (idx < cachedLights.size()) {
 				cachedLights.remove(idx);
 			}
 
 			lightCount = cachedLights.size();
 			recalculateTotalUsage();
-
 			savedPositionsDirty = true;
 			markDirty();
 		}
 
 		public void onLightStateChanged(int lx, int ly, int lz) {
-			if (processingNotification) {
-				return;
-			}
+			if (processingNotification) return;
 			processingNotification = true;
 			try {
 				int idx = -1;
@@ -227,16 +228,13 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 				if(idx == -1) return;
 
 				if(!worldObj.blockExists(lx, ly, lz)) {
-					if(idx < cachedLights.size()) {
-						cachedLights.set(idx, null);
-					}
+					if(idx < cachedLights.size()) cachedLights.set(idx, null);
 					return;
 				}
 
 				TileEntity te = worldObj.getTileEntity(lx, ly, lz);
 				if(te instanceof TileEntitySpotlightPowered) {
 					TileEntitySpotlightPowered light = (TileEntitySpotlightPowered) te;
-
 					light.setControllerPos(this.xCoord, this.yCoord, this.zCoord);
 					light.setControllerManaged(true);
 					light.markDirty();
@@ -248,9 +246,7 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 						cachedLights.add(light);
 					}
 				} else {
-					if(idx < cachedLights.size()) {
-						cachedLights.remove(idx);
-					}
+					if(idx < cachedLights.size()) cachedLights.remove(idx);
 					savedLightPositions.remove(idx);
 					savedPositionsDirty = true;
 					lightCount = cachedLights.size();
@@ -263,9 +259,7 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		}
 
 		private void distributePower() {
-			if(redstoneDisabled) return;
-
-			if(cachedLights.isEmpty()) return;
+			if(redstoneDisabled || cachedLights.isEmpty() || power <= 0) return;
 
 			long powerNeeded = 0;
 			for(TileEntitySpotlightPowered light : cachedLights) {
@@ -274,19 +268,17 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 				if(needed > 0) powerNeeded += needed;
 			}
 
-			if(powerNeeded > 0 && power > 0) {
+			if(powerNeeded > 0) {
 				long powerToDistribute = Math.min(power, powerNeeded);
-
 				for(TileEntitySpotlightPowered light : cachedLights) {
 					if(light == null || light.isInvalid()) continue;
 					long needed = light.maxPower - light.power;
 					if(needed > 0) {
 						long transfer = Math.min(needed, powerToDistribute);
 						light.power += transfer;
-						power -= transfer;
+						this.power -= transfer;
 						powerToDistribute -= transfer;
 						light.markDirty();
-
 						if(powerToDistribute <= 0) break;
 					}
 				}
@@ -294,78 +286,47 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		}
 
 		private void refreshCachedLights(boolean forceWrite) {
-			boolean changed = false;
-
 			List<TileEntitySpotlightPowered> newCached = new ArrayList<TileEntitySpotlightPowered>();
-			List<int[]> newPositions = new ArrayList<int[]>();
-
-			for(int i = 0; i < savedLightPositions.size(); i++) {
-				int[] pos = savedLightPositions.get(i);
+			
+			for(int[] pos : savedLightPositions) {
 				int x = pos[0], y = pos[1], z = pos[2];
 
 				if(!worldObj.blockExists(x, y, z)) {
-					newPositions.add(pos);
 					newCached.add(null);
 					continue;
 				}
 
-				Block block = worldObj.getBlock(x, y, z);
-				if(block == ModBlocks.spotlight_incandescent_powered || 
-				   block == ModBlocks.spotlight_incandescent_powered_off ||
-				   block == ModBlocks.spotlight_fluoro_powered || 
-				   block == ModBlocks.spotlight_fluoro_powered_off ||
-				   block == ModBlocks.spotlight_halogen_powered ||
-				   block == ModBlocks.spotlight_halogen_powered_off) {
-
-					TileEntity te = worldObj.getTileEntity(x, y, z);
-					if(te instanceof TileEntitySpotlightPowered) {
-						TileEntitySpotlightPowered light = (TileEntitySpotlightPowered) te;
-						newCached.add(light);
-						newPositions.add(pos);
-						continue;
-					}
+				TileEntity te = worldObj.getTileEntity(x, y, z);
+				if(te instanceof TileEntitySpotlightPowered) {
+					newCached.add((TileEntitySpotlightPowered) te);
+				} else {
+					newCached.add(null);
 				}
-
-				changed = true;
-			}
-
-			if(newPositions.size() > MAX_SAVED_LIGHTS) {
-				newPositions = newPositions.subList(0, MAX_SAVED_LIGHTS);
-				newCached = newCached.subList(0, MAX_SAVED_LIGHTS);
-				changed = true;
 			}
 
 			cachedLights.clear();
 			cachedLights.addAll(newCached);
-
-			if(changed) {
-				savedLightPositions.clear();
-				savedLightPositions.addAll(newPositions);
-				savedPositionsDirty = true;
-				if(forceWrite) markDirty();
-			}
-
+			
 			lightCount = 0;
 			totalPowerUsage = 0;
 			for(TileEntitySpotlightPowered light : cachedLights) {
-				if(light == null) continue;
-				lightCount++;
-				totalPowerUsage += light.powerConsumption;
+				if(light != null) {
+					lightCount++;
+					totalPowerUsage += light.powerConsumption;
+				}
 			}
-			lastCacheBuildTime = worldObj.getTotalWorldTime();
+			if(forceWrite) markDirty();
 		}
 
 		private void recalculateTotalUsage() {
 			totalPowerUsage = 0;
 			for(TileEntitySpotlightPowered light : cachedLights) {
-				if(light == null) continue;
-				totalPowerUsage += light.powerConsumption;
+				if(light != null) totalPowerUsage += light.powerConsumption;
 			}
 		}
 
 		private void disableAllManagedLights() {
-			for(int i = 0; i < savedLightPositions.size(); i++) {
-				int[] pos = savedLightPositions.get(i);
+			for(int[] pos : savedLightPositions) {
 				int lx = pos[0], ly = pos[1], lz = pos[2];
 				if(!worldObj.blockExists(lx, ly, lz)) continue;
 				Block b = worldObj.getBlock(lx, ly, lz);
@@ -376,22 +337,17 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 					SpotlightPowered sp = (SpotlightPowered) b;
 					NBTTagCompound data = new NBTTagCompound();
 					TileEntity te = worldObj.getTileEntity(lx, ly, lz);
-					if(te instanceof TileEntitySpotlightPowered) {
-						((TileEntitySpotlightPowered)te).writeToNBT(data);
-					}
-					Block off = sp.getOff();
-					worldObj.setBlock(lx, ly, lz, off, meta, 2);
+					if(te instanceof TileEntitySpotlightPowered) ((TileEntitySpotlightPowered)te).writeToNBT(data);
+					
+					worldObj.setBlock(lx, ly, lz, sp.getOff(), meta, 2);
 					TileEntity newTE = worldObj.getTileEntity(lx, ly, lz);
-					if(newTE instanceof TileEntitySpotlightPowered) {
-						((TileEntitySpotlightPowered)newTE).readFromNBT(data);
-					}
+					if(newTE instanceof TileEntitySpotlightPowered) ((TileEntitySpotlightPowered)newTE).readFromNBT(data);
 				}
 			}
 		}
 
 		private void restoreManagedLights() {
-			for(int i = 0; i < savedLightPositions.size(); i++) {
-				int[] pos = savedLightPositions.get(i);
+			for(int[] pos : savedLightPositions) {
 				int lx = pos[0], ly = pos[1], lz = pos[2];
 				if(!worldObj.blockExists(lx, ly, lz)) continue;
 				Block b = worldObj.getBlock(lx, ly, lz);
@@ -419,45 +375,26 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 		}
 
 		@Override
-		public Packet getDescriptionPacket() {
-			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
-			return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt);
-		}
-
-		@Override
-		public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-			this.readFromNBT(pkt.func_148857_g());
-		}
-
-		@Override
 		public void readFromNBT(NBTTagCompound nbt) {
 			super.readFromNBT(nbt);
 			this.power = nbt.getLong("power");
+			this.redstoneDisabled = nbt.getBoolean("redstoneDisabled");
 
 			savedLightPositions.clear();
 			NBTTagList lightList = nbt.getTagList("lightPositions", 10);
 			for(int i = 0; i < lightList.tagCount(); i++) {
 				NBTTagCompound posTag = lightList.getCompoundTagAt(i);
-				int[] pos = new int[]{
-					posTag.getInteger("x"),
-					posTag.getInteger("y"),
-					posTag.getInteger("z")
-				};
-				savedLightPositions.add(pos);
+				savedLightPositions.add(new int[]{posTag.getInteger("x"), posTag.getInteger("y"), posTag.getInteger("z")});
 			}
-
-			this.redstoneDisabled = nbt.getBoolean("redstoneDisabled");
-
-			if(this.worldObj != null && !this.worldObj.isRemote) {
-				refreshCachedLights(false);
-			}
+			
+			this.needsInitialization = true;
 		}
 
 		@Override
 		public void writeToNBT(NBTTagCompound nbt) {
 			super.writeToNBT(nbt);
 			nbt.setLong("power", power);
+			nbt.setBoolean("redstoneDisabled", redstoneDisabled);
 
 			NBTTagList lightList = new NBTTagList();
 			for(int i = 0; i < savedLightPositions.size() && i < MAX_SAVED_LIGHTS; i++) {
@@ -469,46 +406,18 @@ public class PoweredLightsController extends BlockContainer implements IToolable
 				lightList.appendTag(posTag);
 			}
 			nbt.setTag("lightPositions", lightList);
-
-			nbt.setBoolean("redstoneDisabled", redstoneDisabled);
 		}
 
-		@Override
-		public long getPower() {
-			return power;
-		}
-
-		@Override
-		public void setPower(long power) {
-			this.power = power;
-		}
-
-		@Override
-		public long getMaxPower() {
-			return maxPower;
-		}
-
+		@Override public Packet getDescriptionPacket() { NBTTagCompound nbt = new NBTTagCompound(); this.writeToNBT(nbt); return new S35PacketUpdateTileEntity(this.xCoord, this.yCoord, this.zCoord, 0, nbt); }
+		@Override public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) { this.readFromNBT(pkt.func_148857_g()); }
+		@Override public long getPower() { return power; }
+		@Override public void setPower(long power) { this.power = power; }
+		@Override public long getMaxPower() { return maxPower; }
+		
 		private boolean isLoaded = true;
-
-		@Override
-		public boolean isLoaded() {
-			return isLoaded;
-		}
-
-		@Override
-		public void onChunkUnload() {
-			this.isLoaded = false;
-		}
-
-		@Override
-		@SideOnly(Side.CLIENT)
-		public double getMaxRenderDistanceSquared() {
-			return 65536.0D;
-		}
-
-		@Override
-		public AxisAlignedBB getRenderBoundingBox() {
-			return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2);
-		}
+		@Override public boolean isLoaded() { return isLoaded; }
+		@Override public void onChunkUnload() { this.isLoaded = false; }
+		@Override @SideOnly(Side.CLIENT) public double getMaxRenderDistanceSquared() { return 65536.0D; }
+		@Override public AxisAlignedBB getRenderBoundingBox() { return AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 2, yCoord + 2, zCoord + 2); }
 	}
 }

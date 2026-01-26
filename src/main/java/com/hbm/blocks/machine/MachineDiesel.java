@@ -14,6 +14,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -28,7 +29,12 @@ public class MachineDiesel extends BlockMachineBase implements ITooltipProvider 
 	public TileEntity createNewTileEntity(World world, int meta) {
 		return new TileEntityMachineDiesel();
 	}
-	
+
+	@Override
+	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+		return true;
+	}
+
 	@Override public int getRenderType(){ return -1; }
 	@Override public boolean isOpaqueCube() { return false; }
 	@Override public boolean renderAsNormalBlock() { return false; }

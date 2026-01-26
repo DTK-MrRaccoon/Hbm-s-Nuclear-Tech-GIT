@@ -6,6 +6,7 @@ import com.hbm.tileentity.machine.TileEntityMachineCombustionEngine;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
@@ -27,6 +28,11 @@ public class MachineCombustionEngine extends BlockDummyable {
 	@Override
 	public int[] getDimensions() {
 		return new int[] {1, 0, 1, 0, 3, 2};
+	}
+
+	@Override
+	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side) {
+		return true;
 	}
 
 	@Override
