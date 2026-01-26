@@ -94,6 +94,10 @@ public class ItemLemon extends ItemFood {
 		if(this == ModItems.flesh_burger) {
 			list.add(I18nUtil.resolveKey("item.flesh_burger.desc"));
 		}
+
+		if(this == ModItems.oreshnik) {
+			list.add(I18nUtil.resolveKey("item.oreshnik.desc"));
+		}
 	}
 
 	@Override

@@ -465,6 +465,11 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
 				.outputItems(new ItemStack(ModItems.cheese, 4)));
 
+		this.register(new GenericRecipe("chem.oreshnik").setup(160, 150)
+				.inputFluids(new FluidStack(Fluids.CMILK, 250))
+				.inputItems(new ComparableStack( ModItems.flour, 2))
+				.outputItems(new ItemStack(ModItems.oreshnik, 4)));
+
 		this.register(new GenericRecipe("chem.cannedemilk").setup(160, 300)
 				.inputFluids(new FluidStack(Fluids.EMILK, 750))
 				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))

@@ -989,6 +989,8 @@ public class ModItems {
 	public static Item teacup;
 	public static Item teacup_empty;
 
+	public static Item oreshnik;
+
 	public static Item boat_rubber;
 	public static Item cart;
 	public static Item train;
@@ -3144,6 +3146,7 @@ public class ModItems {
 		canned_conserve = (ItemEnumMulti) new ItemConserve().setUnlocalizedName("canned_conserve").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":canned");
 		can_key = new Item().setUnlocalizedName("can_key").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":can_key");
 		food_can_empty = new Item().setUnlocalizedName("food_can_empty").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":food_can_empty");
+		oreshnik = new ItemLemon(3, 0.35F, false).setUnlocalizedName("oreshnik").setCreativeTab(MainRegistry.consumableTab).setTextureName(RefStrings.MODID + ":oreshnik");
 
 		boat_rubber = new ItemBoatRubber().setUnlocalizedName("boat_rubber").setTextureName(RefStrings.MODID + ":boat_rubber");
 		cart = new ItemModMinecart().setUnlocalizedName("cart");
@@ -6699,6 +6702,7 @@ public class ModItems {
 		GameRegistry.registerItem(mucho_mango, mucho_mango.getUnlocalizedName());
 		GameRegistry.registerItem(chocolate, chocolate.getUnlocalizedName());
 		GameRegistry.registerItem(flour, flour.getUnlocalizedName());
+		GameRegistry.registerItem(oreshnik, oreshnik.getUnlocalizedName());
 
 		//Energy Drinks
 		GameRegistry.registerItem(can_empty, can_empty.getUnlocalizedName());

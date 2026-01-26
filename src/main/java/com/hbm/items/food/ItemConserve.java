@@ -45,11 +45,13 @@ public class ItemConserve extends ItemEnumMulti {
 	//the fancy enum lambdas and method references and whatever can come later if necessary
 	protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
 
-		player.inventory.addItemStackToInventory(new ItemStack(ModItems.can_key));
-		player.inventory.addItemStackToInventory(new ItemStack(ModItems.food_can_empty));
-
 		EnumFoodType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		
+
+		if(num != EnumFoodType.TUBE) {
+			player.inventory.addItemStackToInventory(new ItemStack(ModItems.can_key));
+			player.inventory.addItemStackToInventory(new ItemStack(ModItems.food_can_empty));
+		}
+
 		if(num == EnumFoodType.BHOLE && !world.isRemote) {
 			EntityVortex vortex = (EntityVortex) new EntityVortex(world, 0.5F).setShrinkRate(0.01F).noBreak();
 			vortex.posX = player.posX;
@@ -59,7 +61,7 @@ public class ItemConserve extends ItemEnumMulti {
 
 		} else if(num == EnumFoodType.RECURSION && world.rand.nextInt(10) > 0) {
 			player.inventory.addItemStackToInventory(stackFromEnum(EnumFoodType.RECURSION));
-			
+
 		} else if(num == EnumFoodType.FIST) {
 			player.attackEntityFrom(DamageSource.magic, 2F);
 
@@ -177,10 +179,10 @@ public class ItemConserve extends ItemEnumMulti {
 		COFFEE(2, 0.5F),
 		MYSTERYV2(6, 0.5F),
 		NUTRIENTPASTE(7, 0.35F);
-		
+
 		protected int foodLevel;
 		protected float saturation;
-		
+
 		private EnumFoodType(int level, float sat) {
 			this.foodLevel = level;
 			this.saturation = sat;
