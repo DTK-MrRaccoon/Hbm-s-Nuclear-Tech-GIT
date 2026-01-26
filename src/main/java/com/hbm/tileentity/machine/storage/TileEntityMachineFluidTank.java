@@ -204,12 +204,11 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 					updateLeak(leaking);
 				}
 
-				if(!this.isShielded() && tank.getTankType().hasTrait(FT_VentRadiation.class)) {
-					if(worldObj.getTotalWorldTime() % 20 == 0) {
-						FT_VentRadiation radTrait = tank.getTankType().getTrait(FT_VentRadiation.class);
+				if(!this.isShielded() && worldObj.getTotalWorldTime() % 20 == 0) {
+					FT_VentRadiation radTrait = tank.getTankType().getTrait(FT_VentRadiation.class);
 
+					if(radTrait != null) {
 						float strength = radTrait.getRadPerMB();
-
 						float pollutionAmount = strength * (tank.getFill() / 1000F);
 
 						ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, pollutionAmount);
