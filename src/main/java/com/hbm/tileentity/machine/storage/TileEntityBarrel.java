@@ -17,7 +17,11 @@ import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.fluid.trait.FT_Corrosive;
 import com.hbm.inventory.fluid.trait.FT_Polluting;
+import com.hbm.inventory.fluid.trait.FT_VentRadiation;
 import com.hbm.inventory.fluid.trait.FluidTrait.FluidReleaseType;
+import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.PollutionHandler.PollutionType;
+import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.inventory.gui.GUIBarrel;
 import com.hbm.lib.Library;
 import com.hbm.saveddata.TomSaveData;
@@ -66,6 +70,10 @@ public class TileEntityBarrel extends TileEntityMachineBase implements SimpleCom
 	public TileEntityBarrel(int capacity) {
 		super(6);
 		tank = new FluidTank(Fluids.NONE, capacity);
+	}
+
+	public boolean isShielded() {
+		return false;
 	}
 
 	@Override
@@ -145,8 +153,19 @@ public class TileEntityBarrel extends TileEntityMachineBase implements SimpleCom
 
 			if(tank.getFill() > 0) {
 				checkFluidInteraction();
-			}
 
+				if(!this.isShielded() && tank.getTankType().hasTrait(FT_VentRadiation.class)) {
+					if(worldObj.getTotalWorldTime() % 20 == 0) {
+						FT_VentRadiation radTrait = tank.getTankType().getTrait(FT_VentRadiation.class);
+
+						float strength = radTrait.getRadPerMB();
+
+						float pollutionAmount = strength * (tank.getFill() / 1000F);
+
+						ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, pollutionAmount);
+					}
+				}
+			}
 			this.networkPackNT(50);
 		}
 	}

@@ -454,7 +454,7 @@ public class Fluids {
 		HYDROFLUORIC_ACID =			new FluidType("HYDROFLUORIC_ACID", 0x89CFF0, 3, 0, 1, EnumSymbol.ACID).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.POISON, POISON_MINOR));
 		LIQUID_FLUORITE	=			new FluidType("LIQUID_FLUORITE", 0x90EE90, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F));
 		FLUORINE_GAS =				new FluidType("FLUORINE_GAS", 0xD5DEAD, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(GASEOUS, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.POISON, POISON_EXTREME));
-		URANIUM_OXIDE_SLURRY =			new FluidType("URANIUM_OXIDE_SLURRY", 0xA9A9A9, 3, 0, 1, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(40), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.2F));
+		URANIUM_OXIDE_SLURRY =			new FluidType("URANIUM_OXIDE_SLURRY", 0xA9A9A9, 3, 0, 1, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(40), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.4F));
 
 
 		// ^ ^ ^ ^ ^ ^ ^ ^

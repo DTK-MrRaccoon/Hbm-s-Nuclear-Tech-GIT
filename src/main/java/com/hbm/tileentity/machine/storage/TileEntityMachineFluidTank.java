@@ -20,6 +20,10 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.trait.*;
 import com.hbm.inventory.fluid.trait.FluidTrait.FluidReleaseType;
 import com.hbm.inventory.fluid.trait.FluidTraitSimple.*;
+import com.hbm.inventory.fluid.trait.FT_VentRadiation;
+import com.hbm.handler.radiation.ChunkRadiationManager;
+import com.hbm.handler.pollution.PollutionHandler;
+import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.inventory.gui.GUIMachineFluidTank;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
@@ -85,6 +89,10 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 		if(tank.getFill() == 0) return 0;
 		double frac = (double) tank.getFill() / (double) tank.getMaxFill() * 15D;
 		return (byte) (MathHelper.clamp_int((int) frac + 1, 0, 15));
+	}
+
+	public boolean isShielded() {
+		return false;
 	}
 
 	@Override
@@ -194,6 +202,18 @@ public class TileEntityMachineFluidTank extends TileEntityMachineBase implements
 					}
 
 					updateLeak(leaking);
+				}
+
+				if(!this.isShielded() && tank.getTankType().hasTrait(FT_VentRadiation.class)) {
+					if(worldObj.getTotalWorldTime() % 20 == 0) {
+						FT_VentRadiation radTrait = tank.getTankType().getTrait(FT_VentRadiation.class);
+
+						float strength = radTrait.getRadPerMB();
+
+						float pollutionAmount = strength * (tank.getFill() / 1000F);
+
+						ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, pollutionAmount);
+					}
 				}
 			}
 

@@ -17,6 +17,11 @@ public class TileEntityMachineRadTank extends TileEntityBarrel {
 	}
 
 	@Override
+	public boolean isShielded() {
+		return true;
+	}
+
+	@Override
 	public String getName() {
 		return "container.machineRadTank";
 	}
