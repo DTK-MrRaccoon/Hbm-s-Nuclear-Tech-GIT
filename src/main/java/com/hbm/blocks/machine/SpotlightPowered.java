@@ -46,7 +46,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 
 		this.setHardness(0.5F);
 		
-		if(isOn) setLightLevel(0.9F);
+		if(isOn) setLightLevel(1.0F);
 	}
 
 	@Override
