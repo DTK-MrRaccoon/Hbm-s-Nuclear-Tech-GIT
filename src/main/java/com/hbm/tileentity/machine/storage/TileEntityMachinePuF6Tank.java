@@ -222,7 +222,7 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
         return side == 0 ? slots_bottom : (side == 1 ? slots_top : slots_side);
-    }
+        }
 	
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {

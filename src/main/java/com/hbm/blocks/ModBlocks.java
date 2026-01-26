@@ -1069,6 +1069,7 @@ public class ModBlocks {
 	public static Block machine_fluidtank;
 	public static Block machine_bat9000;
 	public static Block machine_orbus;
+	public static Block machine_radtank;
 
 	public static Block launch_pad;
 	public static Block launch_pad_rusted;
@@ -2357,6 +2358,7 @@ public class ModBlocks {
 		machine_fluidtank = new MachineFluidTank(Material.iron).setBlockName("machine_fluidtank").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":machine_fluidtank");
 		machine_bat9000 = new MachineBigAssTank9000(Material.iron).setBlockName("machine_bat9000").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_orbus = new MachineOrbus(Material.iron).setBlockName("machine_orbus").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
+		machine_radtank = new MachineRadTank(Material.iron).setBlockName("machine_radtank").setHardness(5.0F).setResistance(20.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_turbofan = new MachineTurbofan(Material.iron).setBlockName("machine_turbofan").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":machine_turbofan");
 		machine_turbinegas = new MachineTurbineGas(Material.iron).setBlockName("machine_turbinegas").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_lpw2 = new MachineLPW2().setBlockName("machine_lpw2").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
@@ -3460,6 +3462,7 @@ public class ModBlocks {
 		register(machine_fluidtank);
 		register(machine_bat9000);
 		register(machine_orbus);
+		register(machine_radtank);
 		GameRegistry.registerBlock(machine_boiler_off, machine_boiler_off.getUnlocalizedName());
 		register(machine_steam_engine);
 		register(machine_turbine);

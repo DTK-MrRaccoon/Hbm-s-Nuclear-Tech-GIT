@@ -525,6 +525,8 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.bat9k").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_bat9000, 1))
 				.inputItems(new OreDictStack(STEEL.plate(), 16), new OreDictStack(ANY_RESISTANTALLOY.plateWelded(), 2), new ComparableStack(ModBlocks.steel_scaffold, 16), new OreDictStack(ANY_TAR.any(), 16))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.FERRO_PLATING), new ComparableStack(ModBlocks.steel_scaffold, 16), new OreDictStack(ANY_TAR.any(), 16)));
+		this.register(new GenericRecipe("ass.radtank").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_radtank, 1))
+				.inputItems(new OreDictStack(STEEL.plate(), 8), new OreDictStack(PB.plate(), 24), new OreDictStack(PB.bolt(), 16), new OreDictStack(STEEL.shell(), 2), new OreDictStack(ANY_TAR.any(), 16)));
 		this.register(new GenericRecipe("ass.orbus").setup(300, 100).outputItems(new ItemStack(ModBlocks.machine_orbus, 1))
 				.inputItems(new OreDictStack(ANY_RESISTANTALLOY.plateWelded(), 8), new OreDictStack(BIGMT.plateCast(), 4), new ComparableStack(ModItems.coil_advanced_alloy, 12), new ComparableStack(ModItems.battery_sc_polonium, 1))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 8, EnumExpensiveType.FERRO_PLATING), new OreDictStack(BIGMT.plateCast(), 16), new ComparableStack(ModItems.coil_advanced_alloy, 24), new ComparableStack(ModItems.battery_sc_polonium, 1)));

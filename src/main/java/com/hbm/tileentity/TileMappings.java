@@ -117,6 +117,7 @@ public class TileMappings {
 		put(TileEntityMachineAnnihilator.class, "tileentity_annihilator");
 		put(TileEntityMachineDrain.class, "tileentity_fluid_drain");
 		put(TileEntityMachineFluidTank.class, "tileentity_fluid_tank");
+		put(TileEntityMachineRadTank.class, "tileentity_rad_tank");
 		put(TileEntityMachineTurbofan.class, "tileentity_machine_turbofan");
 		put(TileEntityMachineTurbineGas.class, "tileentity_machine_gasturbine");
 		put(TileEntityMachineLPW2.class, "tileentity_machine_lpw2");
