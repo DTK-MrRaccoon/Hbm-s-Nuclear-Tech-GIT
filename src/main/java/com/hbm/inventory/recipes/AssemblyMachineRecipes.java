@@ -306,6 +306,8 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems( new OreDictStack(ANY_CONCRETE.any(), 12), new OreDictStack(STEEL.plate(), 12), new OreDictStack(STEEL.shell(), 6), new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CAPACITOR), new ComparableStack(ModItems.catalyst_clay, 12), new ComparableStack(ModItems.coil_tungsten, 4)));
 		this.register(new GenericRecipe("ass.cryodistil").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_cryo_distill))
 				.inputItems(new OreDictStack(STEEL.plateCast(), 2), new OreDictStack(ANY_CONCRETE.any(), 4), new OreDictStack(STEEL.plate(), 12), new OreDictStack(ANY_PLASTIC.ingot(), 4), new ComparableStack(ModBlocks.machine_battery, 1), new ComparableStack(ModItems.coil_copper, 4)));
+		this.register(new GenericRecipe("ass.transporterrocket").setup(400, 100).outputItems(new ItemStack(ModBlocks.transporter_rocket, 2))
+				.inputItems(new OreDictStack(STEEL.plateCast(), 2), new OreDictStack(TI.plateWelded(), 4), new ComparableStack(ModBlocks.crate_iron, 2), new ComparableStack(ModItems.thruster_small, 1), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ADVANCED)));
 		this.register(new GenericRecipe("ass.liquefactor").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_liquefactor, 1))
 				.inputItems(new OreDictStack(STEEL.shell(), 4), new OreDictStack(CU.plate(), 12), new OreDictStack(ANY_TAR.any(), 4), new ComparableStack(ModItems.circuit, 12, EnumCircuitType.CAPACITOR), new ComparableStack(ModItems.coil_tungsten, 8))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 1, EnumExpensiveType.HEAVY_FRAME), new OreDictStack(ANY_TAR.any(), 16), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CAPACITOR)));
