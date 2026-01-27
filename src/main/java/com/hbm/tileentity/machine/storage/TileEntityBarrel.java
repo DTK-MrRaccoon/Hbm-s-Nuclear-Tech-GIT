@@ -73,7 +73,8 @@ public class TileEntityBarrel extends TileEntityMachineBase implements SimpleCom
 	}
 
 	public boolean isShielded() {
-		return false;
+		Block b = this.getBlockType();
+		return b == ModBlocks.barrel_lead || b == ModBlocks.barrel_antimatter;
 	}
 
 	@Override

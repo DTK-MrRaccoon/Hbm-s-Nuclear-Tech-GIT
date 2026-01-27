@@ -5222,6 +5222,7 @@ tile.barrel_corroded.name=Corroded Barrel
 tile.barrel_iron.name=Iron Barrel
 tile.barrel_plastic.name=Safe Barrel™
 tile.barrel_steel.name=Steel Barrel
+tile.barrel_lead.name=Lead Barrel (Radiation shielded)
 tile.barrel_tcalloy.name=Technetium Steel Barrel
 tile.barricade.name=Sand Bags
 tile.basalt.name=Basalt
