@@ -2,6 +2,7 @@ package com.hbm.blocks.network;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ILookOverlay;
 import com.hbm.items.machine.IItemFluidIdentifier;
@@ -9,6 +10,7 @@ import com.hbm.tileentity.TileEntityProxyCombo;
 import com.hbm.tileentity.network.TileEntityElectricFluidPump;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -34,7 +36,7 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
     @Override
     public TileEntity createNewTileEntity(World world, int meta) {
         if (meta >= 12) return new TileEntityElectricFluidPump();
-        if (meta >= 6) return new TileEntityProxyCombo(false, true, true);
+        if (meta >= 6)  return new TileEntityProxyCombo(false, true, true);
         return null;
     }
 
@@ -60,29 +62,36 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
         world.setBlockMetadataWithNotify(x, y, z, meta + offset, 2);
         world.markBlockForUpdate(x, y, z);
         world.markBlockForUpdate(x, y + 1, z);
-        Block topBlock = world.getBlock(x, y + 1, z);
-        if (topBlock != null) {
-            world.notifyBlocksOfNeighborChange(x, y + 1, z, topBlock);
+        notifyTopNeighbors(world, x, y, z);
+    }
+
+    @Override
+    public void onNeighborBlockChange(World world, int x, int y, int z, Block neighbor) {
+        super.onNeighborBlockChange(world, x, y, z, neighbor);
+        int[] corePos = findCore(world, x, y, z);
+        if (corePos != null) {
+            world.markBlockForUpdate(corePos[0], corePos[1], corePos[2]);
+            world.markBlockForUpdate(corePos[0], corePos[1] + 1, corePos[2]);
         }
-        world.markBlockForUpdate(x + 1, y + 1, z);
-        world.markBlockForUpdate(x - 1, y + 1, z);
-        world.markBlockForUpdate(x, y + 1, z + 1);
-        world.markBlockForUpdate(x, y + 1, z - 1);
-        world.markBlockForUpdate(x, y + 2, z);
     }
 
     @Override
     public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
         int[] corePos = findCore(world, x, y, z);
         if (corePos == null) return false;
-        if (!player.isSneaking() && player.getHeldItem() != null && player.getHeldItem().getItem() instanceof IItemFluidIdentifier) {
+        ItemStack held = player.getHeldItem();
+        if (!player.isSneaking() && held != null && held.getItem() instanceof IItemFluidIdentifier) {
             TileEntity te = world.getTileEntity(corePos[0], corePos[1], corePos[2]);
             if (te instanceof TileEntityElectricFluidPump) {
                 if (!world.isRemote) {
                     TileEntityElectricFluidPump pump = (TileEntityElectricFluidPump) te;
-                    IItemFluidIdentifier id = (IItemFluidIdentifier) player.getHeldItem().getItem();
-                    pump.setFluidType(id.getType(world, x, y, z, player.getHeldItem()));
-                    player.addChatComponentMessage(new ChatComponentText("Pump set to: ").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)).appendSibling(new ChatComponentTranslation(pump.tanks[0].getTankType().getConditionalName())));
+                    IItemFluidIdentifier id = (IItemFluidIdentifier) held.getItem();
+                    pump.setFluidType(id.getType(world, x, y, z, held));
+                    player.addChatComponentMessage(
+                        new ChatComponentText("Pump set to: ")
+                            .setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
+                            .appendSibling(new ChatComponentTranslation(pump.tanks[0].getTankType().getConditionalName()))
+                    );
                 }
                 return true;
             }
@@ -117,11 +126,20 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
         text.add(EnumChatFormatting.RED + "Power: " + BobMathUtil.getShortNumber(pump.getPower()) + " / " + BobMathUtil.getShortNumber(pump.getMaxPower()) + " HE");
         text.add(EnumChatFormatting.BLUE + "Input Tank: " + pump.tanks[0].getFill() + "/" + pump.tanks[0].getMaxFill() + " mB " + pump.tanks[0].getTankType().getLocalizedName());
         text.add(EnumChatFormatting.GREEN + "Output Tank: " + pump.tanks[1].getFill() + "/" + pump.tanks[1].getMaxFill() + " mB " + pump.tanks[1].getTankType().getLocalizedName());
-        if (pump.isActive) {
-            text.add(EnumChatFormatting.GREEN + "Pumping...");
-        } else {
-            text.add(EnumChatFormatting.RED + "Idle");
-        }
+        text.add("Rotor speed: " + String.format("%.1f", pump.rotSpeed) + " / " + pump.maxRotSpeed + " deg/tick");
+        text.add("Redstone: " + (pump.redstoneDisable ? EnumChatFormatting.RED + "BRAKING" : EnumChatFormatting.GREEN + "ENABLED"));
+        text.add(pump.isActive ? EnumChatFormatting.GREEN + "Pumping..." : EnumChatFormatting.RED + "Idle");
         ILookOverlay.printGeneric(event, null, 0xffff00, 0x404000, text);
+    }
+
+    private void notifyTopNeighbors(World world, int x, int y, int z) {
+        Block topBlock = world.getBlock(x, y + 1, z);
+        if (topBlock != null) {
+            world.notifyBlocksOfNeighborChange(x + 1, y + 1, z, topBlock);
+            world.notifyBlocksOfNeighborChange(x - 1, y + 1, z, topBlock);
+            world.notifyBlocksOfNeighborChange(x, y + 1, z + 1, topBlock);
+            world.notifyBlocksOfNeighborChange(x, y + 1, z - 1, topBlock);
+            world.notifyBlocksOfNeighborChange(x, y + 2, z, topBlock);
+        }
     }
 }

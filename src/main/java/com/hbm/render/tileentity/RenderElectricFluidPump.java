@@ -25,11 +25,8 @@ public class RenderElectricFluidPump extends TileEntitySpecialRenderer implement
             GL11.glTranslated(x + 0.5D, y, z + 0.5D);
             GL11.glEnable(GL11.GL_LIGHTING);
 
-            // Initial rotation for the model standard
             GL11.glRotatef(180, 0F, 1F, 0F);
 
-            // Metadata based rotation (NSEW)
-            // Subtract offset because it's a Dummyable block
             int meta = te.getBlockMetadata() - BlockDummyable.offset;
             
             switch(meta) {
@@ -42,14 +39,11 @@ public class RenderElectricFluidPump extends TileEntitySpecialRenderer implement
             bindTexture(ResourceManager.electric_fluid_pump_tex);
 
             GL11.glShadeModel(GL11.GL_SMOOTH);
-            
-            // Render the static base
+
             ResourceManager.electric_fluid_pump.renderPart("Base");
 
-            // Calculate smooth rotation for the fan
-            float rotation = elepump.prevRot + (elepump.rot - elepump.prevRot) * interp;
+            float rotation = (elepump.prevRot + (elepump.rot - elepump.prevRot) * interp) / 4.0F;
 
-            // Render the fan with rotation
             GL11.glPushMatrix();
             GL11.glRotatef(rotation, 0, 1, 0);
             ResourceManager.electric_fluid_pump.renderPart("Fan");
@@ -65,11 +59,11 @@ public class RenderElectricFluidPump extends TileEntitySpecialRenderer implement
     public IItemRenderer getRenderer() {
         return new ItemRenderBase() {
             public void renderInventory() {
-                GL11.glTranslated(0, -2, 0); // Adjust Y to center the 2-block tall model in inventory
-                GL11.glScaled(4, 4, 4); // Adjust scale
+                GL11.glTranslated(0, -4, 0);
+                GL11.glScaled(6, 6, 6);
             }
             public void renderCommon() {
-                GL11.glScaled(1.0, 1.0, 1.0); // Normal scale
+                GL11.glScaled(1.0, 1.0, 1.0);
                 GL11.glDisable(GL11.GL_CULL_FACE);
                 GL11.glShadeModel(GL11.GL_SMOOTH);
                 bindTexture(ResourceManager.electric_fluid_pump_tex);

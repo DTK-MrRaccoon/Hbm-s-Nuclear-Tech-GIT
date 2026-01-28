@@ -377,6 +377,8 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.chemfac").setup(400, 100).outputItems(new ItemStack(ModBlocks.machine_chemical_factory, 1))
 				.inputItems(new OreDictStack(DURA.ingot(), 16), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 8), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new OreDictStack(CU.pipe(), 8), new ComparableStack(ModItems.motor_desh, 4), new ComparableStack(ModItems.coil_tungsten, 16), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.HEAVY_FRAME), new OreDictStack(ANY_RESISTANTALLOY.ingot(), 16), new OreDictStack(RUBBER.ingot(), 16), new OreDictStack(STEEL.shell(), 12), new OreDictStack(CU.pipe(), 16), new ComparableStack(ModItems.motor_desh, 16), new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.CIRCUIT)));
+		this.register(new GenericRecipe("ass.elefluidpump").setup(400, 100).outputItems(new ItemStack(ModBlocks.electric_fluid_pump, 1))
+				.inputItems(new OreDictStack(STEEL.ingot(), 12), new OreDictStack(CU.plate(), 2), new OreDictStack(RUBBER.ingot(), 8), new OreDictStack(STEEL.shell(), 2), new OreDictStack(CU.pipe(), 4), new ComparableStack(ModItems.motor, 1)));
 
 
                 // Legacy machine recipes
