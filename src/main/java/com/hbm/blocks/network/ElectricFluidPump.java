@@ -123,12 +123,24 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
                 ILookOverlay.printGeneric(event, blockName, 0xffff00, 0x404000, text);
             }
         }
+
         text.add(EnumChatFormatting.RED + "Power: " + BobMathUtil.getShortNumber(pump.getPower()) + " / " + BobMathUtil.getShortNumber(pump.getMaxPower()) + " HE");
         text.add(EnumChatFormatting.BLUE + "Input Tank: " + pump.tanks[0].getFill() + "/" + pump.tanks[0].getMaxFill() + " mB " + pump.tanks[0].getTankType().getLocalizedName());
         text.add(EnumChatFormatting.GREEN + "Output Tank: " + pump.tanks[1].getFill() + "/" + pump.tanks[1].getMaxFill() + " mB " + pump.tanks[1].getTankType().getLocalizedName());
-        text.add("Rotor speed: " + String.format("%.1f", pump.rotSpeed) + " / " + pump.maxRotSpeed + " deg/tick");
-        text.add("Redstone: " + (pump.redstoneDisable ? EnumChatFormatting.RED + "BRAKING" : EnumChatFormatting.GREEN + "ENABLED"));
+        text.add("Speed: " + String.format("%.1f/%.1f %.0fabs", pump.rotSpeed, pump.ocTargetSpeed, pump.maxRotSpeed));
+        text.add("Redstone: " + (pump.redstoneDisable ? EnumChatFormatting.RED + "DISABLED" : EnumChatFormatting.GREEN + "ENABLED"));
         text.add(pump.isActive ? EnumChatFormatting.GREEN + "Pumping..." : EnumChatFormatting.RED + "Idle");
+
+        if (pump.ocDebugInfo == 1) {
+            text.add(EnumChatFormatting.LIGHT_PURPLE + "=== OC DEBUG ===");
+            text.add(EnumChatFormatting.LIGHT_PURPLE + "ForcedOn: " + pump.ocForcedOn);
+            text.add(EnumChatFormatting.LIGHT_PURPLE + "ForcedOff: " + pump.ocForcedOff);
+            text.add(EnumChatFormatting.LIGHT_PURPLE + "TargetOverride: " + pump.ocHasTargetOverride);
+            if (pump.ocHasTargetOverride) {
+                text.add(EnumChatFormatting.LIGHT_PURPLE + "OC Target: " + pump.ocTargetSpeed);
+            }
+        }
+
         ILookOverlay.printGeneric(event, null, 0xffff00, 0x404000, text);
     }
 

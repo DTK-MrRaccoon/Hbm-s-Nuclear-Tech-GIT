@@ -105,7 +105,7 @@ dependencies {
 
 	compileOnly "inventorytweaks:InventoryTweaks:1.59-dev:deobf"
 
-	implementation "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:api"
+	implementation "li.cil.oc:OpenComputers:MC1.7.10-1.5.+:dev"
 
 	compileOnly "com.github.GTNewHorizons:Applied-Energistics-2-Unofficial:rv3-beta.56-GTNH:dev"
 }
