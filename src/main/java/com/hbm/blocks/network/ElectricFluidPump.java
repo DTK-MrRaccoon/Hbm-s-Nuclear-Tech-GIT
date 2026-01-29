@@ -54,11 +54,7 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
     public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack itemStack) {
         super.onBlockPlacedBy(world, x, y, z, player, itemStack);
         int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-        int meta = 2;
-        if (i == 0) meta = 2;
-        if (i == 1) meta = 5;
-        if (i == 2) meta = 3;
-        if (i == 3) meta = 4;
+        int meta = (i == 1) ? 5 : (i == 2) ? 3 : (i == 3) ? 4 : 2;
         world.setBlockMetadataWithNotify(x, y, z, meta + offset, 2);
         world.markBlockForUpdate(x, y, z);
         world.markBlockForUpdate(x, y + 1, z);
@@ -109,6 +105,7 @@ public class ElectricFluidPump extends BlockDummyable implements ILookOverlay {
         TileEntityElectricFluidPump pump = (TileEntityElectricFluidPump) tile;
         List<String> text = new ArrayList<>();
         String blockName = I18nUtil.resolveKey(getUnlocalizedName() + ".name");
+
         if (y == corePos[1]) {
             ILookOverlay.printGeneric(event, blockName + " (Bottom)", 0xffff00, 0x404000, text);
         } else if (y == corePos[1] + 1) {

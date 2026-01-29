@@ -40,7 +40,7 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
     public final float maxRotSpeed = 120f;
     public float maxSpeedLimit = 120f;
     private final float spinUpAccel = 0.0625f;
-    private float spinDownAccel = 0.0078125f;
+    private final float spinDownAccel = 0.0078125f;
 
     public boolean isActive = false;
 
@@ -62,14 +62,12 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
     public boolean ocForcedOn = false;
     public boolean ocForcedOff = false;
     public boolean ocHasTargetOverride = false;
-    public float ocTargetSpeed = 0f;
+    public float ocTargetSpeed = 120f;
     private float redstoneBrakeFactor = 16.0f;
 
     public int ocDebugInfo = 0;
 
     private final long idlePowerAtMax = 500L;
-
-    private final float noPowerBrakeFactor = 1.0f;
 
     public TileEntityElectricFluidPump() {
         super(0);
@@ -88,8 +86,7 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
 
     private void serverTick() {
         int meta = getBlockMetadata();
-        boolean isMain = meta >= 12;
-        if (!isMain) return;
+        if (meta < 12) return;
 
         if (updateCooldown > 0) updateCooldown--;
 
@@ -111,61 +108,40 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
         if (rotSpeed > 0f) {
             long idleCost = Math.round(idlePowerAtMax * (rotSpeed / maxRotSpeed));
             if (idleCost > 0) {
-                if (power >= idleCost) {
-                    power -= idleCost;
-                } else {
-                    power = 0;
-                }
+                if (power >= idleCost) power -= idleCost;
+                else power = 0;
             }
         }
 
         transferFluid();
 
-        updateVisuals();
-
-        if (updateCooldown <= 0) {
-            this.networkPackNT(isActive ? 10 : 20);
-            updateCooldown = isActive ? 2 : 4;
+        prevRot = rot;
+        rot += rotSpeed;
+        if (rot >= 360f) {
+            rot -= 360f;
+            prevRot -= 360f;
         }
 
-        worldObj.markBlockForUpdate(xCoord, yCoord + 1, zCoord);
-        notifyTopNeighbors();
+        updateVisualsAndNetwork();
     }
 
     private void calculateTargetSpeed(boolean hasLiquidToMove) {
-
-        if (ocForcedOff || redstoneDisable) {
-            targetSpeed = 0f;
-            return;
-        }
-
-        if (power <= 0L) {
+        if (ocForcedOff || redstoneDisable || power <= 0L) {
             targetSpeed = 0f;
             return;
         }
 
         if (ocForcedOn) {
-            if (ocHasTargetOverride) {
-                targetSpeed = Math.min(ocTargetSpeed, maxSpeedLimit);
-            } else {
-                float pf = Math.min(1f, (float) power / (float) maxPower);
-                targetSpeed = maxSpeedLimit * pf;
-            }
+            targetSpeed = ocHasTargetOverride ? Math.min(ocTargetSpeed, maxSpeedLimit) : maxSpeedLimit * Math.min(1f, (float) power / (float) maxPower);
         } else if (ocHasTargetOverride) {
             targetSpeed = Math.min(ocTargetSpeed, maxSpeedLimit);
         } else {
-            if (redstoneDisable) {
-                targetSpeed = 0f;
-            } else if (!hasLiquidToMove) {
-                float pf = Math.min(1f, (float) power / (float) maxPower);
-                targetSpeed = maxSpeedLimit * pf;
-            } else {
-                float pf = Math.min(1f, (float) power / (float) maxPower);
-                targetSpeed = maxSpeedLimit * pf;
-            }
+            float pf = Math.min(1f, (float) power / (float) maxPower);
+            targetSpeed = maxSpeedLimit * pf;
         }
 
-        targetSpeed = Math.max(0f, Math.min(targetSpeed, maxSpeedLimit));
+        if (targetSpeed < 0f) targetSpeed = 0f;
+        if (targetSpeed > maxSpeedLimit) targetSpeed = maxSpeedLimit;
     }
 
     private void updateRotationSpeed(boolean hasLiquidToMove) {
@@ -177,25 +153,17 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
             long accelCost = Math.max(0L, (long) (accel * 2L));
             if (accelCost > power) accelCost = power;
             power -= accelCost;
-        }
-
-        if (accel > 0) {
             float ap = Math.min(accel, targetSpeed - rotSpeed);
             rotSpeed += ap;
         } else if (rotSpeed > targetSpeed) {
-            float brakeMultiplier = 1.0f;
-            if (redstoneDisable || ocForcedOff) {
-                brakeMultiplier = redstoneBrakeFactor;
-            } else if (power <= 0L) {
-                brakeMultiplier = noPowerBrakeFactor;
-            }
-
+            float brakeMultiplier = (redstoneDisable || ocForcedOff) ? redstoneBrakeFactor : (power <= 0L ? 1.0f : 1.0f);
             float decelBase = spinDownAccel * brakeMultiplier;
             float decel = Math.min(decelBase, rotSpeed - targetSpeed);
             rotSpeed -= decel;
         }
 
-        rotSpeed = Math.max(0f, Math.min(rotSpeed, maxSpeedLimit));
+        if (rotSpeed < 0f) rotSpeed = 0f;
+        if (rotSpeed > maxSpeedLimit) rotSpeed = maxSpeedLimit;
     }
 
     private void transferFluid() {
@@ -210,16 +178,14 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
         if (toTransfer > 0 && rotSpeed > 3f) {
             tanks[0].setFill(tanks[0].getFill() - toTransfer);
             tanks[1].setFill(tanks[1].getFill() + toTransfer);
-            if (tanks[1].getFill() > 0 && tanks[1].getTankType() == Fluids.NONE) {
-                tanks[1].setTankType(tanks[0].getTankType());
-            }
+            if (tanks[1].getFill() > 0 && tanks[1].getTankType() == Fluids.NONE) tanks[1].setTankType(tanks[0].getTankType());
 
             isActive = true;
             idleFlashCooldown = 5;
 
             if (power > 0) {
                 float loadDecel = toTransfer * 0.00002f;
-                long moveCost = Math.round((double)toTransfer / (double)baseTransferRate * powerAtFullLoad * (0.5 + 0.5 * Math.min(1.0, speedRatio)));
+                long moveCost = Math.round((double) toTransfer / (double) baseTransferRate * powerAtFullLoad * (0.5 + 0.5 * Math.min(1.0, speedRatio)));
 
                 if (moveCost <= power) {
                     power -= moveCost;
@@ -237,15 +203,14 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
         }
     }
 
-    private void updateVisuals() {
-        prevRot = rot;
-        rot += rotSpeed;
-        if (rot >= 360f) {
-            rot -= 360f;
-            prevRot -= 360f;
+    private void updateVisualsAndNetwork() {
+        if (updateCooldown <= 0) {
+            this.networkPackNT(isActive ? 10 : 20);
+            updateCooldown = isActive ? 2 : 4;
         }
+        worldObj.markBlockForUpdate(xCoord, yCoord + 1, zCoord);
+        notifyTopNeighbors();
     }
-
 
     @SideOnly(Side.CLIENT)
     private void clientTick() {
@@ -426,9 +391,7 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
     AxisAlignedBB bb = null;
     @Override
     public AxisAlignedBB getRenderBoundingBox() {
-        if (bb == null) {
-            bb = AxisAlignedBB.getBoundingBox(xCoord - 0.5, yCoord, zCoord - 0.5, xCoord + 1.5, yCoord + 2, zCoord + 1.5);
-        }
+        if (bb == null) bb = AxisAlignedBB.getBoundingBox(xCoord - 0.5, yCoord, zCoord - 0.5, xCoord + 1.5, yCoord + 2, zCoord + 1.5);
         return bb;
     }
 
@@ -467,7 +430,6 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
         }
     }
 
-    @Override
     @Optional.Method(modid = "OpenComputers")
     public String getComponentName() {
         return "electric_fluid_pump";
