@@ -131,10 +131,13 @@ public class TileEntityElectricFluidPump extends TileEntityMachineBase implement
             return;
         }
 
+        if (!ocForcedOn && !hasLiquidToMove) {
+            targetSpeed = 0f;
+            return;
+        }
+
         if (ocForcedOn) {
             targetSpeed = ocHasTargetOverride ? Math.min(ocTargetSpeed, maxSpeedLimit) : maxSpeedLimit * Math.min(1f, (float) power / (float) maxPower);
-        } else if (ocHasTargetOverride) {
-            targetSpeed = Math.min(ocTargetSpeed, maxSpeedLimit);
         } else {
             float pf = Math.min(1f, (float) power / (float) maxPower);
             targetSpeed = maxSpeedLimit * pf;
