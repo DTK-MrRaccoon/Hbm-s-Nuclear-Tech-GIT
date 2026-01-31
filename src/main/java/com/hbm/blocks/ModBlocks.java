@@ -477,6 +477,7 @@ public class ModBlocks {
 
 	public static Block broadcaster_pc;
 	public static Block geiger;
+	public static Block radsensor;
 	public static Block hev_battery;
 
 	public static Block fence_metal;
@@ -1749,6 +1750,7 @@ public class ModBlocks {
 
 		broadcaster_pc = new PinkCloudBroadcaster(Material.iron).setBlockName("broadcaster_pc").setCreativeTab(MainRegistry.machineTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":broadcaster_pc");
 		geiger = new GeigerCounter(Material.iron).setBlockName("geiger").setCreativeTab(MainRegistry.machineTab).setHardness(15.0F).setResistance(0.25F).setBlockTextureName(RefStrings.MODID + ":geiger");
+		radsensor = new RadSensor(Material.iron).setBlockName("radsensor").setCreativeTab(MainRegistry.machineTab).setHardness(15.0F).setResistance(0.25F).setBlockTextureName(RefStrings.MODID + ":radsensor");
 		hev_battery = new HEVBattery(Material.iron).setBlockName("hev_battery").setCreativeTab(MainRegistry.machineTab).setLightLevel(10F/15F).setHardness(0.5F).setResistance(0.25F).setBlockTextureName(RefStrings.MODID + ":hev_battery");
 
 		fence_metal = new BlockMetalFence(Material.iron).setBlockName("fence_metal").setCreativeTab(MainRegistry.machineTab).setHardness(15.0F).setResistance(0.25F).setBlockTextureName(RefStrings.MODID + ":fence_metal");
@@ -3144,6 +3146,9 @@ public class ModBlocks {
 
 		//Geiger Counter
 		GameRegistry.registerBlock(geiger, geiger.getUnlocalizedName());
+
+		//Rad Sensor
+		GameRegistry.registerBlock(radsensor, radsensor.getUnlocalizedName());
 
 		//HEV Battery
 		GameRegistry.registerBlock(hev_battery, hev_battery.getUnlocalizedName());

@@ -5750,6 +5750,7 @@ tile.gas_radon.name=Radon Gas
 tile.gas_radon_dense.name=Dense Radon Gas
 tile.gas_radon_tomb.name=Tomb Gas
 tile.geiger.name=Geiger Counter
+tile.radsensor.name=Radiation Sensor
 tile.glass_ash.name=Ash Glass
 tile.glass_boron.name=Boron Glass
 tile.glass_lead.name=Lead Glass

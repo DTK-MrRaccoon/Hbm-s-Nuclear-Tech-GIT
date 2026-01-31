@@ -151,6 +151,7 @@ public class TileMappings {
 		put(TileEntitySafe.class, "tileentity_safe");
 		put(TileEntityMachineGasCent.class, "tileentity_gas_centrifuge");
 		put(TileEntityGeiger.class, "tileentity_geiger");
+		put(TileEntityRadSensor.class, "tileentity_radsensor");
 		put(TileEntityFF.class, "tileentity_forcefield");
 		put(TileEntityForceField.class, "tileentity_machine_field");
 		put(TileEntityReactorControl.class, "tileentity_reactor_remote_control");
