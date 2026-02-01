@@ -416,7 +416,7 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 
 		this.register(new GenericRecipe("chem.hydrofluoricacidtogas").setup(200, 10_000)
 				.inputFluids(new FluidStack(Fluids.HYDROFLUORIC_ACID, 500))
-				.outputFluids(new FluidStack(Fluids.FLUORINE_GAS, 500)));
+				.outputFluids(new FluidStack(Fluids.FLUORINE_GAS, 100)));
 
 		this.register(new GenericRecipe("chem.puf6").setup(200, 500)
 				.inputItems(new OreDictStack(PU.dust()), new OreDictStack(F.dust(), 3))
