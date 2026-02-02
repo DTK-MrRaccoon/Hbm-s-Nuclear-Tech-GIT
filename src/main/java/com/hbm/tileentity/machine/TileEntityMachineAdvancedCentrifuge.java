@@ -1,23 +1,374 @@
 package com.hbm.tileentity.machine;
 
-import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
+import com.hbm.blocks.BlockDummyable;
+import com.hbm.inventory.UpgradeManagerNT;
+import com.hbm.inventory.container.ContainerMachineAdvancedCentrifuge;
+import com.hbm.inventory.gui.GUIMachineAdvancedCentrifuge;
+import com.hbm.inventory.recipes.CentrifugeRecipes;
+import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
+import com.hbm.lib.Library;
+import com.hbm.main.MainRegistry;
+import com.hbm.sound.AudioWrapper;
+import com.hbm.tileentity.IGUIProvider;
+import com.hbm.tileentity.IUpgradeInfoProvider;
+import com.hbm.tileentity.TileEntityMachineBase;
+import com.hbm.util.BobMathUtil;
+import com.hbm.util.InventoryUtil;
+import com.hbm.util.fauxpointtwelve.DirPos;
+import com.hbm.util.i18n.I18nUtil;
+
+import api.hbm.energymk2.IEnergyReceiverMK2;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import io.netty.buffer.ByteBuf;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ISidedInventory;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.EnumChatFormatting;
+import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineAdvancedCentrifuge extends TileEntity {
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
-	private AxisAlignedBB bb = null;
+public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase implements IEnergyReceiverMK2, ISidedInventory, IGUIProvider, IUpgradeInfoProvider {
 
-	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		if(bb == null) bb = AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord, zCoord - 1, xCoord + 2, yCoord + 4, zCoord + 2);
-		return bb;
-	}
+    public long power;
+    public static final long maxPower = 200000;
 
-	@Override
-	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared() {
-		return 65536.0D;
-	}
+    public int progress;
+    public int maxProgress = 200;
+    public boolean isProgressing;
+
+    private AudioWrapper audio;
+
+    int consumption = 100;
+    int speed = 100;
+
+    public UpgradeManagerNT upgradeManager = new UpgradeManagerNT();
+
+    public TileEntityMachineAdvancedCentrifuge() {
+        super(23);
+    }
+
+    @Override
+    public String getName() {
+        return "container.advancedCentrifuge";
+    }
+
+    @Override
+    public void updateEntity() {
+        if(!worldObj.isRemote) {
+            this.speed = 100;
+            this.consumption = 100;
+
+            this.isProgressing = false;
+            this.power = Library.chargeTEFromItems(slots, 4, power, maxPower);
+
+            upgradeManager.checkSlots(this, slots, 21, 22);
+
+            int speedLevel = upgradeManager.getLevel(UpgradeType.SPEED);
+            int powerLevel = upgradeManager.getLevel(UpgradeType.POWER);
+            int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
+
+            this.speed -= speedLevel * 25;
+            this.consumption += speedLevel * 300;
+            this.speed += powerLevel * 5;
+            this.consumption -= powerLevel * 20;
+            this.speed /= (overLevel + 1);
+            this.consumption *= (overLevel + 1);
+
+            if(this.speed <= 0) {
+                this.speed = 1;
+            }
+
+            if(worldObj.getTotalWorldTime() % 20 == 0) {
+                updateConnections();
+            }
+
+            boolean canProcessAny = false;
+            for(int slot = 0; slot < 4; slot++) {
+                if(canProcess(slot)) {
+                    canProcessAny = true;
+                    break;
+                }
+            }
+
+            if(!canProcessAny) {
+                this.progress = 0;
+            } else {
+                isProgressing = true;
+                process();
+            }
+
+            this.networkPackNT(150);
+        } else {
+            float volume = this.getVolume(1F);
+
+            if(isProgressing && volume > 0) {
+                if(audio == null) {
+                    audio = createAudioLoop();
+                    audio.updateVolume(volume);
+                    audio.startSound();
+                } else if(!audio.isPlaying()) {
+                    audio = rebootAudio(audio);
+                    audio.updateVolume(volume);
+                }
+            } else {
+                if(audio != null) {
+                    audio.stopSound();
+                    audio = null;
+                }
+            }
+        }
+    }
+
+    private void updateConnections() {
+        for(DirPos pos : getConPos()) {
+            this.trySubscribe(worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+        }
+    }
+
+    private DirPos[] getConPos() {
+        ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - BlockDummyable.offset);
+        ForgeDirection rot = dir.getRotation(ForgeDirection.DOWN);
+
+        return new DirPos[] {
+            new DirPos(this.xCoord - dir.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 2, dir.getOpposite()),
+            new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
+
+            new DirPos(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir),
+            new DirPos(this.xCoord + dir.offsetX + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ + rot.offsetZ, dir),
+
+            new DirPos(this.xCoord - rot.offsetX, this.yCoord, this.zCoord - rot.offsetZ, rot.getOpposite()),
+            new DirPos(this.xCoord - dir.offsetX - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ - rot.offsetZ, rot.getOpposite()),
+
+            new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord, this.zCoord + rot.offsetZ * 2, rot),
+            new DirPos(this.xCoord - dir.offsetX + rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ + rot.offsetZ * 2, rot),
+        };
+    }
+
+    public boolean hasPower() {
+        return this.power > 0;
+    }
+
+    public int getPowerRemainingScaled(int scale) {
+        return (int) (this.power * scale / this.maxPower);
+    }
+
+    public int getProgressScaled(int scale) {
+        if (this.maxProgress <= 0) return 0;
+        return this.progress * scale / this.maxProgress;
+    }
+
+    @Override
+    public AudioWrapper createAudioLoop() {
+        return MainRegistry.proxy.getLoopedSound("hbm:block.centrifugeOperate", xCoord, yCoord, zCoord, 1.0F, 10F, 1.0F, 20);
+    }
+
+    @Override
+    public void onChunkUnload() {
+        if(audio != null) {
+            audio.stopSound();
+            audio = null;
+        }
+    }
+
+    @Override
+    public void invalidate() {
+        super.invalidate();
+        if(audio != null) {
+            audio.stopSound();
+            audio = null;
+        }
+    }
+
+    private boolean canProcess(int inputSlot) {
+        if(slots[inputSlot] == null) return false;
+
+        ItemStack[] output = CentrifugeRecipes.getOutput(slots[inputSlot]);
+        if(output == null) return false;
+
+        if(this.power < this.consumption) return false;
+
+        int outputStart = 5 + (inputSlot * 4);
+        for(int i = 0; i < 4; i++) {
+            if(output[i] != null) {
+                if(!hasSpaceForItem(output[i].copy(), outputStart + i)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    private boolean hasSpaceForItem(ItemStack stack, int slot) {
+        if(stack == null) return true;
+        if(slots[slot] == null) return true;
+        if(!slots[slot].isItemEqual(stack)) return false;
+        if(slots[slot].stackSize + stack.stackSize <= slots[slot].getMaxStackSize()) return true;
+        return false;
+    }
+
+    private void process() {
+        if(this.power < this.consumption) return;
+
+        this.power -= this.consumption;
+        this.progress++;
+
+        this.maxProgress = 200 * this.speed / 100;
+        if(this.maxProgress <= 0) this.maxProgress = 1;
+
+        if(this.progress >= this.maxProgress) {
+            for(int inputSlot = 0; inputSlot < 4; inputSlot++) {
+                if(slots[inputSlot] != null && canProcess(inputSlot)) {
+                    ItemStack[] output = CentrifugeRecipes.getOutput(slots[inputSlot]);
+                    if(output == null) continue;
+
+                    int outputStart = 5 + (inputSlot * 4);
+
+                    for(int i = 0; i < 4; i++) {
+                        if(output[i] != null) {
+                            ItemStack out = output[i].copy();
+                            if(slots[outputStart + i] == null) {
+                                slots[outputStart + i] = out;
+                            } else if(slots[outputStart + i].isItemEqual(out)) {
+                                slots[outputStart + i].stackSize += out.stackSize;
+                            }
+                        }
+                    }
+
+                    slots[inputSlot].stackSize--;
+                    if(slots[inputSlot].stackSize <= 0) {
+                        slots[inputSlot] = null;
+                    }
+                }
+            }
+
+            this.progress = 0;
+            this.markDirty();
+        }
+    }
+
+    @Override
+    public int[] getAccessibleSlotsFromSide(int side) {
+        int[] slots = new int[23];
+        for(int i = 0; i < 23; i++) {
+            slots[i] = i;
+        }
+        return slots;
+    }
+
+    @Override
+    public boolean canInsertItem(int slot, ItemStack stack, int side) {
+        return (slot >= 0 && slot <= 4) || (slot >= 21 && slot <= 22);
+    }
+
+    @Override
+    public boolean canExtractItem(int slot, ItemStack stack, int side) {
+        return slot >= 5 && slot <= 20;
+    }
+
+    @Override
+    public void serialize(ByteBuf buf) {
+        super.serialize(buf);
+        buf.writeLong(power);
+        buf.writeInt(progress);
+        buf.writeInt(maxProgress);
+        buf.writeBoolean(isProgressing);
+    }
+
+    @Override
+    public void deserialize(ByteBuf buf) {
+        super.deserialize(buf);
+        power = buf.readLong();
+        progress = buf.readInt();
+        maxProgress = buf.readInt();
+        isProgressing = buf.readBoolean();
+    }
+
+    @Override
+    public void readFromNBT(NBTTagCompound nbt) {
+        super.readFromNBT(nbt);
+        this.power = nbt.getLong("power");
+        this.progress = nbt.getInteger("progress");
+        this.maxProgress = nbt.getInteger("maxProgress");
+        this.isProgressing = nbt.getBoolean("isProgressing");
+    }
+
+    @Override
+    public void writeToNBT(NBTTagCompound nbt) {
+        super.writeToNBT(nbt);
+        nbt.setLong("power", power);
+        nbt.setInteger("progress", progress);
+        nbt.setInteger("maxProgress", maxProgress);
+        nbt.setBoolean("isProgressing", isProgressing);
+    }
+
+    @Override
+    public long getPower() {
+        return this.power;
+    }
+
+    @Override
+    public void setPower(long power) {
+        this.power = power;
+    }
+
+    @Override
+    public long getMaxPower() {
+        return maxPower;
+    }
+
+    @Override
+    public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return new ContainerMachineAdvancedCentrifuge(player.inventory, this);
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
+        return new GUIMachineAdvancedCentrifuge(player.inventory, this);
+    }
+
+    @Override
+    public boolean canProvideInfo(UpgradeType type, int level, boolean extendedInfo) {
+        return type == UpgradeType.SPEED || type == UpgradeType.POWER || type == UpgradeType.OVERDRIVE;
+    }
+
+    @Override
+    public void provideInfo(UpgradeType type, int level, List<String> info, boolean extendedInfo) {
+        info.add(IUpgradeInfoProvider.getStandardLabel(com.hbm.blocks.ModBlocks.machine_advanced_centrifuge));
+        if(type == UpgradeType.SPEED) {
+            info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.advancedcentrifuge.speed", "-" + (level * 25) + "%"));
+            info.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.advancedcentrifuge.consumption", "+" + (level * 300) + "%"));
+        }
+        if(type == UpgradeType.POWER) {
+            info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("desc.advancedcentrifuge.consumption", "-" + (level * 20) + "%"));
+            info.add(EnumChatFormatting.RED + I18nUtil.resolveKey("desc.advancedcentrifuge.speed", "+" + (level * 5) + "%"));
+        }
+        if(type == UpgradeType.OVERDRIVE) {
+            info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + "OVERDRIVE");
+        }
+    }
+
+    @Override
+    public HashMap<UpgradeType, Integer> getValidUpgrades() {
+        HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
+        upgrades.put(UpgradeType.SPEED, 3);
+        upgrades.put(UpgradeType.POWER, 3);
+        upgrades.put(UpgradeType.OVERDRIVE, 3);
+        return upgrades;
+    }
+
+    @Override
+    @SideOnly(Side.CLIENT)
+    public double getMaxRenderDistanceSquared() {
+        return 65536.0D;
+    }
 }
