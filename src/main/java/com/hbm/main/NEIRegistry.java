@@ -27,6 +27,7 @@ public class NEIRegistry {
 		handlers.add(new AssemblyMachineRecipeHandler());
 		handlers.add(new PrecAssRecipeHandler());
 		handlers.add(new ChemicalPlantRecipeHandler());
+		handlers.add(new MixingVatRecipeHandler());
 		handlers.add(new RefineryRecipeHandler());
 		handlers.add(new CentrifugeRecipeHandler());
 		handlers.add(new GasCentrifugeRecipeHandler());

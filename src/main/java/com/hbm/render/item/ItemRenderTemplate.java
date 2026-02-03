@@ -6,8 +6,10 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.recipes.AssemblerRecipes;
 import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.inventory.recipes.MixingVatRecipes;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemAssemblyTemplate;
+import com.hbm.items.machine.ItemMixingVatTemplate;
 import com.hbm.render.util.RenderItemStack;
 
 import net.minecraft.client.renderer.RenderHelper;
@@ -31,6 +33,9 @@ public class ItemRenderTemplate implements IItemRenderer {
 			
 			if(stack.getItem() == ModItems.crucible_template)
 				this.currentItem = CrucibleRecipes.indexMapping.get(stack.getItemDamage()).icon;
+
+			if(stack.getItem() == ModItems.mixing_vat_template)
+				this.currentItem = new ItemStack(ModItems.mixing_vat_icon, 1, stack.getItemDamage());
 			
 			if(this.currentItem != null) {
 				return true;

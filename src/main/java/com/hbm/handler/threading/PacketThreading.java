@@ -27,7 +27,7 @@ public class PacketThreading {
 
 	public static long nanoTimeWaited = 0;
 
-	public static final List<Future<?>> futureList = new ArrayList<>();
+	public static final java.util.concurrent.ConcurrentLinkedQueue<Future<?>> futureList = new java.util.concurrent.ConcurrentLinkedQueue<>();
 
 	public static ReentrantLock lock = new ReentrantLock();
 

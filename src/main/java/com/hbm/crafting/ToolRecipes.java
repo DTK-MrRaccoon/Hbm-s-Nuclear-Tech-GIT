@@ -116,6 +116,7 @@ public class ToolRecipes {
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.turret_chip, 1), new Object[] { "WWW", "CPC", "WWW", 'W', GOLD.wireFine(), 'P', ANY_PLASTIC.ingot(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED), });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.survey_scanner, 1), new Object[] { "SWS", " G ", "PCP", 'W', GOLD.wireFine(), 'P', ANY_PLASTIC.ingot(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED), 'S', STEEL.plate(), 'G', GOLD.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.geiger_counter, 1), new Object[] { "GPP", "WCS", "WBB", 'W', GOLD.wireFine(), 'P', ANY_RUBBER.ingot(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.BASIC), 'G', GOLD.ingot(), 'S', STEEL.plate(), 'B', ModItems.ingot_beryllium });
+		CraftingManager.addRecipeAuto(new ItemStack(ModBlocks.radsensor, 1), new Object[] { "SGS", "DCD", "WWW", 'S', STEEL.plate(), 'G', ANY_PLASTIC.ingot(), 'D', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR), 'W', GOLD.wireFine() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.dosimeter, 1), new Object[] { "WGW", "WCW", "WBW", 'W', KEY_PLANKS, 'G', KEY_ANYPANE, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'B', BE.ingot() });
 		CraftingManager.addShapelessAuto(new ItemStack(ModBlocks.geiger), new Object[] { ModItems.geiger_counter });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.digamma_diagnostic), new Object[] { ModItems.geiger_counter, PO210.billet(), ASBESTOS.ingot() });
@@ -127,6 +128,7 @@ public class ToolRecipes {
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.sat_designator, 1), new Object[] { "RRD", "PIC", "  P", 'P', GOLD.plate(), 'R', Items.redstone, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED), 'D', ModItems.sat_chip, 'I', GOLD.ingot() });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.sat_relay), new Object[] { ModItems.sat_chip, ModItems.ducttape, ModItems.radar_linker });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.settings_tool), new Object[] { " P ", "PCP", "III", 'P', IRON.plate(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ANALOG), 'I', ModItems.plate_polymer });
+		CraftingManager.addRecipeAuto(new ItemStack(ModItems.transporter_linker, 1), new Object[] { "S", "C", "P", 'S', ModItems.crt_display, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED), 'P', AL.plate() });
 
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.pipette, 1), new Object[] { "  L", " G ", "G  ", 'L', ANY_RUBBER.ingot(), 'G', KEY_CLEARGLASS});
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.pipette_boron, 1), new Object[] { "  P", " B ", "B  ", 'P', RUBBER.ingot(), 'B', ModBlocks.glass_boron});

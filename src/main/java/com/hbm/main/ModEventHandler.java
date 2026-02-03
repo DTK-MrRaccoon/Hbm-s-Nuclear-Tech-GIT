@@ -505,10 +505,10 @@ public class ModEventHandler {
 
 		ItemStack[] prevArmor = event.entityLiving.previousEquipment;
 
-		if(event.entityLiving instanceof EntityPlayer && prevArmor != null && event.entityLiving.getHeldItem() != null
+		if(event.entityLiving instanceof EntityPlayerMP && prevArmor != null && event.entityLiving.getHeldItem() != null
 				&& (prevArmor[0] == null || prevArmor[0].getItem() != event.entityLiving.getHeldItem().getItem())
 				&& event.entityLiving.getHeldItem().getItem() instanceof IEquipReceiver) {
-
+			
 			((IEquipReceiver)event.entityLiving.getHeldItem().getItem()).onEquip((EntityPlayer) event.entityLiving, event.entityLiving.getHeldItem());
 		}
 
@@ -1071,6 +1071,21 @@ public class ModEventHandler {
 				event.getChunk().func_150807_a(x, y, z, Blocks.air, 0);
 			}
 		}*/
+
+		for(int x = 0; x < 16; x++) for(int y = 0; y < 255; y++) for(int z = 0; z < 16; z++) {
+			if(event.getChunk().getBlock(x, y, z) == ModBlocks.absorber) {
+				event.getChunk().func_150807_a(x, y, z, ModBlocks.rad_absorber, 0);
+			}
+			else if(event.getChunk().getBlock(x, y, z) == ModBlocks.absorber_red) {
+				event.getChunk().func_150807_a(x, y, z, ModBlocks.rad_absorber, 1);
+			}
+			else if(event.getChunk().getBlock(x, y, z) == ModBlocks.absorber_green) {
+				event.getChunk().func_150807_a(x, y, z, ModBlocks.rad_absorber, 2);
+			}
+			else if(event.getChunk().getBlock(x, y, z) == ModBlocks.absorber_pink) {
+				event.getChunk().func_150807_a(x, y, z, ModBlocks.rad_absorber, 3);
+			}
+		}
 	}
 
 	@SubscribeEvent

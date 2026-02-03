@@ -2,11 +2,13 @@ package com.hbm.render.tileentity;
 
 import org.lwjgl.opengl.GL11;
 
+import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.ItemRenderBase;
 import com.hbm.tileentity.machine.TileEntityMachineCentrifuge;
 import com.hbm.tileentity.machine.TileEntityMachineGasCent;
+import com.hbm.tileentity.machine.TileEntityMachineAdvancedCentrifuge;
 
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.item.Item;
@@ -19,19 +21,31 @@ public class RenderCentrifuge extends TileEntitySpecialRenderer implements IItem
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double x, double y, double z, float f) {
 		GL11.glPushMatrix();
+
 		GL11.glTranslated(x + 0.5D, y, z + 0.5D);
+
+		int meta = tileEntity.getBlockMetadata();
+		int rotationMeta = meta - BlockDummyable.offset;
+
+		switch(rotationMeta) {
+			case 2: GL11.glRotatef(180, 0F, 1F, 0F); break;
+			case 4: GL11.glRotatef(270, 0F, 1F, 0F); break;
+			case 3: GL11.glRotatef(0, 0F, 1F, 0F); break;
+			case 5: GL11.glRotatef(90, 0F, 1F, 0F); break;
+			default: GL11.glRotatef(0, 0F, 1F, 0F); break;
+		}
+
 		GL11.glEnable(GL11.GL_LIGHTING);
 		GL11.glDisable(GL11.GL_CULL_FACE);
-		
-		switch(tileEntity.getBlockMetadata() - 10) {
-		case 2: GL11.glRotatef(90, 0F, 1F, 0F); break;
-		case 4: GL11.glRotatef(180, 0F, 1F, 0F); break;
-		case 3: GL11.glRotatef(270, 0F, 1F, 0F); break;
-		case 5: GL11.glRotatef(0, 0F, 1F, 0F); break;
+
+		if(tileEntity instanceof TileEntityMachineAdvancedCentrifuge) {
+			GL11.glTranslated(0.5D, 0.0D, -0.5D);
+		} else {
+			GL11.glTranslated(0.0D, 0.0D, 0.0D);
 		}
 
 		GL11.glShadeModel(GL11.GL_SMOOTH);
-		
+
 		if(tileEntity instanceof TileEntityMachineCentrifuge) {
 			bindTexture(ResourceManager.centrifuge_tex);
 			ResourceManager.centrifuge.renderAll();
@@ -42,6 +56,11 @@ public class RenderCentrifuge extends TileEntitySpecialRenderer implements IItem
 			bindTexture(ResourceManager.gascent_tex);
 			ResourceManager.gascent.renderPart("Centrifuge");
 			ResourceManager.gascent.renderPart("Flag");
+		}
+
+		if(tileEntity instanceof TileEntityMachineAdvancedCentrifuge) {
+			bindTexture(ResourceManager.advanced_centrifuge_tex);
+			ResourceManager.advanced_centrifuge.renderAll();
 		}
 
 		GL11.glShadeModel(GL11.GL_FLAT);
@@ -59,24 +78,29 @@ public class RenderCentrifuge extends TileEntitySpecialRenderer implements IItem
 	public Item[] getItemsForRenderer() {
 		return new Item[] {
 				Item.getItemFromBlock(ModBlocks.machine_centrifuge),
-				Item.getItemFromBlock(ModBlocks.machine_gascent)
+				Item.getItemFromBlock(ModBlocks.machine_gascent),
+				Item.getItemFromBlock(ModBlocks.machine_advanced_centrifuge)
 		};
 	}
 
 	@Override
 	public IItemRenderer getRenderer() {
-		
 		return new ItemRenderBase() {
 			public void renderInventory() {
-				GL11.glTranslated(0, -4, 0);
-				GL11.glScaled(3.5, 3.5, 3.5);
+				GL11.glTranslated(0, -3.5, 0);
+				GL11.glScaled(3.0, 3.0, 3.0);
 			}
 			public void renderCommonWithStack(ItemStack item) {
 				GL11.glShadeModel(GL11.GL_SMOOTH);
 				if(item.getItem() == Item.getItemFromBlock(ModBlocks.machine_gascent)) {
-					bindTexture(ResourceManager.gascent_tex); ResourceManager.gascent.renderPart("Centrifuge");
+					bindTexture(ResourceManager.gascent_tex);
+					ResourceManager.gascent.renderPart("Centrifuge");
+				} else if(item.getItem() == Item.getItemFromBlock(ModBlocks.machine_advanced_centrifuge)) {
+					bindTexture(ResourceManager.advanced_centrifuge_tex);
+					ResourceManager.advanced_centrifuge.renderAll();
 				} else {
-					bindTexture(ResourceManager.centrifuge_tex); ResourceManager.centrifuge.renderAll();
+					bindTexture(ResourceManager.centrifuge_tex);
+					ResourceManager.centrifuge.renderAll();
 				}
 				GL11.glShadeModel(GL11.GL_FLAT);
 			}

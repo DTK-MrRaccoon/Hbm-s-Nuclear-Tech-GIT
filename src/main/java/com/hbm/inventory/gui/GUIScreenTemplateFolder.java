@@ -14,7 +14,9 @@ import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.recipes.AssemblerRecipes;
 import com.hbm.inventory.recipes.ChemplantRecipes;
 import com.hbm.inventory.recipes.CrucibleRecipes;
+import com.hbm.inventory.recipes.MixingVatRecipes;
 import com.hbm.items.machine.ItemAssemblyTemplate;
+import com.hbm.items.machine.ItemMixingVatTemplate;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCassette;
 import com.hbm.items.machine.ItemStamp;
@@ -91,6 +93,12 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 			// Crucible Templates
 			for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {
 				allStacks.add(new ItemStack(ModItems.crucible_template, 1, CrucibleRecipes.recipes.get(i).getId()));
+			}
+			
+			// Mixing Vat Templates
+			for(int i = 0; i < MixingVatRecipes.recipes.size(); i++) {
+				MixingVatRecipes.MixingRecipe mix = MixingVatRecipes.recipes.get(i);
+				allStacks.add(new ItemStack(ModItems.mixing_vat_template, 1, mix.getId()));
 			}
 		}
 		
@@ -323,6 +331,8 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), new ItemStack(ModItems.chemistry_icon, 1, stack.getItemDamage()), xPos + 1, yPos + 1);
 					else if(stack.getItem() == ModItems.crucible_template)
 						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), CrucibleRecipes.indexMapping.get(stack.getItemDamage()).icon, xPos + 1, yPos + 1);
+					else if(stack.getItem() == ModItems.mixing_vat_template)
+						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), new ItemStack(ModItems.mixing_vat_icon, 1, stack.getItemDamage()), xPos + 1, yPos + 1);
 					else
 						itemRender.renderItemAndEffectIntoGUI(fontRendererObj, mc.getTextureManager(), stack, xPos + 1, yPos + 1);
 				}

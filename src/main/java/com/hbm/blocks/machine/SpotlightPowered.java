@@ -299,7 +299,7 @@ public class SpotlightPowered extends BlockContainer implements ISpotlight, INBT
 		private int controllerZ = Integer.MIN_VALUE;
 
 		public TileEntitySpotlightPowered() {
-			this.powerConsumption = 40;
+			this.powerConsumption = 20;
 		}
 
 		@Override

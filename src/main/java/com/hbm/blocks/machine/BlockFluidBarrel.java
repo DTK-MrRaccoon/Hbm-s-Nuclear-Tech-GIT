@@ -211,6 +211,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 			list.add(EnumChatFormatting.AQUA + "Capacity: 12,000mB");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store hot fluids");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store corrosive fluids");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store radioactive fluids/gases properly");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
 		}
 		
@@ -218,6 +219,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 			list.add(EnumChatFormatting.AQUA + "Capacity: 12,000mB");
 			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
 			list.add(EnumChatFormatting.GREEN + "Can store highly corrosive fluids");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store radioactive fluids/gases properly");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
 			list.add(EnumChatFormatting.RED + "Leaky");
 		}
@@ -225,6 +227,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 		if(this == ModBlocks.barrel_iron) {
 			list.add(EnumChatFormatting.AQUA + "Capacity: 16,000mB");
 			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store radioactive fluids/gases properly");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store corrosive fluids properly");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
 		}
@@ -234,6 +237,15 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
 			list.add(EnumChatFormatting.GREEN + "Can store corrosive fluids");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store highly corrosive fluids properly");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store radioactive fluids/gases properly");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
+		}
+
+		if(this == ModBlocks.barrel_lead) {
+			list.add(EnumChatFormatting.AQUA + "Capacity: 8,000mB");
+			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
+			list.add(EnumChatFormatting.GREEN + "Can store highly corrosive fluids");
+			list.add(EnumChatFormatting.GREEN + "Can store radioactive fluids/gases");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
 		}
 		
@@ -241,6 +253,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 			list.add(EnumChatFormatting.AQUA + "Capacity: 16,000mB");
 			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
 			list.add(EnumChatFormatting.GREEN + "Can store highly corrosive fluids");
+			list.add(EnumChatFormatting.GREEN + "Can store radioactive fluids/gases");
 			list.add(EnumChatFormatting.GREEN + "Can store antimatter");
 		}
 		
@@ -248,6 +261,7 @@ public class BlockFluidBarrel extends BlockContainer implements ITooltipProvider
 			list.add(EnumChatFormatting.AQUA + "Capacity: 32,000mB");
 			list.add(EnumChatFormatting.GREEN + "Can store hot fluids");
 			list.add(EnumChatFormatting.GREEN + "Can store highly corrosive fluids");
+			list.add(EnumChatFormatting.YELLOW + "Cannot store radioactive fluids/gases properly");
 			list.add(EnumChatFormatting.YELLOW + "Cannot store antimatter");
 		}
 	}

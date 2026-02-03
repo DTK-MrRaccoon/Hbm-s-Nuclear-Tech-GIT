@@ -2,7 +2,7 @@ package com.hbm.tileentity.machine.storage;
 
 import java.util.HashSet;
 
-import com.hbm.handler.CompatHandler; // Added for OpenComputers support
+import com.hbm.handler.CompatHandler;
 import com.hbm.inventory.container.ContainerPuF6Tank;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -21,14 +21,14 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 import api.hbm.energymk2.IEnergyReceiverMK2.ConnectionPriority;
 import api.hbm.fluidmk2.FluidNode;
 import api.hbm.fluidmk2.IFluidStandardTransceiverMK2;
-import cpw.mods.fml.common.Optional; // Added for OpenComputers support
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
-import li.cil.oc.api.machine.Arguments; // Added for OpenComputers support
-import li.cil.oc.api.machine.Callback; // Added for OpenComputers support
-import li.cil.oc.api.machine.Context; // Added for OpenComputers support
-import li.cil.oc.api.network.SimpleComponent; // Added for OpenComputers support
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
@@ -37,7 +37,6 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-// Integrated OpenComputers interfaces
 @Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "opencomputers")})
 public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements IFluidStandardTransceiverMK2, IPersistentNBT, IGUIProvider, IFluidCopiable, SimpleComponent, CompatHandler.OCComponent {
 
@@ -45,7 +44,7 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 	protected FluidType lastType;
 
 	public FluidTank tank;
-	public short mode = 1; // **CHANGED: Default mode set to 1 (Buffer/Mix)**
+	public short mode = 1;
 	public static final short modes = 4;
 	public byte lastRedstone = 0;
 	
@@ -110,7 +109,6 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 			tank.loadTank(0, 1, slots);
 			tank.unloadTank(2, 3, slots);
 
-			// Logic for Buffer mode (mode == 1) allowing input/output/balancing to the network
 			if(mode == 1) {
 				if(this.node == null || this.node.expired) {
 					this.node = (FluidNode) UniNodespace.getNode(worldObj, xCoord, yCoord, zCoord, tank.getTankType().getNetworkProvider());
@@ -126,7 +124,6 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 					node.net.addReceiver(this);
 				}
 			} else {
-				// Old logic for Receive (0), Provide (2), Disabled (3)
 				if(this.node != null) {
 					UniNodespace.destroyNode(worldObj, xCoord, yCoord, zCoord, tank.getTankType().getNetworkProvider());
 					this.node = null;
@@ -191,8 +188,6 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 		tank.deserialize(buf);
 	}
 
-	// This method checks all 6 directions (POS_X/NEG_X/POS_Y/NEG_Y/POS_Z/NEG_Z), 
-	// ensuring connection to Top (POS_Y), Bottom (NEG_Y), and sides is possible.
 	protected DirPos[] getConPos() {
 		return new DirPos[] {
 				new DirPos(xCoord + 1, yCoord, zCoord, Library.POS_X),
@@ -222,7 +217,7 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 	@Override
 	public int[] getAccessibleSlotsFromSide(int side) {
         return side == 0 ? slots_bottom : (side == 1 ? slots_top : slots_side);
-    }
+        }
 	
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemStack, int j) {
@@ -271,7 +266,6 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 
 	@Override
 	public ConnectionPriority getFluidPriority() {
-		// Low priority for buffer mode to allow balancing
 		return mode == 1 ? ConnectionPriority.LOW : ConnectionPriority.NORMAL;
 	}
 
@@ -313,7 +307,6 @@ public class TileEntityMachinePuF6Tank extends TileEntityMachineBase implements 
 		return new GUIMachinePuF6Tank(player.inventory, this);
 	}
 	
-	// OpenComputers Implementation (only max capacity and liquid amount)
 	@Override
 	@Optional.Method(modid = "OpenComputers")
 	public String getComponentName() {

@@ -7,6 +7,7 @@ import com.hbm.items.machine.ItemAssemblyTemplate;
 import com.hbm.items.machine.ItemCassette;
 import com.hbm.items.machine.ItemChemistryTemplate;
 import com.hbm.items.machine.ItemCrucibleTemplate;
+import com.hbm.items.machine.ItemMixingVatTemplate;
 import com.hbm.util.InventoryUtil;
 
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
@@ -82,6 +83,10 @@ public class ItemFolderPacket implements IMessage {
 						return null;
 					}
 					if(stack.getItem() instanceof ItemCrucibleTemplate) {
+						tryMakeItem(p, stack, Items.paper, "dye");
+						return null;
+					}
+					if(stack.getItem() instanceof ItemMixingVatTemplate) {
 						tryMakeItem(p, stack, Items.paper, "dye");
 						return null;
 					}

@@ -8,6 +8,9 @@ import com.hbm.items.ItemEnumMulti;
 import com.hbm.items.ModItems;
 import com.hbm.util.EnumUtil;
 import com.hbm.util.i18n.I18nUtil;
+import com.hbm.util.ContaminationUtil;
+import com.hbm.util.ContaminationUtil.ContaminationType;
+import com.hbm.util.ContaminationUtil.HazardType;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -17,6 +20,8 @@ import net.minecraft.item.EnumAction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.IIcon;
+import net.minecraft.potion.Potion;
+import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
 
 //tfw no multiple inheritance
@@ -39,9 +44,14 @@ public class ItemConserve extends ItemEnumMulti {
 	
 	//the fancy enum lambdas and method references and whatever can come later if necessary
 	protected void onFoodEaten(ItemStack stack, World world, EntityPlayer player) {
-		player.inventory.addItemStackToInventory(new ItemStack(ModItems.can_key));
+
 		EnumFoodType num = EnumUtil.grabEnumSafely(theEnum, stack.getItemDamage());
-		
+
+		if(num != EnumFoodType.TUBE) {
+			player.inventory.addItemStackToInventory(new ItemStack(ModItems.can_key));
+			player.inventory.addItemStackToInventory(new ItemStack(ModItems.food_can_empty));
+		}
+
 		if(num == EnumFoodType.BHOLE && !world.isRemote) {
 			EntityVortex vortex = (EntityVortex) new EntityVortex(world, 0.5F).setShrinkRate(0.01F).noBreak();
 			vortex.posX = player.posX;
@@ -51,9 +61,30 @@ public class ItemConserve extends ItemEnumMulti {
 
 		} else if(num == EnumFoodType.RECURSION && world.rand.nextInt(10) > 0) {
 			player.inventory.addItemStackToInventory(stackFromEnum(EnumFoodType.RECURSION));
-			
+
 		} else if(num == EnumFoodType.FIST) {
 			player.attackEntityFrom(DamageSource.magic, 2F);
+
+		} else if(num == EnumFoodType.COFFEE) {
+			player.heal(10);
+			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 300 * 20, 2));
+
+		} else if(num == EnumFoodType.SOUP) {
+			player.heal(10);
+
+		} else if(num == EnumFoodType.POTATO) {
+			player.heal(10);
+
+		} else if(num == EnumFoodType.STEW) {
+			ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
+
+		} else if(num == EnumFoodType.MYSTERYV2) {
+			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 10 * 20, 0));
+			ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
+
+		} else if(num == EnumFoodType.NUTRIENTPASTE) {
+			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 15 * 20, 0));
+
 		}
 	}
 	
@@ -108,7 +139,7 @@ public class ItemConserve extends ItemEnumMulti {
 	}
 	
 	public static enum EnumFoodType {
-		BEEF(8, 0.75F),
+		BEEF(6, 0.75F),
 		TUNA(4, 0.75F),
 		MYSTERY(6, 0.5F),
 		PASHTET(4, 0.5F),
@@ -134,11 +165,24 @@ public class ItemConserve extends ItemEnumMulti {
 		DIESEL(6, 1F),
 		KEROSENE(6, 1F),
 		RECURSION(1, 1F),
-		BARK(2, 1F);
-		
+		BARK(2, 1F),
+
+		NEWBEEF(8, 0.75F),
+		CARROT(8, 0.5F),
+		POTATO(12, 0.8F),
+		BREAD(5, 0.8F),
+		APPLE(8, 0.5F),
+		DUST(1, 0.1F),
+		BIOMASS(16, 0.25F),
+		FISH(5, 0.75F),
+		SOUP(10, 0.95F),
+		COFFEE(2, 0.5F),
+		MYSTERYV2(6, 0.5F),
+		NUTRIENTPASTE(7, 0.35F);
+
 		protected int foodLevel;
 		protected float saturation;
-		
+
 		private EnumFoodType(int level, float sat) {
 			this.foodLevel = level;
 			this.saturation = sat;

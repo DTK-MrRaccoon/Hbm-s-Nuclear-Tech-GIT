@@ -50,7 +50,7 @@ public class SpotlightModularPowered extends SpotlightPowered {
 
 		public TileEntitySpotlightModularPowered() {
 			super();
-			this.powerConsumption = 20;
+			this.powerConsumption = 10;
 		}
 
 		@Override

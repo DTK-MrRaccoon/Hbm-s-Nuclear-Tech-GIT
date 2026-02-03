@@ -3,6 +3,7 @@ package com.hbm.main;
 import com.hbm.blocks.BlockEnums.DecoCabinetEnum;
 import com.hbm.blocks.BlockEnums.LightstoneType;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.generic.BlockAbsorber.EnumAbsorberTier;
 import com.hbm.blocks.generic.BlockConcreteColoredExt.EnumConcreteType;
 import com.hbm.blocks.generic.BlockGenericStairs;
 import com.hbm.blocks.generic.BlockMultiSlab;
@@ -31,6 +32,7 @@ import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.machine.ItemArcElectrode.EnumElectrodeType;
 import com.hbm.items.machine.ItemBattery;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
+import com.hbm.items.machine.ItemBatterySC.EnumBatterySC;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
 import com.hbm.items.machine.ItemFluidIDMulti;
 import com.hbm.items.special.ItemCircuitStarComponent.CircuitComponentType;
@@ -210,6 +212,18 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.glass_empty, 1), new Object[] { "G G", "GGG", " G ", 'G', Blocks.glass });
 		addShapelessAuto(new ItemStack(ModItems.teacup_empty, 1), new Object[] {Items.clay_ball, ModItems.powder_calcium});
 
+		addRecipeAuto(new ItemStack(ModItems.can_key, 3), new Object[] { " W ", " W ", "  W", 'W', STEEL.wireFine() });
+		addRecipeAuto(new ItemStack(ModItems.food_can_empty, 1), new Object[] { "   ", "P P", " P ", 'P', STEEL.plate() });
+
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.STEW), new Object[] { ModBlocks.mush, ModItems.food_can_empty, ModItems.can_key });
+
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.NEWBEEF), new Object[] { Items.beef, Items.beef, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.CARROT), new Object[] { Items.carrot, Items.carrot, Items.carrot, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.POTATO), new Object[] { Items.potato, Items.potato, Items.potato, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.BREAD), new Object[] { Items.bread, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.APPLE), new Object[] { Items.apple, Items.apple, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MYSTERYV2), new Object[] { Items.rotten_flesh, Items.rotten_flesh, ModItems.food_can_empty, ModItems.can_key });
+
 		addShapelessAuto(new ItemStack(ModItems.powder_poison), new Object[] { DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.NIGHTSHADE) });
 		addShapelessAuto(new ItemStack(ModItems.syringe_metal_stimpak), new Object[] { ModItems.syringe_metal_empty, Items.carrot, DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.FOXGLOVE) }); //xander root and broc flower
 		addShapelessAuto(new ItemStack(ModItems.pill_herbal), new Object[] { COAL.dust(), Items.poisonous_potato, Items.nether_wart, DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.FOXGLOVE) });
@@ -283,6 +297,17 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_battery_socket), new Object[] { "PRP", 'P', STEEL.plate(), 'R', MINGRADE.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_REDSTONE.ordinal()), new Object[] { "IRI", "PRP", "IRI", 'I', IRON.plate(), 'R', REDSTONE.block(), 'P', ModItems.plate_polymer });
 		addRecipeAuto(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.CAPACITOR_COPPER.ordinal()), new Object[] { "IRI", "PRP", "IRI", 'I', STEEL.plate(), 'R', CU.block(), 'P', ModItems.plate_polymer });
+
+		addRecipeAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.EMPTY.ordinal()), new Object[] { "PGP", "L L", "PGP", 'P', ANY_PLASTIC.ingot(), 'G', GOLD.wireFine(), 'L', PB.plate() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.WASTE.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), ModItems.billet_nuclear_waste, ModItems.billet_nuclear_waste });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.RA226.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), RA226.billet(), RA226.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.TC99.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), TC99.billet(), TC99.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.CO60.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), CO60.billet(), CO60.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.PU238.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), PU238.billet(), PU238.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.PO210.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), PO210.billet(), PO210.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.AU198.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), AU198.billet(), AU198.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.PB209.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), PB209.billet(), PB209.billet() });
+		addShapelessAuto(new ItemStack(ModItems.battery_sc, 1, EnumBatterySC.AM241.ordinal()), new Object[] { DictFrame.fromOne(ModItems.battery_sc, EnumBatterySC.EMPTY), AM241.billet(), AM241.billet() });
 
 		GameRegistry.addRecipe(new ContainerUpgradeCraftingHandler(new ItemStack(ModBlocks.crate_desh, 1), new Object[] { " D ", "DSD", " D ", 'D', ModItems.plate_desh, 'S', ModBlocks.crate_steel }));
 		GameRegistry.addRecipe(new ContainerUpgradeCraftingHandler(new ItemStack(ModBlocks.crate_tungsten, 1), new Object[] { "BPB", "PCP", "BPB", 'B', W.block(), 'P', CU.plateCast(), 'C', ModBlocks.crate_steel }));
@@ -692,11 +717,11 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.ammo_bag, 1), new Object[] { "LLL", "MGM", "LLL", 'L', Items.leather, 'G', WEAPONSTEEL.plate(), 'M', WEAPONSTEEL.mechanism() });
 		addRecipeAuto(new ItemStack(ModItems.ammo_bag, 1), new Object[] { "LLL", "MGM", "LLL", 'L', ANY_RUBBER.ingot(), 'G', WEAPONSTEEL.plate(), 'M', WEAPONSTEEL.mechanism() });
 
-		addRecipeAuto(new ItemStack(ModBlocks.absorber, 1), new Object[] { "ICI", "CPC", "ICI", 'I', CU.ingot(), 'C', COAL.dust(), 'P', PB.dust() });
-		addRecipeAuto(new ItemStack(ModBlocks.absorber_red, 1), new Object[] { "ICI", "CPC", "ICI", 'I', TI.ingot(), 'C', COAL.dust(), 'P', ModBlocks.absorber });
-		addRecipeAuto(new ItemStack(ModBlocks.absorber_green, 1), new Object[] { "ICI", "CPC", "ICI", 'I', ANY_PLASTIC.ingot(), 'C', ModItems.powder_desh_mix, 'P', ModBlocks.absorber_red });
-		addRecipeAuto(new ItemStack(ModBlocks.absorber_pink, 1), new Object[] { "ICI", "CPC", "ICI", 'I', BIGMT.ingot(), 'C', ModItems.powder_nitan_mix, 'P', ModBlocks.absorber_green });
-		addRecipeAuto(new ItemStack(ModBlocks.decon, 1), new Object[] { "BGB", "SAS", "BSB", 'B', BE.ingot(), 'G', Blocks.iron_bars, 'S', STEEL.ingot(), 'A', ModBlocks.absorber });
+		addRecipeAuto(new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.BASE.ordinal()),new Object[] { "ICI", "CPC", "ICI", 'I', CU.ingot(), 'C', COAL.dust(), 'P', PB.dust() });
+		addRecipeAuto(new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.RED.ordinal()),new Object[] { "ICI", "CPC", "ICI", 'I', TI.ingot(), 'C', COAL.dust(),'P', new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.BASE.ordinal()) });
+		addRecipeAuto(new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.GREEN.ordinal()),new Object[] { "ICI", "CPC", "ICI", 'I', ANY_PLASTIC.ingot(), 'C', ModItems.powder_desh_mix,'P', new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.RED.ordinal()) });
+		addRecipeAuto(new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.PINK.ordinal()), new Object[] { "ICI", "CPC", "ICI", 'I', BIGMT.ingot(), 'C', ModItems.powder_nitan_mix,'P', new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.GREEN.ordinal()) });
+		addRecipeAuto(new ItemStack(ModBlocks.decon, 1), new Object[] { "BGB", "SAS", "BSB", 'B', BE.ingot(), 'G', Blocks.iron_bars, 'S', STEEL.ingot(), 'A', new ItemStack(ModBlocks.rad_absorber, 1, EnumAbsorberTier.BASE.ordinal()) });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_minirtg, 1), new Object[] { "LLL", "PPP", "TRT", 'L', PB.plate(), 'P', PU238.billet(), 'T', ModItems.thermo_element, 'R', ModItems.rtg_unit });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_powerrtg, 1), new Object[] { "SRS", "PTP", "SRS", 'S', STAR.ingot(), 'R', ModItems.rtg_unit, 'P', PO210.billet(), 'T', TS.dust() });
 
@@ -793,6 +818,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.barrel_iron, 1), new Object[] { "IPI", "I I", "IPI", 'I', IRON.plate(), 'P', IRON.ingot() });
 		addShapelessAuto(new ItemStack(ModBlocks.barrel_iron, 1), new Object[] { ModBlocks.barrel_corroded, ANY_TAR.any() });
 		addRecipeAuto(new ItemStack(ModBlocks.barrel_steel, 1), new Object[] { "IPI", "ITI", "IPI", 'I', STEEL.plate(), 'P', STEEL.ingot(), 'T', ANY_TAR.any() });
+		addRecipeAuto(new ItemStack(ModBlocks.barrel_lead, 1), new Object[] { "IPI", "ITI", "IPI", 'I', PB.plate(), 'P', STEEL.ingot(), 'T', ANY_TAR.any() });
 		addRecipeAuto(new ItemStack(ModBlocks.barrel_tcalloy, 1), new Object[] { "IPI", "I I", "IPI", 'I', "ingotTcAlloy", 'P', TI.plate() });
 		addRecipeAuto(new ItemStack(ModBlocks.barrel_antimatter, 1), new Object[] { "IPI", "IBI", "IPI", 'I', BIGMT.plate(), 'P', ModItems.coil_advanced_torus, 'B', ModItems.battery_sc_technetium });
 		addRecipeAuto(new ItemStack(ModBlocks.tesla, 1), new Object[] { "CCC", "PIP", "WTW", 'C', ModItems.coil_copper, 'I', IRON.ingot(), 'P', ANY_PLASTIC.ingot(), 'T', ModBlocks.machine_transformer, 'W', KEY_PLANKS });
@@ -1163,11 +1189,6 @@ public class CraftingManager {
 				ModItems.circuit_star_piece.stackFromEnum(ScrapType.BOARD_CONVERTER),
 				ModItems.circuit_star_piece.stackFromEnum(ScrapType.BOARD_BLANK)
 		});
-
-		addRecipeAuto(new ItemStack(ModItems.sliding_blast_door_skin), "SPS", "DPD", "SPS", 'P', Items.paper, 'D', "dye", 'S', STEEL.plate());
-		addShapelessAuto(new ItemStack(ModItems.sliding_blast_door_skin, 1, 1), new ItemStack(ModItems.sliding_blast_door_skin, 1, 0));
-		addShapelessAuto(new ItemStack(ModItems.sliding_blast_door_skin, 1, 2), new ItemStack(ModItems.sliding_blast_door_skin, 1, 1));
-		addShapelessAuto(new ItemStack(ModItems.sliding_blast_door_skin), new ItemStack(ModItems.sliding_blast_door_skin, 1, 2));
 
 		addRecipeAuto(new ItemStack(ModBlocks.cm_block, 4, 0), " I ", "IPI", " I ", 'I', STEEL.ingot(), 'P', STEEL.plateCast());
 		addRecipeAuto(new ItemStack(ModBlocks.cm_block, 4, 1), " I ", "IPI", " I ", 'I', ALLOY.ingot(), 'P', ALLOY.plateCast());

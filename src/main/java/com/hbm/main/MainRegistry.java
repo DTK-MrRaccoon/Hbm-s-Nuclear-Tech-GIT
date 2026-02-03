@@ -1460,6 +1460,10 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:tile.block_unobtainium");
 		ignoreMappings.add("hbm:tile.block_daffergon");
 		ignoreMappings.add("hbm:tile.block_verticium");
+		ignoreMappings.add("hbm:tile.machine_spp_bottom");
+		ignoreMappings.add("hbm:tile.machine_spp_top");
+		ignoreMappings.add("hbm:item.sliding_blast_door_skin");
+		ignoreMappings.add("hbm:tile.dummy_block_vault");
 
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);

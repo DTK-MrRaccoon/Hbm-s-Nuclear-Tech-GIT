@@ -47,10 +47,13 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 
 	private AudioWrapper audio;
 
+	// small client-visible snapshot of the single input slot (slot 0)
+	public int clientInputCount = 0;
+
 	//configurable values
 	public static int maxPower = 100000;
 	public static int processingSpeed = 200;
-	public static int baseConsumption = 200;
+	public static int baseConsumption = 800;
 
 	public UpgradeManagerNT upgradeManager = new UpgradeManagerNT();
 
@@ -225,6 +228,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 				progress = 0;
 			}
 
+			// prepare small client snapshot for overlay (slot 0)
+			clientInputCount = (slots[0] == null) ? 0 : slots[0].stackSize;
+
 			this.networkPackNT(50);
 		} else {
 
@@ -265,6 +271,9 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		buf.writeLong(power);
 		buf.writeInt(progress);
 		buf.writeBoolean(isProgressing);
+
+		// small client-side snapshot
+		buf.writeInt(clientInputCount);
 	}
 
 	@Override
@@ -273,6 +282,8 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 		power = buf.readLong();
 		progress = buf.readInt();
 		isProgressing = buf.readBoolean();
+
+		clientInputCount = buf.readInt();
 	}
 
 	@Override
@@ -301,23 +312,6 @@ public class TileEntityMachineCentrifuge extends TileEntityMachineBase implement
 	}
 
 	AxisAlignedBB bb = null;
-
-	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-
-		if(bb == null) {
-			bb = AxisAlignedBB.getBoundingBox(
-					xCoord,
-					yCoord,
-					zCoord,
-					xCoord + 1,
-					yCoord + 4,
-					zCoord + 1
-					);
-		}
-
-		return bb;
-	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

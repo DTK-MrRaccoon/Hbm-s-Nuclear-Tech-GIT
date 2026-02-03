@@ -69,13 +69,18 @@ public class NEIConfig implements IConfigureNEI {
 			API.hideItem(new ItemStack(ModItems.burnt_bark));
 			API.hideItem(new ItemStack(ModItems.ams_core_thingy));
 		}
-		API.hideItem(new ItemStack(ModBlocks.dummy_block_vault));
 		API.hideItem(new ItemStack(ModBlocks.dummy_block_blast));
 		API.hideItem(new ItemStack(ModBlocks.dummy_port_compact_launcher));
 		API.hideItem(new ItemStack(ModBlocks.dummy_port_launch_table));
 		API.hideItem(new ItemStack(ModBlocks.dummy_plate_compact_launcher));
 		API.hideItem(new ItemStack(ModBlocks.dummy_plate_launch_table));
 		API.hideItem(new ItemStack(ModBlocks.dummy_plate_cargo));
+		API.hideItem(new ItemStack(ModBlocks.dummy_block_uf6));
+		API.hideItem(new ItemStack(ModBlocks.dummy_block_puf6));
+		API.hideItem(new ItemStack(ModBlocks.dummy_block_drill));
+		API.hideItem(new ItemStack(ModBlocks.dummy_port_drill));
+		API.hideItem(new ItemStack(ModBlocks.dummy_block_reactor_small));
+		API.hideItem(new ItemStack(ModBlocks.dummy_port_reactor_small));
 
 		API.hideItem(new ItemStack(ModBlocks.pink_log));
 		API.hideItem(new ItemStack(ModBlocks.pink_planks));
@@ -90,6 +95,7 @@ public class NEIConfig implements IConfigureNEI {
 		API.hideItem(new ItemStack(ModBlocks.spotlight_fluoro_powered));
 		API.hideItem(new ItemStack(ModBlocks.spotlight_halogen_powered));
 		API.hideItem(new ItemStack(ModBlocks.spotlight_beam));
+		API.hideItem(new ItemStack(ModBlocks.powered_spotlight_beam));
 
 		API.hideItem(new ItemStack(ModBlocks.conveyor));
 		API.hideItem(new ItemStack(ModBlocks.conveyor_chute));

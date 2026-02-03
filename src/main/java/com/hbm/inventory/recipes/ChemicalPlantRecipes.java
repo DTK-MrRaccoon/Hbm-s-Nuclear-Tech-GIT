@@ -19,6 +19,7 @@ import com.hbm.items.ItemEnums.EnumFuelAdditive;
 import com.hbm.items.ItemGenericPart.EnumPartType;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemFluidIcon;
+import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
 
 import net.minecraft.init.Blocks;
@@ -318,6 +319,11 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 500))
 				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
 		
+		this.register(new GenericRecipe("chem.phosphoricacid").setup(100, 100)
+				.inputItems(new ComparableStack(ModItems.powder_fire, 2))
+				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 500), new FluidStack(Fluids.WATER, 500))
+				.outputFluids(new FluidStack(Fluids.PHOSPHORIC_ACID, 1000)));
+		
 		this.register(new GenericRecipe("chem.nitricacidalt").setupNamed(50, 1_000)
 				.inputFluids(new FluidStack(Fluids.WATER, 500), new FluidStack(Fluids.AMMONIA, 1000))
 				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 1_000)));
@@ -395,16 +401,22 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.outputItems(DictFrame.fromOne(ModItems.part_generic, EnumPartType.GLASS_POLARIZED, 16)));
 		
 		/// NUCLEAR PROCESSING ///
-		this.register(new GenericRecipe("chem.yellowcake").setup(250, 500)
-				.inputItems(new OreDictStack(U.billet(), 2), new OreDictStack(S.dust(), 2))
-				.inputFluids(new FluidStack(Fluids.PEROXIDE, 500))
-				.outputItems(new ItemStack(ModItems.powder_yellowcake)));
+//		this.register(new GenericRecipe("chem.yellowcake").setup(250, 500)
+//				.inputItems(new OreDictStack(U.billet(), 2), new OreDictStack(S.dust(), 2))
+//				.inputFluids(new FluidStack(Fluids.PEROXIDE, 500))
+//				.outputItems(new ItemStack(ModItems.powder_yellowcake)));
 
-		this.register(new GenericRecipe("chem.uf6").setup(100, 500).setIcon(ModItems.fluid_icon, Fluids.UF6.getID())
-				.inputItems(new ComparableStack(ModItems.powder_yellowcake), new OreDictStack(F.dust(), 4))
-				.inputFluids(new FluidStack(Fluids.WATER, 1_000))
-				.outputItems(new ItemStack(ModItems.sulfur, 2))
-				.outputFluids(new FluidStack(Fluids.UF6, 1_200)));
+//		this.register(new GenericRecipe("chem.uf6").setup(100, 500).setIcon(ModItems.fluid_icon, Fluids.UF6.getID())
+//				.inputItems(new ComparableStack(ModItems.powder_yellowcake), new OreDictStack(F.dust(), 4))
+//				.inputFluids(new FluidStack(Fluids.WATER, 1_000))
+//				.outputItems(new ItemStack(ModItems.sulfur, 2))
+//				.outputFluids(new FluidStack(Fluids.UF6, 1_200)));
+
+//moved in to mixing vat
+
+		this.register(new GenericRecipe("chem.hydrofluoricacidtogas").setup(200, 10_000)
+				.inputFluids(new FluidStack(Fluids.HYDROFLUORIC_ACID, 500))
+				.outputFluids(new FluidStack(Fluids.FLUORINE_GAS, 100)));
 
 		this.register(new GenericRecipe("chem.puf6").setup(200, 500)
 				.inputItems(new OreDictStack(PU.dust()), new OreDictStack(F.dust(), 3))
@@ -453,19 +465,30 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.EMILK, 1000))
 				.outputItems(new ItemStack(ModItems.cheese, 4)));
 
-		this.register(new GenericRecipe("chem.cannedcheese").setup(100, 250)
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4), new ComparableStack(ModItems.cheese, 2))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 4)));
+		this.register(new GenericRecipe("chem.oreshnik").setup(160, 150)
+				.inputFluids(new FluidStack(Fluids.CMILK, 250))
+				.inputItems(new ComparableStack( ModItems.flour, 2))
+				.outputItems(new ItemStack(ModItems.oreshnik, 4)));
 
-		this.register(new GenericRecipe("chem.cannedemilk").setup(100, 250)
+		this.register(new GenericRecipe("chem.cannedemilk").setup(160, 300)
 				.inputFluids(new FluidStack(Fluids.EMILK, 750))
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 6)));
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MILK).copy().splitStack(2)));
 
-		this.register(new GenericRecipe("chem.cannedyogurt").setup(100, 250)
+		this.register(new GenericRecipe("chem.cannedyogurt").setup(160, 300)
 				.inputFluids(new FluidStack(Fluids.EMILK, 500))
-				.inputItems(new ComparableStack(ModItems.plate_aluminium, 4))
-				.outputItems(new ItemStack(ModItems.canned_conserve, 2, 15)));
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.YOGURT).copy().splitStack(2)));
+
+		this.register(new GenericRecipe("chem.cannedcoffee").setup(160, 300)
+				.inputFluids(new FluidStack(Fluids.COFFEE, 1000))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 2), new ComparableStack( ModItems.can_key, 2))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.COFFEE).copy().splitStack(2)));
+
+		this.register(new GenericRecipe("chem.cannednutrientpaste").setup(160, 300)
+				.inputFluids(new FluidStack(Fluids.NUTRIENTPASTE, 500))
+				.inputItems(new ComparableStack( ModItems.food_can_empty, 4), new ComparableStack( ModItems.can_key, 4))
+				.outputItems(ModItems.canned_conserve.stackFromEnum(EnumFoodType.NUTRIENTPASTE).copy().splitStack(4)));
 	}
 	
 	public static HashMap getRecipes() {
