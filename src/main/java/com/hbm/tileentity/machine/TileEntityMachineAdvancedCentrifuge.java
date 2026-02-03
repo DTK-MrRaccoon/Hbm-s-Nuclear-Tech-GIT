@@ -5,6 +5,8 @@ import com.hbm.inventory.UpgradeManagerNT;
 import com.hbm.inventory.container.ContainerMachineAdvancedCentrifuge;
 import com.hbm.inventory.gui.GUIMachineAdvancedCentrifuge;
 import com.hbm.inventory.recipes.CentrifugeRecipes;
+import com.hbm.items.ModItems;
+import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.lib.Library;
 import com.hbm.main.MainRegistry;
@@ -18,6 +20,7 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.energymk2.IBatteryItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
@@ -26,12 +29,12 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -45,11 +48,20 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
     public boolean isProgressing;
 
     private AudioWrapper audio;
+    private int audioDuration = 0;
 
-    int consumption = 100;
+    int consumption = 5000;
     int speed = 100;
 
     public UpgradeManagerNT upgradeManager = new UpgradeManagerNT();
+
+    public int[] clientInputCounts = new int[4];
+
+    private static final int[] ALL_SLOTS;
+    static {
+        ALL_SLOTS = new int[23];
+        for (int i = 0; i < 23; i++) ALL_SLOTS[i] = i;
+    }
 
     public TileEntityMachineAdvancedCentrifuge() {
         super(23);
@@ -63,6 +75,10 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
     @Override
     public void updateEntity() {
         if(!worldObj.isRemote) {
+
+            for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+                this.trySubscribe(worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
+
             this.speed = 100;
             this.consumption = 100;
 
@@ -105,19 +121,31 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
                 process();
             }
 
+            for (int i = 0; i < 4; i++) {
+                clientInputCounts[i] = (slots[i] == null) ? 0 : slots[i].stackSize;
+            }
+
             this.networkPackNT(150);
         } else {
-            float volume = this.getVolume(1F);
+            if(isProgressing) {
+                audioDuration += 2;
+            } else {
+                audioDuration -= 3;
+            }
 
-            if(isProgressing && volume > 0) {
+            if (audioDuration < 0) audioDuration = 0;
+            if (audioDuration > 60) audioDuration = 60;
+
+            if(audioDuration > 10 && MainRegistry.proxy.me().getDistance(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5) < 25) {
                 if(audio == null) {
                     audio = createAudioLoop();
-                    audio.updateVolume(volume);
                     audio.startSound();
                 } else if(!audio.isPlaying()) {
                     audio = rebootAudio(audio);
-                    audio.updateVolume(volume);
                 }
+                audio.updateVolume(getVolume(1F));
+                audio.updatePitch((audioDuration - 10) / 100F + 0.5F);
+                audio.keepAlive();
             } else {
                 if(audio != null) {
                     audio.stopSound();
@@ -140,13 +168,10 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
         return new DirPos[] {
             new DirPos(this.xCoord - dir.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ * 2, dir.getOpposite()),
             new DirPos(this.xCoord - dir.offsetX * 2 + rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ * 2 + rot.offsetZ, dir.getOpposite()),
-
             new DirPos(this.xCoord + dir.offsetX, this.yCoord, this.zCoord + dir.offsetZ, dir),
             new DirPos(this.xCoord + dir.offsetX + rot.offsetX, this.yCoord, this.zCoord + dir.offsetZ + rot.offsetZ, dir),
-
             new DirPos(this.xCoord - rot.offsetX, this.yCoord, this.zCoord - rot.offsetZ, rot.getOpposite()),
             new DirPos(this.xCoord - dir.offsetX - rot.offsetX, this.yCoord, this.zCoord - dir.offsetZ - rot.offsetZ, rot.getOpposite()),
-
             new DirPos(this.xCoord + rot.offsetX * 2, this.yCoord, this.zCoord + rot.offsetZ * 2, rot),
             new DirPos(this.xCoord - dir.offsetX + rot.offsetX * 2, this.yCoord, this.zCoord - dir.offsetZ + rot.offsetZ * 2, rot),
         };
@@ -257,16 +282,29 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
 
     @Override
     public int[] getAccessibleSlotsFromSide(int side) {
-        int[] slots = new int[23];
-        for(int i = 0; i < 23; i++) {
-            slots[i] = i;
+        return ALL_SLOTS;
+    }
+
+    @Override
+    public boolean isItemValidForSlot(int i, ItemStack itemStack) {
+        if(i >= 0 && i <= 3) {
+            return CentrifugeRecipes.getOutput(itemStack) != null;
         }
-        return slots;
+        if(i == 4) {
+            return itemStack != null && (itemStack.getItem() instanceof IBatteryItem || itemStack.getItem() == ModItems.battery_creative);
+        }
+        if(i >= 21 && i <= 22) {
+            return itemStack != null && itemStack.getItem() instanceof ItemMachineUpgrade;
+        }
+        return false;
     }
 
     @Override
     public boolean canInsertItem(int slot, ItemStack stack, int side) {
-        return (slot >= 0 && slot <= 4) || (slot >= 21 && slot <= 22);
+        if(slot >= 0 && slot <= 3) return true;
+        if(slot == 4) return true;
+        if(slot >= 21 && slot <= 22) return true;
+        return false;
     }
 
     @Override
@@ -281,6 +319,10 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
         buf.writeInt(progress);
         buf.writeInt(maxProgress);
         buf.writeBoolean(isProgressing);
+
+        for (int i = 0; i < 4; i++) {
+            buf.writeInt(clientInputCounts[i]);
+        }
     }
 
     @Override
@@ -290,6 +332,10 @@ public class TileEntityMachineAdvancedCentrifuge extends TileEntityMachineBase i
         progress = buf.readInt();
         maxProgress = buf.readInt();
         isProgressing = buf.readBoolean();
+
+        for (int i = 0; i < 4; i++) {
+            clientInputCounts[i] = buf.readInt();
+        }
     }
 
     @Override

@@ -21,7 +21,7 @@ public class GUIMachineAdvancedCentrifuge extends GuiInfoContainer {
         centrifuge = tedf;
         
         this.xSize = 176;
-        this.ySize = 243; // Taller GUI
+        this.ySize = 243;
     }
     
     @Override
@@ -47,7 +47,7 @@ public class GUIMachineAdvancedCentrifuge extends GuiInfoContainer {
         }
 
         if(centrifuge.isProgressing) {
-            int p = centrifuge.getProgressScaled(145); // Total height of 4 bars (36*4 + 1)
+            int p = centrifuge.getProgressScaled(145);
             
             for(int i = 0; i < 4; i++) {
                 int h = Math.min(p, 36);

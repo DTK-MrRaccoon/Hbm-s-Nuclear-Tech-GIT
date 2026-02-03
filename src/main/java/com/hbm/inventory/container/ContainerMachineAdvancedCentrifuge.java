@@ -5,7 +5,6 @@ import com.hbm.inventory.SlotUpgrade;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemMachineUpgrade;
 import com.hbm.tileentity.machine.TileEntityMachineAdvancedCentrifuge;
-
 import api.hbm.energymk2.IBatteryItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -24,29 +23,23 @@ public class ContainerMachineAdvancedCentrifuge extends Container {
         this.addSlotToContainer(new Slot(tedf, 1, 36, 69));
         this.addSlotToContainer(new Slot(tedf, 2, 36, 88));
         this.addSlotToContainer(new Slot(tedf, 3, 36, 107));
-        
         this.addSlotToContainer(new Slot(tedf, 4, 9, 50));
-        
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 5, 63, 50));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 6, 83, 50));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 7, 103, 50));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 8, 123, 50));
-        
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 9, 63, 69));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 10, 83, 69));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 11, 103, 69));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 12, 123, 69));
-        
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 13, 63, 88));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 14, 83, 88));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 15, 103, 88));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 16, 123, 88));
-        
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 17, 63, 107));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 18, 83, 107));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 19, 103, 107));
         this.addSlotToContainer(new SlotCraftingOutput(invPlayer.player, tedf, 20, 123, 107));
-        
         this.addSlotToContainer(new SlotUpgrade(tedf, 21, 149, 22));
         this.addSlotToContainer(new SlotUpgrade(tedf, 22, 149, 40));
 
@@ -57,21 +50,20 @@ public class ContainerMachineAdvancedCentrifuge extends Container {
         }
 
         for(int i = 0; i < 9; i++) {
-            this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 219)); // 161 + 58 = 219
+            this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 219));
         }
     }
 
     @Override
-    public ItemStack transferStackInSlot(EntityPlayer player, int index) {
+    public ItemStack transferStackInSlot(net.minecraft.entity.player.EntityPlayer player, int index) {
         ItemStack rStack = null;
-        Slot slot = (Slot) this.inventorySlots.get(index);
+        net.minecraft.inventory.Slot slot = (net.minecraft.inventory.Slot) this.inventorySlots.get(index);
 
         if(slot != null && slot.getHasStack()) {
             ItemStack stack = slot.getStack();
             rStack = stack.copy();
-            
+
             if(index <= 22) {
-                // Machine -> Player
                 if(!this.mergeItemStack(stack, 23, this.inventorySlots.size(), true)) {
                     return null;
                 }
@@ -106,7 +98,7 @@ public class ContainerMachineAdvancedCentrifuge extends Container {
     }
 
     @Override
-    public boolean canInteractWith(EntityPlayer player) {
+    public boolean canInteractWith(net.minecraft.entity.player.EntityPlayer player) {
         return centrifuge.isUseableByPlayer(player);
     }
 }

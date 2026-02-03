@@ -26,10 +26,6 @@ public class MachineAdvancedCentrifuge extends BlockDummyable implements ILookOv
 
     public MachineAdvancedCentrifuge(Material mat) {
         super(mat);
-        // optional bounding like the simpler centrifuge — uncomment if you want the same bounds
-        // this.bounding.add(AxisAlignedBB.getBoundingBox(-0.5D, 0D, -0.5D, 0.5D, 1D, 0.5D));
-        // this.bounding.add(AxisAlignedBB.getBoundingBox(-0.375D, 1D, -0.375D, 0.375D, 4D, 0.375D));
-        // this.maxY = 0.999D;
     }
 
     @Override
@@ -37,7 +33,7 @@ public class MachineAdvancedCentrifuge extends BlockDummyable implements ILookOv
         if (meta >= 12)
             return new TileEntityMachineAdvancedCentrifuge();
         if (meta >= 6)
-            return new TileEntityProxyCombo(false, true, true);
+            return new TileEntityProxyCombo(true, true, true);
         return null;
     }
 
@@ -60,7 +56,7 @@ public class MachineAdvancedCentrifuge extends BlockDummyable implements ILookOv
 
     @Override
     public int[] getDimensions() {
-        return new int[] {3, 0, 1, 0, 0, 1}; // 4 blocks tall, 2x2 base (kept from your original)
+        return new int[] {3, 0, 1, 0, 0, 1};
     }
 
     @Override
@@ -77,7 +73,6 @@ public class MachineAdvancedCentrifuge extends BlockDummyable implements ILookOv
 
         ForgeDirection dr2 = dir.getRotation(ForgeDirection.UP);
 
-        // Create the other 3 proxy blocks for the 2x2 base
         this.makeExtra(world, x, y, z - dir.offsetZ - dr2.offsetZ);
         this.makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z);
         this.makeExtra(world, x - dir.offsetX - dr2.offsetX, y, z - dir.offsetZ - dr2.offsetZ);
@@ -103,11 +98,11 @@ public class MachineAdvancedCentrifuge extends BlockDummyable implements ILookOv
 
         try {
             for (int i = 0; i < 4; i++) {
-                ItemStack s = centrifuge.slots[i];
-                if (s == null) {
+                int cnt = centrifuge.clientInputCounts != null ? centrifuge.clientInputCounts[i] : 0;
+                if (cnt <= 0) {
                     text.add(EnumChatFormatting.GRAY + "Slot " + (i + 1) + ": " + EnumChatFormatting.RESET + "empty");
                 } else {
-                    text.add(EnumChatFormatting.YELLOW + "Slot " + (i + 1) + ": " + EnumChatFormatting.RESET + s.stackSize + " x " + s.getDisplayName());
+                    text.add(EnumChatFormatting.YELLOW + "Slot " + (i + 1) + ": " + EnumChatFormatting.RESET + cnt + " items");
                 }
             }
         } catch (Exception e) {
