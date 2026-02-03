@@ -1,0 +1,4 @@
+## Changed
+* The PWR can now be controlled via RoR
+  * The RoR value reader can read core and hull heat as well as fuel depletion in percent
+  * The RoR controller can set the control rod level in percent as well as jetison all loaded fuel

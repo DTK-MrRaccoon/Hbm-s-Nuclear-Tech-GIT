@@ -498,31 +498,31 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 8_000))
 				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 8_000)));
 		
-		this.register(new GenericRecipe("ass.fensusan").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_battery_redd, 1))
-				.inputItems(new ComparableStack(ModItems.ingot_electronium, 64),
-						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
-						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
-						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
-						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
-						new OreDictStack(CMB.plateCast(), 32),
-						new OreDictStack(MAGTUNG.wireDense(), 32),
-						new ComparableStack(ModItems.plate_dineutronium, 64),
-						new ComparableStack(ModItems.powder_magic, 64),
-						new ComparableStack(ModItems.ingot_u238m2),
-						new ComparableStack(ModItems.ingot_cft, 64),
-						new ComparableStack(ModItems.ingot_cft, 64))
-				.inputItemsEx(new ComparableStack(ModItems.ingot_electronium, 64),
-						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
-						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.BRONZE_TUBES),
-						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.FERRO_PLATING),
-						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
-						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
-						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
-						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
-						new OreDictStack(CMB.plateCast(), 64),
-						new ComparableStack(ModItems.ingot_u238m2),
-						new ComparableStack(ModItems.ingot_cft, 64),
-						new ComparableStack(ModItems.ingot_cft, 64)));
+//		this.register(new GenericRecipe("ass.fensusan").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_battery_redd, 1))
+//				.inputItems(new ComparableStack(ModItems.ingot_electronium, 64),
+//						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
+//						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+//						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+//						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
+//						new OreDictStack(CMB.plateCast(), 32),
+//						new OreDictStack(MAGTUNG.wireDense(), 32),
+//						new ComparableStack(ModItems.plate_dineutronium, 64),
+//						new ComparableStack(ModItems.powder_magic, 64),
+//						new ComparableStack(ModItems.ingot_u238m2),
+//						new ComparableStack(ModItems.ingot_cft, 64),
+//						new ComparableStack(ModItems.ingot_cft, 64))
+//				.inputItemsEx(new ComparableStack(ModItems.ingot_electronium, 64),
+//						new ComparableStack(ModItems.battery_pack, 16, EnumBatteryPack.BATTERY_QUANTUM),
+//						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.BRONZE_TUBES),
+//						new ComparableStack(ModItems.item_expensive, 64, EnumExpensiveType.FERRO_PLATING),
+//						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+//						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+//						new OreDictStack(OSMIRIDIUM.plateWelded(), 64),
+//						new OreDictStack(ANY_BISMOIDBRONZE.plateCast(), 64),
+//						new OreDictStack(CMB.plateCast(), 64),
+//						new ComparableStack(ModItems.ingot_u238m2),
+//						new ComparableStack(ModItems.ingot_cft, 64),
+//						new ComparableStack(ModItems.ingot_cft, 64)));
 
 		// fluid tanks
 		this.register(new GenericRecipe("ass.tank").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_fluidtank, 1))

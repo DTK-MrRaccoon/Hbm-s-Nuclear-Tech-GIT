@@ -131,7 +131,6 @@ public class TileMappings {
 		put(TileEntityMachinePress.class, "tileentity_press");
 		put(TileEntityMachineAmmoPress.class, "tileentity_ammo_press");
 		put(TileEntityMachineSiren.class, "tileentity_siren");
-		put(TileEntityMachineSPP.class, "tileentity_spp");
 		put(TileEntityMachineRadGen.class, "tileentity_radgen");
 		put(TileEntityMachineRadarNT.class, "tileentity_radar");
 		put(TileEntityMachineRadarLarge.class, "tileentity_radar_large");
@@ -140,7 +139,7 @@ public class TileMappings {
 		put(TileEntityMachineSatLinker.class, "tileentity_satlinker");
 		put(TileEntityReactorResearch.class, "tileentity_small_reactor");
 		put(TileEntityMachineReactorSmall.class, "tileentity_reactor_small");
-		put(TileEntityVaultDoor.class, "tileentity_vault_door");
+		put(TileEntityVaultDoorMigration.class, "tileentity_vault_door");
 		put(TileEntityRadiobox.class, "tileentity_radio_broadcaster");
 		put(TileEntityRadioRec.class, "tileentity_radio_receiver");
 		put(TileEntityVent.class, "tileentity_vent");

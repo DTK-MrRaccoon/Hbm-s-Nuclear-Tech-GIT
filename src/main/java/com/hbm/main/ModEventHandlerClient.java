@@ -223,6 +223,15 @@ public class ModEventHandlerClient {
 					/*List<String> text = new ArrayList();
 					text.add("Meta: " + world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ));
 					ILookOverlay.printGeneric(event, "DEBUG", 0xffff00, 0x4040000, text);*/
+					
+					if(ClientConfig.SHOW_BLOCK_META_OVERLAY.get()) {
+						Block b = world.getBlock(mop.blockX, mop.blockY, mop.blockZ);
+						int i = world.getBlockMetadata(mop.blockX, mop.blockY, mop.blockZ);
+						List<String> text = new ArrayList();
+						text.add(b.getUnlocalizedName());
+						text.add("Meta: " + i);
+						ILookOverlay.printGeneric(event, "DEBUG", 0xffff00, 0x4040000, text);
+					}
 
 				} else if(mop.typeOfHit == mop.typeOfHit.ENTITY) {
 					Entity entity = mop.entityHit;
@@ -926,6 +935,13 @@ public class ModEventHandlerClient {
 			if(ArmorUtil.isWearingEmptyMask(mc.thePlayer)) {
 				MainRegistry.proxy.displayTooltip(EnumChatFormatting.RED + "Your mask has no filter!", MainRegistry.proxy.ID_FILTER);
 			}
+			
+			//prune other entities' muzzle flashes
+			if(mc.theWorld.getTotalWorldTime() % 30 == 0) {
+				long millis = System.currentTimeMillis();
+				//dead entities may have later insertion order than actively firing ones, so we be safe
+				ItemRenderWeaponBase.flashMap.values().removeIf(entry -> millis - entry.longValue() >= 150);
+			}
 		}
 
 		if(Keyboard.isKeyDown(HbmKeybinds.qmaw.getKeyCode()) && Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) && Minecraft.getMinecraft().currentScreen != null) {
@@ -1452,6 +1468,7 @@ public class ModEventHandlerClient {
 			case 11: main.splashText = "Do drugs!"; break;
 			case 12: main.splashText = "Imagine being scared by splash texts!"; break;
 			case 13: main.splashText = "Semantic versioning? More like pedantic versioning."; break;
+			case 14: main.splashText = "Big Raccoon."; break;
 			}
 
 			double d = Math.random();

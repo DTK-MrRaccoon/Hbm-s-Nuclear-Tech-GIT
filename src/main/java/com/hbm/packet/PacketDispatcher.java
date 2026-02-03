@@ -71,6 +71,8 @@ public class PacketDispatcher {
 		wrapper.registerMessage(HeldItemNBTPacket.Handler.class, HeldItemNBTPacket.class, i++, Side.CLIENT);
 		// Sends info about currently linked transporters to player
 		wrapper.registerMessage(TransporterLinkerPacket.Handler.class, TransporterLinkerPacket.class, i++, Side.CLIENT);
+		//Syncs muzzle flashes of SEDNA guns for clients from other entities/players
+		wrapper.registerMessage(MuzzleFlashPacket.Handler.class, MuzzleFlashPacket.class, i++, Side.CLIENT);
 	}
 
 }
