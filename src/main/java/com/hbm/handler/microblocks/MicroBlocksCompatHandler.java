@@ -67,7 +67,7 @@ public class MicroBlocksCompatHandler {
 	}
 
 	private static void registerMicroBlockCompat(Block block) {
-		for(int meta = 0; meta < 15; meta++) {
+		for(int meta = 0; meta < 16; meta++) {
 			registerMicroBlockCompat(block, meta);
 		}
 	}
