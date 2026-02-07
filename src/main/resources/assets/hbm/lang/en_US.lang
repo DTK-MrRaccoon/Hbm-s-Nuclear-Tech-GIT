@@ -1734,6 +1734,7 @@ hbmfluid.hydrofluoric_acid=Hydrofluoric Acid
 hbmfluid.liquid_fluorite=Liquid Fluorite
 hbmfluid.fluorine_gas=Fluorine gas
 hbmfluid.uranium_oxide_slurry=Uranium Oxide Slurry
+hbmfluid.contaminated_acid=Contaminated Sulfuric Acid
 
 hbmpseudofluid.none=Empty
 hbmpseudofluid.heuf6=Highly Enriched UF6
@@ -2496,6 +2497,8 @@ item.canned_mysteryv2.name=Canned Mystery Meat
 item.canned_mysteryv2.desc=Made in Ukraine.
 item.canned_nutrientpaste.name=Canned Nutrient Paste
 item.canned_nutrientpaste.desc=Goy slop.
+item.canned_slimeball.name=Canned Slime
+item.canned_slimeball.desc=It's a slime in can. Made in UK.
 item.food_can_empty.name=Few sizes of empty cans.
 item.canteen_vodka.name=Stylish Flask
 item.cap_fritz.name=Fritz Cola Bottle Cap

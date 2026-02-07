@@ -223,6 +223,7 @@ public class CraftingManager {
 		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.BREAD), new Object[] { Items.bread, ModItems.food_can_empty, ModItems.can_key });
 		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.APPLE), new Object[] { Items.apple, Items.apple, ModItems.food_can_empty, ModItems.can_key });
 		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.MYSTERYV2), new Object[] { Items.rotten_flesh, Items.rotten_flesh, ModItems.food_can_empty, ModItems.can_key });
+		addShapelessAuto(ModItems.canned_conserve.stackFromEnum(EnumFoodType.SLIMEBALL), new Object[] { Items.slime_ball, Items.slime_ball, ModItems.food_can_empty, ModItems.can_key });
 
 		addShapelessAuto(new ItemStack(ModItems.powder_poison), new Object[] { DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.NIGHTSHADE) });
 		addShapelessAuto(new ItemStack(ModItems.syringe_metal_stimpak), new Object[] { ModItems.syringe_metal_empty, Items.carrot, DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.FOXGLOVE) }); //xander root and broc flower

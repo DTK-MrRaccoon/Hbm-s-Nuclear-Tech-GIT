@@ -49,7 +49,7 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntityMachineMixingVat extends TileEntityMachineBase implements IEnergyReceiverMK2, IFluidStandardTransceiver, IGUIProvider, IUpgradeInfoProvider {
 
 	public long power;
-	public static final long maxPower = 100000;
+	public static final long maxPower = 500000;
 	public int progress;
 	public int maxProgress = 100;
 	public boolean isProgressing;
@@ -62,7 +62,7 @@ public class TileEntityMachineMixingVat extends TileEntityMachineBase implements
 	public FluidTank[] tanks;
 
 	int consumption = 1250;
-	int speed = 100;
+	int speed = 1;
 
 	public UpgradeManagerNT upgradeManager = new UpgradeManagerNT();
 
@@ -167,23 +167,22 @@ public class TileEntityMachineMixingVat extends TileEntityMachineBase implements
 	}
 
 	private void applyUpgrades() {
+		this.speed = 1;
+		this.consumption = 1250;
+
 		int speedLevel = upgradeManager.getLevel(UpgradeType.SPEED);
 		int powerLevel = upgradeManager.getLevel(UpgradeType.POWER);
 		int overLevel = upgradeManager.getLevel(UpgradeType.OVERDRIVE);
 
-		this.speed = 100;
-		this.consumption = 1250;
+		this.speed += speedLevel;
+		this.consumption += speedLevel * 1250;
 
-		this.speed -= speedLevel * 25;
-		this.consumption += speedLevel * 300;
-		
-		this.speed += powerLevel * 15;
-		this.consumption -= powerLevel * 20;
-		
-		this.speed /= (overLevel + 1);
-		this.consumption *= (overLevel + 1);
+		this.speed *= (1 + overLevel * 5);
+		this.consumption += overLevel * 1250 * 50;
 
-		if(this.speed <= 0) this.speed = 1;
+		this.consumption /= (1 + powerLevel);
+
+		if(this.consumption <= 0) this.consumption = 1;
 	}
 
 	private void updateConnections() {
@@ -307,11 +306,11 @@ public class TileEntityMachineMixingVat extends TileEntityMachineBase implements
 
 	private void process() {
 		this.power -= this.consumption;
-		this.progress++;
+		this.progress += this.speed;
 
 		MixingRecipe recipe = MixingVatRecipes.indexMapping.get(slots[4].getItemDamage());
 
-		this.maxProgress = recipe.getDuration() * this.speed / 100;
+		this.maxProgress = recipe.getDuration();
 
 		if(maxProgress <= 0) maxProgress = 1;
 
@@ -566,12 +565,11 @@ public class TileEntityMachineMixingVat extends TileEntityMachineBase implements
 		info.add(IUpgradeInfoProvider.getStandardLabel(ModBlocks.machine_mixing_vat));
 		
 		if(type == UpgradeType.SPEED) {
-			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("upgrade.speed", "-" + (level * 25) + "%"));
-			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey("upgrade.consumption", "+" + (level * 300) + "%"));
+			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(this.KEY_DELAY, "-" + (100 - 100 / (level + 1)) + "%"));
+			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey(this.KEY_CONSUMPTION, "+" + (level * 100) + "%"));
 		}
 		if(type == UpgradeType.POWER) {
-			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey("upgrade.consumption", "-" + (level * 30) + "%"));
-			info.add(EnumChatFormatting.RED + I18nUtil.resolveKey("upgrade.speed", "+" + (level * 15) + "%"));
+			info.add(EnumChatFormatting.GREEN + I18nUtil.resolveKey(this.KEY_CONSUMPTION, "-" + (100 - 100 / (level + 1)) + "%"));
 		}
 		if(type == UpgradeType.OVERDRIVE) {
 			info.add((BobMathUtil.getBlink() ? EnumChatFormatting.RED : EnumChatFormatting.DARK_GRAY) + "YES");
@@ -583,7 +581,7 @@ public class TileEntityMachineMixingVat extends TileEntityMachineBase implements
 		HashMap<UpgradeType, Integer> upgrades = new HashMap<>();
 		upgrades.put(UpgradeType.SPEED, 3);
 		upgrades.put(UpgradeType.POWER, 3);
-		upgrades.put(UpgradeType.OVERDRIVE, 9);
+		upgrades.put(UpgradeType.OVERDRIVE, 3);
 		return upgrades;
 	}
 
