@@ -94,6 +94,7 @@ public class MixingVatRecipes extends SerializableRecipe {
 
 		recipes.add(new MixingRecipe(34, "GREEN_SALT", 300)
 				.inputFluids(new FluidStack(Fluids.URANIUM_OXIDE_SLURRY, 1000), new FluidStack(Fluids.FLUORINE_GAS, 1000))
+				.outputFluids(new FluidStack(Fluids.CONTAMINATED_ACID, 1000))
 				.outputItems(new ItemStack(ModItems.powder_green_salt)));
 
 		recipes.add(new MixingRecipe(35, "UF6", 400)

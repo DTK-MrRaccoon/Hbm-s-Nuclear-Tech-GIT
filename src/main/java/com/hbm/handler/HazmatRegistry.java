@@ -14,6 +14,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.items.ModItems;
 import com.hbm.items.armor.ItemModCladding;
+import com.hbm.items.armor.ItemModGloves;
 import com.hbm.main.MainRegistry;
 import com.hbm.potion.HbmPotion;
 import com.hbm.util.Compat;
@@ -231,6 +232,14 @@ public class HazmatRegistry {
 			return 0;
 		
 		double cladding = getCladding(stack);
+		
+		if(ArmorModHandler.hasMods(stack)) {
+			ItemStack[] mods = ArmorModHandler.pryMods(stack);
+			ItemStack gloves = mods[ArmorModHandler.legs_only];
+			if(gloves != null && gloves.getItem() instanceof ItemModGloves) {
+				cladding += ItemModGloves.RAD_RESISTANCE;
+			}
+		}
 		
 		Double f = entries.get(stack.getItem());
 		

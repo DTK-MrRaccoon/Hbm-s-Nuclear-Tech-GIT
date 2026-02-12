@@ -38,6 +38,7 @@ public class MicroBlocksCompatHandler {
 		registerMicroBlockCompat(ModBlocks.concrete_colored_ext);
 		registerMicroBlockCompat(ModBlocks.concrete);
 		registerMicroBlockCompat(ModBlocks.concrete_asbestos);
+		registerMicroBlockCompat(ModBlocks.concrete_rebar);
 		registerMicroBlockCompat(ModBlocks.concrete_super);
 		registerMicroBlockCompat(ModBlocks.concrete_super_broken);
 		registerMicroBlockCompat(ModBlocks.ducrete_smooth);
@@ -66,7 +67,7 @@ public class MicroBlocksCompatHandler {
 	}
 
 	private static void registerMicroBlockCompat(Block block) {
-		for(int meta = 0; meta < 15; meta++) {
+		for(int meta = 0; meta < 16; meta++) {
 			registerMicroBlockCompat(block, meta);
 		}
 	}

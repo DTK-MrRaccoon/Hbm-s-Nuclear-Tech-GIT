@@ -815,8 +815,6 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:tile.dummy_block_fluidtank");
 		ignoreMappings.add("hbm:tile.dummy_port_fluidtank");
 		ignoreMappings.add("hbm:item.telepad");
-		ignoreMappings.add("hbm:item.rubber_gloves");
-		ignoreMappings.add("hbm:item.pirfenidone");
 		ignoreMappings.add("hbm:item.coin_siege");
 		ignoreMappings.add("hbm:item.source");
 		ignoreMappings.add("hbm:item.gun_brimstone");

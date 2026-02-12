@@ -214,6 +214,7 @@ public class Fluids {
 	public static FluidType LIQUID_FLUORITE;
 	public static FluidType FLUORINE_GAS;
 	public static FluidType URANIUM_OXIDE_SLURRY;
+	public static FluidType CONTAMINATED_ACID;
 
 	/* Lagacy names for compatibility purposes */
 	@Deprecated public static FluidType ACID;	//JAOPCA uses this, apparently
@@ -455,6 +456,7 @@ public class Fluids {
 		LIQUID_FLUORITE	=			new FluidType("LIQUID_FLUORITE", 0x90EE90, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(LIQUID, new FT_Corrosive(60), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F));
 		FLUORINE_GAS =				new FluidType("FLUORINE_GAS", 0xD5DEAD, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(GASEOUS, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.POISON, POISON_EXTREME));
 		URANIUM_OXIDE_SLURRY =			new FluidType("URANIUM_OXIDE_SLURRY", 0xA9A9A9, 3, 0, 1, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(40), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.4F));
+		CONTAMINATED_ACID  =			new FluidType("CONTAMINATED_ACID", 0x9BAA64, 3, 0, 2, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.1F));
 
 
 		// ^ ^ ^ ^ ^ ^ ^ ^
@@ -623,6 +625,7 @@ public class Fluids {
 		metaOrder.add(AMMONIA);
 		metaOrder.add(SOLVENT);
 		metaOrder.add(RADIOSOLVENT);
+		metaOrder.add(CONTAMINATED_ACID);
 		//solutions and working fluids
 		metaOrder.add(FRACKSOL);
 		metaOrder.add(LYE);

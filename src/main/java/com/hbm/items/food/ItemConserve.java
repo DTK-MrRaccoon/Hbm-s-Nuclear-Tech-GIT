@@ -66,14 +66,14 @@ public class ItemConserve extends ItemEnumMulti {
 			player.attackEntityFrom(DamageSource.magic, 2F);
 
 		} else if(num == EnumFoodType.COFFEE) {
-			player.heal(10);
+			player.heal(2);
 			player.addPotionEffect(new PotionEffect(Potion.moveSpeed.id, 300 * 20, 2));
 
 		} else if(num == EnumFoodType.SOUP) {
 			player.heal(10);
 
-		} else if(num == EnumFoodType.POTATO) {
-			player.heal(10);
+		} else if(num == EnumFoodType.NEWBEEF || num == EnumFoodType.POTATO || num == EnumFoodType.CARROT || num == EnumFoodType.BREAD || num == EnumFoodType.APPLE || num == EnumFoodType.FISH) {
+			player.heal(2);
 
 		} else if(num == EnumFoodType.STEW) {
 			ContaminationUtil.contaminate(player, HazardType.RADIATION, ContaminationType.RAD_BYPASS, 5.0F);
@@ -85,12 +85,15 @@ public class ItemConserve extends ItemEnumMulti {
 		} else if(num == EnumFoodType.NUTRIENTPASTE) {
 			player.addPotionEffect(new PotionEffect(Potion.confusion.id, 15 * 20, 0));
 
+		} else if(num == EnumFoodType.SLIMEBALL) {
+			player.addPotionEffect(new PotionEffect(Potion.moveSlowdown.id, 120 * 20, 3));
+
 		}
 	}
 	
 	@Override
 	public int getMaxItemUseDuration(ItemStack stack) {
-		return 32;
+		return 24;
 	}
 	
 	@Override
@@ -178,7 +181,8 @@ public class ItemConserve extends ItemEnumMulti {
 		SOUP(10, 0.95F),
 		COFFEE(2, 0.5F),
 		MYSTERYV2(6, 0.5F),
-		NUTRIENTPASTE(7, 0.35F);
+		NUTRIENTPASTE(7, 0.35F),
+		SLIMEBALL(3, 0.35F);
 
 		protected int foodLevel;
 		protected float saturation;

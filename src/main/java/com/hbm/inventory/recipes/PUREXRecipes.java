@@ -41,6 +41,12 @@ public class PUREXRecipes extends GenericRecipes<GenericRecipe> {
 		long watzPower = 10_000;
 		long vitrification = 1_000;
 		
+		// Clearing acid
+		this.register(new GenericRecipe("purex.acidcleaning").setup(600, 5_000).setIcon(ModItems.fluid_icon, Fluids.CONTAMINATED_ACID.getID())
+				.inputFluids(new FluidStack(Fluids.CONTAMINATED_ACID, 16_000), new FluidStack(Fluids.NITRIC_ACID, 250))
+				.outputFluids(new FluidStack(Fluids.SULFURIC_ACID, 12_000))
+				.outputItems(new ItemStack(ModItems.nuclear_waste_tiny, 1)));
+
 		//CP-1
 		String autoPile = "autoswitch.pile";
 		this.register(new GenericRecipe("purex.pilepu").setup(40, pilePower).setNameWrapper("purex.recycle").setGroup(autoPile, this)

@@ -241,6 +241,67 @@ public class ContaminationUtil {
 		player.addChatMessage(new ChatComponentTranslation("digamma.playerRes").appendSibling(new ChatComponentText(EnumChatFormatting.BLUE + " " + "N/A")).setChatStyle(new ChatStyle().setColor(EnumChatFormatting.LIGHT_PURPLE)));
 	}
 
+	private static String getTextColorLung(double percent) {
+		if(percent > 0.9)
+			return "" + EnumChatFormatting.GREEN;
+		else if(percent > 0.75)
+			return "" + EnumChatFormatting.YELLOW;
+		else if(percent > 0.5)
+			return "" + EnumChatFormatting.GOLD;
+		else if(percent > 0.25)
+			return "" + EnumChatFormatting.RED;
+		else if(percent > 0.1)
+			return "" + EnumChatFormatting.DARK_RED;
+		else
+			return "" + EnumChatFormatting.DARK_GRAY;
+	}
+
+	public static void printLungDiagnosticData(EntityPlayer player) {
+		float playerAsbestos = 100F - ((int)(10000F * HbmLivingProps.getAsbestos(player) / HbmLivingProps.maxAsbestos)) / 100F;
+		float playerBlacklung = 100F - ((int)(10000F * HbmLivingProps.getBlackLung(player) / HbmLivingProps.maxBlacklung)) / 100F;
+		float playerFibrosis = 100F - ((int)(10000F * HbmLivingProps.getFibrosis(player) / HbmLivingProps.maxFibrosis)) / 100F;
+		float playerTotal = (playerAsbestos * playerBlacklung / 100F);
+		int contagion = HbmLivingProps.getContagion(player);
+
+		player.addChatMessage(new ChatComponentText("===== L ")
+				.appendSibling(new ChatComponentTranslation("lung_scanner.title"))
+				.appendSibling(new ChatComponentText(" L ====="))
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE)));
+
+		player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_asbestos_health")
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.WHITE))
+				.appendSibling(new ChatComponentText(String.format(getTextColorLung(playerAsbestos / 100D) + " %6.2f", playerAsbestos) + " %")));
+
+		player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_coal_health")
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_GRAY))
+				.appendSibling(new ChatComponentText(String.format(getTextColorLung(playerBlacklung / 100D) + " %6.2f", playerBlacklung) + " %")));
+
+		player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_fibrosis_health")
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA))
+				.appendSibling(new ChatComponentText(String.format(getTextColorLung(playerFibrosis / 100D) + " %6.2f", playerFibrosis) + " %")));
+
+		player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_total_health")
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW))
+				.appendSibling(new ChatComponentText(String.format(getTextColorLung(playerTotal / 100D) + " %6.2f", playerTotal) + " %")));
+
+		player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_mku")
+				.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))
+				.appendSibling(new ChatComponentTranslation(contagion > 0 ? "lung_scanner.pos" : "lung_scanner.neg")));
+
+		if(contagion > 0) {
+			player.addChatMessage(new ChatComponentTranslation("lung_scanner.player_mku_duration")
+					.setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY))
+					.appendSibling(new ChatComponentText(" §c" + ticksToDateString(contagion, 72000))));
+		}
+	}
+
+	private static String ticksToDateString(int ticks, int ticksPerHour) {
+		int hours = ticks / ticksPerHour;
+		int minutes = (ticks % ticksPerHour) / (ticksPerHour / 60);
+		int seconds = (ticks % (ticksPerHour / 60)) / (ticksPerHour / 3600);
+		return String.format("%dh %02dm %02ds", hours, minutes, seconds);
+	}
+
 	public static enum HazardType {
 		RADIATION,
 		DIGAMMA
