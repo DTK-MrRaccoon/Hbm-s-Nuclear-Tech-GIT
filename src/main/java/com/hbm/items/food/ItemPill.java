@@ -64,6 +64,8 @@ public class ItemPill extends ItemFood {
 			}
 			
 			if(this == ModItems.pill_herbal) {
+				float fibrosis = HbmLivingProps.getFibrosis(player);
+				HbmLivingProps.setFibrosis(player, (int) Math.min(fibrosis, 37800));
 				HbmLivingProps.setAsbestos(player, 0);
 				HbmLivingProps.setBlackLung(player, Math.min(HbmLivingProps.getBlackLung(player), HbmLivingProps.maxBlacklung / 5));
 				HbmLivingProps.incrementRadiation(player, -100F);
@@ -101,6 +103,11 @@ public class ItemPill extends ItemFood {
 			if(this == ModItems.five_htp) {
 				HbmLivingProps.setDigamma(player, 0);
 				player.addPotionEffect(new PotionEffect(HbmPotion.stability.id, 10 * 60 * 20, 0));
+			}
+
+			if(this == ModItems.pirfenidone) {
+				float fibrosis = HbmLivingProps.getFibrosis(player);
+				HbmLivingProps.setFibrosis(player, (int) Math.min(fibrosis, 37800));
 			}
 		}
 	}

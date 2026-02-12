@@ -2,6 +2,8 @@ package com.hbm.blocks.gas;
 
 import java.util.Random;
 
+import com.hbm.extprop.HbmLivingProps;
+
 import com.hbm.lib.ModDamageSource;
 import com.hbm.util.ArmorRegistry;
 import com.hbm.util.ArmorRegistry.HazardClass;
@@ -29,6 +31,7 @@ public class BlockGasMonoxide extends BlockGasBase {
 		if(ArmorRegistry.hasAllProtection(entityLiving, 3, HazardClass.GAS_MONOXIDE))
 			ArmorUtil.damageGasMaskFilter(entityLiving, 1);
 		else
+			HbmLivingProps.incrementFibrosis(entityLiving, 1);
 			entityLiving.attackEntityFrom(ModDamageSource.monoxide, 1);
 	}
 

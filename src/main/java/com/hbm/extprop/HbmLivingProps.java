@@ -43,7 +43,9 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	private int asbestos;
 	public static final int maxAsbestos = 60 * 60 * 20;
 	private int blacklung;
-	public static final int maxBlacklung = 2 * 60 * 60 * 20;
+	public static final int maxBlacklung = 60 * 60 * 20;
+	private int fibrosis;
+	public static final int maxFibrosis = 60 * 60 * 30;
 	private float radEnv;
 	private float radBuf;
 	private int bombTimer;
@@ -219,6 +221,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	public static void incrementAsbestos(EntityLivingBase entity, int asbestos) {
 		if(RadiationConfig.disableAsbestos) return;
 		setAsbestos(entity, getAsbestos(entity) + asbestos);
+		incrementFibrosis(entity, asbestos);
 
 		if(entity instanceof EntityPlayerMP) {
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.asbestos").color(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
@@ -245,10 +248,32 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 	public static void incrementBlackLung(EntityLivingBase entity, int blacklung) {
 		if(RadiationConfig.disableCoal) return;
 		setBlackLung(entity, getBlackLung(entity) + blacklung);
+		incrementFibrosis(entity, blacklung);
 
 		if(entity instanceof EntityPlayerMP) {
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(ChatBuilder.start("").nextTranslation("info.coaldust").color(EnumChatFormatting.RED).flush(), MainRegistry.proxy.ID_GAS_HAZARD, 3000), (EntityPlayerMP) entity);
 		}
+	}
+
+	/// PULMONARY FIBROSIS ///
+	public static int getFibrosis(EntityLivingBase entity) {
+		if(RadiationConfig.disableFibrosis) return 0;
+		return getData(entity).fibrosis;
+	}
+	
+	public static void setFibrosis(EntityLivingBase entity, int fibrosis) {
+		if(RadiationConfig.disableFibrosis) return;
+		getData(entity).fibrosis = fibrosis;
+		
+		if (fibrosis >= maxFibrosis) {
+			getData(entity).fibrosis = 0;
+			entity.attackEntityFrom(ModDamageSource.asbestos, 1000);
+		}
+	}
+	
+	public static void incrementFibrosis(EntityLivingBase entity, int fibrosis) {
+		if(RadiationConfig.disableFibrosis) return;
+		setFibrosis(entity, getFibrosis(entity) + fibrosis);
 	}
 
 	/// TIME BOMB ///
@@ -319,6 +344,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 		props.setInteger("hfr_bomb", bombTimer);
 		if(ServerConfig.ENABLE_MKU.get()) props.setInteger("hfr_contagion", contagion);
 		props.setInteger("hfr_blacklung", blacklung);
+		props.setInteger("hfr_fibrosis", fibrosis);
 		props.setInteger("hfr_oil", oil);
 		props.setInteger("hfr_fire", fire);
 		props.setInteger("hfr_phosphorus", phosphorus);
@@ -347,6 +373,7 @@ public class HbmLivingProps implements IExtendedEntityProperties {
 			bombTimer = props.getInteger("hfr_bomb");
 			if(ServerConfig.ENABLE_MKU.get()) contagion = props.getInteger("hfr_contagion");
 			blacklung = props.getInteger("hfr_blacklung");
+			fibrosis = props.getInteger("hfr_fibrosis");
 			oil = props.getInteger("hfr_oil");
 			fire = props.getInteger("hfr_fire");
 			phosphorus = props.getInteger("hfr_phosphorus");
