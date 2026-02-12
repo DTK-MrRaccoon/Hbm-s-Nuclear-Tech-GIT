@@ -302,6 +302,12 @@ public class CentrifugeRecipes extends SerializableRecipe {
 					qItem.copy() });
 		}
 
+		recipes.put(new ComparableStack(ModItems.powder_cloud), new ItemStack[] {
+				new ItemStack(ModItems.powder_copper, 1),
+				new ItemStack(ModItems.sulfur, 1),
+				new ItemStack(ModItems.dust, 1),
+				new ItemStack(ModItems.dust, 1) });
+
 		recipes.put(new ComparableStack(Items.blaze_rod), new ItemStack[] {new ItemStack(Items.blaze_powder, 1), new ItemStack(Items.blaze_powder, 1), new ItemStack(ModItems.powder_fire, 1), new ItemStack(ModItems.powder_fire, 1) });
 
 		recipes.put(new ComparableStack(ModItems.crystal_coal), new ItemStack[] { new ItemStack(ModItems.powder_coal, 3), new ItemStack(ModItems.powder_coal, 3), new ItemStack(ModItems.powder_coal, 3), new ItemStack(ModItems.powder_lithium_tiny, 1) });
