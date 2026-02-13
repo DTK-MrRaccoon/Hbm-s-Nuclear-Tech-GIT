@@ -48,6 +48,7 @@ public class MineralRecipes {
 		add1To9Pair(ModBlocks.block_smore, ModItems.ingot_smore);
 		add1To9Pair(ModBlocks.block_semtex, ModItems.ingot_semtex);
 		add1To9Pair(ModBlocks.block_c4, ModItems.ingot_c4);
+		add1To9Pair(ModBlocks.block_tatb, ModItems.ball_tatb);
 		add1To9Pair(ModBlocks.block_polymer, ModItems.ingot_polymer);
 		add1To9Pair(ModBlocks.block_bakelite, ModItems.ingot_bakelite);
 		add1To9Pair(ModBlocks.block_rubber, ModItems.ingot_rubber);
