@@ -16,10 +16,14 @@ public class TileEntityPylonMedium extends TileEntityPylonBase {
 	public ConnectionType getConnectionType() {
 		return ConnectionType.TRIPLE;
 	}
+	
+	@Override
+	public boolean isUniversal() {
+		return isConnector();
+	}
 
 	@Override
 	public Vec3[] getMountPos() {
-		
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
 		double height = 7.5D;
 		
@@ -31,13 +35,31 @@ public class TileEntityPylonMedium extends TileEntityPylonBase {
 	}
 
 	@Override
+	public Vec3 getExtraMountPos() {
+		if(hasTransformer() || isConnector()) {
+			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
+
+			ForgeDirection side = dir.getOpposite();
+			return Vec3.createVectorHelper(
+					xCoord + 0.5 + (side.offsetX * 1),
+					yCoord + 6,
+					zCoord + 0.5 + (side.offsetZ * 1)
+			);
+		}
+		return super.getExtraMountPos();
+	}
+
+	@Override
 	public double getMaxWireLength() {
-		return 45;
+		return isConnector() ? 25D : 45D;
 	}
 
 	@Override
 	public boolean canConnect(ForgeDirection dir) {
-		return this.hasTransformer() ? ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getOpposite() == dir : false;
+		if(this.hasTransformer() || this.isConnector()) {
+			return ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getOpposite() == dir;
+		}
+		return false;
 	}
 
 	@Override
@@ -45,7 +67,8 @@ public class TileEntityPylonMedium extends TileEntityPylonBase {
 		TileEntity tile = (TileEntity) this;
 		PowerNode node = new PowerNode(new BlockPos(tile.xCoord, tile.yCoord, tile.zCoord)).setConnections(new DirPos(xCoord, yCoord, zCoord, ForgeDirection.UNKNOWN));
 		for(int[] pos : this.connected) node.addConnection(new DirPos(pos[0], pos[1], pos[2], ForgeDirection.UNKNOWN));
-		if(this.hasTransformer()) {
+		
+		if(this.hasTransformer() || this.isConnector()) {
 			ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10).getOpposite();
 			node.addConnection(new DirPos(xCoord + dir.offsetX, yCoord, zCoord + dir.offsetZ, dir));
 		}
@@ -55,5 +78,10 @@ public class TileEntityPylonMedium extends TileEntityPylonBase {
 	public boolean hasTransformer() {
 		Block block = this.getBlockType();
 		return block == ModBlocks.red_pylon_medium_wood_transformer || block == ModBlocks.red_pylon_medium_steel_transformer;
+	}
+
+	public boolean isConnector() {
+		Block block = this.getBlockType();
+		return block == ModBlocks.red_pylon_medium_wood_connector || block == ModBlocks.red_pylon_medium_steel_connector;
 	}
 }

@@ -278,8 +278,10 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.red_pylon, 4), new Object[] { "CWC", "PWP", " T ", 'C', ModItems.coil_copper, 'W', KEY_PLANKS, 'P', ModItems.plate_polymer, 'T', ModBlocks.red_wire_coated });
 		addRecipeAuto(new ItemStack(ModBlocks.red_pylon_medium_wood, 2), new Object[] { "CCW", "IIW", "  S", 'C', ModItems.coil_copper, 'W', KEY_PLANKS, 'I', ModItems.plate_polymer, 'S', KEY_COBBLESTONE });
 		addShapelessAuto(new ItemStack(ModBlocks.red_pylon_medium_wood_transformer, 1), new Object[] { ModBlocks.red_pylon_medium_wood, ModItems.plate_polymer, ModItems.coil_copper });
+		addShapelessAuto(new ItemStack(ModBlocks.red_pylon_medium_wood_connector, 1), new Object[] { ModBlocks.red_pylon_medium_wood, ModItems.plate_polymer, ModItems.coil_copper, ModBlocks.red_connector });
 		addRecipeAuto(new ItemStack(ModBlocks.red_pylon_medium_steel, 2), new Object[] { "CCW", "IIW", "  S", 'C', ModItems.coil_copper, 'W', STEEL.pipe(), 'I', ModItems.plate_polymer, 'S', KEY_COBBLESTONE });
 		addShapelessAuto(new ItemStack(ModBlocks.red_pylon_medium_steel_transformer, 1), new Object[] { ModBlocks.red_pylon_medium_steel, ModItems.plate_polymer, ModItems.coil_copper });
+		addShapelessAuto(new ItemStack(ModBlocks.red_pylon_medium_steel_connector, 1), new Object[] { ModBlocks.red_pylon_medium_steel, ModItems.plate_polymer, ModItems.coil_copper, ModBlocks.red_connector });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_battery_potato, 1), new Object[] { "PCP", "WRW", "PCP", 'P', ItemBattery.getEmptyBattery(ModItems.battery_potato), 'C', CU.ingot(), 'R', REDSTONE.block(), 'W', KEY_PLANKS });
 		addRecipeAuto(new ItemStack(ModBlocks.capacitor_bus, 1), new Object[] { "PIP", "PIP", "PIP", 'P', ModItems.plate_polymer, 'I', MINGRADE.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.capacitor_copper, 1), new Object[] { "PPP", "PCP", "WWW", 'P', STEEL.plate(), 'C', CU.block(), 'W', KEY_PLANKS });

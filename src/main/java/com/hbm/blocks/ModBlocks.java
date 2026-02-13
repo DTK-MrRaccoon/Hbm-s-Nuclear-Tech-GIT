@@ -801,8 +801,10 @@ public class ModBlocks {
 	public static Block red_pylon;
 	public static Block red_pylon_medium_wood;
 	public static Block red_pylon_medium_wood_transformer;
+	public static Block red_pylon_medium_wood_connector;
 	public static Block red_pylon_medium_steel;
 	public static Block red_pylon_medium_steel_transformer;
+	public static Block red_pylon_medium_steel_connector;
 	public static Block red_pylon_large;
 	public static Block substation;
 	public static Block cable_switch;
@@ -1208,6 +1210,7 @@ public class ModBlocks {
 	public static Block crystal_hardened;
 	public static Block crystal_pulsar;
 	public static Block taint;
+	public static Block residue;
 
 	public static Block vent_chlorine;
 	public static Block vent_cloud;
@@ -1999,8 +2002,10 @@ public class ModBlocks {
 		red_pylon = new PylonRedWire(Material.iron).setBlockName("red_pylon").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_wood = new PylonMedium(Material.wood).setBlockName("red_pylon_medium_wood").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_wood_transformer = new PylonMedium(Material.wood).setBlockName("red_pylon_medium_wood_transformer").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
+		red_pylon_medium_wood_connector = new PylonMedium(Material.wood).setBlockName("red_pylon_medium_wood_connector").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_steel = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_steel").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_steel_transformer = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_steel_transformer").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
+		red_pylon_medium_steel_connector = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_steel_connector").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_large = new PylonLarge(Material.iron).setBlockName("red_pylon_large").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon_large");
 		substation = new Substation(Material.iron).setBlockName("substation").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":substation");
 		cable_switch = new CableSwitch(Material.iron).setBlockName("cable_switch").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
@@ -2430,7 +2435,8 @@ public class ModBlocks {
 		crystal_virus = new CrystalVirus(Material.iron).setBlockName("crystal_virus").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_virus");
 		crystal_hardened = new BlockGeneric(Material.iron).setBlockName("crystal_hardened").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_hardened");
 		crystal_pulsar = new CrystalPulsar(Material.iron).setBlockName("crystal_pulsar").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_pulsar");
-		taint = new BlockTaint(Material.iron).setBlockName("taint").setHardness(15.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":taint");
+		taint = new BlockTaint(Material.iron).setBlockName("taint").setHardness(15.0F).setResistance(10.0F).setCreativeTab(null);
+		residue = new BlockCloudResidue(Material.iron).setBlockName("residue").setHardness(0.5F).setResistance(0.5F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":residue");
 
 		vent_chlorine = new BlockVent(Material.iron).setBlockName("vent_chlorine").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":vent_chlorine");
 		vent_cloud = new BlockVent(Material.iron).setBlockName("vent_cloud").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":vent_cloud");
@@ -3347,8 +3353,10 @@ public class ModBlocks {
 		GameRegistry.registerBlock(red_pylon, ItemBlockBase.class, red_pylon.getUnlocalizedName());
 		register(red_pylon_medium_wood);
 		register(red_pylon_medium_wood_transformer);
+		register(red_pylon_medium_wood_connector);
 		register(red_pylon_medium_steel);
 		register(red_pylon_medium_steel_transformer);
+		register(red_pylon_medium_steel_connector);
 		GameRegistry.registerBlock(red_pylon_large, ItemBlockBase.class, red_pylon_large.getUnlocalizedName());
 		GameRegistry.registerBlock(substation, ItemBlockBase.class, substation.getUnlocalizedName());
 		GameRegistry.registerBlock(cable_switch, cable_switch.getUnlocalizedName());
@@ -3740,7 +3748,8 @@ public class ModBlocks {
 		GameRegistry.registerBlock(crystal_virus, crystal_virus.getUnlocalizedName());
 		GameRegistry.registerBlock(crystal_hardened, crystal_hardened.getUnlocalizedName());
 		GameRegistry.registerBlock(crystal_pulsar, crystal_pulsar.getUnlocalizedName());
-		register(taint);
+		GameRegistry.registerBlock(taint, ItemTaintBlock.class, taint.getUnlocalizedName());
+		GameRegistry.registerBlock(residue, residue.getUnlocalizedName());
 		GameRegistry.registerBlock(cheater_virus, cheater_virus.getUnlocalizedName());
 		GameRegistry.registerBlock(cheater_virus_seed, cheater_virus_seed.getUnlocalizedName());
 		GameRegistry.registerBlock(ntm_dirt, ntm_dirt.getUnlocalizedName());

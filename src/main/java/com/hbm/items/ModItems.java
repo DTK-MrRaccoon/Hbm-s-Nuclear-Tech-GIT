@@ -540,6 +540,7 @@ public class ModItems {
 	public static Item powder_yellowcake;
 	public static Item powder_green_salt;
 	public static Item powder_magic;
+	public static Item powder_cloud;
 	public static Item powder_balefire;
 	public static Item powder_sawdust;
 	public static Item powder_flux;
@@ -2668,6 +2669,7 @@ public class ModItems {
 		powder_yellowcake = new Item().setUnlocalizedName("powder_yellowcake").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_yellowcake");
 		powder_green_salt = new Item().setUnlocalizedName("powder_green_salt").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_green_salt");
 		powder_magic = new Item().setUnlocalizedName("powder_magic").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_magic");
+		powder_cloud = new Item().setUnlocalizedName("powder_cloud").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_cloud");
 		powder_balefire = new Item().setUnlocalizedName("powder_balefire").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_balefire");
 		powder_sawdust = new Item().setUnlocalizedName("powder_sawdust").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_sawdust");
 		powder_flux = new Item().setUnlocalizedName("powder_flux").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_flux");
@@ -5255,6 +5257,7 @@ public class ModItems {
 		GameRegistry.registerItem(powder_boron_tiny, powder_boron_tiny.getUnlocalizedName());
 		GameRegistry.registerItem(powder_asbestos, powder_asbestos.getUnlocalizedName());
 		GameRegistry.registerItem(powder_magic, powder_magic.getUnlocalizedName());
+		GameRegistry.registerItem(powder_cloud, powder_cloud.getUnlocalizedName());
 		GameRegistry.registerItem(powder_sawdust, powder_sawdust.getUnlocalizedName());
 		GameRegistry.registerItem(powder_flux, powder_flux.getUnlocalizedName());
 		GameRegistry.registerItem(powder_fertilizer, powder_fertilizer.getUnlocalizedName());
