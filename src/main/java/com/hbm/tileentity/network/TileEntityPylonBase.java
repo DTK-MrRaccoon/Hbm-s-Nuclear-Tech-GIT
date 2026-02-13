@@ -29,8 +29,10 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 
 	public static int canConnect(TileEntityPylonBase first, TileEntityPylonBase second) {
 
-		if(first.getConnectionType() != second.getConnectionType())
-			return 1;
+		if(first.getConnectionType() != second.getConnectionType()) {
+			if(!first.isUniversal() && !second.isUniversal())
+				return 1;
+		}
 
 		if(first == second)
 			return 2;
@@ -47,6 +49,10 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 				);
 
 		return len >= delta.lengthVector() ? 0 : 3;
+	}
+
+	public boolean isUniversal() {
+		return false;
 	}
 
 	public boolean setColor(ItemStack stack) {
@@ -126,6 +132,10 @@ public abstract class TileEntityPylonBase extends TileEntityCableBaseNT {
 	public abstract ConnectionType getConnectionType();
 	public abstract Vec3[] getMountPos();
 	public abstract double getMaxWireLength();
+
+	public Vec3 getExtraMountPos() {
+		return getConnectionPoint();
+	}
 
 	public Vec3 getConnectionPoint() {
 		Vec3[] mounts = this.getMountPos();
