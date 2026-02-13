@@ -33,6 +33,8 @@ public class RenderPylonMedium extends RenderPylonBase implements IItemRendererP
 
 		if(tile.getBlockType() == ModBlocks.red_pylon_medium_steel || tile.getBlockType() == ModBlocks.red_pylon_medium_steel_transformer || tile.getBlockType() == ModBlocks.red_pylon_medium_steel_connector)
 			bindTexture(ResourceManager.pylon_medium_steel_tex);
+		else if(tile.getBlockType() == ModBlocks.red_pylon_medium_concrete || tile.getBlockType() == ModBlocks.red_pylon_medium_concrete_transformer || tile.getBlockType() == ModBlocks.red_pylon_medium_concrete_connector)
+			bindTexture(ResourceManager.pylon_medium_concrete_tex);
 		else
 			bindTexture(ResourceManager.pylon_medium_tex);
 		
@@ -56,7 +58,10 @@ public class RenderPylonMedium extends RenderPylonBase implements IItemRendererP
 				Item.getItemFromBlock(ModBlocks.red_pylon_medium_wood_connector),
 				Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel),
 				Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_transformer),
-				Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_connector)
+				Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_connector),
+				Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete),
+				Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_transformer),
+				Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_connector)
 		};
 	}
 
@@ -79,15 +84,17 @@ public class RenderPylonMedium extends RenderPylonBase implements IItemRendererP
 				
 				if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_transformer) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_connector))
 					bindTexture(ResourceManager.pylon_medium_steel_tex);
+				else if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_transformer) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_connector))
+					bindTexture(ResourceManager.pylon_medium_concrete_tex);
 				else
 					bindTexture(ResourceManager.pylon_medium_tex);
 				
 				ResourceManager.pylon_medium.renderPart("Pylon");
 				
-				if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_wood_transformer) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_transformer))
+				if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_wood_transformer) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_transformer) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_transformer))
 					ResourceManager.pylon_medium.renderPart("Transformer");
 				
-				if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_wood_connector) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_connector))
+				if(item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_wood_connector) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_steel_connector) || item == Item.getItemFromBlock(ModBlocks.red_pylon_medium_concrete_connector))
 					ResourceManager.pylon_medium.renderPart("Connector");
 					ResourceManager.pylon_medium.renderPart("Connector2");
 			}

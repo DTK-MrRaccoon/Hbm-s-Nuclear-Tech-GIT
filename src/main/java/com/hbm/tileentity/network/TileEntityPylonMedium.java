@@ -77,11 +77,11 @@ public class TileEntityPylonMedium extends TileEntityPylonBase {
 	
 	public boolean hasTransformer() {
 		Block block = this.getBlockType();
-		return block == ModBlocks.red_pylon_medium_wood_transformer || block == ModBlocks.red_pylon_medium_steel_transformer;
+		return block == ModBlocks.red_pylon_medium_wood_transformer || block == ModBlocks.red_pylon_medium_steel_transformer || block == ModBlocks.red_pylon_medium_concrete_transformer;
 	}
 
 	public boolean isConnector() {
 		Block block = this.getBlockType();
-		return block == ModBlocks.red_pylon_medium_wood_connector || block == ModBlocks.red_pylon_medium_steel_connector;
+		return block == ModBlocks.red_pylon_medium_wood_connector || block == ModBlocks.red_pylon_medium_steel_connector || block == ModBlocks.red_pylon_medium_concrete_connector;
 	}
 }
