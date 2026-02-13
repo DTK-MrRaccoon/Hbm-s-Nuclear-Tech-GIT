@@ -384,6 +384,11 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.SOURGAS, 200, 1), new FluidStack(Fluids.NITRIC_ACID, 10))
 				.outputItems(new ItemStack(ModItems.ball_tatb)));
 		
+		this.register(new GenericRecipe("chem.tatb_from_niter").setup(250, 8_000)
+				.inputItems(new OreDictStack(KNO.dust(), 2))
+				.inputFluids(new FluidStack(Fluids.AROMATICS, 1_200), new FluidStack(Fluids.SULFURIC_ACID, 1_500), new FluidStack(Fluids.AMMONIA, 800))
+    				.outputItems(new ItemStack(ModItems.ball_tatb)));
+
 		this.register(new GenericRecipe("chem.c4").setup(100, 1_000)
 				.inputItems(new OreDictStack(KNO.dust()))
 				.inputFluids(new FluidStack(Fluids.UNSATURATEDS, 500, GeneralConfig.enable528PressurizedRecipes ? 1 : 0))
