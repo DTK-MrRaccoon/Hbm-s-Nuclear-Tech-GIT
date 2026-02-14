@@ -25,6 +25,7 @@ public class ItemSurveyScanner extends Item {
 			int z = (int) Math.floor(player.posZ);
 			
 			boolean hasOil = false;
+			boolean hasRusOil = false;
 			boolean hasColtan = false;
 			boolean hasBedrockOil = false;
 			boolean hasDepth = false;
@@ -34,12 +35,13 @@ public class ItemSurveyScanner extends Item {
 			
 			for(int a = -5; a <= 5; a++) {
 				for(int b = -5; b <= 5; b++) {
-					for(int i =  y + 15; i > 1; i -= 2) {
+					for(int i = y + 15; i > 1; i -= 2) {
 						
 						Block block = world.getBlock(x + a * 5, i, z + b * 5);
 						
 						//wow, this sucks!
 						if(block == ModBlocks.ore_oil) hasOil = true;
+						else if(block == ModBlocks.ore_oil_rus) hasRusOil = true;
 						else if(block == ModBlocks.ore_coltan) hasColtan = true;
 						else if(block == ModBlocks.ore_bedrock_oil) hasBedrockOil = true;
 						else if(block == ModBlocks.stone_depth) hasDepth = true;
@@ -56,12 +58,14 @@ public class ItemSurveyScanner extends Item {
 				}
 			}
 
+			if(hasRusOil) player.addChatComponentMessage(new ChatComponentText("Found HIGH-GRADE OIL!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.AQUA)));
 			if(hasOil) player.addChatComponentMessage(new ChatComponentText("Found OIL!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
 			if(hasBedrockOil) player.addChatComponentMessage(new ChatComponentText("Found BEDROCK OIL!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.BLACK)));
 			if(hasColtan) player.addChatComponentMessage(new ChatComponentText("Found COLTAN!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GOLD)));
 			if(hasDepth) player.addChatComponentMessage(new ChatComponentText("Found DEPTH ROCK!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.GRAY)));
 			if(hasSchist) player.addChatComponentMessage(new ChatComponentText("Found SCHIST!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.DARK_AQUA)));
 			if(hasAussie) player.addChatComponentMessage(new ChatComponentText("Found AUSTRALIUM!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.YELLOW)));
+			
 			if(tile != null && tile.resource != null) player.addChatComponentMessage(new ChatComponentText("Found BEDROCK ORE for " + tile.resource.getDisplayName() + "!").setChatStyle(new ChatStyle().setColor(EnumChatFormatting.RED)));
 		}
 		

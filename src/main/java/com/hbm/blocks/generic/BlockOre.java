@@ -192,9 +192,16 @@ public class BlockOre extends Block {
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block block) {
-		if(world.getBlock(x, y - 1, z) == ModBlocks.ore_oil_empty) {
-			world.setBlock(x, y, z, ModBlocks.ore_oil_empty);
-			world.setBlock(x, y - 1, z, ModBlocks.ore_oil);
+
+		Block below = world.getBlock(x, y - 1, z);
+		Block self = world.getBlock(x, y, z);
+
+		if(below == ModBlocks.ore_oil_empty) {
+
+			if(self == ModBlocks.ore_oil || self == ModBlocks.ore_oil_rus) {
+				world.setBlock(x, y, z, ModBlocks.ore_oil_empty);
+				world.setBlock(x, y - 1, z, self);
+			}
 		}
 	}
 

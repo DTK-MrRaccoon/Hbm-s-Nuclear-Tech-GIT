@@ -33,6 +33,7 @@ public class PylonMedium extends BlockDummyable implements ITooltipProvider {
 		Block block = Block.getBlockFromItem(stack.getItem());
 		
 		boolean hasCon = block == ModBlocks.red_pylon_medium_wood_connector || 
+		                 block == ModBlocks.red_pylon_medium_concrete_connector|| 
 		                 block == ModBlocks.red_pylon_medium_steel_connector;
 
 		if(hasCon) {

@@ -21,6 +21,11 @@ public class VacuumRefineryRecipes extends SerializableRecipe {
 	public static final int vac_frac_reform = 25;
 	public static final int vac_frac_light = 20;
 	public static final int vac_frac_sour = 15;
+
+	public static final int vac_rus_heavy = 20;
+	public static final int vac_rus_reform = 40;
+	public static final int vac_rus_light = 25;
+	public static final int vac_rus_gas = 15;
 	
 	public static HashMap<FluidType, VacuumRefineryRecipe> recipes = new HashMap();
 
@@ -38,6 +43,18 @@ public class VacuumRefineryRecipes extends SerializableRecipe {
 				new FluidStack(Fluids.REFORMATE,		vac_frac_reform),
 				new FluidStack(Fluids.LIGHTOIL_VACUUM,	vac_frac_light),
 				new FluidStack(Fluids.REFORMGAS,		vac_frac_sour)
+				));
+		recipes.put(Fluids.OIL_RUSSIAN, new VacuumRefineryRecipe(
+				new FluidStack(Fluids.HEAVYOIL_VACUUM,	vac_rus_heavy),
+				new FluidStack(Fluids.REFORMATE,		vac_rus_reform),
+				new FluidStack(Fluids.LIGHTOIL_VACUUM,	vac_rus_light),
+				new FluidStack(Fluids.SOURGAS,			vac_rus_gas)
+				));
+		recipes.put(Fluids.OIL_RUSSIAN_DS, new VacuumRefineryRecipe(
+				new FluidStack(Fluids.HEAVYOIL_VACUUM,	vac_rus_heavy),
+				new FluidStack(Fluids.REFORMATE,		vac_rus_reform),
+				new FluidStack(Fluids.LIGHTOIL_VACUUM,	vac_rus_light),
+				new FluidStack(Fluids.REFORMGAS,		vac_rus_gas)
 				));
 	}
 	

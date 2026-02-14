@@ -1493,6 +1493,7 @@ public class ModItems {
 	public static Item stick_tnt;
 	public static Item stick_semtex;
 	public static Item stick_c4;
+	public static Item stick_tatb;
 
 	public static Item grenade_generic;
 	public static Item grenade_strong;
@@ -3750,6 +3751,7 @@ public class ModItems {
 		stick_tnt = new Item().setUnlocalizedName("stick_tnt").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":stick_tnt");
 		stick_semtex = new Item().setUnlocalizedName("stick_semtex").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":stick_semtex");
 		stick_c4 = new Item().setUnlocalizedName("stick_c4").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":stick_c4");
+		stick_tatb = new Item().setUnlocalizedName("stick_tatb").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":stick_tatb");
 
 		grenade_generic = new ItemGrenade(4).setUnlocalizedName("grenade_generic").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":grenade_generic");
 		grenade_strong = new ItemGrenade(5).setUnlocalizedName("grenade_strong").setCreativeTab(MainRegistry.weaponTab).setTextureName(RefStrings.MODID + ":grenade_strong");
@@ -6433,6 +6435,7 @@ public class ModItems {
 		GameRegistry.registerItem(stick_tnt, stick_tnt.getUnlocalizedName());
 		GameRegistry.registerItem(stick_semtex, stick_semtex.getUnlocalizedName());
 		GameRegistry.registerItem(stick_c4, stick_c4.getUnlocalizedName());
+		GameRegistry.registerItem(stick_tatb, stick_tatb.getUnlocalizedName());
 		GameRegistry.registerItem(grenade_generic, grenade_generic.getUnlocalizedName());
 		GameRegistry.registerItem(grenade_strong, grenade_strong.getUnlocalizedName());
 		GameRegistry.registerItem(grenade_frag, grenade_frag.getUnlocalizedName());

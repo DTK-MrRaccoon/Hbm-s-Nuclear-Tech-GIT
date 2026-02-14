@@ -73,7 +73,7 @@ public class NukeEnvironmentalEffect {
 			b = ModBlocks.waste_planks;
 			
 		} else if(in == Blocks.mossy_cobblestone) {
-			b = ModBlocks.ore_oil;
+			b = ModBlocks.ore_oil_rus;
 			chance = 50;
 			
 		} else if(in == Blocks.coal_ore) {
