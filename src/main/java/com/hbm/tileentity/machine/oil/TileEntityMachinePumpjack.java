@@ -9,6 +9,9 @@ import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.container.ContainerMachineOilWell;
 import com.hbm.inventory.gui.GUIMachineOilWell;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.tileentity.IConfigurableMachine;
 import com.hbm.tileentity.IUpgradeInfoProvider;
@@ -110,7 +113,6 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 		}
 	}
 
-
 	@Override
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
@@ -125,9 +127,19 @@ public class TileEntityMachinePumpjack extends TileEntityOilDrillBase {
 
 	@Override
 	public void onSuck(int x, int y, int z) {
+		Block b = worldObj.getBlock(x, y, z);
+
+		FluidType targetFluid = (b == ModBlocks.ore_oil_rus) ? Fluids.OIL_RUSSIAN : Fluids.OIL;
+
+		if(this.tanks[0].getFill() > 0 && this.tanks[0].getTankType() != targetFluid) {
+			return;
+		}
+
+		this.tanks[0].setTankType(targetFluid);
 		
 		this.tanks[0].setFill(this.tanks[0].getFill() + oilPerDepsoit);
 		if(this.tanks[0].getFill() > this.tanks[0].getMaxFill()) this.tanks[0].setFill(tanks[0].getMaxFill());
+		
 		this.tanks[1].setFill(this.tanks[1].getFill() + (gasPerDepositMin + worldObj.rand.nextInt((gasPerDepositMax - gasPerDepositMin + 1))));
 		if(this.tanks[1].getFill() > this.tanks[1].getMaxFill()) this.tanks[1].setFill(tanks[1].getMaxFill());
 		

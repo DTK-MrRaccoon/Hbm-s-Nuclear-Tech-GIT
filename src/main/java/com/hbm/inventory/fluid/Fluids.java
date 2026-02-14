@@ -215,6 +215,10 @@ public class Fluids {
 	public static FluidType FLUORINE_GAS;
 	public static FluidType URANIUM_OXIDE_SLURRY;
 	public static FluidType CONTAMINATED_ACID;
+	public static FluidType OIL_RUSSIAN;
+	public static FluidType OIL_RUSSIAN_DS;
+	public static FluidType HOTOIL_RUSSIAN;
+	public static FluidType HOTOIL_RUSSIAN_DS;
 
 	/* Lagacy names for compatibility purposes */
 	@Deprecated public static FluidType ACID;	//JAOPCA uses this, apparently
@@ -457,7 +461,10 @@ public class Fluids {
 		FLUORINE_GAS =				new FluidType("FLUORINE_GAS", 0xD5DEAD, 3, 0, 1, EnumSymbol.OXIDIZER).addTraits(GASEOUS, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.POISON, POISON_EXTREME));
 		URANIUM_OXIDE_SLURRY =			new FluidType("URANIUM_OXIDE_SLURRY", 0xA9A9A9, 3, 0, 1, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(40), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.4F));
 		CONTAMINATED_ACID  =			new FluidType("CONTAMINATED_ACID", 0x9BAA64, 3, 0, 2, EnumSymbol.RADIATION).addTraits(LIQUID, new FT_Corrosive(70), new FT_Polluting().release(PollutionType.HEAVYMETAL, PollutionHandler.HEAVY_METAL_PER_SECOND * 0.015F), new FT_VentRadiation(0.1F));
-
+		OIL_RUSSIAN =			new FluidType("OIL_RUSSIAN",		0x4b3524, 2, 1, 0, EnumSymbol.NONE).addContainers(new CD_Canister(0x4b3524)).addTraits(new FT_Flammable(15_000), LIQUID, VISCOUS, P_OIL);
+		OIL_RUSSIAN_DS =		new FluidType("OIL_RUSSIAN_DS",		0x4b3524, 2, 1, 0, EnumSymbol.NONE).addContainers(new CD_Canister(0x4b3524)).addTraits(new FT_Flammable(15_000), LIQUID, VISCOUS, P_OIL);
+		HOTOIL_RUSSIAN =		new FluidType("HOTOIL_RUSSIAN",		0x6b3f24, 2, 3, 0, EnumSymbol.NONE).setTemp(350).addTraits(LIQUID, VISCOUS, P_OIL);
+		HOTOIL_RUSSIAN_DS =		new FluidType("HOTOIL_RUSSIAN_DS",	0x6b3f24, 2, 3, 0, EnumSymbol.NONE).setTemp(350).addTraits(LIQUID, VISCOUS, P_OIL);
 
 		// ^ ^ ^ ^ ^ ^ ^ ^
 		//ADD NEW FLUIDS HERE
@@ -521,12 +528,16 @@ public class Fluids {
 		//oils, fuels
 		metaOrder.add(OIL);
 		metaOrder.add(OIL_DS);
+		metaOrder.add(OIL_RUSSIAN);
+		metaOrder.add(OIL_RUSSIAN_DS);
 		metaOrder.add(CRACKOIL);
 		metaOrder.add(CRACKOIL_DS);
 		metaOrder.add(COALOIL);
 		metaOrder.add(OIL_COKER);
 		metaOrder.add(HOTOIL);
 		metaOrder.add(HOTOIL_DS);
+		metaOrder.add(HOTOIL_RUSSIAN);
+		metaOrder.add(HOTOIL_RUSSIAN_DS);
 		metaOrder.add(HOTCRACKOIL);
 		metaOrder.add(HOTCRACKOIL_DS);
 		metaOrder.add(HEAVYOIL);
@@ -711,11 +722,15 @@ public class Fluids {
 		OIL_DS.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).addStep(10, 1, HOTOIL_DS, 1));
 		CRACKOIL.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).addStep(10, 1, HOTCRACKOIL, 1));
 		CRACKOIL_DS.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).addStep(10, 1, HOTCRACKOIL_DS, 1));
+		OIL_RUSSIAN.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).addStep(10, 1, HOTOIL_RUSSIAN, 1));
+		OIL_RUSSIAN_DS.addTraits(new FT_Heatable().setEff(HeatingType.BOILER, 1.0D).setEff(HeatingType.HEATEXCHANGER, 1.0D).addStep(10, 1, HOTOIL_RUSSIAN_DS, 1));
 
 		HOTOIL.addTraits(new FT_Coolable(OIL, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 		HOTOIL_DS.addTraits(new FT_Coolable(OIL_DS, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 		HOTCRACKOIL.addTraits(new FT_Coolable(CRACKOIL, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 		HOTCRACKOIL_DS.addTraits(new FT_Coolable(CRACKOIL_DS, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
+		HOTOIL_RUSSIAN.addTraits(new FT_Coolable(OIL_RUSSIAN, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
+		HOTOIL_RUSSIAN_DS.addTraits(new FT_Coolable(OIL_RUSSIAN_DS, 1, 1, 10).setEff(CoolingType.HEATEXCHANGER, 1.0D));
 
 		COOLANT.addTraits(new FT_Heatable().setEff(HeatingType.HEATEXCHANGER, 1.0D).setEff(HeatingType.PWR, 1.0D).setEff(HeatingType.ICF, 1.0D).addStep(300, 1, COOLANT_HOT, 1));
 		COOLANT_HOT.addTraits(new FT_Coolable(COOLANT, 1, 1, 300).setEff(CoolingType.HEATEXCHANGER, 1.0D));
@@ -772,6 +787,8 @@ public class Fluids {
 		/// the almighty excel spreadsheet has spoken! ///
 		registerCalculatedFuel(OIL, (baseline / 1D * flammabilityLow * demandLow), 0, null);
 		registerCalculatedFuel(OIL_DS, (baseline / 1D * flammabilityLow * demandLow * complexityHydro), 0, null);
+		registerCalculatedFuel(OIL_RUSSIAN, (baseline / 1.0D * flammabilityLow * demandLow * 1.35D), 0, null);
+		registerCalculatedFuel(OIL_RUSSIAN_DS, (baseline / 1.0D * flammabilityLow * demandLow * complexityHydro * 1.35D), 0, null);
 		registerCalculatedFuel(CRACKOIL, (baseline / 1D * flammabilityLow * demandLow * complexityCracking), 0, null);
 		registerCalculatedFuel(CRACKOIL_DS, (baseline / 1D * flammabilityLow * demandLow * complexityCracking * complexityHydro), 0, null);
 		registerCalculatedFuel(OIL_COKER, (baseline / 1D * flammabilityLow * demandLow * complexityCoker), 0, null);

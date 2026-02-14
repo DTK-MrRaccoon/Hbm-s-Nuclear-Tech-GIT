@@ -41,6 +41,16 @@ public class RefineryRecipes extends SerializableRecipe {
 	public static final int crackds_frac_aroma = 15;
 	public static final int crackds_frac_unsat = 15;
 
+	public static final int oilrus_frac_heavy = 20;
+	public static final int oilrus_frac_naph = 40;
+	public static final int oilrus_frac_light = 25;
+	public static final int oilrus_frac_petro = 15;
+
+	public static final int oilrusds_frac_heavy = 15;
+	public static final int oilrusds_frac_naph = 45;
+	public static final int oilrusds_frac_light = 25;
+	public static final int oilrusds_frac_unsat = 15;
+
 	private static Map<FluidType, RefineryRecipe> recipes = new HashMap();
 
 	@Override
@@ -71,6 +81,20 @@ public class RefineryRecipes extends SerializableRecipe {
 				new FluidStack(Fluids.LIGHTOIL_DS,		crackds_frac_light),
 				new FluidStack(Fluids.AROMATICS,		crackds_frac_aroma),
 				new FluidStack(Fluids.UNSATURATEDS,		crackds_frac_unsat),
+				DictFrame.fromOne(ModItems.oil_tar, EnumTarType.PARAFFIN)
+				));
+		recipes.put(Fluids.HOTOIL_RUSSIAN, new RefineryRecipe(
+				new FluidStack(Fluids.HEAVYOIL,		oilrus_frac_heavy),
+				new FluidStack(Fluids.NAPHTHA,		oilrus_frac_naph),
+				new FluidStack(Fluids.LIGHTOIL,		oilrus_frac_light),
+				new FluidStack(Fluids.PETROLEUM,	oilrus_frac_petro),
+				new ItemStack(ModItems.sulfur)
+				));
+		recipes.put(Fluids.HOTOIL_RUSSIAN_DS, new RefineryRecipe(
+				new FluidStack(Fluids.HEAVYOIL,		oilrusds_frac_heavy),
+				new FluidStack(Fluids.NAPHTHA_DS,	oilrusds_frac_naph),
+				new FluidStack(Fluids.LIGHTOIL_DS,	oilrusds_frac_light),
+				new FluidStack(Fluids.UNSATURATEDS,	oilrusds_frac_unsat),
 				DictFrame.fromOne(ModItems.oil_tar, EnumTarType.PARAFFIN)
 				));
 	}

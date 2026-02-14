@@ -67,6 +67,13 @@ public class HbmWorld {
 			MapGenChainloader.addOverworldGenerator(sellafieldCrater);
 		}
 
+		if(WorldConfig.oilRusSpawn > 0) {
+			MapGenBubble rusOilBubble = new MapGenBubble(WorldConfig.oilRusSpawn);
+			rusOilBubble.block = ModBlocks.ore_oil_rus;
+			rusOilBubble.setSize(12, 24);
+			MapGenChainloader.addOverworldGenerator(rusOilBubble);
+		}
+
 		if(WorldConfig.oilSpawn > 0) {
 			MapGenBubble oilBubble = new MapGenBubble(WorldConfig.oilSpawn);
 			oilBubble.block = ModBlocks.ore_oil;

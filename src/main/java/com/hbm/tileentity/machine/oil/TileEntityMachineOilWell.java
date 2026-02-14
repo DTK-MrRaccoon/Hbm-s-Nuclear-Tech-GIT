@@ -8,6 +8,9 @@ import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.container.ContainerMachineOilWell;
 import com.hbm.inventory.gui.GUIMachineOilWell;
+import com.hbm.inventory.fluid.FluidType;
+import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.items.machine.ItemMachineUpgrade.UpgradeType;
 import com.hbm.lib.Library;
 import com.hbm.tileentity.IConfigurableMachine;
@@ -89,6 +92,15 @@ public class TileEntityMachineOilWell extends TileEntityOilDrillBase {
 
 	@Override
 	public void onSuck(int x, int y, int z) {
+		Block b = worldObj.getBlock(x, y, z);
+
+		FluidType targetFluid = (b == ModBlocks.ore_oil_rus) ? Fluids.OIL_RUSSIAN : Fluids.OIL;
+
+		if(this.tanks[0].getFill() > 0 && this.tanks[0].getTankType() != targetFluid) {
+			return;
+		}
+
+		this.tanks[0].setTankType(targetFluid);
 
 		worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "game.neutral.swim.splash", 2.0F, 0.5F);
 		
