@@ -811,6 +811,7 @@ public class ModBlocks {
 	public static Block red_pylon_medium_concrete;
 	public static Block red_pylon_medium_concrete_transformer;
 	public static Block red_pylon_medium_concrete_connector;
+	public static Block transformer_medium;
 	public static Block red_pylon_large;
 	public static Block substation;
 	public static Block cable_switch;
@@ -2018,6 +2019,7 @@ public class ModBlocks {
 		red_pylon_medium_concrete = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_concrete").setHardness(5.0F).setResistance(25.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_concrete_transformer = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_concrete_transformer").setHardness(5.0F).setResistance(25.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
 		red_pylon_medium_concrete_connector = new PylonMedium(Material.iron).setBlockName("red_pylon_medium_concrete_connector").setHardness(5.0F).setResistance(25.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon");
+		transformer_medium = new TransformerMedium(Material.iron).setBlockName("transformer_medium").setHardness(5.0F).setResistance(30.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		red_pylon_large = new PylonLarge(Material.iron).setBlockName("red_pylon_large").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":red_pylon_large");
 		substation = new Substation(Material.iron).setBlockName("substation").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":substation");
 		cable_switch = new CableSwitch(Material.iron).setBlockName("cable_switch").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
@@ -3375,6 +3377,7 @@ public class ModBlocks {
 		register(red_pylon_medium_concrete);
 		register(red_pylon_medium_concrete_transformer);
 		register(red_pylon_medium_concrete_connector);
+		register(transformer_medium);
 		GameRegistry.registerBlock(red_pylon_large, ItemBlockBase.class, red_pylon_large.getUnlocalizedName());
 		GameRegistry.registerBlock(substation, ItemBlockBase.class, substation.getUnlocalizedName());
 		GameRegistry.registerBlock(cable_switch, cable_switch.getUnlocalizedName());

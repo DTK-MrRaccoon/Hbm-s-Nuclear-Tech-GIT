@@ -428,6 +428,7 @@ public class ResourceManager {
 	//Network
 	public static final IModelCustom connector = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/connector.obj"));
 	public static final IModelCustom pylon_medium = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/pylon_medium.obj"));
+	public static final IModelCustom transformer_medium = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/transformer.obj"));
 	public static final IModelCustom pylon_large = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/pylon_large.obj"));
 	public static final IModelCustom substation = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/network/substation.obj")).asVBO();
 	public static final IModelCustom pipe_anchor = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/network/pipe_anchor.obj")).asVBO();
@@ -908,6 +909,7 @@ public class ResourceManager {
 	public static final ResourceLocation pylon_medium_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium.png");
 	public static final ResourceLocation pylon_medium_steel_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium_steel.png");
 	public static final ResourceLocation pylon_medium_concrete_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium_concrete.png");
+	public static final ResourceLocation transformer_medium_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/transformer_medium.png");
 	public static final ResourceLocation pylon_large_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_large.png");
 	public static final ResourceLocation substation_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/substation.png");
 	public static final ResourceLocation wire_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/wire.png");

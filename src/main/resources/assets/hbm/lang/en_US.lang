@@ -6413,6 +6413,7 @@ tile.red_pylon_medium_steel_connector.name=Medium Steel Electricity Pylon with C
 tile.red_pylon_medium_wood.name=Medium Wooden Electricity Pylon
 tile.red_pylon_medium_wood_transformer.name=Medium Wooden Electricity Pylon with Transformer
 tile.red_pylon_medium_wood_connector.name=Medium Wooden Electricity Pylon with Connector to Single cable
+tile.transformer_medium.name=Medium Transformer
 tile.red_wire_coated.name=Coated Red Copper Cable
 tile.refueler.name=Refueling Station
 tile.reinforced_brick.name=Reinforced Stone

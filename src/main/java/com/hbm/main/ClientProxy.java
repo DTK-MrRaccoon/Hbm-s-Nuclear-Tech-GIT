@@ -406,6 +406,7 @@ public class ClientProxy extends ServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylon.class, new RenderPylon());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConnector.class, new RenderConnector());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylonMedium.class, new RenderPylonMedium());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTransformerMedium.class, new RenderTransformerMedium());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylonLarge.class, new RenderPylonLarge());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySubstation.class, new RenderSubstation());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPipeAnchor.class, new RenderPipeAnchor());
