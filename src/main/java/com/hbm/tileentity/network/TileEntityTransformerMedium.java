@@ -67,7 +67,7 @@ public class TileEntityTransformerMedium extends TileEntityPylonBase implements 
 				}
 
 				if (powerTransfer > MAX_POWER) {
-					temperature += (powerTransfer - MAX_POWER) / (float)MAX_POWER / 25;
+					temperature += (powerTransfer - MAX_POWER) / (float)MAX_POWER / 12.5;
 					temperature -= 0.15F;
 				} else {
 					temperature -= 0.5F;

@@ -114,6 +114,8 @@ public class PylonMedium extends BlockDummyable implements ITooltipProvider, ILo
 		if(te instanceof TileEntityPylonMedium) {
 			TileEntityPylonMedium pylon = (TileEntityPylonMedium) te;
 
+			if(!pylon.hasTransformer() && !pylon.isConnector()) return;
+
 			List<AStack> mats = IRepairable.getRepairMaterials(world, x, y, z, this, net.minecraft.client.Minecraft.getMinecraft().thePlayer);
 
 			if (mats != null && pylon.isBroken) {
