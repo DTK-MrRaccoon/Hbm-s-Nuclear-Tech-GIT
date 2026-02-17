@@ -69,7 +69,6 @@ public class TileEntityPylonMedium extends TileEntityPylonBase implements IRepai
 					powerTransfer = 0;
 				}
 
-				// Custom Overload Formula
 				if (powerTransfer > MAX_POWER) {
 					temperature += (powerTransfer - MAX_POWER) / (float)MAX_POWER / 25;
 					temperature -= 0.15F;
@@ -219,7 +218,7 @@ public class TileEntityPylonMedium extends TileEntityPylonBase implements IRepai
 
 	@Override
 	public double getMaxWireLength() {
-		return isConnector() ? 25D : 45D;
+		return 45D;
 	}
 
 	@Override

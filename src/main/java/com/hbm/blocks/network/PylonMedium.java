@@ -42,17 +42,21 @@ public class PylonMedium extends BlockDummyable implements ITooltipProvider, ILo
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
 		Block block = Block.getBlockFromItem(stack.getItem());
 		
-		boolean hasCon = block == ModBlocks.red_pylon_medium_wood_connector || 
-		                 block == ModBlocks.red_pylon_medium_concrete_connector|| 
-		                 block == ModBlocks.red_pylon_medium_steel_connector;
+		boolean isCon = block == ModBlocks.red_pylon_medium_wood_connector ||
+		                block == ModBlocks.red_pylon_medium_concrete_connector||
+		                block == ModBlocks.red_pylon_medium_steel_connector;
 
-		if(hasCon) {
-			list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Triple + Single");
+		boolean isTrans = block == ModBlocks.red_pylon_medium_wood_transformer ||
+		                  block == ModBlocks.red_pylon_medium_concrete_transformer ||
+		                  block == ModBlocks.red_pylon_medium_steel_transformer;
+
+		if(isCon) {
+			list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Triple + Universal");
 			list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "45m / 25m");
 			list.add(EnumChatFormatting.GOLD + "Max Capacity: " + EnumChatFormatting.YELLOW + "0.75 MHE/t");
 			list.add(EnumChatFormatting.RED + "DANGER: Will melt if overloaded!");
-		} else if(block == ModBlocks.red_pylon_medium_wood_transformer || block == ModBlocks.red_pylon_medium_concrete_transformer || block == ModBlocks.red_pylon_medium_steel_transformer) {
-			list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Triple");
+		} else if(isTrans) {
+			list.add(EnumChatFormatting.GOLD + "Connection Type: " + EnumChatFormatting.YELLOW + "Triple + Heavy");
 			list.add(EnumChatFormatting.GOLD + "Connection Range: " + EnumChatFormatting.YELLOW + "45m");
 			list.add(EnumChatFormatting.GOLD + "Max Capacity: " + EnumChatFormatting.YELLOW + "0.75 MHE/t");
 			list.add(EnumChatFormatting.RED + "DANGER: Will melt if overloaded!");
