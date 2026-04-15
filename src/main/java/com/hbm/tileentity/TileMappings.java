@@ -432,6 +432,11 @@ public class TileMappings {
 		put(TileEntityRBMKStorage.class, "tileentity_rbmk_storage");
 		put(TileEntityCraneConsole.class, "tileentity_rbmk_crane_console");
 		put(TileEntityRBMKConsole.class, "tileentity_rbmk_console");
+		put(TileEntityRBMKDisplay.class, "tileentity_rbmk_display");
+		put(TileEntityRBMKKeyPad.class, "tileentity_rbmk_keypad");
+		put(TileEntityRBMKGauge.class, "tileentity_rbmk_gauge");
+		put(TileEntityRBMKNumitron.class, "tileentity_rbmk_numitron");
+		put(TileEntityRBMKGraph.class, "tileentity_rbmk_graph");
 		put(TileEntityRBMKInlet.class, "tileentity_rbmk_inlet");
 		put(TileEntityRBMKOutlet.class, "tileentity_rbmk_outlet");
 		put(TileEntityRBMKAutoloader.class, "tileentity_rbmk_autoloader");
@@ -456,6 +461,7 @@ public class TileMappings {
 		put(TileEntityDiode.class, "tileentity_cable_diode");
 
 		put(TileEntityConnector.class, "tileentity_connector_redwire");
+		put(TileEntityConnectorSuper.class, "tileentity_connector_redwire_super");
 		put(TileEntityPylon.class, "tileentity_pylon_redwire");
 		put(TileEntityPylonMedium.class, "tileentity_pylon_medium");
 		put(TileEntityTransformerMedium.class, "tileentity_transformer_medium");

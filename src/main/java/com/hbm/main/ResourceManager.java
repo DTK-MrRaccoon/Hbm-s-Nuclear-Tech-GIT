@@ -7,6 +7,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.render.anim.AnimationLoader;
 import com.hbm.render.anim.BusAnimation;
 import com.hbm.render.loader.HFRWavefrontObject;
+import com.hbm.render.loader.HFRWavefrontObjectVBO;
 import com.hbm.render.loader.IModelCustomNamed;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.model.AdvancedModelLoader;
@@ -426,14 +427,15 @@ public class ResourceManager {
 	public static final IModelCustom zirnox_destroyed = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/zirnox_destroyed.obj")).asVBO();
 
 	//Network
-	public static final IModelCustom connector = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/connector.obj"));
-	public static final IModelCustom pylon_medium = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/pylon_medium.obj"));
-	public static final IModelCustom transformer_medium = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/transformer.obj"));
-	public static final IModelCustom pylon_large = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/network/pylon_large.obj"));
-	public static final IModelCustom substation = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/network/substation.obj")).asVBO();
-	public static final IModelCustom pipe_anchor = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/network/pipe_anchor.obj")).asVBO();
-	public static final IModelCustom fluid_pump = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/network/fluid_diode.obj")).asVBO();
-	public static final IModelCustom electric_fluid_pump = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/electric_fluid_pump.obj"));
+	public static final IModelCustom connector = new HFRWavefrontObject("models/network/connector.obj").noSmooth().asVBO();
+	public static final IModelCustom connector_super = new HFRWavefrontObject("models/network/connector_super.obj").noSmooth().asVBO();
+	public static final IModelCustom pylon_medium = new HFRWavefrontObject("models/network/pylon_medium.obj").noSmooth().asVBO();
+	public static final IModelCustom transformer_medium = new HFRWavefrontObject("models/network/transformer.obj").noSmooth().asVBO();
+	public static final IModelCustom pylon_large = new HFRWavefrontObject("models/network/pylon_large.obj").noSmooth().asVBO();
+	public static final IModelCustom substation = new HFRWavefrontObject("models/network/substation.obj").asVBO();
+	public static final IModelCustom pipe_anchor = new HFRWavefrontObject("models/network/pipe_anchor.obj").asVBO();
+	public static final IModelCustom fluid_pump = new HFRWavefrontObject("models/network/fluid_diode.obj").asVBO();
+	public static final IModelCustom electric_fluid_pump = new HFRWavefrontObject("models/machines/electric_fluid_pump.obj").asVBO();
 
 	//Radiolysis
 	public static final IModelCustom radiolysis = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/radiolysis.obj"));
@@ -906,6 +908,7 @@ public class ResourceManager {
 
 	//Electricity
 	public static final ResourceLocation connector_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/connector.png");
+	public static final ResourceLocation connector_super_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/connector_super.png");
 	public static final ResourceLocation pylon_medium_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium.png");
 	public static final ResourceLocation pylon_medium_steel_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium_steel.png");
 	public static final ResourceLocation pylon_medium_concrete_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/pylon_medium_concrete.png");
@@ -1661,20 +1664,27 @@ public class ResourceManager {
 	public static final IModelCustom deco_computer = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/puter.obj"));
 
 	// Some RBMK elements are loaded twice due to VBOs not supporting tessellation
-	public static final IModelCustom rbmk_element = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_element.obj"));
-	public static final IModelCustom rbmk_element_vbo = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_element.obj")).asVBO();
-	public static final IModelCustom rbmk_reflector = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_reflector.obj"));
-	public static final IModelCustom rbmk_rods = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_rods.obj"));
-	public static final IModelCustom rbmk_rods_vbo = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_rods.obj")).asVBO();
-	public static final IModelCustom rbmk_crane_console = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/crane_console.obj")).asVBO();
-	public static final IModelCustom rbmk_crane = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/crane.obj")).asVBO();
-	public static final IModelCustom rbmk_autoloader = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/autoloader.obj")).asVBO();
-	public static final IModelCustom rbmk_console = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_console.obj")).asVBO();
-	public static final IModelCustom rbmk_debris = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/rbmk/debris.obj"));
+	public static final HFRWavefrontObject rbmk_element = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_element.obj"), true).noSmooth();
+	public static final HFRWavefrontObject rbmk_element_rods = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_element_rods.obj")).noSmooth();
+	public static final HFRWavefrontObjectVBO rbmk_element_rods_vbo = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_element_rods.obj")).noSmooth().asVBO();
+	public static final HFRWavefrontObject rbmk_rods = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_rods.obj")).noSmooth();
+	public static final HFRWavefrontObjectVBO rbmk_rods_vbo = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_rods.obj")).noSmooth().asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_crane_console = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/crane_console.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_crane = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/crane.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_autoloader = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/autoloader.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_console = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/rbmk_console.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_button = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/button.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_gauge = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/gauge.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_numitron = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/numitron.obj")).asVBO();
+	public static final HFRWavefrontObject rbmk_debris = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/debris.obj")).noSmooth();
 	public static final ResourceLocation rbmk_crane_console_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/crane_console.png");
 	public static final ResourceLocation rbmk_crane_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/rbmk_crane.png");
 	public static final ResourceLocation rbmk_autoloader_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/rbmk_autoloader.png");
 	public static final ResourceLocation rbmk_console_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/rbmk_control.png");
+	public static final ResourceLocation rbmk_keypad_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/keypad.png");
+	public static final ResourceLocation rbmk_gauge_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/gauge.png");
+	public static final ResourceLocation rbmk_numitron_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/numitron.png");
+	public static final ResourceLocation rbmk_numitron_lights_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/numitron_lights.png");
 	public static final IModelCustom hev_battery = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/battery.obj"));
 	public static final IModelCustom anvil = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/anvil.obj"));
 	public static final IModelCustom crystal_power = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/crystals_power.obj"));
