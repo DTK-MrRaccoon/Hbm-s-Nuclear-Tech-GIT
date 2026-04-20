@@ -923,6 +923,15 @@ public class ResourceManager {
 	public static final ResourceLocation fluid_pump_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/fluid_diode.png");
 	public static final ResourceLocation electric_fluid_pump_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/electric_fluid_pump.png");
 
+	//Barrels
+	public static ResourceLocation barrel_plastic_tex  = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_plastic.png");
+	public static ResourceLocation barrel_iron_tex  = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_iron.png");
+	public static ResourceLocation barrel_corroded_tex  = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_corroded.png");
+	public static ResourceLocation barrel_steel_tex    = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_steel.png");
+	public static ResourceLocation barrel_lead_tex    = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_lead.png");
+	public static ResourceLocation barrel_tcalloy_tex  = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_tcalloy.png");
+	public static ResourceLocation barrel_antimatter_tex = new ResourceLocation(RefStrings.MODID, "textures/blocks/barrel_antimatter.png");
+
 	//Radiolysis
 	public static final ResourceLocation radiolysis_tex = new ResourceLocation(RefStrings.MODID, "textures/models/radiolysis.png");
 
