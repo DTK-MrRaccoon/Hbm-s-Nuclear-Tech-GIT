@@ -6,7 +6,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toserver.NBTControlPacket;
-import com.hbm.tileentity.machine.rbmk.TileEntityRBMKGauge;
+import com.hbm.tileentity.machine.rbmk.TileEntityRBMKLever;
 import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.client.Minecraft;
@@ -16,25 +16,27 @@ import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
-public class GUIScreenRBMKGauge extends GuiScreen {
+public class GUIScreenRBMKLever extends GuiScreen {
 
-	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_rbmk_gauge.png");
-	public TileEntityRBMKGauge gauge;
-	protected int xSize = 256;
-	protected int ySize = 204;
+	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/machine/gui_rbmk_lever.png");
+	public TileEntityRBMKLever lever;
+	protected int xSize;
+	protected int ySize;
 	protected int guiLeft;
 	protected int guiTop;
 
-	protected GuiTextField[] color = new GuiTextField[4];
 	protected GuiTextField[] label = new GuiTextField[4];
 	protected GuiTextField[] rtty = new GuiTextField[4];
-	protected GuiTextField[] min = new GuiTextField[4];
-	protected GuiTextField[] max = new GuiTextField[4];
-	protected boolean[] active = new boolean[4];
-	protected boolean[] polling = new boolean[4];
+	protected GuiTextField[] cmdOn = new GuiTextField[4];
+	protected GuiTextField[] cmdOff = new GuiTextField[4];
+	protected boolean[] active = new boolean[2];
+	protected boolean[] polling = new boolean[2];
 	
-	public GUIScreenRBMKGauge(TileEntityRBMKGauge gauge) {
-		this.gauge = gauge;
+	public GUIScreenRBMKLever(TileEntityRBMKLever lever) {
+		this.lever = lever;
+
+		this.xSize = 256;
+		this.ySize = 150;
 	}
 
 	@Override
@@ -48,22 +50,18 @@ public class GUIScreenRBMKGauge extends GuiScreen {
 		int oX = 4;
 		int oY = 4;
 		
-		for(int i = 0; i < 4; i++) {
-			String col = Integer.toHexString(gauge.gauges[i].color);
-			while(col.length() < 6) col = "0" + col;
-			color[i] = new GuiTextField(this.fontRendererObj, guiLeft + 27 + oX, guiTop + 55 + oY + i * 36, 72 - oX * 2, 14);
-			GUIScreenRBMKKeyPad.setupTextFieldStandard(color[i], 6, col);
-			label[i] = new GuiTextField(this.fontRendererObj, guiLeft + 175 + oX, guiTop + 55 + oY + i * 36, 72 - oX * 2, 14);
-			GUIScreenRBMKKeyPad.setupTextFieldStandard(label[i], 15, gauge.gauges[i].label);
-			rtty[i] = new GuiTextField(this.fontRendererObj, guiLeft + 27 + oX, guiTop + 73 + oY + i * 36, 72 - oX * 2, 14);
-			GUIScreenRBMKKeyPad.setupTextFieldStandard(rtty[i], 10, gauge.gauges[i].rtty);
-			min[i] = new GuiTextField(this.fontRendererObj, guiLeft + 121 + oX, guiTop + 73 + oY + i * 36, 52 - oX * 2, 14);
-			GUIScreenRBMKKeyPad.setupTextFieldStandard(min[i], 32, gauge.gauges[i].min + "");
-			max[i] = new GuiTextField(this.fontRendererObj, guiLeft + 195 + oX, guiTop + 73 + oY + i * 36, 52 - oX * 2, 14);
-			GUIScreenRBMKKeyPad.setupTextFieldStandard(max[i], 32, gauge.gauges[i].max + "");
+		for(int i = 0; i < 2; i++) {
+			rtty[i] = new GuiTextField(this.fontRendererObj, guiLeft + 27 + oX, guiTop + 55 + oY + i * 54, 72 - oX * 2, 14);
+			GUIScreenRBMKKeyPad.setupTextFieldStandard(rtty[i], 10, lever.levers[i].rtty);
+			label[i] = new GuiTextField(this.fontRendererObj, guiLeft + 175 + oX, guiTop + 55 + oY + i * 54, 72 - oX * 2, 14);
+			GUIScreenRBMKKeyPad.setupTextFieldStandard(label[i], 15, lever.levers[i].label);
+			cmdOn[i] = new GuiTextField(this.fontRendererObj, guiLeft + 45 + oX, guiTop + 73 + oY + i * 54, 81 - oX * 2, 14);
+			GUIScreenRBMKKeyPad.setupTextFieldStandard(cmdOn[i], 32, lever.levers[i].commandOn);
+			cmdOff[i] = new GuiTextField(this.fontRendererObj, guiLeft + 166 + oX, guiTop + 73 + oY + i * 54, 81 - oX * 2, 14);
+			GUIScreenRBMKKeyPad.setupTextFieldStandard(cmdOff[i], 32, lever.levers[i].commandOff);
 
-			active[i] = gauge.gauges[i].active;
-			polling[i] = gauge.gauges[i].polling;
+			active[i] = lever.levers[i].active;
+			polling[i] = lever.levers[i].polling;
 		}
 	}
 
@@ -77,7 +75,7 @@ public class GUIScreenRBMKGauge extends GuiScreen {
 	}
 
 	private void drawGuiContainerForegroundLayer(int x, int y) {
-		String name = I18nUtil.resolveKey("container.rbmkGauge");
+		String name = I18nUtil.resolveKey("container.rbmkLever");
 		this.fontRendererObj.drawString(name, this.guiLeft + this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, this.guiTop + 6, 4210752);
 	}
 
@@ -86,17 +84,16 @@ public class GUIScreenRBMKGauge extends GuiScreen {
 		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		for(int i = 0; i < 4; i++) {
-			if(this.active[i]) drawTexturedModalRect(guiLeft + 111, guiTop + i * 36 + 54, 18, 204, 16, 16);
-			if(this.polling[i]) drawTexturedModalRect(guiLeft + 128, guiTop + i * 36 + 53, 0, 204, 18, 18);
+		for(int i = 0; i < 2; i++) {
+			if(this.active[i]) drawTexturedModalRect(guiLeft + 111, guiTop + i * 54 + 54, 18, 150, 16, 16);
+			if(this.polling[i]) drawTexturedModalRect(guiLeft + 128, guiTop + i * 54 + 53, 0, 150, 18, 18);
 		}
 		
-		for(int i = 0; i < 4; i++) {
-			this.color[i].drawTextBox();
+		for(int i = 0; i < 2; i++) {
 			this.label[i].drawTextBox();
 			this.rtty[i].drawTextBox();
-			this.min[i].drawTextBox();
-			this.max[i].drawTextBox();
+			this.cmdOn[i].drawTextBox();
+			this.cmdOff[i].drawTextBox();
 		}
 	}
 
@@ -104,14 +101,14 @@ public class GUIScreenRBMKGauge extends GuiScreen {
 	protected void mouseClicked(int x, int y, int b) {
 		super.mouseClicked(x, y, b);
 		
-		for(int i = 0; i < 4; i++) {
-			if(guiLeft + 111 <= x && guiLeft + 111 + 16 > x && guiTop + i * 36 + 54 < y && guiTop + i * 36 + 54 + 16 >= y) {
+		for(int i = 0; i < 2; i++) {
+			if(guiLeft + 111 <= x && guiLeft + 111 + 16 > x && guiTop + i * 54 + 54 < y && guiTop + i * 54 + 54 + 16 >= y) {
 				this.active[i] = !this.active[i];
 				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F + (this.active[i] ? 0.25F : 0F)));
 				return;
 			}
 			
-			if(guiLeft + 128 <= x && guiLeft + 128 + 18 > x && guiTop + i * 36 + 53 < y && guiTop + i * 36 + 53 + 18 >= y) {
+			if(guiLeft + 128 <= x && guiLeft + 128 + 18 > x && guiTop + i * 54 + 53 < y && guiTop + i * 54 + 53 + 18 >= y) {
 				this.polling[i] = !this.polling[i];
 				mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 0.5F + (this.polling[i] ? 0.25F : 0F)));
 				return;
@@ -123,42 +120,39 @@ public class GUIScreenRBMKGauge extends GuiScreen {
 			NBTTagCompound data = new NBTTagCompound();
 			byte active = 0;
 			byte polling = 0;
-			for(int i = 0; i < 4; i++) {
+			for(int i = 0; i < 2; i++) {
 				if(this.active[i]) active |= 1 << i;
 				if(this.polling[i]) polling |= 1 << i;
 			}
 			data.setByte("active", active);
 			data.setByte("polling", polling);
 			
-			for(int i = 0; i < 4; i++) {
-				try { data.setInteger("color" + i, Integer.parseInt(this.color[i].getText(), 16)); } catch(Exception ex) { }
+			for(int i = 0; i < 2; i++) {
 				data.setString("label" + i, this.label[i].getText());
 				data.setString("rtty" + i, this.rtty[i].getText());
-				try { data.setInteger("min" + i, Integer.parseInt(this.min[i].getText())); } catch(Exception ex) { }
-				try { data.setInteger("max" + i, Integer.parseInt(this.max[i].getText())); } catch(Exception ex) { }
+				data.setString("cmdOn" + i, this.cmdOn[i].getText());
+				data.setString("cmdOff" + i, this.cmdOff[i].getText());
 			}
-			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, gauge.xCoord, gauge.yCoord, gauge.zCoord));
+			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(data, lever.xCoord, lever.yCoord, lever.zCoord));
 			return;
 		}
 		
-		for(int i = 0; i < 4; i++) {
-			this.color[i].mouseClicked(x, y, b);
+		for(int i = 0; i < 2; i++) {
 			this.label[i].mouseClicked(x, y, b);
 			this.rtty[i].mouseClicked(x, y, b);
-			this.min[i].mouseClicked(x, y, b);
-			this.max[i].mouseClicked(x, y, b);
+			this.cmdOn[i].mouseClicked(x, y, b);
+			this.cmdOff[i].mouseClicked(x, y, b);
 		}
 	}
 
 	@Override
 	protected void keyTyped(char c, int b) {
 		
-		for(int i = 0; i < 4; i++) {
-			if(this.color[i].textboxKeyTyped(c, b)) return;
+		for(int i = 0; i < 2; i++) {
 			if(this.label[i].textboxKeyTyped(c, b)) return;
 			if(this.rtty[i].textboxKeyTyped(c, b)) return;
-			if(this.min[i].textboxKeyTyped(c, b)) return;
-			if(this.max[i].textboxKeyTyped(c, b)) return;
+			if(this.cmdOn[i].textboxKeyTyped(c, b)) return;
+			if(this.cmdOff[i].textboxKeyTyped(c, b)) return;
 		}
 		
 		if(b == 1 || b == this.mc.gameSettings.keyBindInventory.getKeyCode()) {

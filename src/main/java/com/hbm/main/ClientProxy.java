@@ -434,6 +434,8 @@ public class ClientProxy extends ServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKGauge.class, new RenderRBMKGauge());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKNumitron.class, new RenderRBMKNumitron());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKGraph.class, new RenderRBMKGraph());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKLever.class, new RenderRBMKLever());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKIndicator.class, new RenderRBMKIndicator());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRod.class, new RenderRBMKFuelChannel());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRodReaSim.class, new RenderRBMKFuelChannel());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKAutoloader.class, new RenderRBMKAutoloader());
