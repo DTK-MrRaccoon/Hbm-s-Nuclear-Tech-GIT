@@ -5,14 +5,17 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerMachineReactorSmall;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.items.machine.ItemBreedingRod;
 import com.hbm.lib.RefStrings;
 import com.hbm.packet.toserver.NBTControlPacket;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.tileentity.machine.TileEntityMachineReactorSmall;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
 
@@ -54,41 +57,33 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		
 		String[] text1 = new String[] { "Raise/lower the control rods",
 				"using the button next to the",
-				"fluid gauges.",
-				"",
-				"Fuel rods lock when activated",
-				"and unlock when depleted." };
+				"fluid gauges." };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 52, 16, 16, guiLeft - 8, guiTop + 52 + 16, text1);
 
-		// Reactor stats info box (orange/yellow)
-		int totalRuntime = 0;
+		// Reactor stats (NO runtime display)
 		int activeRods = 0;
 		for(int i = 0; i < 12; i++) {
-			if(reactor.rodLocked[i]) {
+			ItemStack stack = reactor.slots[i];
+			if(stack != null && stack.getItem() instanceof ItemBreedingRod) {
 				activeRods++;
-				totalRuntime += reactor.rodDuration[i];
 			}
 		}
-		int runtimeSeconds = totalRuntime / 20;
-		int runtimeMinutes = runtimeSeconds / 60;
-		int displaySeconds = runtimeSeconds % 60;
 		
 		String[] reactorStats = new String[] { 
 			"Reactor Statistics:",
 			"Active Rods: " + activeRods + "/12",
-			"Total Runtime: " + runtimeMinutes + "m " + displaySeconds + "s",
 			"Core Heat: " + reactor.coreHeat + "/" + reactor.maxCoreHeat,
 			"Hull Heat: " + reactor.hullHeat + "/" + reactor.maxHullHeat,
 			"Fuel: " + reactor.getFuelPercent() + "%"
 		};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 68, 16, 16, guiLeft - 8, guiTop + 68 + 16, reactorStats);
 
-		int warningY = 84; // Start position for warnings
+		int warningY = 84;
 		if(reactor.tanks[0].getFill() <= 0 && reactor.coreHeat > 0) {
 			String[] text2 = new String[] { "Warning: Water depleted!",
 					"Reactor is using emergency coolant." };
 			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + warningY, 16, 16, guiLeft - 8, guiTop + warningY + 16, text2);
-			warningY += 16; // Move next warning down
+			warningY += 16;
 		}
 
 		if(reactor.coreHeat > reactor.maxCoreHeat * 0.75) {
@@ -109,65 +104,8 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		
 		String[] text5 = new String[] { reactor.retracting ? "Raise control rods" : "Lower control rods"};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 52, guiTop + 53, 18, 18, mouseX, mouseY, text5);
-		
-		// Show rod status on hover
-		for(int i = 0; i < 12; i++) {
-			int slotX = getSlotX(i);
-			int slotY = getSlotY(i);
-			if(mouseX >= guiLeft + slotX && mouseX < guiLeft + slotX + 18 && 
-			   mouseY >= guiTop + slotY && mouseY < guiTop + slotY + 18) {
-				if(reactor.rodLocked[i] || (reactor.rodMaxDuration[i] > 0 && reactor.rodDuration[i] > 0)) {
-					// Calculate remaining time in minutes (20 ticks = 1 second)
-					int remainingTicks = reactor.rodDuration[i];
-					int remainingSeconds = remainingTicks / 20;
-					int remainingMinutes = remainingSeconds / 60;
-					int rodDisplaySeconds = remainingSeconds % 60;
-					
-					String timeStr = remainingMinutes + "m " + rodDisplaySeconds + "s";
-					String statusStr = reactor.rodLocked[i] ? "ACTIVE" : "PAUSED";
-					
-					String[] rodInfo = new String[] {
-						"Rod Status: " + statusStr,
-						"Time Remaining: " + timeStr,
-						"Duration: " + reactor.rodDuration[i] + "/" + reactor.rodMaxDuration[i],
-						"Heat: " + reactor.rodHeat[i] + " per tick",
-						"Flux: " + reactor.rodFlux[i]
-					};
-					this.drawCustomInfoStat(mouseX, mouseY, guiLeft + slotX, guiTop + slotY, 18, 18, mouseX, mouseY + 40, rodInfo);
-				}
-			}
-		}
 	}
 	
-	private int getSlotX(int id) {
-		switch(id) {
-		case 0: return 98;
-		case 1: return 134;
-		case 2: return 80;
-		case 3: return 116;
-		case 4: return 152;
-		case 5: return 98;
-		case 6: return 134;
-		case 7: return 80;
-		case 8: return 116;
-		case 9: return 152;
-		case 10: return 98;
-		case 11: return 134;
-		}
-		return 0;
-	}
-	
-	private int getSlotY(int id) {
-		switch(id) {
-		case 0: case 1: return 18;
-		case 2: case 3: case 4: return 36;
-		case 5: case 6: return 54;
-		case 7: case 8: case 9: return 72;
-		case 10: case 11: return 90;
-		}
-		return 0;
-	}
-
 	@Override
 	protected void drawGuiContainerForegroundLayer(int i, int j) {
 		String name = this.reactor.hasCustomInventoryName() ? this.reactor.getInventoryName() : I18n.format(this.reactor.getInventoryName());
@@ -179,7 +117,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 	protected void mouseClicked(int x, int y, int i) {
 		super.mouseClicked(x, y, i);
 		
-		// Control rod button
 		if(guiLeft + 52 <= x && guiLeft + 52 + 16 > x && guiTop + 53 < y && guiTop + 53 + 16 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound control = new NBTTagCompound();
@@ -187,7 +124,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, reactor.xCoord, reactor.yCoord, reactor.zCoord));
 		}
 		
-		// Steam compression button
 		if(guiLeft + 63 <= x && guiLeft + 63 + 14 > x && guiTop + 107 < y && guiTop + 107 + 18 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			int c = 0;
@@ -195,7 +131,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			if(type == Fluids.STEAM) c = 0;
 			else if(type == Fluids.HOTSTEAM) c = 1;
 			else if(type == Fluids.SUPERHOTSTEAM) c = 2;
-			// Cycle to next compression level
 			c = (c + 1) % 3;
 			NBTTagCompound control = new NBTTagCompound();
 			control.setInteger("compression", c);
@@ -212,7 +147,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
-		// Steam bar
 		if(reactor.tanks[2].getFill() > 0) {
 			int i = reactor.getSteamScaled(88);
 			int offset = 234;
@@ -222,25 +156,21 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 80, guiTop + 108, 0, offset, i, 4);
 		}
 		
-		// Hull heat bar
 		if(reactor.hasHullHeat()) {
 			int i = reactor.getHullHeatScaled(88);
 			i = (int) Math.min(i, 160);
 			drawTexturedModalRect(guiLeft + 80, guiTop + 114, 0, 226, i, 4);
 		}
 		
-		// Core heat bar
 		if(reactor.hasCoreHeat()) {
 			int i = reactor.getCoreHeatScaled(88);
 			i = (int) Math.min(i, 160);
 			drawTexturedModalRect(guiLeft + 80, guiTop + 120, 0, 230, i, 4);
 		}
 
-		// Control rod button
 		if(!reactor.retracting)
 			drawTexturedModalRect(guiLeft + 52, guiTop + 53, 212, 0, 18, 18);
 		
-		// Rod status indicators - ALWAYS SHOWN
 		if(reactor.rods >= reactor.rodsMax) {
 			for(int x = 0; x < 3; x++)
 				for(int y = 0; y < 3; y++)
@@ -251,26 +181,14 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 					drawTexturedModalRect(guiLeft + 79 + 36 * x, guiTop + 17 + 36 * y, 194, 0, 18, 18);
 		}
 		
-		// Draw locked rod indicators - ALWAYS SHOWN
-		for(int i = 0; i < 12; i++) {
-			if(reactor.rodLocked[i]) {
-				int slotX = getSlotX(i);
-				int slotY = getSlotY(i);
-				// Draw a semi-transparent red overlay to indicate locked
-				drawGradientRect(guiLeft + slotX, guiTop + slotY, guiLeft + slotX + 16, guiTop + slotY + 16, 0x60FF0000, 0x60FF0000);
-			}
-		}
-		
-		// Steam compression button
 		FluidType type = reactor.tanks[2].getTankType();
 		if(type == Fluids.STEAM) drawTexturedModalRect(guiLeft + 63, guiTop + 107, 176, 18, 14, 18);
 		else if(type == Fluids.HOTSTEAM) drawTexturedModalRect(guiLeft + 63, guiTop + 107, 190, 18, 14, 18);
 		else if(type == Fluids.SUPERHOTSTEAM) drawTexturedModalRect(guiLeft + 63, guiTop + 107, 204, 18, 14, 18);
 		
-		// Info panels
 		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
 		this.drawInfoPanel(guiLeft - 16, guiTop + 52, 16, 16, 3);
-		this.drawInfoPanel(guiLeft - 16, guiTop + 68, 16, 16, 7); // Orange/yellow reactor stats
+		this.drawInfoPanel(guiLeft - 16, guiTop + 68, 16, 16, 7);
 		
 		int warningPanelY = 84;
 		if(reactor.tanks[0].getFill() <= 0 && reactor.coreHeat > 0) {
@@ -281,7 +199,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		if(reactor.coreHeat > reactor.maxCoreHeat * 0.50)
 			this.drawInfoPanel(guiLeft - 16, guiTop + warningPanelY, 16, 16, 7);
 
-		// Render fluid tanks
 		reactor.tanks[0].renderTank(guiLeft + 8, guiTop + 88, this.zLevel, 16, 52);
 		reactor.tanks[1].renderTank(guiLeft + 26, guiTop + 88, this.zLevel, 16, 52);
 	}

@@ -1,11 +1,12 @@
 package com.hbm.tileentity.machine;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.MobConfig;
 import com.hbm.explosion.ExplosionNukeGeneric;
+import com.hbm.handler.CompatHandler;
+import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.container.ContainerMachineReactorSmall;
 import com.hbm.inventory.fluid.FluidType;
@@ -14,21 +15,24 @@ import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.gui.GUIMachineReactorSmall;
 import com.hbm.inventory.recipes.BreederRecipes;
 import com.hbm.inventory.recipes.BreederRecipes.BreederRecipe;
-import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBreedingRod;
 import com.hbm.items.machine.ItemBreedingRod.BreedingRodType;
 import com.hbm.lib.Library;
-import com.hbm.packet.toserver.AuxButtonPacket;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.interfaces.IControlReceiver;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
-import com.hbm.handler.radiation.ChunkRadiationManager;
+import com.hbm.interfaces.IControlReceiver;
+import com.hbm.util.EnumUtil;
+import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
@@ -36,10 +40,13 @@ import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineReactorSmall extends TileEntityMachineBase implements IFluidStandardTransceiver, IGUIProvider, IControlReceiver {
+@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
+public class TileEntityMachineReactorSmall extends TileEntityMachineBase implements IFluidStandardTransceiver, IGUIProvider, IControlReceiver, SimpleComponent, CompatHandler.OCComponent {
 
 	public int hullHeat;
 	public final int maxHullHeat = 100000;
@@ -48,16 +55,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	public int rods;
 	public final int rodsMax = 100;
 	public boolean retracting = true;
-	public int age = 0;
 	public FluidTank[] tanks;
-
-	// Fuel rod data stored in reactor (not in items)
-	public int[] rodFlux = new int[12];        // Current flux for each rod
-	public int[] rodHeat = new int[12];        // Heat generated per tick
-	public int[] rodDuration = new int[12];    // Remaining duration
-	public int[] rodMaxDuration = new int[12]; // Max duration for this rod
-	public boolean[] rodLocked = new boolean[12]; // Whether rod is locked (active)
-	public ItemStack[] rodOutput = new ItemStack[12]; // What the rod becomes when depleted
 
 	public TileEntityMachineReactorSmall() {
 		super(16);
@@ -74,77 +72,32 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
-		// Fuel rod slots (0-11)
 		if(i >= 0 && i <= 11) {
-			// Can only insert if not locked
-			if(rodLocked[i])
-				return false;
-			// Check if it's a breeding rod
-			if(itemStack.getItem() instanceof ItemBreedingRod)
-				return true;
+			return itemStack.getItem() instanceof ItemBreedingRod;
 		}
-		// Water input
-		if(i == 12)
-			return FluidContainerRegistry.getFluidContent(itemStack, tanks[0].getTankType()) > 0;
-		// Coolant input
-		if(i == 14)
-			return FluidContainerRegistry.getFluidContent(itemStack, tanks[1].getTankType()) > 0;
+		if(i == 12) return FluidContainerRegistry.getFluidContent(itemStack, tanks[0].getTankType()) > 0;
+		if(i == 14) return FluidContainerRegistry.getFluidContent(itemStack, tanks[1].getTankType()) > 0;
 		return false;
 	}
 
 	@Override
-	public ItemStack decrStackSize(int i, int j) {
-		if(slots[i] != null) {
-			// Don't allow removal of locked rods or partially used rods
-			if(i >= 0 && i <= 11) {
-				if(rodLocked[i]) {
-					return null; // Rod is currently active
-				}
-				// Check if rod has been used (duration is less than max)
-				if(rodMaxDuration[i] > 0 && rodDuration[i] < rodMaxDuration[i] && rodDuration[i] > 0) {
-					return null; // Rod is partially used
-				}
-			}
-				
-			if(slots[i].stackSize <= j) {
-				ItemStack itemStack = slots[i];
-				slots[i] = null;
-				return itemStack;
-			}
-			ItemStack itemStack1 = slots[i].splitStack(j);
-			if(slots[i].stackSize == 0) {
-				slots[i] = null;
-			}
-
-			return itemStack1;
-		}
-		return null;
+	public boolean canExtractItem(int i, ItemStack stack, int j) {
+		if(i >= 0 && i <= 11) return true;
+		if(i == 13 || i == 15) return true;
+		return false;
 	}
 
 	@Override
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
-
 		coreHeat = nbt.getInteger("heat");
 		hullHeat = nbt.getInteger("hullHeat");
 		rods = nbt.getInteger("rods");
 		retracting = nbt.getBoolean("ret");
-		
-		// Load rod data
-		for(int i = 0; i < 12; i++) {
-			rodFlux[i] = nbt.getInteger("rodFlux" + i);
-			rodHeat[i] = nbt.getInteger("rodHeat" + i);
-			rodDuration[i] = nbt.getInteger("rodDuration" + i);
-			rodMaxDuration[i] = nbt.getInteger("rodMaxDuration" + i);
-			rodLocked[i] = nbt.getBoolean("rodLocked" + i);
-			if(nbt.hasKey("rodOutput" + i)) {
-				rodOutput[i] = ItemStack.loadItemStackFromNBT(nbt.getCompoundTag("rodOutput" + i));
-			}
-		}
-		
 		tanks[0].readFromNBT(nbt, "water");
 		tanks[1].readFromNBT(nbt, "coolant");
 		tanks[2].readFromNBT(nbt, "steam");
+		clampHeat();
 	}
 
 	@Override
@@ -154,24 +107,18 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		nbt.setInteger("hullHeat", hullHeat);
 		nbt.setInteger("rods", rods);
 		nbt.setBoolean("ret", retracting);
-		
-		// Save rod data
-		for(int i = 0; i < 12; i++) {
-			nbt.setInteger("rodFlux" + i, rodFlux[i]);
-			nbt.setInteger("rodHeat" + i, rodHeat[i]);
-			nbt.setInteger("rodDuration" + i, rodDuration[i]);
-			nbt.setInteger("rodMaxDuration" + i, rodMaxDuration[i]);
-			nbt.setBoolean("rodLocked" + i, rodLocked[i]);
-			if(rodOutput[i] != null) {
-				NBTTagCompound outputTag = new NBTTagCompound();
-				rodOutput[i].writeToNBT(outputTag);
-				nbt.setTag("rodOutput" + i, outputTag);
-			}
-		}
-		
 		tanks[0].writeToNBT(nbt, "water");
 		tanks[1].writeToNBT(nbt, "coolant");
 		tanks[2].writeToNBT(nbt, "steam");
+	}
+
+	private void clampHeat() {
+		if(coreHeat < 0) coreHeat = 0;
+		if(hullHeat < 0) hullHeat = 0;
+		if(coreHeat > maxCoreHeat) coreHeat = maxCoreHeat;
+		if(hullHeat > maxHullHeat) hullHeat = maxHullHeat;
+		if(coreHeat < 5) coreHeat = 0;
+		if(hullHeat < 5) hullHeat = 0;
 	}
 
 	public int getCoreHeatScaled(int i) {
@@ -194,377 +141,262 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		return hullHeat > 0;
 	}
 
-	private int[] getNeighbouringSlots(int id) {
-		switch(id) {
-		case 0:
-			return new int[] { 1, 5 };
-		case 1:
-			return new int[] { 0, 6 };
-		case 2:
-			return new int[] { 3, 7 };
-		case 3:
-			return new int[] { 2, 4, 8 };
-		case 4:
-			return new int[] { 3, 9 };
-		case 5:
-			return new int[] { 0, 6, 10 };
-		case 6:
-			return new int[] { 1, 5, 11 };
-		case 7:
-			return new int[] { 2, 8 };
-		case 8:
-			return new int[] { 3, 7, 9 };
-		case 9:
-			return new int[] { 4, 8 };
-		case 10:
-			return new int[] { 5, 11 };
-		case 11:
-			return new int[] { 6, 10 };
-		}
-		return null;
-	}
-
 	public int getFuelPercent() {
-		if(getRodCount() == 0)
-			return 0;
-
-		int rodMax = 0;
-		int rod = 0;
-
+		int totalMax = 0, totalRem = 0;
 		for(int i = 0; i < 12; i++) {
-			if(rodMaxDuration[i] > 0) {
-				rodMax += rodMaxDuration[i];
-				rod += rodDuration[i];
+			ItemStack stack = slots[i];
+			if(stack != null && stack.getItem() instanceof ItemBreedingRod) {
+				int max = ItemBreedingRod.getMaxLife(stack);
+				if(max > 0) {
+					totalMax += max;
+					totalRem += ItemBreedingRod.getLifeTime(stack);
+				}
 			}
 		}
-
-		if(rodMax == 0)
-			return 0;
-
-		return rod * 100 / rodMax;
+		return totalMax == 0 ? 0 : (totalRem * 100 / totalMax);
 	}
 
 	@Override
 	public void updateEntity() {
-		if(!worldObj.isRemote) {
-			age++;
-			if(age >= 20) {
-				age = 0;
-			}
+		if(worldObj.isRemote) return;
 
-			tanks[0].loadTank(12, 13, slots);
-			tanks[1].loadTank(14, 15, slots);
+		tanks[0].loadTank(12, 13, slots);
+		tanks[1].loadTank(14, 15, slots);
 
-			// Control rod movement
-			if(retracting && rods > 0) {
-				if(rods == rodsMax)
-					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
-				rods--;
-				if(rods == 0)
-					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
-			}
-			if(!retracting && rods < rodsMax) {
-				if(rods == 0)
-					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
-				rods++;
-				if(rods == rodsMax)
-					this.worldObj.playSoundEffect(this.xCoord, this.yCoord, this.zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
-			}
+		if(retracting && rods > 0) {
+			if(rods == rodsMax) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
+			rods--;
+			if(rods == 0) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
+		}
+		if(!retracting && rods < rodsMax) {
+			if(rods == 0) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
+			rods++;
+			if(rods == rodsMax) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
+		}
 
-			// Process fuel rods when fully inserted
-			if(rods >= rodsMax) {
-				for(int i = 0; i < 12; i++) {
-					if(slots[i] != null && slots[i].getItem() instanceof ItemBreedingRod) {
-						processRod(i);
-					}
+		if(rods >= rodsMax) {
+			for(int i = 0; i < 12; i++) {
+				ItemStack stack = slots[i];
+				if(stack != null && stack.getItem() instanceof ItemBreedingRod) {
+					processRod(i);
 				}
 			}
-
-			coreHeatMod = 1.0;
-			hullHeatMod = 1.0;
-			conversionMod = 1.0;
-
-			getInteractions();
-
-			// Emergency coolant system - only if water/steam is depleted
-			if(this.coreHeat > 0 && this.tanks[0].getFill() <= 0 && this.tanks[1].getFill() > 0 && this.hullHeat < this.maxHullHeat) {
-				this.hullHeat += this.coreHeat * 0.175 * hullHeatMod;
-				this.coreHeat -= this.coreHeat * 0.1;
-				this.tanks[1].setFill(this.tanks[1].getFill() - 10);
-				if(this.tanks[1].getFill() < 0)
-					this.tanks[1].setFill(0);
-			}
-
-			if(this.hullHeat > maxHullHeat) {
-				this.hullHeat = maxHullHeat;
-			}
-
-			// Primary cooling: water -> steam
-			if(this.hullHeat > 0 && this.tanks[0].getFill() > 0) {
-				generateSteam();
-				this.hullHeat -= this.hullHeat * 0.085;
-			}
-
-			// Better core to hull heat transfer (increased from 5% to 15%)
-			if(this.coreHeat > 0 && this.hullHeat < this.maxHullHeat) {
-				int transfer = (int)(this.coreHeat * 0.15);
-				this.hullHeat += transfer;
-				this.coreHeat -= transfer;
-			}
-
-			// Natural cooling - much slower when no water or coolant is available
-			if(this.coreHeat > 0) {
-				double coolingRate = (double) this.coreHeat / (double) this.maxCoreHeat;
-				// Check if we have cooling available
-				boolean hasCooling = tanks[0].getFill() > 0 || tanks[1].getFill() > 0 || isSubmerged();
-				
-				if(hasCooling) {
-					// Normal cooling with water/coolant
-					this.coreHeat -= (int)(coolingRate * 10); // Up to 10 heat/tick at max temp
-				} else {
-					// Much slower cooling when no water or coolant
-					// BUT: If rods are down (0), allow faster cooling even without coolant
-					if(rods == 0) {
-						// With rods down, cool at moderate speed even without coolant
-						this.coreHeat -= (int)(coolingRate * 5); // 5 heat/tick max at max temp (half of normal)
-					} else {
-						// With rods up and no coolant, very slow cooling
-						this.coreHeat -= (int)(coolingRate * 1); // Only 1 heat/tick max at max temp (90% slower)
-					}
-				}
-			}
-			
-			if(this.hullHeat > 0) {
-				double coolingRate = (double) this.hullHeat / (double) this.maxHullHeat;
-				// Check if we have cooling available
-				boolean hasCooling = tanks[0].getFill() > 0 || tanks[1].getFill() > 0 || isSubmerged();
-				
-				if(hasCooling) {
-					// Normal cooling with water/coolant
-					this.hullHeat -= (int)(coolingRate * 5); // Up to 5 heat/tick at max temp
-				} else {
-					// Much slower cooling when no water or coolant
-					// BUT: If rods are down (0), allow faster cooling even without coolant
-					if(rods == 0) {
-						// With rods down, cool at moderate speed even without coolant
-						this.hullHeat -= (int)(coolingRate * 3); // 3 heat/tick max at max temp
-					} else {
-						// With rods up and no coolant, very slow cooling
-						this.hullHeat -= (int)(coolingRate * 0.5); // Only 0.5 heat/tick max at max temp (90% slower)
-					}
-				}
-			}
-
-			// Water blocks help cooling (but only if water blocks exist around)
-			if(isSubmerged() && this.hullHeat > 0) {
-				this.hullHeat -= this.hullHeat * 0.02;
-			}
-
-			if(this.coreHeat > maxCoreHeat) {
-				this.explode();
-			}
-
-			// Radiation leak only when overheating (>50% max temp) AND rods are up
-			if(rods > 0 && coreHeat > maxCoreHeat * 0.50) {
-				float rad = (float) coreHeat / (float) maxCoreHeat * 50F;
-				ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
-			}
-
-			// Fluid network subscriptions
-			this.subscribeToAllAround(tanks[0].getTankType(), this);
-			this.subscribeToAllAround(tanks[1].getTankType(), this);
-			this.sendFluidToAll(tanks[2], this);
-
-			this.networkPackNT(20);
 		}
-	}
 
-	@Override
-	public void serialize(ByteBuf buf) {
-		super.serialize(buf);
-		buf.writeInt(rods);
-		buf.writeBoolean(retracting);
-		buf.writeInt(coreHeat);
-		buf.writeInt(hullHeat);
-		for(int i = 0; i < 3; i++) tanks[i].serialize(buf);
-		// Serialize rod data for client
-		for(int i = 0; i < 12; i++) {
-			buf.writeInt(rodFlux[i]);
-			buf.writeInt(rodHeat[i]);
-			buf.writeInt(rodDuration[i]);
-			buf.writeInt(rodMaxDuration[i]);
-			buf.writeBoolean(rodLocked[i]);
-		}
-	}
+		coreHeatMod = 1.0;
+		hullHeatMod = 1.0;
+		conversionMod = 1.0;
+		getInteractions();
 
-	@Override
-	public void deserialize(ByteBuf buf) {
-		super.deserialize(buf);
-		this.rods = buf.readInt();
-		this.retracting = buf.readBoolean();
-		this.coreHeat = buf.readInt();
-		this.hullHeat = buf.readInt();
-		for(int i = 0; i < 3; i++) tanks[i].deserialize(buf);
-		// Deserialize rod data on client
-		for(int i = 0; i < 12; i++) {
-			rodFlux[i] = buf.readInt();
-			rodHeat[i] = buf.readInt();
-			rodDuration[i] = buf.readInt();
-			rodMaxDuration[i] = buf.readInt();
-			rodLocked[i] = buf.readBoolean();
+		boolean steamHasSpace = tanks[2].getFill() < tanks[2].getMaxFill() * 0.95;
+		if(hullHeat > 0 && tanks[0].getFill() > 0 && steamHasSpace) {
+			generateSteam();
+			hullHeat = (int)(hullHeat * 0.92);
 		}
+
+		if(coreHeat > 0 && hullHeat < maxHullHeat) {
+			int transfer = (int)(coreHeat * 0.18);
+			hullHeat += transfer;
+			coreHeat -= transfer;
+		}
+
+		boolean coreHot = coreHeat >= maxCoreHeat * 0.7;
+		boolean hullHot = hullHeat >= maxHullHeat * 0.7;
+		if(tanks[1].getFill() >= 5 && (coreHot || hullHot)) {
+			tanks[1].setFill(tanks[1].getFill() - 5);
+			coreHeat = Math.max(0, coreHeat - 1000);
+			hullHeat = Math.max(0, hullHeat - 2000);
+		}
+
+		if(coreHeat > 0) {
+			double passive = isSubmerged() ? 6.0 : 2.5;
+			coreHeat -= (int)passive;
+		}
+		if(hullHeat > 0) {
+			double passive = isSubmerged() ? 9.0 : 3.5;
+			hullHeat -= (int)passive;
+		}
+
+		clampHeat();
+
+		if(coreHeat >= maxCoreHeat || hullHeat >= maxHullHeat) {
+			explode();
+			return;
+		}
+
+		if(rods > 0 && coreHeat > maxCoreHeat * 0.5) {
+			float rad = (float) coreHeat / (float) maxCoreHeat * 50F;
+			ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
+		}
+
+		subscribeToAllAround(tanks[0].getTankType(), this);
+		subscribeToAllAround(tanks[1].getTankType(), this);
+		sendFluidToAll(tanks[2], this);
+
+		TileEntity te = worldObj.getTileEntity(xCoord, yCoord + 2, zCoord);
+		if(te instanceof TileEntity) {
+			subscribeToAllAround(tanks[0].getTankType(), te);
+			subscribeToAllAround(tanks[1].getTankType(), te);
+			for(DirPos pos : getConPos(te)) sendFluid(tanks[2], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+		}
+
+		networkPackNT(20);
 	}
 
 	private void processRod(int id) {
-		if(id > 11)
-			return;
-
 		ItemStack stack = slots[id];
-		if(stack == null || !(stack.getItem() instanceof ItemBreedingRod))
+		if(stack == null) return;
+		if(!(stack.getItem() instanceof ItemBreedingRod)) return;
+
+		BreedingRodType type = EnumUtil.grabEnumSafely(BreedingRodType.class, stack.getItemDamage());
+		if(type == null) return;
+
+		int life = ItemBreedingRod.getLifeTime(stack);
+		int heatPerTick = ItemBreedingRod.getHeatPerTick(stack);
+		boolean isFuel = type.isFuel;
+		boolean isBreeding = type.isBreeding;
+		int neighbours = getNeighbourCount(id);
+		boolean adjacentFuel = hasAdjacentFuelRod(id);
+
+		// Rods with maxLife == 0 are inert (waste, lead, etc.) - they just generate passive heat if any
+		if(type.maxLife <= 0) {
+			if(heatPerTick > 0) {
+				// Passive heat from waste rods is constant, not affected by neighbours
+				coreHeat += heatPerTick * coreHeatMod;
+			}
 			return;
+		}
 
-		// Initialize rod if not locked yet
-		if(!rodLocked[id]) {
-			BreederRecipe recipe = BreederRecipes.getOutput(stack);
-			if(recipe != null) {
-				// Lock the rod and initialize its data
-				rodLocked[id] = true;
-				rodFlux[id] = recipe.flux;
-				// Multiply duration by 60 for 20+ real-time minutes (20 ticks/sec * 60 sec/min * 20+ min)
-				rodMaxDuration[id] = recipe.flux * 60;
-				rodDuration[id] = recipe.flux * 60;
-				rodOutput[id] = recipe.output.copy();
-				
-				// Determine heat based on rod type
-				BreedingRodType type = BreedingRodType.values()[stack.getItemDamage()];
-				 int baseHeat = (int)(getHeatForRodType(type) / 2);
+		if(life <= 0) {
+			convertRod(id, stack, type);
+			return;
+		}
 
-				// Apply multiplier based on rod type (single, dual, quad)
-                // User specified: quad = as is, single = /4, dual = /2
-                if(stack.getItem() == ModItems.rod) {
-                    rodHeat[id] = baseHeat / 4;
-                } else if(stack.getItem() == ModItems.rod_dual) {
-                    rodHeat[id] = baseHeat / 2;
-                } else if(stack.getItem() == ModItems.rod_quad) {
-                    rodHeat[id] = baseHeat;
-                } else {
-                    // Fallback for other items? Default to quad heat.
-                    rodHeat[id] = baseHeat;
-                }
+		int processRate = 0;
+		int actualHeat = 0;
+
+		if(isFuel) {
+			processRate = neighbours + 1;
+			actualHeat = heatPerTick * processRate;
+		} else if(isBreeding) {
+			if(adjacentFuel) {
+				processRate = 1;
+				actualHeat = 0;
 			}
 		}
 
-		// Process locked rod
-		if(rodLocked[id] && rodDuration[id] > 0) {
-			int neighbours = getNeightbourCount(id);
-			int processRate = neighbours + 1;
-
-			// Generate heat
-			this.coreHeat += rodHeat[id] * processRate * coreHeatMod;
-
-			// Decrease duration
-			rodDuration[id] -= processRate;
-
-			if(rodDuration[id] <= 0) {
-				// Rod depleted - unlock and replace with output
-				rodDuration[id] = 0;
-				rodLocked[id] = false;
-				if(rodOutput[id] != null) {
-					slots[id] = rodOutput[id].copy();
-				}
-				// Clear rod data
-				rodFlux[id] = 0;
-				rodHeat[id] = 0;
-				rodMaxDuration[id] = 0;
-				rodOutput[id] = null;
-			}
+		if(processRate > 0) {
+			int newLife = Math.max(0, life - processRate);
+			ItemBreedingRod.setLifeTime(stack, newLife);
+			coreHeat += actualHeat * coreHeatMod;
 		}
 	}
 
-	private int getHeatForRodType(BreedingRodType type) {
-		// THESE VALUES ARE NOW FOR QUAD RODS
-		switch(type) {
-		case U235: return 75;
-		case PU239: return 100;
-		case U238: return 25;
-		case URANIUM: return 40;
-		case TH232: return 15;
-		case THF: return 60;
-		case RGP: return 90;
-		case NP237: return 50;
-		case PU238: return 80;
-		case LITHIUM: return 0;
-		case TRITIUM: return 0;
-		case CO: return 0;
-		case CO60: return 5;
-		case RA226: return 15;
-		case AC227: return 20;
-		case WASTE: return 5;
-		case LEAD: return 0;
-		default: return 25;
+	private boolean hasAdjacentFuelRod(int id) {
+		int[] neighbours = getNeighbouringSlots(id);
+		if(neighbours == null) return false;
+		for(int i : neighbours) {
+			ItemStack s = slots[i];
+			if(s != null && ItemBreedingRod.isFuelRod(s)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	private void convertRod(int slot, ItemStack stack, BreedingRodType type) {
+		BreedingRodType output = type.outputType;
+		if(output == null) {
+			slots[slot] = null;
+			return;
+		}
+
+		if(type.outputChance < 1.0f && worldObj.rand.nextFloat() > type.outputChance) {
+			output = type.alternateOutput;
+		}
+
+		if(output == null) {
+			slots[slot] = null;
+			return;
+		}
+
+		ItemStack newStack = new ItemStack(stack.getItem(), 1, output.ordinal());
+		ItemBreedingRod.setLifeTime(newStack, output.maxLife);
+		slots[slot] = newStack;
+	}
+
+	private int getNeighbourCount(int id) {
+		int[] neighbours = getNeighbouringSlots(id);
+		if(neighbours == null) return 0;
+		int count = 0;
+		for(int i : neighbours) {
+			ItemStack s = slots[i];
+			if(s != null && s.getItem() instanceof ItemBreedingRod) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	private int[] getNeighbouringSlots(int id) {
+		switch(id) {
+			case 0: return new int[]{1,5};
+			case 1: return new int[]{0,6};
+			case 2: return new int[]{3,7};
+			case 3: return new int[]{2,4,8};
+			case 4: return new int[]{3,9};
+			case 5: return new int[]{0,6,10};
+			case 6: return new int[]{1,5,11};
+			case 7: return new int[]{2,8};
+			case 8: return new int[]{3,7,9};
+			case 9: return new int[]{4,8};
+			case 10: return new int[]{5,11};
+			case 11: return new int[]{6,10};
+			default: return null;
 		}
 	}
 
 	private void generateSteam() {
-		// Base steam generation scales with heat percentage
 		double heatPercent = (double) hullHeat / (double) maxHullHeat;
-		double baseSteam = heatPercent * 25000D * conversionMod; // Up to 25000 steam/tick at max heat
-		
-		double steam = baseSteam;
-		double water = baseSteam;
+		double baseSteam = heatPercent * 25000D * conversionMod;
+		int desiredSteam = (int) Math.floor(baseSteam);
+		if(desiredSteam <= 0) return;
 
-		FluidType type = tanks[2].getTankType();
-		if(type == Fluids.STEAM) {
-			water /= 100D; // 1:100 ratio (1000mb water → 100000mb steam)
-		} else if(type == Fluids.HOTSTEAM) {
-			water /= 10D; // 1:10 ratio (1000mb water → 10000mb hot steam)
-		} else if(type == Fluids.SUPERHOTSTEAM) {
-			// 1:1 ratio (1000mb water → 1000mb super hot steam)
-		}
+		FluidType steamType = tanks[2].getTankType();
+		int waterRatio = 100;
+		if(steamType == Fluids.HOTSTEAM) waterRatio = 10;
+		else if(steamType == Fluids.SUPERHOTSTEAM) waterRatio = 1;
 
-		int waterUsed = (int) Math.ceil(water);
-		int steamProduced = (int) Math.floor(steam);
-		
-		// FIXED: Use as much water as available, even if less than waterUsed
-		// This allows water to go to 0 instead of getting stuck
+		int requiredWater = (int) Math.ceil((double) desiredSteam / waterRatio);
 		int availableWater = tanks[0].getFill();
-		if(availableWater > 0) {
-			// Calculate the actual amount we can use
-			waterUsed = Math.min(waterUsed, availableWater);
-			
-			// Adjust steam production based on actual water used
-			if(water > 0) {
-				double ratio = (double) waterUsed / water;
-				steamProduced = (int) Math.floor(steam * ratio);
-			} else {
-				steamProduced = 0;
-			}
-			
-			tanks[0].setFill(tanks[0].getFill() - waterUsed);
-			tanks[2].setFill(tanks[2].getFill() + steamProduced);
+		if(availableWater <= 0) return;
+
+		int waterToUse = Math.min(requiredWater, availableWater);
+		int steamToProduce = waterToUse * waterRatio;
+
+		int steamSpace = tanks[2].getMaxFill() - tanks[2].getFill();
+		if(steamToProduce > steamSpace) {
+			steamToProduce = steamSpace;
+			waterToUse = (int) Math.ceil((double) steamToProduce / waterRatio);
 		}
+		if(waterToUse <= 0 || steamToProduce <= 0) return;
 
-		if(tanks[0].getFill() < 0)
-			tanks[0].setFill(0);
-
-		if(tanks[2].getFill() > tanks[2].getMaxFill())
-			tanks[2].setFill(tanks[2].getMaxFill());
+		tanks[0].setFill(tanks[0].getFill() - waterToUse);
+		tanks[2].setFill(tanks[2].getFill() + steamToProduce);
+		if(tanks[2].getFill() > tanks[2].getMaxFill()) tanks[2].setFill(tanks[2].getMaxFill());
 	}
+
+	private double coreHeatMod = 1.0, hullHeatMod = 1.0, conversionMod = 1.0;
 
 	private void getInteractions() {
-		getInteractionForBlock(xCoord + 1, yCoord + 1, zCoord);
-		getInteractionForBlock(xCoord - 1, yCoord + 1, zCoord);
-		getInteractionForBlock(xCoord, yCoord + 1, zCoord + 1);
-		getInteractionForBlock(xCoord, yCoord + 1, zCoord - 1);
+		getInteractionForBlock(xCoord+1, yCoord+1, zCoord);
+		getInteractionForBlock(xCoord-1, yCoord+1, zCoord);
+		getInteractionForBlock(xCoord, yCoord+1, zCoord+1);
+		getInteractionForBlock(xCoord, yCoord+1, zCoord-1);
 	}
-
-	private double coreHeatMod = 1.0D;
-	private double hullHeatMod = 1.0D;
-	private double conversionMod = 1.0D;
 
 	private void getInteractionForBlock(int x, int y, int z) {
 		Block b = worldObj.getBlock(x, y, z);
-
 		if(b == Blocks.lava || b == Blocks.flowing_lava) {
 			hullHeatMod *= 3;
 			conversionMod *= 0.5;
@@ -573,9 +405,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		} else if(b == ModBlocks.block_lead) {
 			coreHeatMod *= 0.95;
 		} else if(b == Blocks.water || b == Blocks.flowing_water) {
-			tanks[0].setFill(tanks[0].getFill() + 25);
-			if(tanks[0].getFill() > tanks[0].getMaxFill())
-				tanks[0].setFill(tanks[0].getMaxFill());
+			tanks[0].setFill(Math.min(tanks[0].getMaxFill(), tanks[0].getFill() + 25));
 		} else if(b == ModBlocks.block_uranium) {
 			coreHeatMod *= 1.05;
 		} else if(b == Blocks.coal_block) {
@@ -589,147 +419,187 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		}
 	}
 
-	public int getRodCount() {
-		int count = 0;
-		for(int i = 0; i < 12; i++) {
-			if(slots[i] != null && slots[i].getItem() instanceof ItemBreedingRod)
-				count++;
-		}
-		return count;
-	}
-
-	private boolean hasFuelRod(int id) {
-		if(id > 11)
-			return false;
-		if(slots[id] != null)
-			return slots[id].getItem() instanceof ItemBreedingRod && rodLocked[id];
-		return false;
-	}
-
-	private int getNeightbourCount(int id) {
-		int[] neighbours = this.getNeighbouringSlots(id);
-		if(neighbours == null)
-			return 0;
-		int count = 0;
-		for(int i = 0; i < neighbours.length; i++)
-			if(hasFuelRod(neighbours[i]))
-				count++;
-		return count;
+	public boolean isSubmerged() {
+		return worldObj.getBlock(xCoord+1, yCoord+1, zCoord).getMaterial() == Material.water ||
+			   worldObj.getBlock(xCoord, yCoord+1, zCoord+1).getMaterial() == Material.water ||
+			   worldObj.getBlock(xCoord-1, yCoord+1, zCoord).getMaterial() == Material.water ||
+			   worldObj.getBlock(xCoord, yCoord+1, zCoord-1).getMaterial() == Material.water;
 	}
 
 	private void explode() {
-		for(int i = 0; i < slots.length; i++) {
-			this.slots[i] = null;
-		}
-
-		worldObj.setBlockToAir(this.xCoord, this.yCoord, this.zCoord);
-		worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 18.0F, true);
-		ExplosionNukeGeneric.waste(worldObj, this.xCoord, this.yCoord, this.zCoord, 35);
-		worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.toxic_block);
-
+		for(int i = 0; i < slots.length; i++) slots[i] = null;
+		worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+		worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
+		worldObj.setBlockToAir(xCoord, yCoord + 2, zCoord);
+		worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 18.0F, true);
+		ExplosionNukeGeneric.waste(worldObj, xCoord, yCoord, zCoord, 35);
+		worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.toxic_block);
 		ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, 1000);
-		
 		if(MobConfig.enableElementals) {
-			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
-			for(EntityPlayer player : players) {
-				player.getEntityData().getCompoundTag(player.PERSISTED_NBT_TAG).setBoolean("radMark", true);
-			}
+			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
+				AxisAlignedBB.getBoundingBox(xCoord+0.5, yCoord+0.5, zCoord+0.5, xCoord+0.5, yCoord+0.5, zCoord+0.5).expand(100, 100, 100));
+			for(EntityPlayer p : players) p.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 		}
 	}
 
 	@Override
-	public AxisAlignedBB getRenderBoundingBox() {
-		return INFINITE_EXTENT_AABB;
+	public void serialize(ByteBuf buf) {
+		super.serialize(buf);
+		buf.writeInt(rods);
+		buf.writeBoolean(retracting);
+		buf.writeInt(coreHeat);
+		buf.writeInt(hullHeat);
+		for(int i = 0; i < 3; i++) tanks[i].serialize(buf);
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public double getMaxRenderDistanceSquared() {
-		return 65536.0D;
+	public void deserialize(ByteBuf buf) {
+		super.deserialize(buf);
+		rods = buf.readInt();
+		retracting = buf.readBoolean();
+		coreHeat = buf.readInt();
+		hullHeat = buf.readInt();
+		for(int i = 0; i < 3; i++) tanks[i].deserialize(buf);
 	}
-	
-	public boolean isSubmerged() {
-		return worldObj.getBlock(xCoord + 1, yCoord + 1, zCoord).getMaterial() == Material.water ||
-				worldObj.getBlock(xCoord, yCoord + 1, zCoord + 1).getMaterial() == Material.water ||
-				worldObj.getBlock(xCoord - 1, yCoord + 1, zCoord).getMaterial() == Material.water ||
-				worldObj.getBlock(xCoord, yCoord + 1, zCoord - 1).getMaterial() == Material.water;
-	}
+
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() { return INFINITE_EXTENT_AABB; }
+	@Override @SideOnly(Side.CLIENT) public double getMaxRenderDistanceSquared() { return 65536.0D; }
 
 	@Override
 	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new ContainerMachineReactorSmall(player.inventory, this);
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
+	@Override @SideOnly(Side.CLIENT)
 	public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new GUIMachineReactorSmall(player.inventory, this);
 	}
 
-	@Override
-	public FluidTank[] getAllTanks() {
-		return tanks;
+	@Override public FluidTank[] getAllTanks() { return tanks; }
+	@Override public FluidTank[] getSendingTanks() { return new FluidTank[]{tanks[2]}; }
+	@Override public FluidTank[] getReceivingTanks() { return new FluidTank[]{tanks[0], tanks[1]}; }
+
+	@Override public int[] getAccessibleSlotsFromSide(int side) {
+		return new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	}
 
-	@Override
-	public FluidTank[] getSendingTanks() {
-		return new FluidTank[] { tanks[2] };
-	}
-
-	@Override
-	public FluidTank[] getReceivingTanks() {
-		return new FluidTank[] { tanks[0], tanks[1] };
-	}
-
-	@Override
-	public int[] getAccessibleSlotsFromSide(int side) {
-		// All slots accessible from all sides
-		return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 };
-	}
-
-	@Override
-	public boolean canExtractItem(int i, ItemStack itemStack, int j) {
-		// Fuel rod slots - can only extract if not locked and not partially used
-		if(i >= 0 && i <= 11) {
-			if(rodLocked[i])
-				return false;
-			// Check if rod has been used (duration is less than max)
-			if(rodMaxDuration[i] > 0 && rodDuration[i] < rodMaxDuration[i] && rodDuration[i] > 0) {
-				return false; // Rod is partially used
-			}
-			return true;
-		}
-		// Output slots
-		if(i == 13 || i == 15)
-			return true;
-
-		return false;
-	}
-
-	@Override
-	public boolean hasPermission(EntityPlayer player) {
-		return true;
-	}
+	@Override public boolean hasPermission(EntityPlayer player) { return true; }
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
-		// Control rod button
-		if(data.hasKey("rods")) {
-			this.retracting = !this.retracting;
-		}
-		
-		// Steam compression button
+		if(data.hasKey("rods")) retracting = !retracting;
 		if(data.hasKey("compression")) {
-			int compression = data.getInteger("compression");
-			if(compression == 0) {
-				tanks[2].setTankType(Fluids.STEAM);
-			} else if(compression == 1) {
-				tanks[2].setTankType(Fluids.HOTSTEAM);
-			} else if(compression == 2) {
-				tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
-			}
+			int c = data.getInteger("compression");
+			if(c == 0) tanks[2].setTankType(Fluids.STEAM);
+			else if(c == 1) tanks[2].setTankType(Fluids.HOTSTEAM);
+			else tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
 		}
-		
-		this.markDirty();
+		markDirty();
+	}
+
+	private DirPos[] getConPos(TileEntity te) {
+		return new DirPos[] {
+			new DirPos(te.xCoord + 1, te.yCoord, te.zCoord, Library.POS_X),
+			new DirPos(te.xCoord - 1, te.yCoord, te.zCoord, Library.NEG_X),
+			new DirPos(te.xCoord, te.yCoord + 1, te.zCoord, Library.POS_Y),
+			new DirPos(te.xCoord, te.yCoord - 1, te.zCoord, Library.NEG_Y),
+			new DirPos(te.xCoord, te.yCoord, te.zCoord + 1, Library.POS_Z),
+			new DirPos(te.xCoord, te.yCoord, te.zCoord - 1, Library.NEG_Z)
+		};
+	}
+
+	// OpenComputers methods
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public String getComponentName() {
+		return "small_reactor";
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getCoreHeat(Context context, Arguments args) {
+		return new Object[] {coreHeat};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getHullHeat(Context context, Arguments args) {
+		return new Object[] {hullHeat};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getWater(Context context, Arguments args) {
+		return new Object[] {tanks[0].getFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getCoolant(Context context, Arguments args) {
+		return new Object[] {tanks[1].getFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getSteam(Context context, Arguments args) {
+		return new Object[] {tanks[2].getFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getRodsLevel(Context context, Arguments args) {
+		return new Object[] {rods};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getFuelPercent(Context context, Arguments args) {
+		return new Object[] {getFuelPercent()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getSteamType(Context context, Arguments args) {
+		FluidType type = tanks[2].getTankType();
+		if(type == Fluids.STEAM) return new Object[] {0};
+		else if(type == Fluids.HOTSTEAM) return new Object[] {1};
+		else return new Object[] {2};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getInfo(Context context, Arguments args) {
+		java.util.LinkedHashMap<String, Object> map = new java.util.LinkedHashMap<>();
+		map.put("coreHeat", coreHeat);
+		map.put("hullHeat", hullHeat);
+		map.put("water", tanks[0].getFill());
+		map.put("coolant", tanks[1].getFill());
+		map.put("steam", tanks[2].getFill());
+		map.put("rods", rods);
+		map.put("fuelPercent", getFuelPercent());
+		return new Object[] {map};
+	}
+
+	@Callback(direct = true, limit = 2)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] setRodsActive(Context context, Arguments args) {
+		boolean active = args.checkBoolean(0);
+		if(active != !retracting) {
+			retracting = !active;
+			markDirty();
+		}
+		return new Object[] {true};
+	}
+
+	@Callback(direct = true, limit = 2)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] setSteamCompression(Context context, Arguments args) {
+		int level = args.checkInteger(0);
+		if(level == 0) tanks[2].setTankType(Fluids.STEAM);
+		else if(level == 1) tanks[2].setTankType(Fluids.HOTSTEAM);
+		else if(level == 2) tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
+		else return new Object[] {false, "Invalid level (0-2)"};
+		markDirty();
+		return new Object[] {true};
 	}
 }
