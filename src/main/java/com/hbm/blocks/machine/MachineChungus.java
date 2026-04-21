@@ -33,19 +33,15 @@ import net.minecraftforge.common.util.ForgeDirection;
 
 public class MachineChungus extends BlockDummyable implements ITooltipProvider, ILookOverlay, IToolable {
 
-	public MachineChungus(Material mat) {
-		super(mat);
+	public MachineChungus() {
+		super(Material.iron);
 	}
+
 
 	@Override
 	public TileEntity createNewTileEntity(World world, int meta) {
-
-		if(meta >= 12)
-			return new TileEntityChungus();
-
-		if(meta >= 6)
-			return new TileEntityProxyCombo(false, true, true);
-
+		if(meta >= 12) return new TileEntityChungus();
+		if(meta >= 6) return new TileEntityProxyCombo(false, true, true);
 		return null;
 	}
 
@@ -75,7 +71,6 @@ public class MachineChungus extends BlockDummyable implements ITooltipProvider, 
 
 					if(!world.isRemote) {
 						FluidType type = entity.tanks[0].getTankType();
-						entity.onLeverPull(type);
 
 						if(type == Fluids.STEAM) {
 							entity.tanks[0].setTankType(Fluids.HOTSTEAM);
@@ -180,7 +175,7 @@ public class MachineChungus extends BlockDummyable implements ITooltipProvider, 
 
 		text.add(EnumChatFormatting.GREEN + "-> " + EnumChatFormatting.RESET + inputType.getLocalizedName() + ": " + String.format(Locale.US, "%,d", tankInput.getFill()) + "/" + String.format(Locale.US, "%,d", tankInput.getMaxFill()) + "mB");
 		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + outputType.getLocalizedName() + ": " + String.format(Locale.US, "%,d", tankOutput.getFill()) + "/" + String.format(Locale.US, "%,d", tankOutput.getMaxFill()) + "mB");
-		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + BobMathUtil.getShortNumber(chungus.power) + "/" + BobMathUtil.getShortNumber(chungus.getMaxPower()) + "HE");
+		text.add(EnumChatFormatting.RED + "<- " + EnumChatFormatting.RESET + BobMathUtil.getShortNumber(chungus.powerBuffer) + "HE");
 
 
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
