@@ -245,12 +245,29 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 			generateSteam();
 		}
 
-		boolean coreHot = coreHeat >= 35000;
-		boolean hullHot = hullHeat >= 70000;
-		if(tanks[1].getFill() >= 5 && (coreHot || hullHot)) {
-			tanks[1].setFill(tanks[1].getFill() - 5);
-			coreHeat = Math.max(0, coreHeat - 1000);
-			hullHeat = Math.max(0, hullHeat - 2000);
+		if(tanks[1].getFill() >= 5) {
+			int coolantUsed = 0;
+
+			if(coreHeat > 85000) {
+				int excess = coreHeat - 85000;
+				int cooling = (int)Math.min((excess * excess) / 20000.0 * 1.25, 6250);
+				cooling = Math.max(12, cooling);
+				coreHeat -= cooling;
+				coolantUsed += cooling / 150;
+			}
+
+			if(hullHeat > 85000) {
+				int excess = hullHeat - 85000;
+				int cooling = (int)Math.min((excess * excess) / 8000.0 * 1.25, 10000);
+				cooling = Math.max(25, cooling);
+				hullHeat -= cooling;
+				coolantUsed += cooling / 300;
+			}
+
+			if(coolantUsed > 0) {
+				coolantUsed = Math.max(1, coolantUsed);
+				tanks[1].setFill(Math.max(0, tanks[1].getFill() - coolantUsed));
+			}
 		}
 
 		if(coreHeat > 0) {
