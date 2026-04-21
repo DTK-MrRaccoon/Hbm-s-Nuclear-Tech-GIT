@@ -33,10 +33,8 @@ import li.cil.oc.api.machine.Arguments;
 import li.cil.oc.api.machine.Callback;
 import li.cil.oc.api.machine.Context;
 import li.cil.oc.api.network.SimpleComponent;
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -183,25 +181,21 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 			}
 		}
 
-		coreHeatMod = 1.0;
-		hullHeatMod = 1.0;
-		conversionMod = 1.0;
-		getInteractions();
+		if(coreHeat > hullHeat) {
+			double coeff = 0.85;
+			if(isSubmerged()) coeff *= 1.7;
+			double transfer = (coreHeat - hullHeat) * coeff;
+			coreHeat -= (int)Math.round(transfer);
+			hullHeat += (int)Math.round(transfer);
+		}
 
 		boolean steamHasSpace = tanks[2].getFill() < tanks[2].getMaxFill() * 0.95;
 		if(hullHeat > 0 && tanks[0].getFill() > 0 && steamHasSpace) {
 			generateSteam();
-			hullHeat = (int)(hullHeat * 0.92);
 		}
 
-		if(coreHeat > 0 && hullHeat < maxHullHeat) {
-			int transfer = (int)(coreHeat * 0.18);
-			hullHeat += transfer;
-			coreHeat -= transfer;
-		}
-
-		boolean coreHot = coreHeat >= maxCoreHeat * 0.7;
-		boolean hullHot = hullHeat >= maxHullHeat * 0.7;
+		boolean coreHot = coreHeat >= 35000;
+		boolean hullHot = hullHeat >= 70000;
 		if(tanks[1].getFill() >= 5 && (coreHot || hullHot)) {
 			tanks[1].setFill(tanks[1].getFill() - 5);
 			coreHeat = Math.max(0, coreHeat - 1000);
@@ -209,11 +203,11 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		}
 
 		if(coreHeat > 0) {
-			double passive = isSubmerged() ? 6.0 : 2.5;
+			double passive = isSubmerged() ? 300.0 : 3.0;
 			coreHeat -= (int)passive;
 		}
 		if(hullHeat > 0) {
-			double passive = isSubmerged() ? 9.0 : 3.5;
+			double passive = isSubmerged() ? 400.0 : 4.0;
 			hullHeat -= (int)passive;
 		}
 
@@ -224,8 +218,8 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 			return;
 		}
 
-		if(rods > 0 && coreHeat > maxCoreHeat * 0.5) {
-			float rad = (float) coreHeat / (float) maxCoreHeat * 50F;
+		if(rods > 0 && coreHeat > 37500) {
+			float rad = (float) coreHeat / 50000.0F * 5F;
 			ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
 		}
 
@@ -258,12 +252,8 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		int neighbours = getNeighbourCount(id);
 		boolean adjacentFuel = hasAdjacentFuelRod(id);
 
-		// Rods with maxLife == 0 are inert (waste, lead, etc.) - they just generate passive heat if any
 		if(type.maxLife <= 0) {
-			if(heatPerTick > 0) {
-				// Passive heat from waste rods is constant, not affected by neighbours
-				coreHeat += heatPerTick * coreHeatMod;
-			}
+			if(heatPerTick > 0) coreHeat += heatPerTick;
 			return;
 		}
 
@@ -288,7 +278,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		if(processRate > 0) {
 			int newLife = Math.max(0, life - processRate);
 			ItemBreedingRod.setLifeTime(stack, newLife);
-			coreHeat += actualHeat * coreHeatMod;
+			coreHeat += actualHeat;
 		}
 	}
 
@@ -357,66 +347,46 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	}
 
 	private void generateSteam() {
-		double heatPercent = (double) hullHeat / (double) maxHullHeat;
-		double baseSteam = heatPercent * 25000D * conversionMod;
-		int desiredSteam = (int) Math.floor(baseSteam);
-		if(desiredSteam <= 0) return;
+		int reqTemp, waterRatio;
+		double heatPerMb;
 
-		FluidType steamType = tanks[2].getTankType();
-		int waterRatio = 100;
-		if(steamType == Fluids.HOTSTEAM) waterRatio = 10;
-		else if(steamType == Fluids.SUPERHOTSTEAM) waterRatio = 1;
-
-		int requiredWater = (int) Math.ceil((double) desiredSteam / waterRatio);
-		int availableWater = tanks[0].getFill();
-		if(availableWater <= 0) return;
-
-		int waterToUse = Math.min(requiredWater, availableWater);
-		int steamToProduce = waterToUse * waterRatio;
-
-		int steamSpace = tanks[2].getMaxFill() - tanks[2].getFill();
-		if(steamToProduce > steamSpace) {
-			steamToProduce = steamSpace;
-			waterToUse = (int) Math.ceil((double) steamToProduce / waterRatio);
+		if(tanks[2].getTankType() == Fluids.STEAM) {
+			reqTemp = 10000;
+			heatPerMb = 4.0;
+			waterRatio = 100;
+		} else if(tanks[2].getTankType() == Fluids.HOTSTEAM) {
+			reqTemp = 30000;
+			heatPerMb = 30.0;
+			waterRatio = 10;
+		} else {
+			reqTemp = 45000;
+			heatPerMb = 200.0;
+			waterRatio = 1;
 		}
-		if(waterToUse <= 0 || steamToProduce <= 0) return;
 
-		tanks[0].setFill(tanks[0].getFill() - waterToUse);
-		tanks[2].setFill(tanks[2].getFill() + steamToProduce);
+		if(hullHeat < reqTemp) return;
+
+		double excess = hullHeat - reqTemp;
+		double maxSteam = excess / heatPerMb;
+		if(maxSteam <= 0) return;
+
+		int water = tanks[0].getFill();
+		int space = tanks[2].getMaxFill() - tanks[2].getFill();
+		if(water <= 0 || space <= 0) return;
+
+		double maxFromWater = (double)water * waterRatio;
+		int produce = (int)Math.min(maxSteam, Math.min(maxFromWater, space));
+		if(produce <= 0) return;
+
+		int waterUse = (int)Math.ceil((double)produce / waterRatio);
+		waterUse = Math.min(waterUse, water);
+		produce = waterUse * waterRatio;
+		if(produce > space) produce = space;
+
+		hullHeat = Math.max(0, hullHeat - (int)Math.round(produce * heatPerMb));
+		tanks[0].setFill(tanks[0].getFill() - waterUse);
+		tanks[2].setFill(tanks[2].getFill() + produce);
 		if(tanks[2].getFill() > tanks[2].getMaxFill()) tanks[2].setFill(tanks[2].getMaxFill());
-	}
-
-	private double coreHeatMod = 1.0, hullHeatMod = 1.0, conversionMod = 1.0;
-
-	private void getInteractions() {
-		getInteractionForBlock(xCoord+1, yCoord+1, zCoord);
-		getInteractionForBlock(xCoord-1, yCoord+1, zCoord);
-		getInteractionForBlock(xCoord, yCoord+1, zCoord+1);
-		getInteractionForBlock(xCoord, yCoord+1, zCoord-1);
-	}
-
-	private void getInteractionForBlock(int x, int y, int z) {
-		Block b = worldObj.getBlock(x, y, z);
-		if(b == Blocks.lava || b == Blocks.flowing_lava) {
-			hullHeatMod *= 3;
-			conversionMod *= 0.5;
-		} else if(b == Blocks.redstone_block) {
-			conversionMod *= 1.15;
-		} else if(b == ModBlocks.block_lead) {
-			coreHeatMod *= 0.95;
-		} else if(b == Blocks.water || b == Blocks.flowing_water) {
-			tanks[0].setFill(Math.min(tanks[0].getMaxFill(), tanks[0].getFill() + 25));
-		} else if(b == ModBlocks.block_uranium) {
-			coreHeatMod *= 1.05;
-		} else if(b == Blocks.coal_block) {
-			hullHeatMod *= 1.1;
-		} else if(b == ModBlocks.block_beryllium) {
-			hullHeatMod *= 0.95;
-			conversionMod *= 1.05;
-		} else if(b == ModBlocks.block_schrabidium) {
-			conversionMod *= 1.25;
-			hullHeatMod *= 1.1;
-		}
 	}
 
 	public boolean isSubmerged() {

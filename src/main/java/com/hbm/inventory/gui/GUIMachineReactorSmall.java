@@ -196,7 +196,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			warningPanelY += 16;
 		}
 		
-		if(reactor.coreHeat > reactor.maxCoreHeat * 0.50)
+		if(reactor.coreHeat > reactor.maxCoreHeat * 0.75)
 			this.drawInfoPanel(guiLeft - 16, guiTop + warningPanelY, 16, 16, 7);
 
 		reactor.tanks[0].renderTank(guiLeft + 8, guiTop + 88, this.zLevel, 16, 52);
