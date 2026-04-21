@@ -60,7 +60,6 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 				"fluid gauges." };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 52, 16, 16, guiLeft - 8, guiTop + 52 + 16, text1);
 
-		// Reactor stats (NO runtime display)
 		int activeRods = 0;
 		for(int i = 0; i < 12; i++) {
 			ItemStack stack = reactor.slots[i];
@@ -102,7 +101,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 				"Current compression level: " + s};
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 63, guiTop + 107, 14, 18, mouseX, mouseY, text4);
 		
-		String[] text5 = new String[] { reactor.retracting ? "Raise control rods" : "Lower control rods"};
+		String[] text5 = new String[] { reactor.rods > 0 ? "Lower control rods" : "Raise control rods" };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 52, guiTop + 53, 18, 18, mouseX, mouseY, text5);
 	}
 	
@@ -120,7 +119,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 		if(guiLeft + 52 <= x && guiLeft + 52 + 16 > x && guiTop + 53 < y && guiTop + 53 + 16 >= y) {
 			mc.getSoundHandler().playSound(PositionedSoundRecord.func_147674_a(new ResourceLocation("gui.button.press"), 1.0F));
 			NBTTagCompound control = new NBTTagCompound();
-			control.setBoolean("rods", true);
+			control.setBoolean("active", reactor.rods <= 0);
 			PacketDispatcher.wrapper.sendToServer(new NBTControlPacket(control, reactor.xCoord, reactor.yCoord, reactor.zCoord));
 		}
 		
@@ -168,7 +167,7 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 			drawTexturedModalRect(guiLeft + 80, guiTop + 120, 0, 230, i, 4);
 		}
 
-		if(!reactor.retracting)
+		if(reactor.rods > 0)
 			drawTexturedModalRect(guiLeft + 52, guiTop + 53, 212, 0, 18, 18);
 		
 		if(reactor.rods >= reactor.rodsMax) {

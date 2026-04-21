@@ -59,6 +59,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 	public int coreHeat;
 	public final int maxCoreHeat = 100000;
 	public int rods;
+	public int rodsTarget;
 	public final int rodsMax = 100;
 	public boolean retracting = true;
 	public FluidTank[] tanks;
@@ -101,6 +102,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		tanks[0] = new FluidTank(Fluids.WATER, 16000);
 		tanks[1] = new FluidTank(Fluids.COOLANT, 8000);
 		tanks[2] = new FluidTank(Fluids.STEAM, 64000);
+		rodsTarget = 0;
 	}
 
 	@Override
@@ -131,11 +133,14 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		coreHeat = nbt.getInteger("heat");
 		hullHeat = nbt.getInteger("hullHeat");
 		rods = nbt.getInteger("rods");
+		rodsTarget = nbt.getInteger("rodsTarget");
 		retracting = nbt.getBoolean("ret");
 		tanks[0].readFromNBT(nbt, "water");
 		tanks[1].readFromNBT(nbt, "coolant");
 		tanks[2].readFromNBT(nbt, "steam");
 		clampHeat();
+		if(rodsTarget < 0) rodsTarget = 0;
+		if(rodsTarget > rodsMax) rodsTarget = rodsMax;
 	}
 
 	@Override
@@ -144,6 +149,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		nbt.setInteger("heat", coreHeat);
 		nbt.setInteger("hullHeat", hullHeat);
 		nbt.setInteger("rods", rods);
+		nbt.setInteger("rodsTarget", rodsTarget);
 		nbt.setBoolean("ret", retracting);
 		tanks[0].writeToNBT(nbt, "water");
 		tanks[1].writeToNBT(nbt, "coolant");
@@ -201,18 +207,23 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		tanks[0].loadTank(12, 13, slots);
 		tanks[1].loadTank(14, 15, slots);
 
-		if(retracting && rods > 0) {
-			if(rods == rodsMax) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
-			rods--;
-			if(rods == 0) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
-		}
-		if(!retracting && rods < rodsMax) {
-			if(rods == 0) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
-			rods++;
-			if(rods == rodsMax) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
+		if(rods < rodsTarget) {
+			retracting = false;
+			if(worldObj.getTotalWorldTime() % 3L == 0L) {
+				if(rods == 0) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
+				rods++;
+				if(rods == rodsTarget) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
+			}
+		} else if(rods > rodsTarget) {
+			retracting = true;
+			if(worldObj.getTotalWorldTime() % 3L == 0L) {
+				if(rods == rodsMax) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStart", 1.0F, 0.75F);
+				rods--;
+				if(rods == rodsTarget) worldObj.playSoundEffect(xCoord, yCoord, zCoord, "hbm:block.reactorStop", 1.0F, 1.0F);
+			}
 		}
 
-		if(rods >= rodsMax) {
+		if(rods > 0) {
 			for(int i = 0; i < 12; i++) {
 				ItemStack stack = slots[i];
 				if(stack != null && stack.getItem() instanceof ItemBreedingRod) {
@@ -291,9 +302,10 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		boolean isBreeding = type.isBreeding;
 		int neighbours = getNeighbourCount(id);
 		boolean adjacentFuel = hasAdjacentFuelRod(id);
+		float powerFactor = rods / 100.0F;
 
 		if(type.maxLife <= 0) {
-			if(heatPerTick > 0) coreHeat += heatPerTick;
+			if(heatPerTick > 0) coreHeat += Math.round(heatPerTick * powerFactor);
 			return;
 		}
 
@@ -307,7 +319,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 
 		if(isFuel) {
 			processRate = neighbours + 1;
-			actualHeat = heatPerTick * processRate;
+			actualHeat = Math.round(heatPerTick * processRate * powerFactor);
 		} else if(isBreeding) {
 			if(adjacentFuel) {
 				processRate = 1;
@@ -482,6 +494,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
 		buf.writeInt(rods);
+		buf.writeInt(rodsTarget);
 		buf.writeBoolean(retracting);
 		buf.writeInt(coreHeat);
 		buf.writeInt(hullHeat);
@@ -492,10 +505,13 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
 		rods = buf.readInt();
+		rodsTarget = buf.readInt();
 		retracting = buf.readBoolean();
 		coreHeat = buf.readInt();
 		hullHeat = buf.readInt();
 		for(int i = 0; i < 3; i++) tanks[i].deserialize(buf);
+		if(rodsTarget < 0) rodsTarget = 0;
+		if(rodsTarget > rodsMax) rodsTarget = rodsMax;
 	}
 
 	@Override
@@ -523,7 +539,14 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
-		if(data.hasKey("rods")) retracting = !retracting;
+		if(data.hasKey("rods")) {
+			rodsTarget = data.getInteger("rods");
+			if(rodsTarget < 0) rodsTarget = 0;
+			if(rodsTarget > rodsMax) rodsTarget = rodsMax;
+		}
+		if(data.hasKey("active")) {
+			rodsTarget = data.getBoolean("active") ? rodsMax : 0;
+		}
 		if(data.hasKey("compression")) {
 			int c = data.getInteger("compression");
 			if(c == 0) tanks[2].setTankType(Fluids.STEAM);
@@ -589,6 +612,12 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
+	public Object[] getTargetRodsLevel(Context context, Arguments args) {
+		return new Object[] {rodsTarget};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
 	public Object[] getFuelPercent(Context context, Arguments args) {
 		return new Object[] {getFuelPercent()};
 	}
@@ -612,6 +641,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		map.put("coolant", tanks[1].getFill());
 		map.put("steam", tanks[2].getFill());
 		map.put("rods", rods);
+		map.put("targetRods", rodsTarget);
 		map.put("fuelPercent", getFuelPercent());
 		return new Object[] {map};
 	}
@@ -620,10 +650,19 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] setRodsActive(Context context, Arguments args) {
 		boolean active = args.checkBoolean(0);
-		if(active != !retracting) {
-			retracting = !active;
-			markDirty();
-		}
+		rodsTarget = active ? rodsMax : 0;
+		markDirty();
+		return new Object[] {true};
+	}
+
+	@Callback(direct = true, limit = 2)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] setRodsLevel(Context context, Arguments args) {
+		int level = args.checkInteger(0);
+		if(level < 0) level = 0;
+		if(level > rodsMax) level = rodsMax;
+		rodsTarget = level;
+		markDirty();
 		return new Object[] {true};
 	}
 
@@ -648,8 +687,10 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 			PREFIX_VALUE + "coolant",
 			PREFIX_VALUE + "steam",
 			PREFIX_VALUE + "rods",
+			PREFIX_VALUE + "targetRods",
 			PREFIX_VALUE + "fuelPercent",
 			PREFIX_FUNCTION + "setRodsActive" + NAME_SEPARATOR + "active",
+			PREFIX_FUNCTION + "setRodsLevel" + NAME_SEPARATOR + "level",
 			PREFIX_FUNCTION + "setSteamCompression" + NAME_SEPARATOR + "level"
 		};
 	}
@@ -662,6 +703,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		if ((PREFIX_VALUE + "coolant").equals(name)) return Integer.toString(tanks[1].getFill());
 		if ((PREFIX_VALUE + "steam").equals(name)) return Integer.toString(tanks[2].getFill());
 		if ((PREFIX_VALUE + "rods").equals(name)) return Integer.toString(rods);
+		if ((PREFIX_VALUE + "targetRods").equals(name)) return Integer.toString(rodsTarget);
 		if ((PREFIX_VALUE + "fuelPercent").equals(name)) return Integer.toString(getFuelPercent());
 		return null;
 	}
@@ -670,11 +712,21 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 	public String runRORFunction(String name, String[] params) {
 		if((PREFIX_FUNCTION + "setRodsActive").equals(name) && params.length > 0) {
 			boolean active = params[0].equalsIgnoreCase("true") || params[0].equals("1");
-			if(active != !retracting) {
-				retracting = !active;
-				markDirty();
-			}
+			rodsTarget = active ? rodsMax : 0;
+			markDirty();
 			return null;
+		}
+		if((PREFIX_FUNCTION + "setRodsLevel").equals(name) && params.length > 0) {
+			try {
+				int level = Integer.parseInt(params[0]);
+				if(level < 0) level = 0;
+				if(level > rodsMax) level = rodsMax;
+				rodsTarget = level;
+				markDirty();
+				return null;
+			} catch (NumberFormatException e) {
+				return "Invalid number";
+			}
 		}
 		if((PREFIX_FUNCTION + "setSteamCompression").equals(name) && params.length > 0) {
 			try {
