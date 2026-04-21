@@ -27,11 +27,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraftforge.common.util.ForgeDirection;
 
-@Optional.InterfaceList({
-	@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
-})
-public class TileEntityMachineIndustrialTurbine extends TileEntityTurbineBase
-		implements IConfigurableMachine, SimpleComponent, CompatHandler.OCComponent {
+@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
+public class TileEntityMachineIndustrialTurbine extends TileEntityTurbineBase implements IConfigurableMachine, SimpleComponent, CompatHandler.OCComponent {
 
 	public static int inputTankSize = 750_000;
 	public static int outputTankSize = 3_000_000;
