@@ -1,9 +1,13 @@
 package com.hbm.tileentity.machine;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.hbm.blocks.ModBlocks;
 import com.hbm.config.MobConfig;
+import com.hbm.entity.projectile.EntityZirnoxDebris;
+import com.hbm.entity.projectile.EntityZirnoxDebris.DebrisType;
 import com.hbm.explosion.ExplosionNukeGeneric;
 import com.hbm.handler.CompatHandler;
 import com.hbm.handler.radiation.ChunkRadiationManager;
@@ -13,8 +17,6 @@ import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.inventory.fluid.tank.FluidTank;
 import com.hbm.inventory.gui.GUIMachineReactorSmall;
-import com.hbm.inventory.recipes.BreederRecipes;
-import com.hbm.inventory.recipes.BreederRecipes.BreederRecipe;
 import com.hbm.items.machine.ItemBreedingRod;
 import com.hbm.items.machine.ItemBreedingRod.BreedingRodType;
 import com.hbm.lib.Library;
@@ -25,6 +27,8 @@ import com.hbm.util.EnumUtil;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,8 +47,12 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
-public class TileEntityMachineReactorSmall extends TileEntityMachineBase implements IFluidStandardTransceiver, IGUIProvider, IControlReceiver, SimpleComponent, CompatHandler.OCComponent {
+@Optional.InterfaceList({
+	@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")
+})
+public class TileEntityMachineReactorSmall extends TileEntityMachineBase
+		implements IFluidStandardTransceiver, IGUIProvider, IControlReceiver, SimpleComponent,
+				   CompatHandler.OCComponent, IRORValueProvider, IRORInteractive {
 
 	public int hullHeat;
 	public final int maxHullHeat = 100000;
@@ -55,12 +63,44 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	public boolean retracting = true;
 	public FluidTank[] tanks;
 
+	private static final Map<BreedingRodType, RodOutput> fuelMap = new HashMap<>();
+	static {
+		fuelMap.put(BreedingRodType.LITHIUM, new RodOutput(BreedingRodType.TRITIUM, 1.0f, null));
+		fuelMap.put(BreedingRodType.CO, new RodOutput(BreedingRodType.CO60, 1.0f, null));
+		fuelMap.put(BreedingRodType.TH232, new RodOutput(BreedingRodType.THF, 1.0f, null));
+		fuelMap.put(BreedingRodType.THF, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.U235, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.NP237, new RodOutput(BreedingRodType.PU238, 0.5f, BreedingRodType.WASTE));
+		fuelMap.put(BreedingRodType.PU238, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.U238, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.PU239, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.RGP, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.RA226, new RodOutput(BreedingRodType.AC227, 1.0f, null));
+		fuelMap.put(BreedingRodType.AC227, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.MOX_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.PLUTONIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.URANIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.U233, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.LES, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+	}
+
+	private static class RodOutput {
+		final BreedingRodType output;
+		final float chance;
+		final BreedingRodType alternate;
+		RodOutput(BreedingRodType output, float chance, BreedingRodType alternate) {
+			this.output = output;
+			this.chance = chance;
+			this.alternate = alternate;
+		}
+	}
+
 	public TileEntityMachineReactorSmall() {
 		super(16);
 		tanks = new FluidTank[3];
-		tanks[0] = new FluidTank(Fluids.WATER, 32000);
-		tanks[1] = new FluidTank(Fluids.COOLANT, 16000);
-		tanks[2] = new FluidTank(Fluids.STEAM, 128000);
+		tanks[0] = new FluidTank(Fluids.WATER, 16000);
+		tanks[1] = new FluidTank(Fluids.COOLANT, 8000);
+		tanks[2] = new FluidTank(Fluids.STEAM, 64000);
 	}
 
 	@Override
@@ -295,23 +335,24 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	}
 
 	private void convertRod(int slot, ItemStack stack, BreedingRodType type) {
-		BreedingRodType output = type.outputType;
-		if(output == null) {
+		RodOutput out = fuelMap.get(type);
+		if(out == null) {
 			slots[slot] = null;
 			return;
 		}
 
-		if(type.outputChance < 1.0f && worldObj.rand.nextFloat() > type.outputChance) {
-			output = type.alternateOutput;
+		BreedingRodType chosen = out.output;
+		if(out.chance < 1.0f && worldObj.rand.nextFloat() > out.chance) {
+			chosen = out.alternate;
 		}
 
-		if(output == null) {
+		if(chosen == null) {
 			slots[slot] = null;
 			return;
 		}
 
-		ItemStack newStack = new ItemStack(stack.getItem(), 1, output.ordinal());
-		ItemBreedingRod.setLifeTime(newStack, output.maxLife);
+		ItemStack newStack = new ItemStack(stack.getItem(), 1, chosen.ordinal());
+		ItemBreedingRod.setLifeTime(newStack, chosen.maxLife);
 		slots[slot] = newStack;
 	}
 
@@ -360,7 +401,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 			waterRatio = 10;
 		} else {
 			reqTemp = 45000;
-			heatPerMb = 200.0;
+			heatPerMb = 250.0;
 			waterRatio = 1;
 		}
 
@@ -401,15 +442,40 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		worldObj.setBlockToAir(xCoord, yCoord, zCoord);
 		worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
 		worldObj.setBlockToAir(xCoord, yCoord + 2, zCoord);
-		worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 18.0F, true);
+
+		worldObj.playSoundEffect(xCoord, yCoord + 2, zCoord, "hbm:block.rbmk_explosion", 10.0F, 1.0F);
+		worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 4.0F, true);
+
+		for(int i = 0; i < 8; i++) {
+			spawnDebris(DebrisType.GRAPHITE);
+		}
+		for(int i = 0; i < 12; i++) {
+			spawnDebris(DebrisType.BLANK);
+		}
+
+		worldObj.setBlock(xCoord, yCoord + 1, zCoord, ModBlocks.corium_block);
+		worldObj.setBlock(xCoord + 1, yCoord + 1, zCoord, ModBlocks.corium_block);
+		worldObj.setBlock(xCoord - 1, yCoord + 1, zCoord, ModBlocks.corium_block);
+		worldObj.setBlock(xCoord, yCoord + 1, zCoord + 1, ModBlocks.corium_block);
+		worldObj.setBlock(xCoord, yCoord + 1, zCoord - 1, ModBlocks.corium_block);
+		worldObj.setBlock(xCoord, yCoord + 2, zCoord, ModBlocks.corium_block);
+
 		ExplosionNukeGeneric.waste(worldObj, xCoord, yCoord, zCoord, 35);
-		worldObj.setBlock(xCoord, yCoord, zCoord, ModBlocks.toxic_block);
 		ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, 1000);
+
 		if(MobConfig.enableElementals) {
 			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-				AxisAlignedBB.getBoundingBox(xCoord+0.5, yCoord+0.5, zCoord+0.5, xCoord+0.5, yCoord+0.5, zCoord+0.5).expand(100, 100, 100));
+				AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
 			for(EntityPlayer p : players) p.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 		}
+	}
+
+	private void spawnDebris(DebrisType type) {
+		EntityZirnoxDebris debris = new EntityZirnoxDebris(worldObj, xCoord + 0.5D, yCoord + 2.5D, zCoord + 0.5D, type);
+		debris.motionX = worldObj.rand.nextGaussian() * 0.75D;
+		debris.motionZ = worldObj.rand.nextGaussian() * 0.75D;
+		debris.motionY = 0.2D + worldObj.rand.nextDouble() * 1.5D;
+		worldObj.spawnEntityInWorld(debris);
 	}
 
 	@Override
@@ -488,13 +554,13 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getCoreHeat(Context context, Arguments args) {
-		return new Object[] {coreHeat};
+		return new Object[] {coreHeat * 0.00002D * 980D + 20D};
 	}
 
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] getHullHeat(Context context, Arguments args) {
-		return new Object[] {hullHeat};
+		return new Object[] {hullHeat * 0.00001D * 980D + 20D};
 	}
 
 	@Callback(direct = true)
@@ -571,5 +637,58 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		else return new Object[] {false, "Invalid level (0-2)"};
 		markDirty();
 		return new Object[] {true};
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+			PREFIX_VALUE + "coreHeat",
+			PREFIX_VALUE + "hullHeat",
+			PREFIX_VALUE + "water",
+			PREFIX_VALUE + "coolant",
+			PREFIX_VALUE + "steam",
+			PREFIX_VALUE + "rods",
+			PREFIX_VALUE + "fuelPercent",
+			PREFIX_FUNCTION + "setRodsActive" + NAME_SEPARATOR + "active",
+			PREFIX_FUNCTION + "setSteamCompression" + NAME_SEPARATOR + "level"
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if ((PREFIX_VALUE + "coreHeat").equals(name)) return Long.toString(Math.round(coreHeat * 0.00002D * 980D + 20D));
+		if ((PREFIX_VALUE + "hullHeat").equals(name)) return Long.toString(Math.round(hullHeat * 0.00001D * 980D + 20D));
+		if ((PREFIX_VALUE + "water").equals(name)) return Integer.toString(tanks[0].getFill());
+		if ((PREFIX_VALUE + "coolant").equals(name)) return Integer.toString(tanks[1].getFill());
+		if ((PREFIX_VALUE + "steam").equals(name)) return Integer.toString(tanks[2].getFill());
+		if ((PREFIX_VALUE + "rods").equals(name)) return Integer.toString(rods);
+		if ((PREFIX_VALUE + "fuelPercent").equals(name)) return Integer.toString(getFuelPercent());
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if((PREFIX_FUNCTION + "setRodsActive").equals(name) && params.length > 0) {
+			boolean active = params[0].equalsIgnoreCase("true") || params[0].equals("1");
+			if(active != !retracting) {
+				retracting = !active;
+				markDirty();
+			}
+			return null;
+		}
+		if((PREFIX_FUNCTION + "setSteamCompression").equals(name) && params.length > 0) {
+			try {
+				int level = Integer.parseInt(params[0]);
+				if(level == 0) tanks[2].setTankType(Fluids.STEAM);
+				else if(level == 1) tanks[2].setTankType(Fluids.HOTSTEAM);
+				else if(level == 2) tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
+				else return "Invalid level (0-2)";
+				markDirty();
+				return null;
+			} catch (NumberFormatException e) {
+				return "Invalid number";
+			}
+		}
+		return null;
 	}
 }

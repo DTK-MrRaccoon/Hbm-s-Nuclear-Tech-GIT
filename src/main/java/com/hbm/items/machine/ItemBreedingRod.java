@@ -120,18 +120,18 @@ public class ItemBreedingRod extends ItemEnumMulti {
 		THF(2500 * 20, 60, true, false),
 		U235(3000 * 20, 75, true, false),
 		NP237(2000 * 20, 0, false, true),
-		PU238(1000000 * 20, 10, true, false),
+		PU238(100000 * 20, 10, true, false),
 		U238(3000 * 20, 0, false, true),
 		PU239(10000 * 20, 100, true, false),
 		RGP(2000 * 20, 90, true, false),
 		WASTE(0, 5, false, false),
 		LEAD(0, 0, false, false),
-		URANIUM(2000 * 20, 30, true, false),
+		URANIUM(7500 * 20, 30, true, false),
 		RA226(3000 * 20, 0, false, true),
 		AC227(2500 * 20, 0, false, true),
 		MOX_FUEL(1650 * 20, 75, true, false),
 		PLUTONIUM_FUEL(1750 * 20, 65, true, false),
-		URANIUM_FUEL(2000, 50, true, false),
+		URANIUM_FUEL(5000 * 20, 50, true, false),
 		U233(1500 * 20, 100, true, false),
 		LES(1500 * 20, 200, true, false);
 
@@ -139,35 +139,12 @@ public class ItemBreedingRod extends ItemEnumMulti {
 		public final int baseHeat;
 		public final boolean isFuel;
 		public final boolean isBreeding;
-		
-		public BreedingRodType outputType;
-		public float outputChance = 1.0f;
-		public BreedingRodType alternateOutput;
 
 		BreedingRodType(int maxLife, int baseHeat, boolean isFuel, boolean isBreeding) {
 			this.maxLife = maxLife;
 			this.baseHeat = baseHeat;
 			this.isFuel = isFuel;
 			this.isBreeding = isBreeding;
-		}
-
-		static {
-			LITHIUM.outputType = TRITIUM;
-			CO.outputType = CO60;
-			TH232.outputType = THF;
-			THF.outputType = WASTE;
-			U235.outputType = WASTE;
-			NP237.outputType = PU238; NP237.outputChance = 0.5f; NP237.alternateOutput = WASTE;
-			U238.outputType = WASTE;
-			PU239.outputType = WASTE;
-			RGP.outputType = WASTE;
-			RA226.outputType = AC227;
-			AC227.outputType = WASTE;
-			MOX_FUEL.outputType = WASTE;
-			PLUTONIUM_FUEL.outputType = WASTE;
-			URANIUM_FUEL.outputType = WASTE;
-			U233.outputType = WASTE;
-			LES.outputType = WASTE;
 		}
 	}
 }
