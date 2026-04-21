@@ -305,7 +305,9 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 		float powerFactor = rods / 100.0F;
 
 		if(type.maxLife <= 0) {
-			if(heatPerTick > 0) coreHeat += Math.round(heatPerTick * powerFactor);
+			if(heatPerTick > 0 && isFuel) {
+				coreHeat += Math.round(heatPerTick * powerFactor);
+			}
 			return;
 		}
 
@@ -314,23 +316,32 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 			return;
 		}
 
-		int processRate = 0;
+		float reactionRate = 0.0F;
 		int actualHeat = 0;
 
 		if(isFuel) {
-			processRate = neighbours + 1;
-			actualHeat = Math.round(heatPerTick * processRate * powerFactor);
-		} else if(isBreeding) {
-			if(adjacentFuel) {
-				processRate = 1;
-				actualHeat = 0;
+			reactionRate = (neighbours + 1) * powerFactor;
+		} else if(isBreeding && adjacentFuel) {
+			reactionRate = powerFactor;
+		}
+
+		int consumption = 0;
+		if(reactionRate > 0) {
+			int intPart = (int) reactionRate;
+			float fracPart = reactionRate - intPart;
+			consumption = intPart;
+			if(fracPart > 0 && worldObj.rand.nextFloat() < fracPart) {
+				consumption++;
 			}
 		}
 
-		if(processRate > 0) {
-			int newLife = Math.max(0, life - processRate);
+		if(consumption > 0) {
+			int newLife = Math.max(0, life - consumption);
 			ItemBreedingRod.setLifeTime(stack, newLife);
-			coreHeat += actualHeat;
+			if(isFuel) {
+				actualHeat = heatPerTick * consumption;
+				coreHeat += actualHeat;
+			}
 		}
 	}
 
