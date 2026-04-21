@@ -49,7 +49,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	public int hullHeat;
 	public final int maxHullHeat = 100000;
 	public int coreHeat;
-	public final int maxCoreHeat = 50000;
+	public final int maxCoreHeat = 100000;
 	public int rods;
 	public final int rodsMax = 100;
 	public boolean retracting = true;
@@ -182,8 +182,8 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		}
 
 		if(coreHeat > hullHeat) {
-			double coeff = 0.85;
-			if(isSubmerged()) coeff *= 1.7;
+			double coeff = 0.6;
+			if(isSubmerged()) coeff *= 1.2;
 			double transfer = (coreHeat - hullHeat) * coeff;
 			coreHeat -= (int)Math.round(transfer);
 			hullHeat += (int)Math.round(transfer);

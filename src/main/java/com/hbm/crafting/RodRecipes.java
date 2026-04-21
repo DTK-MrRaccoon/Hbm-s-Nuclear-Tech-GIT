@@ -79,6 +79,12 @@ public class RodRecipes {
 		addBreedingRod(PU239, ModItems.billet_pu239, BreedingRodType.PU239);
 		addBreedingRod(ModItems.billet_pu_mix, BreedingRodType.RGP);
 		addBreedingRod(ModItems.billet_nuclear_waste, BreedingRodType.WASTE);
+		addBreedingRod(ModItems.billet_mox_fuel, BreedingRodType.MOX_FUEL);
+		addBreedingRod(ModItems.billet_plutonium_fuel, BreedingRodType.PLUTONIUM_FUEL);
+		addBreedingRod(ModItems.billet_uranium_fuel, BreedingRodType.URANIUM_FUEL);
+		addBreedingRod(U233, ModItems.billet_u233, BreedingRodType.U233);
+		addBreedingRod(ModItems.billet_les, BreedingRodType.LES);
+
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod, 1, BreedingRodType.LEAD.ordinal()), new Object[] { ModItems.rod_empty, PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget() });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.nugget_lead, 6), new Object[] { new ItemStack(ModItems.rod, 1, BreedingRodType.LEAD.ordinal()) });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LEAD.ordinal()), new Object[] { ModItems.rod_dual_empty, PB.ingot(), PB.nugget(), PB.nugget(), PB.nugget() });

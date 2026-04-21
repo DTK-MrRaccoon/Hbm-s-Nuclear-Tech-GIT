@@ -4424,6 +4424,7 @@ item.robes_helmet.name=Casual Hoodie
 item.robes_legs.name=Casual Pants
 item.robes_plate.name=Casual Sweater
 item.rocket_fuel.name=Solid Fuel (Rocket Propellant)
+
 item.rod_empty.name=Empty Rod
 item.rod.lithium.name=Lithium Rod
 item.rod.tritium.name=Tritium Rod
@@ -4442,6 +4443,12 @@ item.rod.rgp.name=Reactor-Grade Plutonium Rod
 item.rod.waste.name=Nuclear Waste Rod
 item.rod.lead.name=Lead Rod
 item.rod.uranium.name=Uranium Rod
+item.rod.mox_fuel.name=MOX Fuel Rod
+item.rod.plutonium_fuel.name=Plutonium Fuel Rod
+item.rod.uranium_fuel.name=Uranium Fuel Rod
+item.rod.u233.name=Uranium-233 Rod
+item.rod.les.name=Low Enriched Schrabidium Fuel Rod
+
 item.rod_dual_empty.name=Empty Dual Rod
 item.rod_dual.lithium.name=Lithium Dual Rod
 item.rod_dual.tritium.name=Tritium Dual Rod
@@ -4460,6 +4467,12 @@ item.rod_dual.rgp.name=Reactor-Grade Plutonium Dual Rod
 item.rod_dual.waste.name=Nuclear Waste Dual Rod
 item.rod_dual.lead.name=Lead Dual Rod
 item.rod_dual.uranium.name=Uranium Dual Rod
+item.rod_dual.mox_fuel.name=MOX Dual Fuel Rod
+item.rod_dual.plutonium_fuel.name=Plutonium Dual Fuel Rod
+item.rod_dual.uranium_fuel.name=Uranium Dual Fuel Rod
+item.rod_dual.u233.name=Uranium-233 Dual Rod
+item.rod_dual.les.name=Low Enriched Schrabidium Dual Fuel Rod
+
 item.rod_quad_empty.name=Empty Quad Rod
 item.rod_quad.lithium.name=Lithium Quad Rod
 item.rod_quad.tritium.name=Tritium Quad Rod
@@ -4478,6 +4491,12 @@ item.rod_quad.rgp.name=Reactor-Grade Plutonium Quad Rod
 item.rod_quad.waste.name=Nuclear Waste Quad Rod
 item.rod_quad.lead.name=Lead Quad Rod
 item.rod_quad.uranium.name=Uranium Quad Rod
+item.rod_quad.mox_fuel.name=MOX Quad Fuel Rod
+item.rod_quad.plutonium_fuel.name=Plutonium Quad Fuel Rod
+item.rod_quad.uranium_fuel.name=Uranium Quad Fuel Rod
+item.rod_quad.u233.name=Uranium-233 Quad Rod
+item.rod_quad.les.name=Low Enriched Schrabidium Quad Fuel Rod
+
 item.rod_australium.name=Australium Rod
 item.rod_balefire.name=Balefire Rod
 item.rod_balefire_blazing.name=Blazing Balefire Rod

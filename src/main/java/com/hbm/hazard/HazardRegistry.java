@@ -367,6 +367,11 @@ public class HazardRegistry {
 		registerBreedingRodRadiation(BreedingRodType.RGP, purg);
 		registerBreedingRodRadiation(BreedingRodType.WASTE, wst);
 		registerBreedingRodRadiation(BreedingRodType.URANIUM, u);
+		registerBreedingRodRadiation(BreedingRodType.MOX_FUEL, mox);
+		registerBreedingRodRadiation(BreedingRodType.PLUTONIUM_FUEL, purg);
+		registerBreedingRodRadiation(BreedingRodType.URANIUM_FUEL, uf);
+		registerBreedingRodRadiation(BreedingRodType.U233, u233);
+		registerBreedingRodRadiation(BreedingRodType.LES, saf);
 
 		registerRBMKRod(rbmk_fuel_ueu, u * rod_rbmk, wst * rod_rbmk * 20F);
 		registerRBMKRod(rbmk_fuel_meu, uf * rod_rbmk, wst * rod_rbmk * 21.5F);
