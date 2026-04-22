@@ -1,6 +1,7 @@
 package com.hbm.inventory.container;
 
 import com.hbm.tileentity.machine.TileEntityReactorControl;
+import com.hbm.tileentity.machine.TileEntityReactorControl.ReactorType;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -13,10 +14,15 @@ public class ContainerReactorControl extends Container {
 	private TileEntityReactorControl control;
 	
 	public ContainerReactorControl(InventoryPlayer invPlayer, TileEntityReactorControl tedf) {
+		this.control = tedf;
 		
-		control = tedf;
-		
-		this.addSlotToContainer(new Slot(tedf, 0, 92, 38));
+		int slotX, slotY;
+		if(tedf.reactorType == ReactorType.SMALL) {
+			slotX = 26; slotY = 53;   // lower left
+		} else {
+			slotX = 92; slotY = 38;   // middle (research)
+		}
+		this.addSlotToContainer(new Slot(tedf, 0, slotX, slotY));
 		
 		for(int i = 0; i < 3; i++) {
 			for(int j = 0; j < 9; j++) {
@@ -24,46 +30,37 @@ public class ContainerReactorControl extends Container {
 			}
 		}
 		
-		for(int i = 0; i < 9; i++)
-		{
+		for(int i = 0; i < 9; i++) {
 			this.addSlotToContainer(new Slot(invPlayer, i, 8 + i * 18, 142));
 		}
 	}
 	
 	@Override
-    public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2)
-    {
+	public ItemStack transferStackInSlot(EntityPlayer p_82846_1_, int par2) {
 		ItemStack var3 = null;
 		Slot var4 = (Slot) this.inventorySlots.get(par2);
 		
-		if (var4 != null && var4.getHasStack())
-		{
+		if (var4 != null && var4.getHasStack()) {
 			ItemStack var5 = var4.getStack();
 			var3 = var5.copy();
 			
-            if (par2 <= 0) {
-				if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true))
-				{
+			if (par2 <= 0) {
+				if (!this.mergeItemStack(var5, 1, this.inventorySlots.size(), true)) {
 					return null;
 				}
-			}
-			else if (!this.mergeItemStack(var5, 0, 1, false))
-			{
-					return null;
+			} else if (!this.mergeItemStack(var5, 0, 1, false)) {
+				return null;
 			}
 			
-			if (var5.stackSize == 0)
-			{
+			if (var5.stackSize == 0) {
 				var4.putStack((ItemStack) null);
-			}
-			else
-			{
+			} else {
 				var4.onSlotChanged();
 			}
 		}
 		
 		return var3;
-    }
+	}
 
 	@Override
 	public boolean canInteractWith(EntityPlayer player) {

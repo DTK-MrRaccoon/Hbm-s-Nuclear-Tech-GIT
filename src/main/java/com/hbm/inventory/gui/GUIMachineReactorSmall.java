@@ -22,7 +22,9 @@ import net.minecraft.util.ResourceLocation;
 public class GUIMachineReactorSmall extends GuiInfoContainer {
 
 	private static ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_experimental.png");
+	private static ResourceLocation overlay = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_reactor_overlay_experimental.png");
 	private TileEntityMachineReactorSmall reactor;
+	private boolean toggleOverlay = false;
 
 	public GUIMachineReactorSmall(InventoryPlayer invPlayer, TileEntityMachineReactorSmall tedf) {
 		super(new ContainerMachineReactorSmall(invPlayer, tedf));
@@ -142,7 +144,10 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 	protected void drawGuiContainerBackgroundLayer(float p_146976_1_, int p_146976_2_, int p_146976_3_) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		if(toggleOverlay)
+			Minecraft.getMinecraft().getTextureManager().bindTexture(overlay);
+		else
+			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 		
@@ -200,5 +205,13 @@ public class GUIMachineReactorSmall extends GuiInfoContainer {
 
 		reactor.tanks[0].renderTank(guiLeft + 8, guiTop + 88, this.zLevel, 16, 52);
 		reactor.tanks[1].renderTank(guiLeft + 26, guiTop + 88, this.zLevel, 16, 52);
+	}
+
+	@Override
+	protected void keyTyped(char typedChar, int keyCode) {
+		super.keyTyped(typedChar, keyCode);
+		if (keyCode == 56) {
+			this.toggleOverlay = !this.toggleOverlay;
+		}
 	}
 }
