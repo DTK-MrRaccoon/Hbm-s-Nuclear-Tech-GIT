@@ -241,12 +241,19 @@ public class EntityMappings {
 		addMob(EntityParasiteMaggot.class, "entity_parasite_maggot", 0xd0d0d0, 0x808080);
 		addMob(EntityDummy.class, "entity_ntm_test_dummy", 0xffffff, 0x000000);
 		addMob(EntityUndeadSoldier.class, "entity_ntm_undead_soldier", 0x749F30, 0x6C5B44);
+		addMob(EntityTundraWolf.class, "entity_mob_tundra_wolf", 0xE0E0E0, 0xFFFFFF);
+		addMob(EntityGoldenWolf.class, "entity_mob_golden_wolf", 0xFFD700, 0xFFA500);
+		addMob(EntityAlphaWolf.class, "entity_mob_alpha_wolf", 0xE0E0E0, 0x8B0000);
 
 		addSpawn(EntityCreeperPhosgene.class, 5, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 		addSpawn(EntityCreeperVolatile.class, 10, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 		addSpawn(EntityCreeperGold.class, 1, 1, 1, EnumCreatureType.monster, BiomeGenBase.getBiomeGenArray());
 		addSpawn(EntityPlasticBag.class, 1, 1, 3, EnumCreatureType.waterCreature, BiomeDictionary.getBiomesForType(Type.OCEAN));
 		addSpawn(EntityPigeon.class, 1, 5, 10, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.PLAINS));
+		addSpawn(EntityTundraWolf.class, 8, 2, 5, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.COLD));
+		addSpawn(EntityGoldenWolf.class, 6, 2, 4, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.SANDY));
+		addSpawn(EntityGoldenWolf.class, 4, 2, 3, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.SAVANNA));
+		addSpawn(EntityAlphaWolf.class, 1, 1, 1, EnumCreatureType.creature, BiomeGenBase.getBiomeGenArray());
 
 		int id = 0;
 		for(Quartet<Class<? extends Entity>, String, Integer, Boolean> entry : entityMappings) {

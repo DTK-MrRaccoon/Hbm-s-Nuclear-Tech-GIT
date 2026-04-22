@@ -1307,6 +1307,9 @@ entity.hbm.entity_balls_o_tron_seg.name=Balls-O-Tron Segment
 entity.hbm.entity_bullet.name=Bullet
 entity.hbm.entity_rocket.name=Rocket
 entity.hbm.entity_schrabnel.name=Schrabnel
+entity.hbm.entity_mob_alpha_wolf.name=Alpha Wolf
+entity.hbm.entity_mob_tundra_wolf.name=Tundra Wolf
+entity.hbm.entity_mob_golden_wolf.name=Golden Wolf
 
 error.generic=### I AM ERROR ###
 

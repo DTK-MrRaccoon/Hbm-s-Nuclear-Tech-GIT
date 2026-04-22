@@ -1,0 +1,34 @@
+package com.hbm.render.entity.mob;
+
+import org.lwjgl.opengl.GL11;
+
+import com.hbm.entity.mob.EntityGoldenWolf;
+import com.hbm.lib.RefStrings;
+
+import net.minecraft.client.model.ModelWolf;
+import net.minecraft.client.renderer.entity.RenderWolf;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.util.ResourceLocation;
+
+public class RenderGoldenWolf extends RenderWolf {
+
+	private static final ResourceLocation wolfTextures = new ResourceLocation(RefStrings.MODID, "textures/entity/wolf/golden_wolf.png");
+	private static final ResourceLocation tamedWolfTextures = new ResourceLocation(RefStrings.MODID, "textures/entity/wolf/golden_wolf_tame.png");
+	private static final ResourceLocation angryWolfTextures = new ResourceLocation(RefStrings.MODID, "textures/entity/wolf/golden_wolf_angry.png");
+
+	public RenderGoldenWolf() {
+		super(new ModelWolf(), new ModelWolf(), 0.5F);
+	}
+
+	@Override
+	protected ResourceLocation getEntityTexture(Entity entity) {
+		EntityGoldenWolf wolf = (EntityGoldenWolf) entity;
+		return wolf.isTamed() ? tamedWolfTextures : (wolf.isAngry() ? angryWolfTextures : wolfTextures);
+	}
+
+	@Override
+	protected void preRenderCallback(EntityLivingBase entity, float partialTicks) {
+		GL11.glScalef(0.85F, 0.85F, 0.85F);
+	}
+}
