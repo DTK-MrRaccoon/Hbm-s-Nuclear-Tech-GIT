@@ -1,6 +1,8 @@
 package com.hbm.inventory.container;
 
+import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.SlotTakeOnly;
+import com.hbm.items.ModItems;
 import com.hbm.tileentity.machine.TileEntityMachineReactorSmall;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -47,14 +49,22 @@ public class ContainerMachineReactorSmall extends Container {
 		if(slotObj != null && slotObj.getHasStack()) {
 			ItemStack stackInSlot = slotObj.getStack();
 			stack = stackInSlot.copy();
+
 			if(slot <= 15) {
 				if(!mergeItemStack(stackInSlot, 16, inventorySlots.size(), true)) return null;
 			} else {
-				if(!mergeItemStack(stackInSlot, 0, 12, false))
-					if(!mergeItemStack(stackInSlot, 12, 13, false))
-						if(!mergeItemStack(stackInSlot, 14, 15, false))
-							return null;
+				if(stackInSlot.getItem() == ModItems.neutron_reflector ||
+					stackInSlot.getItem() instanceof com.hbm.items.machine.ItemBreedingRod) {
+					if(!mergeItemStack(stackInSlot, 0, 12, false)) return null;
+				} else if(FluidContainerRegistry.getFluidContent(stackInSlot, reactor.tanks[0].getTankType()) > 0) {
+					if(!mergeItemStack(stackInSlot, 12, 13, false)) return null;
+				} else if(FluidContainerRegistry.getFluidContent(stackInSlot, reactor.tanks[1].getTankType()) > 0) {
+					if(!mergeItemStack(stackInSlot, 14, 15, false)) return null;
+				} else {
+					return null;
+				}
 			}
+
 			if(stackInSlot.stackSize == 0) slotObj.putStack(null);
 			else slotObj.onSlotChanged();
 		}
