@@ -4,7 +4,7 @@ import java.util.Random;
 
 import com.hbm.blocks.ISpotlight;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.blocks.machine.Spotlight;
+import com.hbm.blocks.machine.SpotlightBase;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -30,39 +30,30 @@ public class TritiumLamp extends Block implements ISpotlight {
 
 	@Override
 	public void onBlockAdded(World world, int x, int y, int z) {
-		
 		if(!world.isRemote) {
-			
 			if(this.isOn && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
 				world.scheduleBlockUpdate(x, y, z, this, 4);
-				
 			} else if(!this.isOn && world.isBlockIndirectlyGettingPowered(x, y, z)) {
 				world.setBlock(x, y, z, getOn(), 0, 2);
 			}
-			
 			updateBeam(world, x, y, z);
 		}
 	}
 
 	@Override
 	public void onNeighborBlockChange(World world, int x, int y, int z, Block b) {
-		
 		if(!world.isRemote) {
-			
 			if(this.isOn && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
 				world.scheduleBlockUpdate(x, y, z, this, 4);
-				
 			} else if(!this.isOn && world.isBlockIndirectlyGettingPowered(x, y, z)) {
 				world.setBlock(x, y, z, getOn(), 0, 2);
 			}
-
 			updateBeam(world, x, y, z);
 		}
 	}
 
 	@Override
 	public void updateTick(World world, int x, int y, int z, Random p_149674_5_) {
-		
 		if(!world.isRemote && this.isOn && !world.isBlockIndirectlyGettingPowered(x, y, z)) {
 			world.setBlock(x, y, z, getOff(), 0, 2);
 		}
@@ -73,13 +64,17 @@ public class TritiumLamp extends Block implements ISpotlight {
 		super.breakBlock(world, x, y, z, block, metadata);
 		if(world.isRemote) return;
 
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) Spotlight.unpropagateBeam(world, x, y, z, dir);
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			SpotlightBase.unpropagateBeam(world, x, y, z, dir);
+		}
 	}
 
 	private void updateBeam(World world, int x, int y, int z) {
 		if(!isOn) return;
 
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) Spotlight.propagateBeam(world, x, y, z, dir, getBeamLength(), getMeta());
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			SpotlightBase.propagateBeamWithMeta(world, x, y, z, dir, getBeamLength(), getMeta());
+		}
 	}
 
 	@Override
@@ -97,19 +92,19 @@ public class TritiumLamp extends Block implements ISpotlight {
 	protected ItemStack createStackedBlock(int e) {
 		return new ItemStack(getOff());
 	}
-	
+
 	protected int getMeta() {
-		if(this == ModBlocks.lamp_tritium_green_off || this == ModBlocks.lamp_tritium_green_on) return Spotlight.META_GREEN;
-		if(this == ModBlocks.lamp_tritium_blue_off || this == ModBlocks.lamp_tritium_blue_on) return Spotlight.META_BLUE;
-		return Spotlight.META_YELLOW;
+		if(this == ModBlocks.lamp_tritium_green_off || this == ModBlocks.lamp_tritium_green_on) return SpotlightBase.META_GREEN;
+		if(this == ModBlocks.lamp_tritium_blue_off || this == ModBlocks.lamp_tritium_blue_on) return SpotlightBase.META_BLUE;
+		return SpotlightBase.META_YELLOW;
 	}
-	
+
 	protected Block getOff() {
 		if(this == ModBlocks.lamp_tritium_green_on) return ModBlocks.lamp_tritium_green_off;
 		if(this == ModBlocks.lamp_tritium_blue_on) return ModBlocks.lamp_tritium_blue_off;
 		return this;
 	}
-	
+
 	protected Block getOn() {
 		if(this == ModBlocks.lamp_tritium_green_off) return ModBlocks.lamp_tritium_green_on;
 		if(this == ModBlocks.lamp_tritium_blue_off) return ModBlocks.lamp_tritium_blue_on;

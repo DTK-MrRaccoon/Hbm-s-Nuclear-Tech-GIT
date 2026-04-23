@@ -312,7 +312,6 @@ public class ModBlocks {
 	public static Block spotlight_halogen;
 	public static Block spotlight_halogen_off;
 	public static Block spotlight_beam;
-	public static Block powered_spotlight_beam;
 	public static Block floodlight;
 	public static Block floodlight_beam;
 	
@@ -1596,7 +1595,6 @@ public class ModBlocks {
 		spotlight_halogen = new Spotlight(Material.iron, 32, LightType.HALOGEN, true).setBlockName("spotlight_halogen").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":flood_lamp");
 		spotlight_halogen_off = new Spotlight(Material.iron, 32, LightType.HALOGEN, false).setBlockName("spotlight_halogen_off").setBlockTextureName(RefStrings.MODID + ":flood_lamp_off");
 		spotlight_beam = new SpotlightBeam().setBlockName("spotlight_beam");
-		powered_spotlight_beam = new PoweredSpotlightBeam().setBlockName("powered_spotlight_beam");
 		floodlight = new Floodlight(Material.iron).setBlockName("floodlight").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		floodlight_beam = new FloodlightBeam().setBlockName("floodlight_beam");
 		
@@ -2833,7 +2831,6 @@ public class ModBlocks {
 		GameRegistry.registerBlock(spotlight_halogen, spotlight_halogen.getUnlocalizedName());
 		GameRegistry.registerBlock(spotlight_halogen_off, spotlight_halogen_off.getUnlocalizedName());
 		GameRegistry.registerBlock(spotlight_beam, spotlight_beam.getUnlocalizedName());
-		GameRegistry.registerBlock(powered_spotlight_beam, powered_spotlight_beam.getUnlocalizedName());
 		register(floodlight);
 		GameRegistry.registerBlock(floodlight_beam, floodlight_beam.getUnlocalizedName());
 		

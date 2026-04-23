@@ -253,6 +253,7 @@ public class EntityMappings {
 		addSpawn(EntityTundraWolf.class, 8, 2, 5, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.COLD));
 		addSpawn(EntityGoldenWolf.class, 6, 2, 4, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.SANDY));
 		addSpawn(EntityGoldenWolf.class, 4, 2, 3, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.SAVANNA));
+		addSpawn(EntityGoldenWolf.class, 4, 2, 2, EnumCreatureType.creature, BiomeDictionary.getBiomesForType(Type.MESA));
 		addSpawn(EntityAlphaWolf.class, 1, 1, 1, EnumCreatureType.creature, BiomeGenBase.getBiomeGenArray());
 
 		int id = 0;

@@ -860,7 +860,6 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerBlockHandler(new RenderCapacitor());
 		RenderingRegistry.registerBlockHandler(new RenderPedestal());
 		RenderingRegistry.registerBlockHandler(new RenderLight());
-		RenderingRegistry.registerBlockHandler(new RenderLightPowered());
 		RenderingRegistry.registerBlockHandler(new RenderCRT());
 		RenderingRegistry.registerBlockHandler(new RenderToaster());
 		RenderingRegistry.registerBlockHandler(new RenderPartitioner());

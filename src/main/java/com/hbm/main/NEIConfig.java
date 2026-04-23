@@ -95,7 +95,6 @@ public class NEIConfig implements IConfigureNEI {
 		API.hideItem(new ItemStack(ModBlocks.spotlight_fluoro_powered));
 		API.hideItem(new ItemStack(ModBlocks.spotlight_halogen_powered));
 		API.hideItem(new ItemStack(ModBlocks.spotlight_beam));
-		API.hideItem(new ItemStack(ModBlocks.powered_spotlight_beam));
 
 		API.hideItem(new ItemStack(ModBlocks.conveyor));
 		API.hideItem(new ItemStack(ModBlocks.conveyor_chute));
