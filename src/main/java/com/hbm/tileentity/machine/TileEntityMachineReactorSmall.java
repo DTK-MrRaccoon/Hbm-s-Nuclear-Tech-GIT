@@ -303,8 +303,8 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 			return;
 		}
 
-		if(rods > 0 && coreHeat > 37500) {
-			float rad = (float) coreHeat / 50000.0F * 5F;
+		if(rods > 0 && coreHeat > 75000) {
+			float rad = (float) coreHeat / (float) maxCoreHeat * 5F;
 			ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
 		}
 
