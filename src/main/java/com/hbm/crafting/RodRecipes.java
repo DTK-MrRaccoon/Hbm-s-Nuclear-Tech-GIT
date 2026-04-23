@@ -8,12 +8,16 @@ import com.hbm.items.machine.ItemPWRFuel.EnumPWRFuel;
 import com.hbm.items.machine.ItemWatzPellet.EnumWatzType;
 import com.hbm.items.machine.ItemZirnoxRod.EnumZirnoxType;
 import com.hbm.main.CraftingManager;
+import com.hbm.items.machine.ItemBreedingRod;
 
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.item.crafting.IRecipe;
+import net.minecraft.world.World;
 
 /**
  * For the loading and unloading of fuel rods
@@ -56,11 +60,11 @@ public class RodRecipes {
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_quad_empty, 1), new Object[] { ModItems.rod_dual_empty, ModItems.rod_dual_empty });
 		
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod, 1, BreedingRodType.LITHIUM.ordinal()), new Object[] { ModItems.rod_empty, LI.ingot() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.lithium, 1), new Object[] { new ItemStack(ModItems.rod, 1, BreedingRodType.LITHIUM.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod, 1, BreedingRodType.LITHIUM.ordinal()), new ItemStack(ModItems.lithium, 1));
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LITHIUM.ordinal()), new Object[] { ModItems.rod_dual_empty, LI.ingot(), LI.ingot() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.lithium, 2), new Object[] { new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LITHIUM.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LITHIUM.ordinal()), new ItemStack(ModItems.lithium, 2));
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LITHIUM.ordinal()), new Object[] { ModItems.rod_quad_empty, LI.ingot(), LI.ingot(), LI.ingot(), LI.ingot() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.lithium, 4), new Object[] { new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LITHIUM.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LITHIUM.ordinal()), new ItemStack(ModItems.lithium, 4));
 		
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.cell_tritium, 1), new Object[] { new ItemStack(ModItems.rod, 1, BreedingRodType.TRITIUM.ordinal()), ModItems.cell_empty });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.cell_tritium, 2), new Object[] { new ItemStack(ModItems.rod_dual, 1, BreedingRodType.TRITIUM.ordinal()), ModItems.cell_empty, ModItems.cell_empty });
@@ -86,11 +90,11 @@ public class RodRecipes {
 		addBreedingRod(ModItems.billet_les, BreedingRodType.LES);
 
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod, 1, BreedingRodType.LEAD.ordinal()), new Object[] { ModItems.rod_empty, PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.nugget_lead, 6), new Object[] { new ItemStack(ModItems.rod, 1, BreedingRodType.LEAD.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod, 1, BreedingRodType.LEAD.ordinal()), new ItemStack(ModItems.nugget_lead, 6));
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LEAD.ordinal()), new Object[] { ModItems.rod_dual_empty, PB.ingot(), PB.nugget(), PB.nugget(), PB.nugget() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.nugget_lead, 12), new Object[] { new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LEAD.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_dual, 1, BreedingRodType.LEAD.ordinal()), new ItemStack(ModItems.nugget_lead, 12));
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal()), new Object[] { ModItems.rod_quad_empty, PB.ingot(), PB.ingot(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget(), PB.nugget() });
-		CraftingManager.addShapelessAuto(new ItemStack(ModItems.nugget_lead, 24), new Object[] { new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal()) });
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_quad, 1, BreedingRodType.LEAD.ordinal()), new ItemStack(ModItems.nugget_lead, 24));
 		addBreedingRod(U, ModItems.billet_uranium, BreedingRodType.URANIUM);
 
 
@@ -220,12 +224,16 @@ public class RodRecipes {
 	/** Single, dual, quad rod loading + unloading **/
 	public static void addBreedingRod(Item billet, BreedingRodType type) {
 		addBreedingRodLoad(billet, type);
-		addBreedingRodUnload(billet, type);
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod, 1, type.ordinal()), new ItemStack(billet, 1));
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_dual, 1, type.ordinal()), new ItemStack(billet, 2));
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_quad, 1, type.ordinal()), new ItemStack(billet, 4));
 	}
 	/** Single, dual, quad rod loading + unloading + oredict **/
 	public static void addBreedingRod(DictFrame mat, Item billet, BreedingRodType type) {
 		addBreedingRodLoad(mat, billet, type);
-		addBreedingRodUnload(mat, billet, type);
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod, 1, type.ordinal()), new ItemStack(billet, 1));
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_dual, 1, type.ordinal()), new ItemStack(billet, 2));
+		addFreshUnloadRecipe(new ItemStack(ModItems.rod_quad, 1, type.ordinal()), new ItemStack(billet, 4));
 	}
 	
 	/** Single, dual, quad rod loading **/
@@ -234,23 +242,35 @@ public class RodRecipes {
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_dual, 1, type.ordinal()), new Object[] { ModItems.rod_dual_empty, billet, billet});
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_quad, 1, type.ordinal()), new Object[] { ModItems.rod_quad_empty, billet, billet, billet, billet});
 	}
-	/** Single, dual, quad rod unloading **/
-	public static void addBreedingRodUnload(Item billet, BreedingRodType type) {
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 1), new Object[] { new ItemStack(ModItems.rod, 1, type.ordinal()) });
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 2), new Object[] { new ItemStack(ModItems.rod_dual, 1, type.ordinal()) });
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 4), new Object[] { new ItemStack(ModItems.rod_quad, 1, type.ordinal()) });
-	}
 	/** Single, dual, quad rod loading with OreDict **/
 	public static void addBreedingRodLoad(DictFrame mat, Item billet, BreedingRodType type) {
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod, 1, type.ordinal()), new Object[] { ModItems.rod_empty, mat.billet()});
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_dual, 1, type.ordinal()), new Object[] { ModItems.rod_dual_empty, mat.billet(), mat.billet()});
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_quad, 1, type.ordinal()), new Object[] { ModItems.rod_quad_empty, mat.billet(), mat.billet(), mat.billet(), mat.billet()});
 	}
-	/** Single, dual, quad rod unloading with OreDict **/
-	public static void addBreedingRodUnload(DictFrame mat, Item billet, BreedingRodType type) {
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 1), new Object[] { new ItemStack(ModItems.rod, 1, type.ordinal()) });
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 2), new Object[] { new ItemStack(ModItems.rod_dual, 1, type.ordinal()) });
-		CraftingManager.addShapelessAuto(new ItemStack(billet, 4), new Object[] { new ItemStack(ModItems.rod_quad, 1, type.ordinal()) });
+
+	//Fresh-only unloading recipes (>95% life)
+	private static void addFreshUnloadRecipe(final ItemStack rod, final ItemStack output) {
+		GameRegistry.addRecipe(new IRecipe() {
+			@Override public boolean matches(InventoryCrafting inv, World world) {
+				ItemStack found = null;
+				for(int i = 0; i < inv.getSizeInventory(); i++) {
+					ItemStack s = inv.getStackInSlot(i);
+					if(s != null) {
+						if(found != null) return false;
+						found = s;
+					}
+				}
+				if(found == null) return false;
+				if(!rod.isItemEqual(found)) return false;
+				int life = ItemBreedingRod.getLifeTime(found);
+				int max = ItemBreedingRod.getMaxLife(found);
+				return life >= max * 0.95;
+			}
+			@Override public ItemStack getCraftingResult(InventoryCrafting inv) { return output.copy(); }
+			@Override public int getRecipeSize() { return 1; }
+			@Override public ItemStack getRecipeOutput() { return output.copy(); }
+		});
 	}
 	
 	//Fill rods with 8 billets
