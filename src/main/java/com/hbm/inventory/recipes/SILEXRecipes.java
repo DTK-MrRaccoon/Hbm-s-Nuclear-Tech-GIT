@@ -96,6 +96,16 @@ public class SILEXRecipes {
 				.addOut(new ItemStack(ModItems.powder_cobalt), 3)
 				);
 
+		recipes.put(new ComparableStack(ModItems.crystal_copper_sulfate), new SILEXRecipe(100, 100, EnumWavelengths.IR)
+				.addOut(new ItemStack(ModItems.powder_copper, 4), 1)
+				.addOut(new ItemStack(ModItems.sulfur, 2), 1)
+				);
+
+		recipes.put(new ComparableStack(ModItems.fluid_icon, 1, Fluids.COPPERSULFATE.getID()), new SILEXRecipe(200, 100, EnumWavelengths.IR)
+				.addOut(new ItemStack(ModItems.crystal_copper_sulfate), 1)
+				.addOut(new ItemStack(ModItems.powder_copper_sulfate, 2), 1)
+				);
+
 		recipes.put(new ComparableStack(ModItems.fluid_icon, 1, Fluids.DEATH.getID()), new SILEXRecipe(1000, 1000, 4)
 				.addOut(new ItemStack(ModItems.powder_impure_osmiridium), 1)
 				);

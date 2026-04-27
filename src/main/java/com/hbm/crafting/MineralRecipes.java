@@ -433,6 +433,7 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ItemStack(ModItems.ammo_container, 1, 1), new Object[] { "##", "##", '#', ModItems.nitra });
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.glass_polarized, 4), new Object[] { "##", "##", '#', DictFrame.fromOne(ModItems.part_generic, EnumPartType.GLASS_POLARIZED) });
 		add1To9Pair(ModItems.powder_paleogenite, ModItems.powder_paleogenite_tiny);
+		add1To9Pair(ModItems.powder_copper_sulfate, ModItems.powder_copper_sulfate_tiny);
 		add1To9Pair(ModItems.ingot_osmiridium, ModItems.nugget_osmiridium);
 
 		GameRegistry.addRecipe(new ItemStack(ModItems.egg_balefire_shard, 1), new Object[] { "##", "##", '#', ModItems.powder_balefire });

@@ -18,6 +18,7 @@ import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ItemEnums.EnumFuelAdditive;
 import com.hbm.items.ItemGenericPart.EnumPartType;
 import com.hbm.items.ModItems;
+import com.hbm.items.ItemEnums;
 import com.hbm.items.machine.ItemFluidIcon;
 import com.hbm.items.food.ItemConserve.EnumFoodType;
 import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
@@ -90,6 +91,20 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 500))
 				.outputItems(new ItemStack(ModItems.powder_copper, 2))
 				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
+
+		this.register(new GenericRecipe("chem.coppersulfatewash").setup(60, 100)
+				.inputItems(new ComparableStack(ModItems.chunk_ore, 2, ItemEnums.EnumChunkType.MALACHITE.ordinal()))
+				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 500))
+				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
+
+		this.register(new GenericRecipe("chem.coppersulfatedry").setup(100, 200)
+				.inputFluids(new FluidStack(Fluids.COPPERSULFATE, 1000))
+				.outputItems(new ItemStack(ModItems.powder_copper_sulfate, 4)));
+
+		this.register(new GenericRecipe("chem.coppersulfate2copper").setup(150, 200)
+				.inputItems(new ComparableStack(ModItems.powder_copper_sulfate, 2))
+				.inputFluids(new FluidStack(Fluids.HYDROGEN, 200))
+				.outputItems(new ItemStack(ModItems.powder_copper, 1), new ItemStack(ModItems.sulfur, 1)));
 		
 		this.register(new GenericRecipe("chem.cccentrifuge").setup(200, 100)
 				.inputFluids(new FluidStack(Fluids.CHLOROCALCITE_CLEANED, 500), new FluidStack(Fluids.SULFURIC_ACID, 8_000))

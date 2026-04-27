@@ -725,7 +725,7 @@ chem.RUSTY_DECO_STEEL=Rustification of steel
 mix.SULFURIC_ACID=Sulfuric Acid Mixing
 mix.NITRIC_ACID-Nitric Acid Mixing
 mix.PHOSPHORIC_ACID=Phosphoric Acid Mixing
-nux.HYDROFLUORIC_ACID=Hydrofluoric Acid Mixing
+nix.HYDROFLUORIC_ACID=Hydrofluoric Acid Mixing
 
 mix.PETROIL=Petroil Mixing
 mix.PETROIL_LEADED=Leaded Petroil Mixing
@@ -2814,6 +2814,7 @@ item.crystal_charred.desc.P11=Also a real horn. Weird, right?
 item.crystal_coal.name=Coal Crystals
 item.crystal_cobalt.name=Cobalt Crystals
 item.crystal_copper.name=Copper Crystals
+item.crystal_copper_sulfate.name=Copper Sulfate Crystal
 item.crystal_cinnebar.name=Cinnabar Crystals
 item.crystal_diamond.name=Diamond Crystals
 item.crystal_energy.name=Energy Crystal
@@ -4181,6 +4182,8 @@ item.powder_coltan.name=Purified Tantalite
 item.powder_coltan_ore.name=Crushed Coltan
 item.powder_combine_steel.name=CMB Steel Powder
 item.powder_copper.name=Copper Powder
+item.powder_copper_sulfate.name=Copper Sulfate Powder
+item.powder_copper_sulfate_tiny.name=Tiny Copper Sulfate Powder
 item.powder_cs137.name=Caesium-137 Powder
 item.powder_cs137_tiny.name=Tiny Pile of Caesium-137 Powder
 item.powder_daffergon.name=Daffergon Powder

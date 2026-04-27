@@ -243,6 +243,7 @@ public class OreDictManager {
 	public static final DictFrame SLAG = new DictFrame("Slag");
 	public static final DictFrame BAUXITE = new DictFrame("Bauxite");
 	public static final DictFrame CRYOLITE = new DictFrame("Cryolite");
+	public static final DictFrame COPPERSULFATE = new DictFrame("CopperSulfate");
 	/*
 	 * HAZARDS, MISC
 	 */
@@ -443,6 +444,7 @@ public class OreDictManager {
 		LIMESTONE																		.dust(powder_limestone)							.ore(fromOne(stone_resource, EnumStoneType.LIMESTONE));
 		BAUXITE																															.gem(fromOne(stone_resource, EnumStoneType.BAUXITE));
 		CRYOLITE	.crystal(fromOne(chunk_ore, EnumChunkType.CRYOLITE));
+		COPPERSULFATE	.dust(powder_copper_sulfate)	.dustSmall(powder_copper_sulfate_tiny);
 		SLAG																									.block(block_slag);
 
 		/*
