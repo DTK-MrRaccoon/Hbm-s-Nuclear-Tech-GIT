@@ -47,7 +47,7 @@ public class MixingVatRecipes extends SerializableRecipe {
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 750))
 				.outputFluids(new FluidStack(Fluids.PHOSPHORIC_ACID, 1000)));
 	
-		recipes.add(new MixingRecipe(4, "HYDROFLUORIC_ACID", 200)
+		recipes.add(new MixingRecipe(4, "HYDROFLUORIC_ACID", 35)
 				.inputFluids(new FluidStack(Fluids.LIQUID_FLUORITE, 200), new FluidStack(Fluids.SULFURIC_ACID, 800))
 				.inputItems(new OreDictStack(KNO.dust(), 1))
 				.outputFluids(new FluidStack(Fluids.HYDROFLUORIC_ACID, 1000)));

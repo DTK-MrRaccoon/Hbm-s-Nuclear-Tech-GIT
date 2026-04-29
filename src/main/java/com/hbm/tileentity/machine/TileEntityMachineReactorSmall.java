@@ -358,7 +358,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase
 
 		int consumption = 0;
 		if(reactionRate > 0) {
-			int intPart = (int) reactionRate;
+			int intPart = (int) reactionRate / 5;
 			float fracPart = reactionRate - intPart;
 			consumption = intPart;
 			if(fracPart > 0 && worldObj.rand.nextFloat() < fracPart) {

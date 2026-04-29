@@ -723,9 +723,9 @@ chem.SOIL=Soil Production
 chem.RUSTY_DECO_STEEL=Rustification of steel
 
 mix.SULFURIC_ACID=Sulfuric Acid Mixing
-mix.NITRIC_ACID-Nitric Acid Mixing
+mix.NITRIC_ACID=Nitric Acid Mixing
 mix.PHOSPHORIC_ACID=Phosphoric Acid Mixing
-nix.HYDROFLUORIC_ACID=Hydrofluoric Acid Mixing
+mix.HYDROFLUORIC_ACID=Hydrofluoric Acid Mixing
 
 mix.PETROIL=Petroil Mixing
 mix.PETROIL_LEADED=Leaded Petroil Mixing
