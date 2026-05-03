@@ -665,6 +665,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeElectric.class, new RenderSnowball(ModItems.grenade_electric));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadePoison.class, new RenderSnowball(ModItems.grenade_poison));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeGas.class, new RenderSnowball(ModItems.grenade_gas));
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.class, new com.hbm.render.entity.elevator.RenderElevatorPlatform());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeSchrabidium.class, new RenderSnowball(ModItems.grenade_schrabidium));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeNuke.class, new RenderSnowball(ModItems.grenade_nuke));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeNuclear.class, new RenderSnowball(ModItems.grenade_nuclear));
@@ -812,6 +813,10 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityOrangeFX.class, new MultiCloudRenderer(new Item[] { ModItems.orange1, ModItems.orange2, ModItems.orange3, ModItems.orange4, ModItems.orange5, ModItems.orange6, ModItems.orange7, ModItems.orange8 }));
 		RenderingRegistry.registerEntityRenderingHandler(EntityFogFX.class, new FogRenderer());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEMPBlast.class, new RenderEMPBlast());
+
+		// Elevator System
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.class, new com.hbm.render.entity.elevator.RenderElevatorPlatform());
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.ElevatorSolidEntity.class, new RenderEmpty());
 	}
 
 	@Override

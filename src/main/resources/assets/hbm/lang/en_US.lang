@@ -6677,6 +6677,11 @@ tile.round_airlock_door.name=Round Airlock Door
 tile.secure_access_door.name=Secure Access Door
 tile.sliding_seal_door.name=Sliding Seal Door
 
+tile.elevator_controller.name=Elevator Controller
+tile.elevator_floor.name=Elevator Floor
+tile.elevator_door.name=Elevator Door
+tile.elevator_platform.name=Elevator Platform
+
 trait.asbestos=Asbestos
 trait.blinding=Blinding
 trait.coal=Coal Dust

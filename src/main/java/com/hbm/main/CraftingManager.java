@@ -1289,6 +1289,9 @@ public class CraftingManager {
 				}
 			}
 		}
+
+		addRecipeAuto(new ItemStack(ModBlocks.elevator_controller, 1), new Object[] { "MCM", "SES", "MCM", 'M', ModItems.motor, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), 'S', STEEL.plate(), 'E', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED) });
+		addRecipeAuto(new ItemStack(ModBlocks.elevator_floor, 4), new Object[] { "SIS", "IPI", "SIS", 'S', STEEL.plate(), 'I', IRON.ingot(), 'P', ANY_PLASTIC.ingot() });
 	}
 
 	//option 1: find every entry that needs to be ore dicted and change the recipe method by hand and commit to doing it right in the future

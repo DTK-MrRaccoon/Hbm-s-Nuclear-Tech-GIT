@@ -212,6 +212,10 @@ public class EntityMappings {
 		addEntity(EntityDisperserCanister.class, "entity_disperser", 250);
 		addEntity(EntityWaypoint.class, "entity_waypoint", 250, false);
 
+		// Elevator System
+		addEntity(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.class, "entity_elevator_platform", 128);
+		addEntity(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.ElevatorSolidEntity.class, "entity_elevator_solid", 128, false);
+
 		addMob(EntityCreeperNuclear.class, "entity_mob_nuclear_creeper", 0x204131, 0x75CE00);
 		addMob(EntityCreeperTainted.class, "entity_mob_tainted_creeper", 0x813b9b, 0xd71fdd);
 		addMob(EntityCreeperPhosgene.class, "entity_mob_phosgene_creeper", 0xE3D398, 0xB8A06B);

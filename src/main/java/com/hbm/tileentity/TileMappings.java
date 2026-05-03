@@ -518,6 +518,11 @@ public class TileMappings {
 
 		put(TileEntityRebar.class, "tileentity_rebar");
 
+		// Elevator System
+		put(com.hbm.tileentity.machine.elevator.TileEntityElevatorController.class, "tileentity_elevator_controller");
+		put(com.hbm.tileentity.machine.elevator.TileEntityElevatorFloor.class, "tileentity_elevator_floor");
+		put(com.hbm.tileentity.machine.elevator.TileEntityElevatorDoor.class, "tileentity_elevator_door");
+
 		// OC Compat items
 		boolean ocPresent = Loader.isModLoaded("OpenComputers");
 

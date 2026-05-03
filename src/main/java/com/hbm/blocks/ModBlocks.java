@@ -6,6 +6,7 @@ import com.hbm.blocks.fluid.*;
 import com.hbm.blocks.gas.*;
 import com.hbm.blocks.generic.*;
 import com.hbm.blocks.generic.BlockHazard.ExtDisplayEffect;
+import com.hbm.blocks.machine.elevator.*;
 import com.hbm.blocks.machine.*;
 import com.hbm.blocks.machine.albion.*;
 import com.hbm.blocks.machine.fusion.*;
@@ -1326,6 +1327,12 @@ public class ModBlocks {
 
 	public static Block logic_block;
 
+	// Elevator System
+	public static Block elevator_controller;
+	public static Block elevator_floor;
+	public static Block elevator_door;
+	public static Block elevator_platform; // Invisible collision block
+
 	public static Material materialGas = new MaterialGas();
 
 	private static void initializeBlock() {
@@ -2562,6 +2569,12 @@ public class ModBlocks {
 		wand_structure = new BlockWandStructure().setBlockName("wand_structure");
 
 		logic_block = new LogicBlock().setBlockName("logic_block").setBlockTextureName(RefStrings.MODID + ":logic_block");
+
+		// Elevator System
+		elevator_controller = new BlockElevatorController().setBlockName("elevator_controller").setCreativeTab(MainRegistry.machineTab);
+		elevator_floor       = new BlockElevatorFloor().setBlockName("elevator_floor").setCreativeTab(MainRegistry.machineTab);
+		elevator_door        = new BlockElevatorDoor().setBlockName("elevator_door").setCreativeTab(null); // spawned automatically
+		elevator_platform    = new BlockElevatorPlatform().setBlockName("elevator_platform").setCreativeTab(null); // spawned by entity
 
 	}
 
@@ -3802,6 +3815,12 @@ public class ModBlocks {
 		register(wand_structure);
 
 		register(logic_block);
+
+		// Elevator System
+		register(elevator_controller);
+		register(elevator_floor);
+		register(elevator_door);
+		register(elevator_platform);
 	}
 
 	private static void register(Block b) {
