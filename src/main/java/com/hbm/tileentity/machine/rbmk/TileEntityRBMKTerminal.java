@@ -131,7 +131,6 @@ public class TileEntityRBMKTerminal extends TileEntityLoadedBase implements IGUI
 	@Override
 	public void serialize(ByteBuf buf) {
 		super.serialize(buf);
-		buf.writeBoolean(ocMode);
 		buf.writeBoolean(!this.repeatCmd.isEmpty());
 		for(int i = 0; i < history.length; i++) BufferUtil.writeString(buf, history[i]);
 	}
@@ -139,7 +138,6 @@ public class TileEntityRBMKTerminal extends TileEntityLoadedBase implements IGUI
 	@Override
 	public void deserialize(ByteBuf buf) {
 		super.deserialize(buf);
-		ocMode = buf.readBoolean();
 		this.doesRepeat = buf.readBoolean();
 		for(int i = 0; i < history.length; i++) this.history[i] = BufferUtil.readString(buf);
 	}
@@ -225,12 +223,6 @@ public class TileEntityRBMKTerminal extends TileEntityLoadedBase implements IGUI
 		return new Object[] {true};
 	}
 
-	@Callback(direct = true, limit = 3)
-	@Optional.Method(modid = "OpenComputers")
-	public Object[] setCursor(Context context, Arguments args) {
-		return new Object[] {true};
-	}
-
 	@Callback(direct = true)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] readInput(Context context, Arguments args) {
@@ -256,11 +248,5 @@ public class TileEntityRBMKTerminal extends TileEntityLoadedBase implements IGUI
 		for(int i = 0; i < history.length; i++) history[i] = "";
 		markDirty();
 		return new Object[] {true};
-	}
-
-	@Callback(direct = true)
-	@Optional.Method(modid = "OpenComputers")
-	public Object[] getCoordinates(Context context, Arguments args) {
-		return new Object[] {xCoord, yCoord, zCoord};
 	}
 }
