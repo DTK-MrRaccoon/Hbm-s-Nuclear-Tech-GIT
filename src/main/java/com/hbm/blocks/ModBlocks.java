@@ -13,6 +13,7 @@ import com.hbm.blocks.machine.fusion.*;
 import com.hbm.blocks.machine.pile.*;
 import com.hbm.blocks.machine.rbmk.*;
 import com.hbm.blocks.network.*;
+import com.hbm.blocks.network.pneumatic.*;
 import com.hbm.blocks.rail.*;
 import com.hbm.blocks.test.*;
 import com.hbm.blocks.turret.*;
@@ -860,6 +861,9 @@ public class ModBlocks {
 
 	public static Block pneumatic_tube;
 	public static Block pneumatic_tube_paintable;
+	public static Block pneumatic_storage_access;
+	public static Block pneumatic_storage_clutter;
+	public static Block pneumatic_storage_mono;
 
 	public static Block transporter_rocket;
 
@@ -1187,6 +1191,7 @@ public class ModBlocks {
 	public static Block rbmk_graph;
 	public static Block rbmk_lever;
 	public static Block rbmk_indicator;
+	public static Block rbmk_terminal;
 	public static Block rbmk_autoloader;
 	public static Block rbmk_loader;
 	public static Block rbmk_steam_inlet;
@@ -2081,6 +2086,9 @@ public class ModBlocks {
 
 		pneumatic_tube = new PneumoTube().setBlockName("pneumatic_tube").setStepSound(ModSoundTypes.pipe).setHardness(0.1F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":pneumatic_tube");
 		pneumatic_tube_paintable = new PneumoTubePaintableBlock().setBlockName("pneumatic_tube_paintable").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
+		pneumatic_storage_access = new PneumoStorageAccess().setBlockName("pneumatic_storage_access").setStepSound(ModSoundTypes.pipe).setHardness(0.1F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pneumatic_storage_access");
+		pneumatic_storage_clutter = new PneumoStorageClutter().setBlockName("pneumatic_storage_clutter").setStepSound(ModSoundTypes.pipe).setHardness(0.1F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pneumatic_storage_clutter");
+		pneumatic_storage_mono = new PneumoStorageMono().setBlockName("pneumatic_storage_mono").setStepSound(ModSoundTypes.pipe).setHardness(0.1F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pneumatic_storage_mono");
 
 		transporter_rocket = new BlockTransporterRocket(Material.iron).setBlockName("transporter_rocket").setHardness(1.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 
@@ -2306,6 +2314,7 @@ public class ModBlocks {
 		rbmk_graph = new RBMKGraph().setBlockName("rbmk_graph").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_display");
 		rbmk_lever = new RBMKLever().setBlockName("rbmk_lever").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_display");
 		rbmk_indicator = new RBMKIndicator().setBlockName("rbmk_indicator").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_display");
+		rbmk_terminal = new RBMKTerminal().setBlockName("rbmk_terminal").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_display");
 		rbmk_autoloader = new RBMKAutoloader().setBlockName("rbmk_autoloader").setCreativeTab(MainRegistry.machineTab).setHardness(50.0F).setResistance(60.0F).setBlockTextureName(RefStrings.MODID + ":rbmk_autoloader");
 		rbmk_loader = new RBMKLoader(Material.iron).setBlockName("rbmk_loader").setCreativeTab(MainRegistry.machineTab).setHardness(50.0F).setResistance(60.0F).setBlockTextureName(RefStrings.MODID + ":rbmk_loader");
 		rbmk_steam_inlet = new RBMKInlet(Material.iron).setBlockName("rbmk_steam_inlet").setCreativeTab(MainRegistry.machineTab).setHardness(50.0F).setResistance(60.0F).setBlockTextureName(RefStrings.MODID + ":rbmk_steam_inlet");
@@ -2463,8 +2472,6 @@ public class ModBlocks {
 
 		machine_forcefield = new MachineForceField(Material.iron).setBlockName("machine_forcefield").setHardness(5.0F).setResistance(100.0F).setCreativeTab(MainRegistry.missileTab).setBlockTextureName(RefStrings.MODID + ":machine_forcefield");
 
-		cheater_virus = new CheaterVirus(Material.iron).setBlockName("cheater_virus").setHardness(Float.POSITIVE_INFINITY).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":cheater_virus");
-		cheater_virus_seed = new CheaterVirusSeed(Material.iron).setBlockName("cheater_virus_seed").setHardness(Float.POSITIVE_INFINITY).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":cheater_virus_seed");
 		crystal_virus = new CrystalVirus(Material.iron).setBlockName("crystal_virus").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_virus");
 		crystal_hardened = new BlockGeneric(Material.iron).setBlockName("crystal_hardened").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_hardened");
 		crystal_pulsar = new CrystalPulsar(Material.iron).setBlockName("crystal_pulsar").setHardness(15.0F).setResistance(Float.POSITIVE_INFINITY).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":crystal_pulsar");
@@ -2599,8 +2606,8 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ore_fluorite, ore_fluorite.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_beryllium, ore_beryllium.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_lead, ore_lead.getUnlocalizedName());
-		GameRegistry.registerBlock(ore_oil, ItemBlockLore.class, ore_oil.getUnlocalizedName());
-		GameRegistry.registerBlock(ore_oil_rus, ItemBlockLore.class, ore_oil_rus.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_oil, ore_oil.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_oil_rus, ore_oil_rus.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_oil_empty, ore_oil_empty.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_oil_sand, ore_oil_sand.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_lignite, ore_lignite.getUnlocalizedName());
@@ -3380,6 +3387,7 @@ public class ModBlocks {
 		register(rbmk_indicator);
 		register(rbmk_numitron);
 		register(rbmk_graph);
+		register(rbmk_terminal);
 		register(rbmk_autoloader);
 		register(rbmk_loader);
 		register(rbmk_steam_inlet);
@@ -3458,6 +3466,9 @@ public class ModBlocks {
 		register(drone_crate_requester);
 		register(pneumatic_tube);
 		register(pneumatic_tube_paintable);
+		register(pneumatic_storage_access);
+		register(pneumatic_storage_clutter);
+		register(pneumatic_storage_mono);
 		register(transporter_rocket);
 		register(fan);
 		register(piston_inserter);
@@ -3798,8 +3809,6 @@ public class ModBlocks {
 		GameRegistry.registerBlock(crystal_pulsar, crystal_pulsar.getUnlocalizedName());
 		GameRegistry.registerBlock(taint, ItemTaintBlock.class, taint.getUnlocalizedName());
 		GameRegistry.registerBlock(residue, residue.getUnlocalizedName());
-		GameRegistry.registerBlock(cheater_virus, cheater_virus.getUnlocalizedName());
-		GameRegistry.registerBlock(cheater_virus_seed, cheater_virus_seed.getUnlocalizedName());
 		GameRegistry.registerBlock(ntm_dirt, ntm_dirt.getUnlocalizedName());
 		GameRegistry.registerBlock(pink_log, pink_log.getUnlocalizedName());
 		GameRegistry.registerBlock(pink_planks, pink_planks.getUnlocalizedName());

@@ -45,7 +45,7 @@ import com.hbm.blocks.network.FluidDuctGauge.TileEntityPipeGauge;
 import com.hbm.blocks.network.FluidDuctPaintable.TileEntityPipePaintable;
 import com.hbm.blocks.network.FluidDuctPaintableBlockExhaust.TileEntityPipeExhaustPaintable;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
-import com.hbm.blocks.network.PneumoTubePaintableBlock.TileEntityPneumoTubePaintable;
+import com.hbm.blocks.network.pneumatic.PneumoTubePaintableBlock.TileEntityPneumoTubePaintable;
 import com.hbm.blocks.rail.RailStandardSwitch.TileEntityRailSwitch;
 import com.hbm.blocks.network.BlockOpenComputersCablePaintable.TileEntityOpenComputersCablePaintable;
 import com.hbm.tileentity.bomb.*;
@@ -58,6 +58,7 @@ import com.hbm.tileentity.machine.pile.*;
 import com.hbm.tileentity.machine.rbmk.*;
 import com.hbm.tileentity.machine.storage.*;
 import com.hbm.tileentity.network.*;
+import com.hbm.tileentity.network.pneumatic.*;
 import com.hbm.tileentity.turret.*;
 import com.hbm.util.Compat;
 
@@ -440,6 +441,7 @@ public class TileMappings {
 		put(TileEntityRBMKGraph.class, "tileentity_rbmk_graph");
 		put(TileEntityRBMKLever.class, "tileentity_rbmk_lever");
 		put(TileEntityRBMKIndicator.class, "tileentity_rbmk_indicator");
+		put(TileEntityRBMKTerminal.class, "tileentity_rbmk_terminal");
 		put(TileEntityRBMKInlet.class, "tileentity_rbmk_inlet");
 		put(TileEntityRBMKOutlet.class, "tileentity_rbmk_outlet");
 		put(TileEntityRBMKAutoloader.class, "tileentity_rbmk_autoloader");
@@ -496,6 +498,8 @@ public class TileMappings {
 
 		put(TileEntityPneumoTube.class, "tileentity_pneumatic_tube");
 		put(TileEntityPneumoTubePaintable.class, "tileentity_pneumatic_tube_paintable");
+		put(TileEntityPneumoStorageAccess.class, "tileentity_pneumatic_storage_access");
+		put(TileEntityPneumoStorageClutter.class, "tileentity_pneumatic_storage_clutter");
 
 		put(TileEntityTransporterRocket.class, "tileentity_transporter");
 

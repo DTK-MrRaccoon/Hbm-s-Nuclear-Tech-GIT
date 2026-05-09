@@ -1696,6 +1696,7 @@ public class ResourceManager {
 	public static final HFRWavefrontObjectVBO rbmk_numitron = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/numitron.obj")).asVBO();
 	public static final HFRWavefrontObjectVBO rbmk_lever = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/lever.obj")).asVBO();
 	public static final HFRWavefrontObjectVBO rbmk_indicator = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/indicator.obj")).asVBO();
+	public static final HFRWavefrontObjectVBO rbmk_terminal = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/terminal.obj")).asVBO();
 	public static final HFRWavefrontObject rbmk_debris = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/rbmk/debris.obj")).noSmooth();
 	public static final ResourceLocation rbmk_crane_console_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/crane_console.png");
 	public static final ResourceLocation rbmk_crane_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/rbmk_crane.png");
@@ -1707,6 +1708,7 @@ public class ResourceManager {
 	public static final ResourceLocation rbmk_numitron_lights_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/numitron_lights.png");
 	public static final ResourceLocation rbmk_lever_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/lever.png");
 	public static final ResourceLocation rbmk_indicator_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/indicator.png");
+	public static final ResourceLocation rbmk_terminal_tex = new ResourceLocation(RefStrings.MODID, "textures/models/network/terminal.png");
 	public static final IModelCustom hev_battery = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/battery.obj"));
 	public static final IModelCustom anvil = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/anvil.obj"));
 	public static final IModelCustom crystal_power = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/blocks/crystals_power.obj"));
