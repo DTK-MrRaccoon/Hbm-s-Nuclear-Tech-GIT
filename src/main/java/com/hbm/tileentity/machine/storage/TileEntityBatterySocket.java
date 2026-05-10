@@ -120,17 +120,16 @@ public class TileEntityBatterySocket extends TileEntityBatteryBase implements IR
 	
 	protected void pickNewSCTarget() {
 		this.damageTimer = 0;
-		//this.damageTarget = 100;
-		this.damageTarget = 1200 + worldObj.rand.nextInt(2400); // 1-3 minutes;
+		this.damageTarget = 60 + worldObj.rand.nextInt(60); // 3-6 seconds
 		this.markChanged();
 	}
 	
 	protected void discharge() {
 		pickNewSCTarget();
-		
+
 		ForgeDirection dir = ForgeDirection.getOrientation(this.getBlockMetadata() - 10);
 		ForgeDirection rot = dir.getRotation(ForgeDirection.UP);
-		
+
 		double x = xCoord + 0.5 - dir.offsetX * 0.5 + rot.offsetX * 0.5;
 		double y = yCoord + 1;
 		double z = zCoord + 0.5 - dir.offsetZ * 0.5 + rot.offsetX * 0.5;
@@ -151,13 +150,14 @@ public class TileEntityBatterySocket extends TileEntityBatteryBase implements IR
 			initialDelta.multiply(1.125D / dominantAxis); // move 1.125 blocks outwards
 			sub.setPosition(xCoord + initialDelta.xCoord, yCoord + initialDelta.yCoord, zCoord + initialDelta.zCoord);
 			Vec3NT actualDelta = new Vec3NT(target.posX - sub.posX, target.posY + target.height / 2 - sub.posY, target.posZ - sub.posZ);
-			
 			sub.setRotationsFromVector(actualDelta);
 			sub.performHitscanExternal(actualDelta.lengthVector());
 			worldObj.spawnEntityInWorld(sub);
 		}
-		
-		explodeDischarge(worldObj, x + worldObj.rand.nextGaussian() * 0.5, y + worldObj.rand.nextGaussian() * 0.5, z + worldObj.rand.nextGaussian() * 0.5);
+
+		if(worldObj.rand.nextDouble() < 0.03D) {
+			explodeDischarge(worldObj, x + worldObj.rand.nextGaussian() * 0.5, y + worldObj.rand.nextGaussian() * 0.5, z + worldObj.rand.nextGaussian() * 0.5);
+		}
 	}
 	
 	protected void fluctuate() {
