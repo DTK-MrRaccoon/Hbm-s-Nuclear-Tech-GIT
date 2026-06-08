@@ -6,6 +6,7 @@ import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.config.GeneralConfig;
+import com.hbm.handler.CompatHandler;
 import com.hbm.inventory.container.ContainerIGenerator;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
@@ -23,7 +24,9 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 import api.hbm.energymk2.IEnergyProviderMK2;
 import api.hbm.fluid.IFluidStandardReceiver;
 import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.redstoneoverradio.IRORValueProvider;
 import api.hbm.tile.IInfoProviderEC;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.client.gui.GuiScreen;
@@ -37,8 +40,13 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 
-public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardTransceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC {
+@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
+public class TileEntityMachineIGenerator extends TileEntityMachineBase implements IEnergyProviderMK2, IFluidStandardTransceiver, IConfigurableMachine, IGUIProvider, IInfoProviderEC, CompatHandler.OCComponent, IRORValueProvider {
 	
 	public long power;
 	public int spin;
@@ -383,5 +391,132 @@ public class TileEntityMachineIGenerator extends TileEntityMachineBase implement
 	public void provideExtraInfo(NBTTagCompound data) {
 		data.setBoolean(CompatEnergyControl.B_ACTIVE, this.output > 0);
 		data.setDouble(CompatEnergyControl.D_OUTPUT_HE, this.output);
+	}
+
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public String getComponentName() {
+		return "ntm_igen";
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getPower(Context context, Arguments args) {
+		return new Object[] {this.power};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getOutput(Context context, Arguments args) {
+		return new Object[] {this.output};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getSpin(Context context, Arguments args) {
+		return new Object[] {this.spin};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getWater(Context context, Arguments args) {
+		return new Object[] {tanks[0].getFill(), tanks[0].getMaxFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getOil(Context context, Arguments args) {
+		return new Object[] {tanks[1].getFill(), tanks[1].getMaxFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getLubricant(Context context, Arguments args) {
+		return new Object[] {tanks[2].getFill(), tanks[2].getMaxFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getBurnTime(Context context, Arguments args) {
+		return new Object[] {burn[0], burn[1], burn[2], burn[3]};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] hasRTG(Context context, Arguments args) {
+		return new Object[] {this.hasRTG};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getInfo(Context context, Arguments args) {
+		return new Object[] {this.power, this.output, this.spin, tanks[0].getFill(), tanks[1].getFill(), tanks[2].getFill(), this.hasRTG};
+	}
+
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public String[] methods() {
+		return new String[] {
+				"getPower",
+				"getOutput",
+				"getSpin",
+				"getWater",
+				"getOil",
+				"getLubricant",
+				"getBurnTime",
+				"hasRTG",
+				"getInfo"
+		};
+	}
+
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] invoke(String method, Context context, Arguments args) throws Exception {
+		switch(method) {
+			case "getPower":
+				return getPower(context, args);
+			case "getOutput":
+				return getOutput(context, args);
+			case "getSpin":
+				return getSpin(context, args);
+			case "getWater":
+				return getWater(context, args);
+			case "getOil":
+				return getOil(context, args);
+			case "getLubricant":
+				return getLubricant(context, args);
+			case "getBurnTime":
+				return getBurnTime(context, args);
+			case "hasRTG":
+				return hasRTG(context, args);
+			case "getInfo":
+				return getInfo(context, args);
+		}
+		throw new NoSuchMethodException();
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "power",
+				PREFIX_VALUE + "output",
+				PREFIX_VALUE + "spin",
+				PREFIX_VALUE + "water",
+				PREFIX_VALUE + "oil",
+				PREFIX_VALUE + "lubricant",
+				PREFIX_VALUE + "has_rtg"
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "power").equals(name))			return "" + this.power;
+		if((PREFIX_VALUE + "output").equals(name))			return "" + this.output;
+		if((PREFIX_VALUE + "spin").equals(name))			return "" + this.spin;
+		if((PREFIX_VALUE + "water").equals(name))			return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "oil").equals(name))				return "" + tanks[1].getFill();
+		if((PREFIX_VALUE + "lubricant").equals(name))		return "" + tanks[2].getFill();
+		if((PREFIX_VALUE + "has_rtg").equals(name))			return "" + (this.hasRTG ? 1 : 0);
+		return null;
 	}
 }

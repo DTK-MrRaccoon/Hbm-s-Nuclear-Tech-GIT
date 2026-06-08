@@ -2,6 +2,10 @@ package com.hbm.items.tool;
 
 import java.util.List;
 
+import com.hbm.explosion.vanillant.ExplosionVNT;
+import com.hbm.explosion.vanillant.standard.EntityProcessorCrossSmooth;
+import com.hbm.explosion.vanillant.standard.ExplosionEffectWeapon;
+import com.hbm.explosion.vanillant.standard.PlayerProcessorStandard;
 import com.hbm.inventory.gui.GUIScreenPager;
 import com.hbm.items.IItemControlReceiver;
 import com.hbm.main.MainRegistry;
@@ -37,6 +41,17 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 		if(chan != null && chan.timeStamp >= world.getTotalWorldTime() - 1) {
 			int alive = entity.ticksExisted % 1000;
 			String message = EnumChatFormatting.GOLD + "[ " + channelFreq + " (" + alive + ") ] " + EnumChatFormatting.YELLOW + chan.signal;
+
+			if("selfdestruct".equals(chan.signal + "")) {
+				ExplosionVNT vnt = new ExplosionVNT(world, entity.posX, entity.posY + entity.height / 2, entity.posZ, 5, null);
+				vnt.setEntityProcessor(new EntityProcessorCrossSmooth(1, 50).setupPiercing(5F, 0.5F));
+				vnt.setPlayerProcessor(new PlayerProcessorStandard());
+				vnt.setSFX(new ExplosionEffectWeapon(10, 2.5F, 1F));
+				vnt.explode();
+				stack.stackSize--;
+				return;
+			}
+
 			PacketDispatcher.wrapper.sendTo(new PlayerInformPacket(message, ServerProxy.ID_PAGER_DYN + slot, 5_000), (EntityPlayerMP) entity);
 		}
 	}
@@ -46,7 +61,7 @@ public class ItemRTTYPager extends Item implements IItemControlReceiver, IGUIPro
 		if(world.isRemote) player.openGui(MainRegistry.instance, 0, world, 0, 0, 0);
 		return stack;
 	}
-	
+
 	@Override
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean bool) {
 		if(!stack.hasTagCompound() || !stack.stackTagCompound.hasKey(KEY_CHANNEL) || stack.stackTagCompound.getString(KEY_CHANNEL).isEmpty()) {
