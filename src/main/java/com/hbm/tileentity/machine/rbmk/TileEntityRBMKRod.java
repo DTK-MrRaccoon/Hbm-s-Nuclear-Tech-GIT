@@ -105,7 +105,7 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 	@Override
 	public void invalidate() {
 		super.invalidate();
-		
+
 		if(slots[0] != null && slots[0].getItem() instanceof ItemRBMKRod && ItemRBMKRod.getHullHeat(slots[0]) >= 150 && !RBMKDials.getMeltdownsDisabled(worldObj)) {
 			this.meltdown();
 		}
@@ -142,7 +142,8 @@ public class TileEntityRBMKRod extends TileEntityRBMKSlottedBase implements IRBM
 				}
 
 				rod.updateHeat(worldObj, slots[0], 1.0D);
-				this.heat += rod.provideHeat(worldObj, slots[0], heat, 1.0D);
+				//this.heat += (rod.provideHeat(worldObj, slots[0], heat, 1.0D) * 0.3333D);
+				this.heat += (rod.provideHeat(worldObj, slots[0], heat, 1.0D) * 0.5D);
 
 				if(!this.hasLid()) {
 					ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, (float) (this.fluxQuantity * 0.05F));

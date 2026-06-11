@@ -365,7 +365,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 			NBTTagCompound tag = stack.getTagCompound();
 			int durabilityCounter = tag.getInteger("duraCounter");
 			durabilityCounter += consumption;
-			int threshold = 20;
+			int threshold = 100;
 			if(durabilityCounter >= threshold) {
 				int removeAmount = durabilityCounter / threshold;
 				int newLife = Math.max(0, life - removeAmount);

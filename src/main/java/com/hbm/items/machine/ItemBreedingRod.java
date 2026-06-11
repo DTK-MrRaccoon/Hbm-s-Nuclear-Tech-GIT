@@ -112,28 +112,30 @@ public class ItemBreedingRod extends ItemEnumMulti {
 	}
 
 	public enum BreedingRodType {
-		LITHIUM(2000 * 20, 0, false, true),
+		LITHIUM(2000 * 5, 0, false, true),
 		TRITIUM(0, 0, false, false),
-		CO(1000 * 20, 0, false, true),
+		CO(1000 * 5, 0, false, true),
 		CO60(0, 5, false, false),
-		TH232(5000 * 20, 0, false, true),
+		TH232(3000 * 5, 0, false, true),
 		THF(2500 * 20, 60, true, false),
 		U235(3000 * 20, 75, true, false),
-		NP237(2000 * 20, 0, false, true),
+		NP237(2000 * 5, 0, false, true),
 		PU238(100000 * 20, 10, true, false),
-		U238(3000 * 20, 0, false, true),
-		PU239(10000 * 20, 100, true, false),
+		U238(3000 * 5, 0, false, true),
+		PU239(1000 * 20, 100, true, false),
 		RGP(2000 * 20, 90, true, false),
 		WASTE(0, 5, false, false),
 		LEAD(0, 0, false, false),
 		URANIUM(7500 * 20, 30, true, false),
-		RA226(3000 * 20, 0, false, true),
-		AC227(2500 * 20, 0, false, true),
+		RA226(3000 * 5, 0, false, true),
+		AC227(2500 * 5, 25, true, false),
 		MOX_FUEL(1650 * 20, 75, true, false),
 		PLUTONIUM_FUEL(1750 * 20, 65, true, false),
 		URANIUM_FUEL(5000 * 20, 50, true, false),
 		U233(1500 * 20, 100, true, false),
-		LES(1500 * 20, 200, true, false);
+		LES(1500 * 20, 200, true, false),
+		SCHRABIDIUM(750 * 20, 1200, true, false),
+		SOLINIUM(850 * 20, 1500, true, false);
 
 		public final int maxLife;
 		public final int baseHeat;

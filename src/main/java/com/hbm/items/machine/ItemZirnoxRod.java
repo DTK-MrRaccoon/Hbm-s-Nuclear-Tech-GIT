@@ -99,30 +99,30 @@ public class ItemZirnoxRod extends ItemEnumMulti {
 	}
 
 	public static enum EnumZirnoxType {
-		NATURAL_URANIUM_FUEL(250_000 * 5, 30),
-		URANIUM_FUEL(200_000 * 5, 50),
-		TH232(20_000 * 5, 0, true),
-		THORIUM_FUEL(200_000 * 5, 40),
-		MOX_FUEL(165_000 * 5, 75),
-		PLUTONIUM_FUEL(175_000 * 5, 65),
-		U233_FUEL(150_000 * 5, 100),
-		U235_FUEL(165_000 * 5, 85),
-		LES_FUEL(150_000 * 5, 150),
-		LITHIUM(20_000 * 5, 0, true),
-		ZFB_MOX(50_000 * 5, 35);
+		NATURAL_URANIUM_FUEL(250_000 * 2.5, 30),
+		URANIUM_FUEL(200_000 * 2.5, 50),
+		TH232(20_000 * 1.5, 0, true),
+		THORIUM_FUEL(200_000 * 2.5, 40),
+		MOX_FUEL(165_000 * 2.5, 75),
+		PLUTONIUM_FUEL(175_000 * 2.5, 65),
+		U233_FUEL(150_000 * 2.5, 100),
+		U235_FUEL(165_000 * 2.5, 85),
+		LES_FUEL(150_000 * 2.5, 150),
+		LITHIUM(20_000 * 1.5, 0, true),
+		ZFB_MOX(50_000 * 2.5, 35);
 
 		public final int maxLife;
 		public final int heat;
 		public final boolean breeding;
 
-		private EnumZirnoxType(int life, int heat, boolean breeding) {
-			this.maxLife = life;
+		private EnumZirnoxType(double life, int heat, boolean breeding) {
+			this.maxLife = (int) life;
 			this.heat = heat;
 			this.breeding = breeding;
 		}
 
-		private EnumZirnoxType(int life, int heat) {
-			this.maxLife = life;
+		private EnumZirnoxType(double life, int heat) {
+			this.maxLife = (int) life;
 			this.heat = heat;
 			this.breeding = false;
 		}
