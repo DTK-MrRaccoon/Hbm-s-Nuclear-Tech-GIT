@@ -112,14 +112,14 @@ public class ItemBreedingRod extends ItemEnumMulti {
 	}
 
 	public enum BreedingRodType {
-		LITHIUM(2000 * 5, 0, false, true),
+		LITHIUM(500 * 5, 0, false, true),
 		TRITIUM(0, 0, false, false),
-		CO(1000 * 5, 0, false, true),
+		CO(500 * 5, 0, false, true),
 		CO60(0, 5, false, false),
-		TH232(3000 * 5, 0, false, true),
+		TH232(1000 * 5, 0, false, true),
 		THF(2500 * 20, 60, true, false),
 		U235(3000 * 20, 75, true, false),
-		NP237(2000 * 5, 0, false, true),
+		NP237(1000 * 5, 0, false, true),
 		PU238(100000 * 20, 10, true, false),
 		U238(3000 * 5, 0, false, true),
 		PU239(1000 * 20, 100, true, false),
@@ -127,7 +127,7 @@ public class ItemBreedingRod extends ItemEnumMulti {
 		WASTE(0, 5, false, false),
 		LEAD(0, 0, false, false),
 		URANIUM(7500 * 20, 30, true, false),
-		RA226(3000 * 5, 0, false, true),
+		RA226(750 * 5, 0, false, true),
 		AC227(2500 * 5, 25, true, false),
 		MOX_FUEL(1650 * 20, 75, true, false),
 		PLUTONIUM_FUEL(1750 * 20, 65, true, false),

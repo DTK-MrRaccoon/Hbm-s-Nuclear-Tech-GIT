@@ -64,29 +64,32 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 	private static final Map<BreedingRodType, RodOutput> fuelMap = new HashMap<>();
 	static {
-		fuelMap.put(BreedingRodType.LITHIUM, new RodOutput(BreedingRodType.TRITIUM, 1.0f, null));
-		fuelMap.put(BreedingRodType.CO, new RodOutput(BreedingRodType.CO60, 1.0f, null));
-		fuelMap.put(BreedingRodType.TH232, new RodOutput(BreedingRodType.THF, 1.0f, null));
-		fuelMap.put(BreedingRodType.THF, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.U235, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.LITHIUM, new RodOutput(BreedingRodType.TRITIUM, 1.0f));
+		fuelMap.put(BreedingRodType.CO, new RodOutput(BreedingRodType.CO60, 1.0f));
+		fuelMap.put(BreedingRodType.TH232, new RodOutput(BreedingRodType.THF, 1.0f));
+		fuelMap.put(BreedingRodType.THF, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.U235, new RodOutput(BreedingRodType.WASTE, 1.0f));
 		fuelMap.put(BreedingRodType.NP237, new RodOutput(BreedingRodType.PU238, 0.5f, BreedingRodType.WASTE));
-		fuelMap.put(BreedingRodType.PU238, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.U238, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.PU239, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.RGP, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.RA226, new RodOutput(BreedingRodType.AC227, 1.0f, null));
-		fuelMap.put(BreedingRodType.AC227, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.MOX_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.PLUTONIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.URANIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.U233, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
-		fuelMap.put(BreedingRodType.LES, new RodOutput(BreedingRodType.WASTE, 1.0f, null));
+		fuelMap.put(BreedingRodType.PU238, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.U238, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.PU239, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.RGP, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.RA226, new RodOutput(BreedingRodType.AC227, 1.0f));
+		fuelMap.put(BreedingRodType.AC227, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.MOX_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.PLUTONIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.URANIUM_FUEL, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.U233, new RodOutput(BreedingRodType.WASTE, 1.0f));
+		fuelMap.put(BreedingRodType.LES, new RodOutput(BreedingRodType.WASTE, 1.0f));
 	}
 
 	private static class RodOutput {
 		final BreedingRodType output;
 		final float chance;
 		final BreedingRodType alternate;
+		RodOutput(BreedingRodType output, float chance) {
+			this(output, chance, null);
+		}
 		RodOutput(BreedingRodType output, float chance, BreedingRodType alternate) {
 			this.output = output;
 			this.chance = chance;
@@ -111,8 +114,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemStack) {
 		if(i >= 0 && i <= 11) {
-			Item item = itemStack.getItem();
-			return item instanceof ItemBreedingRod || item == ModItems.neutron_reflector;
+			return itemStack.getItem() instanceof ItemBreedingRod || itemStack.getItem() == ModItems.neutron_reflector;
 		}
 		if(i == 12) return FluidContainerRegistry.getFluidContent(itemStack, tanks[0].getTankType()) > 0;
 		if(i == 14) return FluidContainerRegistry.getFluidContent(itemStack, tanks[1].getTankType()) > 0;
@@ -121,9 +123,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 	@Override
 	public boolean canExtractItem(int i, ItemStack stack, int j) {
-		if(i >= 0 && i <= 11) return true;
-		if(i == 13 || i == 15) return true;
-		return false;
+		return (i >= 0 && i <= 11) || i == 13 || i == 15;
 	}
 
 	@Override
@@ -212,9 +212,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 				BreedingRodType type = EnumUtil.grabEnumSafely(BreedingRodType.class, stack.getItemDamage());
 				if(type != null && type.maxLife <= 0) {
 					int heat = ItemBreedingRod.getHeatPerTick(stack);
-					if(heat > 0) {
-						coreHeat += heat;
-					}
+					if(heat > 0) coreHeat += heat;
 				}
 			}
 		}
@@ -252,33 +250,28 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 			hullHeat += (int)Math.round(transfer);
 		}
 
-		boolean steamHasSpace = tanks[2].getFill() < tanks[2].getMaxFill() * 0.95;
-		if(hullHeat > 0 && tanks[0].getFill() > 0 && steamHasSpace) {
+		if(hullHeat > 0 && tanks[0].getFill() > 0 && tanks[2].getFill() < tanks[2].getMaxFill() * 0.95) {
 			generateSteam();
 		}
 
 		if(tanks[1].getFill() >= 5) {
 			int coolantUsed = 0;
-
 			if(coreHeat > 85000) {
 				int excess = coreHeat - 85000;
-				int cooling = (int)Math.min((excess * excess) / 20000.0 * 1.25, 6250);
+				int cooling = Math.min((excess * excess) / 20000 * 5 / 4, 6250);
 				cooling = Math.max(12, cooling);
 				coreHeat -= cooling;
 				coolantUsed += cooling / 150;
 			}
-
 			if(hullHeat > 85000) {
 				int excess = hullHeat - 85000;
-				int cooling = (int)Math.min((excess * excess) / 8000.0 * 1.25, 10000);
+				int cooling = Math.min((excess * excess) / 8000 * 5 / 4, 10000);
 				cooling = Math.max(25, cooling);
 				hullHeat -= cooling;
 				coolantUsed += cooling / 300;
 			}
-
 			if(coolantUsed > 0) {
-				coolantUsed = Math.max(1, coolantUsed);
-				tanks[1].setFill(Math.max(0, tanks[1].getFill() - coolantUsed));
+				tanks[1].setFill(Math.max(0, tanks[1].getFill() - Math.max(1, coolantUsed)));
 			}
 		}
 
@@ -299,7 +292,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		}
 
 		if(rods > 0 && coreHeat > 75000) {
-			float rad = (float) coreHeat / (float) maxCoreHeat * 5F;
+			float rad = (float) coreHeat / maxCoreHeat * 5F;
 			ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
 		}
 
@@ -324,60 +317,72 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		if(stack.getItem() == ModItems.neutron_reflector) return;
 
 		BreedingRodType type = EnumUtil.grabEnumSafely(BreedingRodType.class, stack.getItemDamage());
-		if(type == null) return;
+		if(type == null || type.maxLife <= 0) return;
 
 		int life = ItemBreedingRod.getLifeTime(stack);
-		int heatPerTick = ItemBreedingRod.getHeatPerTick(stack);
-		boolean isFuel = type.isFuel;
-		boolean isBreeding = type.isBreeding;
-		int neighbours = getNeighbourCount(id);
-		boolean adjacentFuel = hasAdjacentFuelRod(id);
-		float powerFactor = rods / 100.0F;
-
-		if(type.maxLife <= 0) return;
-
 		if(life <= 0) {
 			convertRod(id, stack, type);
 			return;
 		}
 
-		float reactionRate = 0.0F;
-		int actualHeat = 0;
+		boolean isFuel = ItemBreedingRod.isFuelRod(stack);
+		boolean isBreeding = ItemBreedingRod.isBreedingRod(stack);
+		double neighbourBonus = getNeighbourBonus(id);
+		float powerFactor = rods / 100.0F;
 
+		double reactionRate = 0.0;
 		if(isFuel) {
-			reactionRate = (neighbours + 1) * powerFactor;
-		} else if(isBreeding && adjacentFuel) {
+			reactionRate = (neighbourBonus + 1.0) * powerFactor;
+		} else if(isBreeding && hasAdjacentFuelRod(id)) {
 			reactionRate = powerFactor;
 		}
 
-		int consumption = 0;
 		if(reactionRate > 0) {
-			int intPart = (int) reactionRate / 5;
-			float fracPart = reactionRate - intPart;
-			consumption = intPart;
-			if(fracPart > 0 && worldObj.rand.nextFloat() < fracPart) {
-				consumption++;
-			}
-		}
-
-		if(consumption > 0) {
+			String key = "reactAcc_" + id;
 			if(!stack.hasTagCompound()) stack.setTagCompound(new NBTTagCompound());
 			NBTTagCompound tag = stack.getTagCompound();
-			int durabilityCounter = tag.getInteger("duraCounter");
-			durabilityCounter += consumption;
-			int threshold = 100;
-			if(durabilityCounter >= threshold) {
-				int removeAmount = durabilityCounter / threshold;
-				int newLife = Math.max(0, life - removeAmount);
-				ItemBreedingRod.setLifeTime(stack, newLife);
-				durabilityCounter = durabilityCounter % threshold;
-			}
-			tag.setInteger("duraCounter", durabilityCounter);
-			if(isFuel) {
-				actualHeat = heatPerTick * consumption;
-				coreHeat += actualHeat;
+			double accumulator = tag.hasKey(key) ? tag.getDouble(key) : 0.0;
+			accumulator += reactionRate;
+			int consumption = (int) Math.floor(accumulator);
+			accumulator -= consumption;
+			tag.setDouble(key, accumulator);
+
+			if(consumption > 0) {
+				if(isBreeding) consumption *= 3; // breeding rods deplete 3x faster
+
+				int durabilityCounter = tag.getInteger("duraCounter");
+				durabilityCounter += consumption;
+				int threshold = 100;
+				if(durabilityCounter >= threshold) {
+					int removeAmount = durabilityCounter / threshold;
+					int newLife = Math.max(0, life - removeAmount);
+					ItemBreedingRod.setLifeTime(stack, newLife);
+					durabilityCounter = durabilityCounter % threshold;
+				}
+				tag.setInteger("duraCounter", durabilityCounter);
+
+				if(isFuel) {
+					coreHeat += ItemBreedingRod.getHeatPerTick(stack) * consumption;
+				}
 			}
 		}
+	}
+
+	private double getNeighbourBonus(int id) {
+		int[] neighbours = getNeighbouringSlots(id);
+		if(neighbours == null) return 0.0;
+		double bonus = 0.0;
+		for(int i : neighbours) {
+			ItemStack s = slots[i];
+			if(s != null) {
+				if(s.getItem() instanceof ItemBreedingRod) {
+					bonus += 1.0;
+				} else if(s.getItem() == ModItems.neutron_reflector) {
+					bonus += 0.5;
+				}
+			}
+		}
+		return bonus;
 	}
 
 	private boolean hasAdjacentFuelRod(int id) {
@@ -385,9 +390,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		if(neighbours == null) return false;
 		for(int i : neighbours) {
 			ItemStack s = slots[i];
-			if(s != null && ItemBreedingRod.isFuelRod(s)) {
-				return true;
-			}
+			if(s != null && ItemBreedingRod.isFuelRod(s)) return true;
 		}
 		return false;
 	}
@@ -412,21 +415,6 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		ItemStack newStack = new ItemStack(stack.getItem(), 1, chosen.ordinal());
 		ItemBreedingRod.setLifeTime(newStack, chosen.maxLife);
 		slots[slot] = newStack;
-	}
-
-	private int getNeighbourCount(int id) {
-		int[] neighbours = getNeighbouringSlots(id);
-		if(neighbours == null) return 0;
-		int count = 0;
-		for(int i : neighbours) {
-			ItemStack s = slots[i];
-			if(s != null) {
-				if(s.getItem() instanceof ItemBreedingRod || s.getItem() == ModItems.neutron_reflector) {
-					count++;
-				}
-			}
-		}
-		return count;
 	}
 
 	private int[] getNeighbouringSlots(int id) {
@@ -467,16 +455,14 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 		if(hullHeat < reqTemp) return;
 
-		double excess = hullHeat - reqTemp;
-		double maxSteam = excess / heatPerMb;
+		double maxSteam = (hullHeat - reqTemp) / heatPerMb;
 		if(maxSteam <= 0) return;
 
 		int water = tanks[0].getFill();
 		int space = tanks[2].getMaxFill() - tanks[2].getFill();
 		if(water <= 0 || space <= 0) return;
 
-		double maxFromWater = (double)water * waterRatio;
-		int produce = (int)Math.min(maxSteam, Math.min(maxFromWater, space));
+		int produce = (int)Math.min(maxSteam, Math.min((double)water * waterRatio, space));
 		if(produce <= 0) return;
 
 		int waterUse = (int)Math.ceil((double)produce / waterRatio);
@@ -487,14 +473,13 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		hullHeat = Math.max(0, hullHeat - (int)Math.round(produce * heatPerMb));
 		tanks[0].setFill(tanks[0].getFill() - waterUse);
 		tanks[2].setFill(tanks[2].getFill() + produce);
-		if(tanks[2].getFill() > tanks[2].getMaxFill()) tanks[2].setFill(tanks[2].getMaxFill());
 	}
 
 	public boolean isSubmerged() {
 		return worldObj.getBlock(xCoord+1, yCoord+1, zCoord).getMaterial() == Material.water ||
-			   worldObj.getBlock(xCoord, yCoord+1, zCoord+1).getMaterial() == Material.water ||
-			   worldObj.getBlock(xCoord-1, yCoord+1, zCoord).getMaterial() == Material.water ||
-			   worldObj.getBlock(xCoord, yCoord+1, zCoord-1).getMaterial() == Material.water;
+				worldObj.getBlock(xCoord, yCoord+1, zCoord+1).getMaterial() == Material.water ||
+				worldObj.getBlock(xCoord-1, yCoord+1, zCoord).getMaterial() == Material.water ||
+				worldObj.getBlock(xCoord, yCoord+1, zCoord-1).getMaterial() == Material.water;
 	}
 
 	private void explode() {
@@ -506,12 +491,8 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		worldObj.playSoundEffect(xCoord, yCoord + 2, zCoord, "hbm:block.rbmk_explosion", 10.0F, 1.0F);
 		worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 4.0F, true);
 
-		for(int i = 0; i < 8; i++) {
-			spawnDebris(DebrisType.GRAPHITE);
-		}
-		for(int i = 0; i < 12; i++) {
-			spawnDebris(DebrisType.BLANK);
-		}
+		for(int i = 0; i < 8; i++) spawnDebris(DebrisType.GRAPHITE);
+		for(int i = 0; i < 12; i++) spawnDebris(DebrisType.BLANK);
 
 		worldObj.setBlock(xCoord, yCoord + 1, zCoord, ModBlocks.corium_block);
 		worldObj.setBlock(xCoord + 1, yCoord + 1, zCoord, ModBlocks.corium_block);
@@ -524,8 +505,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 		ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, 1000);
 
 		if(MobConfig.enableElementals) {
-			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class,
-				AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
+			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
 			for(EntityPlayer p : players) p.getEntityData().getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG).setBoolean("radMark", true);
 		}
 	}
@@ -564,26 +544,38 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() { return INFINITE_EXTENT_AABB; }
-	@Override @SideOnly(Side.CLIENT) public double getMaxRenderDistanceSquared() { return 65536.0D; }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public double getMaxRenderDistanceSquared() { return 65536.0D; }
 
 	@Override
 	public Container provideContainer(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new ContainerMachineReactorSmall(player.inventory, this);
 	}
-	@Override @SideOnly(Side.CLIENT)
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new GUIMachineReactorSmall(player.inventory, this);
 	}
 
-	@Override public FluidTank[] getAllTanks() { return tanks; }
-	@Override public FluidTank[] getSendingTanks() { return new FluidTank[]{tanks[2]}; }
-	@Override public FluidTank[] getReceivingTanks() { return new FluidTank[]{tanks[0], tanks[1]}; }
+	@Override
+	public FluidTank[] getAllTanks() { return tanks; }
 
-	@Override public int[] getAccessibleSlotsFromSide(int side) {
+	@Override
+	public FluidTank[] getSendingTanks() { return new FluidTank[]{tanks[2]}; }
+
+	@Override
+	public FluidTank[] getReceivingTanks() { return new FluidTank[]{tanks[0], tanks[1]}; }
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int side) {
 		return new int[]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	}
 
-	@Override public boolean hasPermission(EntityPlayer player) { return true; }
+	@Override
+	public boolean hasPermission(EntityPlayer player) { return true; }
 
 	@Override
 	public void receiveControl(NBTTagCompound data) {
@@ -606,12 +598,12 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 
 	private DirPos[] getConPos(TileEntity te) {
 		return new DirPos[] {
-			new DirPos(te.xCoord + 1, te.yCoord, te.zCoord, Library.POS_X),
-			new DirPos(te.xCoord - 1, te.yCoord, te.zCoord, Library.NEG_X),
-			new DirPos(te.xCoord, te.yCoord + 1, te.zCoord, Library.POS_Y),
-			new DirPos(te.xCoord, te.yCoord - 1, te.zCoord, Library.NEG_Y),
-			new DirPos(te.xCoord, te.yCoord, te.zCoord + 1, Library.POS_Z),
-			new DirPos(te.xCoord, te.yCoord, te.zCoord - 1, Library.NEG_Z)
+				new DirPos(te.xCoord + 1, te.yCoord, te.zCoord, Library.POS_X),
+				new DirPos(te.xCoord - 1, te.yCoord, te.zCoord, Library.NEG_X),
+				new DirPos(te.xCoord, te.yCoord + 1, te.zCoord, Library.POS_Y),
+				new DirPos(te.xCoord, te.yCoord - 1, te.zCoord, Library.NEG_Y),
+				new DirPos(te.xCoord, te.yCoord, te.zCoord + 1, Library.POS_Z),
+				new DirPos(te.xCoord, te.yCoord, te.zCoord - 1, Library.NEG_Z)
 		};
 	}
 
@@ -697,8 +689,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	@Callback(direct = true, limit = 2)
 	@Optional.Method(modid = "OpenComputers")
 	public Object[] setRodsActive(Context context, Arguments args) {
-		boolean active = args.checkBoolean(0);
-		rodsTarget = active ? rodsMax : 0;
+		rodsTarget = args.checkBoolean(0) ? rodsMax : 0;
 		markDirty();
 		return new Object[] {true};
 	}
@@ -729,17 +720,17 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	@Override
 	public String[] getFunctionInfo() {
 		return new String[] {
-			PREFIX_VALUE + "coreHeat",
-			PREFIX_VALUE + "hullHeat",
-			PREFIX_VALUE + "water",
-			PREFIX_VALUE + "coolant",
-			PREFIX_VALUE + "steam",
-			PREFIX_VALUE + "rods",
-			PREFIX_VALUE + "targetRods",
-			PREFIX_VALUE + "fuelPercent",
-			PREFIX_FUNCTION + "setRodsActive" + NAME_SEPARATOR + "active",
-			PREFIX_FUNCTION + "setRodsLevel" + NAME_SEPARATOR + "level",
-			PREFIX_FUNCTION + "setSteamCompression" + NAME_SEPARATOR + "level"
+				PREFIX_VALUE + "coreHeat",
+				PREFIX_VALUE + "hullHeat",
+				PREFIX_VALUE + "water",
+				PREFIX_VALUE + "coolant",
+				PREFIX_VALUE + "steam",
+				PREFIX_VALUE + "rods",
+				PREFIX_VALUE + "targetRods",
+				PREFIX_VALUE + "fuelPercent",
+				PREFIX_FUNCTION + "setRodsActive" + NAME_SEPARATOR + "active",
+				PREFIX_FUNCTION + "setRodsLevel" + NAME_SEPARATOR + "level",
+				PREFIX_FUNCTION + "setSteamCompression" + NAME_SEPARATOR + "level"
 		};
 	}
 
@@ -759,8 +750,7 @@ public class TileEntityMachineReactorSmall extends TileEntityMachineBase impleme
 	@Override
 	public String runRORFunction(String name, String[] params) {
 		if((PREFIX_FUNCTION + "setRodsActive").equals(name) && params.length > 0) {
-			boolean active = params[0].equalsIgnoreCase("true") || params[0].equals("1");
-			rodsTarget = active ? rodsMax : 0;
+			rodsTarget = (params[0].equalsIgnoreCase("true") || params[0].equals("1")) ? rodsMax : 0;
 			markDirty();
 			return null;
 		}
