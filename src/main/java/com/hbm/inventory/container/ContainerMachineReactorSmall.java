@@ -45,7 +45,7 @@ public class ContainerMachineReactorSmall extends Container {
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer player, int slot) {
 		ItemStack stack = null;
-		Slot slotObj = (Slot)inventorySlots.get(slot);
+		Slot slotObj = (Slot) inventorySlots.get(slot);
 		if(slotObj != null && slotObj.getHasStack()) {
 			ItemStack stackInSlot = slotObj.getStack();
 			stack = stackInSlot.copy();
@@ -55,7 +55,28 @@ public class ContainerMachineReactorSmall extends Container {
 			} else {
 				if(stackInSlot.getItem() == ModItems.neutron_reflector ||
 					stackInSlot.getItem() instanceof com.hbm.items.machine.ItemBreedingRod) {
-					if(!mergeItemStack(stackInSlot, 0, 12, false)) return null;
+
+					boolean inserted = false;
+					for(int i = 0; i < 12; i++) {
+						Slot fuelSlot = (Slot) inventorySlots.get(i);
+						if(!fuelSlot.getHasStack() && fuelSlot.isItemValid(stackInSlot)) {
+							ItemStack oneRod = stackInSlot.copy();
+							oneRod.stackSize = 1;
+							fuelSlot.putStack(oneRod);
+							stackInSlot.stackSize--;
+
+							if(stackInSlot.stackSize == 0) {
+								slotObj.putStack(null);
+							} else {
+								slotObj.onSlotChanged();
+							}
+							fuelSlot.onSlotChanged();
+							inserted = true;
+							break;
+						}
+					}
+					if(!inserted) return null;
+
 				} else if(FluidContainerRegistry.getFluidContent(stackInSlot, reactor.tanks[0].getTankType()) > 0) {
 					if(!mergeItemStack(stackInSlot, 12, 13, false)) return null;
 				} else if(FluidContainerRegistry.getFluidContent(stackInSlot, reactor.tanks[1].getTankType()) > 0) {
