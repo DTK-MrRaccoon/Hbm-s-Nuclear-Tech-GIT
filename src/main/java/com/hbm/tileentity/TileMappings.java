@@ -485,6 +485,8 @@ public class TileMappings {
 		put(TileEntityFluidPump.class, "tileentity_pipe_pump");
 		put(TileEntityElectricFluidPump.class, "tileentity_electric_pipe_pump");
 
+		put(TileEntityHeatPipe.class, "tileentity_heat_pipe");
+
 		put(TileEntityPipeAnchor.class, "tileentity_pioe_anchor");
 
 		put(TileEntityCraneInserter.class, "tileentity_inserter");

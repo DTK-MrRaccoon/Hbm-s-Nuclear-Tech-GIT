@@ -829,6 +829,7 @@ public class ModBlocks {
 	public static Block fluid_pump;
 	public static Block electric_fluid_pump;
 	public static Block machine_drain;
+	public static Block heat_pipe;
 	public static Block radio_torch_sender;
 	public static Block radio_torch_receiver;
 	public static Block radio_torch_counter;
@@ -2057,6 +2058,7 @@ public class ModBlocks {
 		fluid_pump = new FluidPump(Material.iron).setBlockName("fluid_pump").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		electric_fluid_pump = new ElectricFluidPump(Material.iron).setBlockName("electric_fluid_pump").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		machine_drain = new MachineDrain(Material.iron).setBlockName("machine_drain").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":concrete");
+		heat_pipe = new HeatPipe().setBlockName("heat_pipe").setStepSound(ModSoundTypes.pipe).setCreativeTab(MainRegistry.machineTab).setHardness(3.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":block_copper");
 		radio_torch_sender = new RadioTorchSender().setBlockName("radio_torch_sender").setHardness(0.1F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		radio_torch_receiver = new RadioTorchReceiver().setBlockName("radio_torch_receiver").setHardness(0.1F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 		radio_torch_counter = new RadioTorchCounter().setBlockName("radio_torch_counter").setHardness(0.1F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rtty_counter");
@@ -3445,6 +3447,7 @@ public class ModBlocks {
 		register(fluid_pump);
 		register(electric_fluid_pump);
 		register(machine_drain);
+		register(heat_pipe);
 		register(radio_torch_sender);
 		register(radio_torch_receiver);
 		register(radio_torch_counter);

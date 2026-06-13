@@ -14,6 +14,7 @@ import com.hbm.blocks.machine.MachineFan.TileEntityFan;
 import com.hbm.blocks.machine.PistonInserter.TileEntityPistonInserter;
 import com.hbm.blocks.machine.WatzPump.TileEntityWatzPump;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
+import com.hbm.blocks.network.HeatPipe;
 import com.hbm.config.GeneralConfig;
 import com.hbm.entity.cart.EntityMinecartCrate;
 import com.hbm.entity.cart.EntityMinecartNTM;
@@ -823,6 +824,8 @@ public class ClientProxy extends ServerProxy {
 	@Override
 	public void registerBlockRenderer() {
 
+		HeatPipe.renderID = RenderingRegistry.getNextAvailableRenderId();
+
 		RenderingRegistry.registerBlockHandler(new RenderISBRHUniversal());
 
 		/// STOP DOING THIS ///
@@ -857,6 +860,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerBlockHandler(new RenderBlockSideRotation());
 		RenderingRegistry.registerBlockHandler(new RenderDiode());
 		RenderingRegistry.registerBlockHandler(new RenderBoxDuct());
+		RenderingRegistry.registerBlockHandler(new RenderHeatPipe());
 		RenderingRegistry.registerBlockHandler(new RenderBlockDecoModel(ModBlocks.deco_computer.getRenderType(), ResourceManager.deco_computer));
 		RenderingRegistry.registerBlockHandler(new RenderReeds());
 		RenderingRegistry.registerBlockHandler(new RenderHangingVine());

@@ -15,6 +15,7 @@ import com.hbm.tileentity.machine.TileEntityMachineAutocrafter.InventoryCrafting
 import com.hbm.util.BufferUtil;
 import com.hbm.util.ItemStackUtil;
 
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -202,12 +203,23 @@ public class TileEntitySawmill extends TileEntityMachineBase {
 	protected void tryPullHeat() {
 		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
 
-		if(con instanceof IHeatSource) {
+		if(con instanceof IHeatSource && !(con instanceof IHeatPipe)) {
 			IHeatSource source = (IHeatSource) con;
 			int heatSrc = (int) (source.getHeatStored() * diffusion);
 
 			if(heatSrc > 0) {
 				source.useUpHeat(heatSrc);
+				this.heat += heatSrc;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int heatSrc = (int) (pipe.getHeatStored() * diffusion);
+
+			if(heatSrc > 0) {
+				pipe.useUpHeat(heatSrc);
 				this.heat += heatSrc;
 				return;
 			}
@@ -252,8 +264,8 @@ public class TileEntitySawmill extends TileEntityMachineBase {
 				if(recipe.matches(craftingInventory, worldObj)) {
 					ItemStack out = recipe.getCraftingResult(craftingInventory);
 					if(out != null) {
-						out = out.copy(); //for good measure
-						out.stackSize = out.stackSize * 6 / 4; //4 planks become 6
+						out = out.copy();
+						out.stackSize = out.stackSize * 6 / 4;
 						return out;
 					}
 				}

@@ -30,6 +30,7 @@ import com.hbm.util.BobMathUtil;
 import com.hbm.util.CrucibleUtil;
 
 import api.hbm.block.ICrucibleAcceptor;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -350,6 +351,26 @@ public class TileEntityCrucible extends TileEntityMachineBase implements IGUIPro
 			if(diff > 0) {
 				diff = (int) Math.ceil(diff * diffusion);
 				source.useUpHeat(diff);
+				this.heat += diff;
+				if(this.heat > this.maxHeat)
+					this.heat = this.maxHeat;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int diff = pipe.getHeatStored() - this.heat;
+			
+			if(diff == 0) {
+				return;
+			}
+			
+			diff = Math.min(diff, this.maxHeat - this.heat);
+			
+			if(diff > 0) {
+				diff = (int) Math.ceil(diff * diffusion);
+				pipe.useUpHeat(diff);
 				this.heat += diff;
 				if(this.heat > this.maxHeat)
 					this.heat = this.maxHeat;

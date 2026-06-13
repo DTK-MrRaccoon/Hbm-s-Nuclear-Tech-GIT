@@ -26,6 +26,7 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -183,6 +184,25 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 				diff = (int) Math.ceil(diff * diffusion);
 				diff = Math.min(diff, this.maxHeat - this.heat);
 				source.useUpHeat(diff);
+				this.heat += diff;
+				if(this.heat > this.maxHeat)
+					this.heat = this.maxHeat;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int diff = pipe.getHeatStored() - this.heat;
+			
+			if(diff == 0) {
+				return;
+			}
+			
+			if(diff > 0) {
+				diff = (int) Math.ceil(diff * diffusion);
+				diff = Math.min(diff, this.maxHeat - this.heat);
+				pipe.useUpHeat(diff);
 				this.heat += diff;
 				if(this.heat > this.maxHeat)
 					this.heat = this.maxHeat;

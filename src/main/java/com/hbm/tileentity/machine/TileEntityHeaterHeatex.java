@@ -16,6 +16,7 @@ import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
 import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,6 +25,7 @@ import io.netty.buffer.Unpooled;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
@@ -64,6 +66,8 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 			this.updateConnections();
 
 			this.heatEnergy *= 0.999;
+			
+			this.pushToPipes();
 
 			tanks[0].serialize(buf);
 
@@ -75,6 +79,29 @@ public class TileEntityHeaterHeatex extends TileEntityMachineBase implements IHe
 
 			for(DirPos pos : getConPos()) {
 				if(this.tanks[1].getFill() > 0) this.sendFluid(tanks[1], worldObj, pos.getX(), pos.getY(), pos.getZ(), pos.getDir());
+			}
+		}
+	}
+	
+	protected void pushToPipes() {
+		if(this.heatEnergy <= 0) return;
+		
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			int ix = this.xCoord + dir.offsetX;
+			int iy = this.yCoord + dir.offsetY;
+			int iz = this.zCoord + dir.offsetZ;
+			TileEntity te = worldObj.getTileEntity(ix, iy, iz);
+			
+			if(te instanceof IHeatPipe) {
+				IHeatPipe pipe = (IHeatPipe) te;
+				int space = pipe.getMaxHeat() - pipe.getHeatStored();
+				if(space <= 0) continue;
+				int toSend = Math.min(this.heatEnergy, 1000);
+				toSend = Math.min(toSend, space);
+				if(toSend > 0) {
+					pipe.setHeat(pipe.getHeatStored() + toSend);
+					this.heatEnergy -= toSend;
+				}
 			}
 		}
 	}

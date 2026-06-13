@@ -9,6 +9,7 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.CompatEnergyControl;
 
 import api.hbm.energymk2.IEnergyReceiverMK2;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import api.hbm.tile.IInfoProviderEC;
 import cpw.mods.fml.relauncher.Side;
@@ -50,6 +51,8 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 				this.heatEnergy += getHeatGen();
 				this.isOn = true;
 			}
+			
+			this.pushToPipes();
 
 			networkPackNT(25);
 		} else {
@@ -71,6 +74,29 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 				if(audio != null) {
 					audio.stopSound();
 					audio = null;
+				}
+			}
+		}
+	}
+	
+	protected void pushToPipes() {
+		if(this.heatEnergy <= 0) return;
+		
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			int ix = this.xCoord + dir.offsetX;
+			int iy = this.yCoord + dir.offsetY;
+			int iz = this.zCoord + dir.offsetZ;
+			TileEntity te = worldObj.getTileEntity(ix, iy, iz);
+			
+			if(te instanceof IHeatPipe) {
+				IHeatPipe pipe = (IHeatPipe) te;
+				int space = pipe.getMaxHeat() - pipe.getHeatStored();
+				if(space <= 0) continue;
+				int toSend = Math.min(this.heatEnergy, 1000);
+				toSend = Math.min(toSend, space);
+				if(toSend > 0) {
+					pipe.setHeat(pipe.getHeatStored() + toSend);
+					this.heatEnergy -= toSend;
 				}
 			}
 		}
@@ -138,10 +164,16 @@ public class TileEntityHeaterElectric extends TileEntityLoadedBase implements IH
 	protected void tryPullHeat() {
 		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
 
-		if(con instanceof IHeatSource) {
+		if(con instanceof IHeatSource && !(con instanceof IHeatPipe)) {
 			IHeatSource source = (IHeatSource) con;
 			this.heatEnergy += source.getHeatStored() * 0.85;
 			source.useUpHeat(source.getHeatStored());
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			this.heatEnergy += pipe.getHeatStored() * 0.85;
+			pipe.useUpHeat(pipe.getHeatStored());
 		}
 	}
 

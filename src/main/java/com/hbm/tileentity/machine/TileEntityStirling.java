@@ -14,6 +14,7 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.energymk2.IEnergyProviderMK2;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -156,12 +157,23 @@ public class TileEntityStirling extends TileEntityLoadedBase implements IBufPack
 	protected void tryPullHeat() {
 		TileEntity con = worldObj.getTileEntity(xCoord, yCoord - 1, zCoord);
 
-		if(con instanceof IHeatSource) {
+		if(con instanceof IHeatSource && !(con instanceof IHeatPipe)) {
 			IHeatSource source = (IHeatSource) con;
 			int heatSrc = (int) (source.getHeatStored() * diffusion);
 
 			if(heatSrc > 0) {
 				source.useUpHeat(heatSrc);
+				this.heat += heatSrc;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int heatSrc = (int) (pipe.getHeatStored() * diffusion);
+
+			if(heatSrc > 0) {
+				pipe.useUpHeat(heatSrc);
 				this.heat += heatSrc;
 				return;
 			}

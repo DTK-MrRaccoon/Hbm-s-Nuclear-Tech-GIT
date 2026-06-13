@@ -14,6 +14,7 @@ import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.util.ItemStackUtil;
 
 import api.hbm.fluid.IFluidStandardSender;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -122,6 +123,8 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 				this.burnHeat = 0;
 			}
 			
+			this.pushToPipes();
+			
 			this.networkPackNT(50);
 		} else {
 			this.prevDoorAngle = this.doorAngle;
@@ -141,6 +144,29 @@ public abstract class TileEntityFireboxBase extends TileEntityMachinePolluting i
 				double y = yCoord + 0.25;
 				double z = zCoord + 0.5 + dir.offsetZ;
 				worldObj.spawnParticle("flame", x + worldObj.rand.nextDouble() * 0.5 - 0.25, y + worldObj.rand.nextDouble() * 0.25, z + worldObj.rand.nextDouble() * 0.5 - 0.25, 0, 0, 0);
+			}
+		}
+	}
+	
+	protected void pushToPipes() {
+		if(this.heatEnergy <= 0) return;
+		
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			int ix = this.xCoord + dir.offsetX;
+			int iy = this.yCoord + dir.offsetY;
+			int iz = this.zCoord + dir.offsetZ;
+			TileEntity te = worldObj.getTileEntity(ix, iy, iz);
+			
+			if(te instanceof IHeatPipe) {
+				IHeatPipe pipe = (IHeatPipe) te;
+				int space = pipe.getMaxHeat() - pipe.getHeatStored();
+				if(space <= 0) continue;
+				int toSend = Math.min(this.heatEnergy, 1000);
+				toSend = Math.min(toSend, space);
+				if(toSend > 0) {
+					pipe.setHeat(pipe.getHeatStored() + toSend);
+					this.heatEnergy -= toSend;
+				}
 			}
 		}
 	}

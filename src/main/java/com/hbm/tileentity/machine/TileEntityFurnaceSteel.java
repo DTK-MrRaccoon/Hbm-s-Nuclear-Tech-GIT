@@ -11,6 +11,7 @@ import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.BufferUtil;
 import com.hbm.util.ItemStackUtil;
 
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -202,6 +203,24 @@ public class TileEntityFurnaceSteel extends TileEntityMachineBase implements IGU
 			if(diff > 0) {
 				diff = (int) Math.ceil(diff * diffusion);
 				source.useUpHeat(diff);
+				this.heat += diff;
+				if(this.heat > this.maxHeat)
+					this.heat = this.maxHeat;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int diff = pipe.getHeatStored() - this.heat;
+			
+			if(diff == 0) {
+				return;
+			}
+			
+			if(diff > 0) {
+				diff = (int) Math.ceil(diff * diffusion);
+				pipe.useUpHeat(diff);
 				this.heat += diff;
 				if(this.heat > this.maxHeat)
 					this.heat = this.maxHeat;
