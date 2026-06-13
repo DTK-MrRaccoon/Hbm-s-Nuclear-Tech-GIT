@@ -98,6 +98,8 @@ public class HeatPipe extends FluidDuctBase implements ILookOverlay, ITooltipPro
 		this.iconCurveTRPolymer = reg.registerIcon(RefStrings.MODID + ":" + base + "_polymer_curve_tr");
 		this.iconCurveBLPolymer = reg.registerIcon(RefStrings.MODID + ":" + base + "_polymer_curve_bl");
 		this.iconCurveBRPolymer = reg.registerIcon(RefStrings.MODID + ":" + base + "_polymer_curve_br");
+
+		this.blockIcon = this.iconStraight;
 	}
 
 	@Override
@@ -227,9 +229,8 @@ public class HeatPipe extends FluidDuctBase implements ILookOverlay, ITooltipPro
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack stack, EntityPlayer player, List list, boolean ext) {
-		list.add(EnumChatFormatting.GOLD + I18nUtil.resolveKey("tile.heat_pipe.desc"));
+		this.addStandardInfo(stack, player, list, ext);
 	}
 
 	@Override
