@@ -11,6 +11,7 @@ import com.hbm.blocks.generic.BlockNTMFlower.EnumFlowerType;
 import com.hbm.blocks.generic.BlockNTMSand.EnumSandType;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockWoodStructure.EnumWoodStructure;
+import com.hbm.blocks.machine.BlockReactorPart.ReactorPart;
 import com.hbm.config.GeneralConfig;
 import com.hbm.crafting.*;
 import com.hbm.crafting.handlers.*;
@@ -951,6 +952,9 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.deco_rbmk_smooth, 1), new Object[] { "R", 'R', ModBlocks.deco_rbmk });
 		addRecipeAuto(new ItemStack(ModBlocks.rbmk_blank, 1), new Object[] { "RRR", "R R", "RRR", 'R', ModBlocks.deco_rbmk });
 		addRecipeAuto(new ItemStack(ModBlocks.rbmk_blank, 1), new Object[] { "RRR", "R R", "RRR", 'R', ModBlocks.deco_rbmk_smooth });
+
+		addRecipeAuto(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.EJECTOR.ordinal()), "CLC", "MHM", "CLC", 'C', ModBlocks.brick_concrete, 'L', PB.plate(), 'M', ModItems.motor, 'H', new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.HATCH.ordinal()));
+		addRecipeAuto(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.INSERTER.ordinal()), "CLC", "MHM", "CLC", 'C', ModBlocks.brick_concrete, 'L', CU.plate(), 'M', ModItems.motor, 'H', new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.HATCH.ordinal()));
 
 		addRecipeAuto(new ItemStack(ModBlocks.ladder_sturdy, 8), new Object[] { "LLL", "L#L", "LLL", 'L', Blocks.ladder, '#', KEY_PLANKS });
 		addRecipeAuto(new ItemStack(ModBlocks.ladder_iron, 8), new Object[] { "LLL", "L#L", "LLL", 'L', Blocks.ladder, '#', IRON.ingot() });

@@ -9,6 +9,7 @@ import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.generic.BlockCap.EnumCapBlock;
 import com.hbm.blocks.machine.BlockICFLaserComponent.EnumICFPart;
+import com.hbm.blocks.machine.BlockReactorPart.ReactorPart;
 import com.hbm.config.GeneralConfig;
 import com.hbm.inventory.FluidStack;
 import com.hbm.inventory.OreDictManager;
@@ -597,6 +598,22 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(STEEL.plateWelded(), 4), new OreDictStack(PB.plateCast(), 4), new OreDictStack(B.ingot(), 4), new ComparableStack(ModItems.motor, 3))
 				.inputItemsEx(new ComparableStack(ModItems.item_expensive, 4, EnumExpensiveType.FERRO_PLATING), new ComparableStack(ModItems.motor_desh, 3))
 				.setPools528(GenericRecipes.POOL_PREFIX_528 + "ferrouranium"));
+
+		// big reactor
+		this.register(new GenericRecipe("ass.reactor_element").setup(150, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.ELEMENT.ordinal()))
+				.inputItems(new OreDictStack(STEEL.ingot(), 4), new OreDictStack(DURA.plate(), 8), new OreDictStack(PB.plate(), 4), new OreDictStack(ZR.ingot(), 2)));
+
+		this.register(new GenericRecipe("ass.reactor_control").setup(100, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.CONTROL.ordinal()))
+				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(PB.ingot(), 12), new OreDictStack(W.bolt(), 12), new ComparableStack(ModItems.motor, 1)));
+
+		this.register(new GenericRecipe("ass.reactor_hatch").setup(150, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.HATCH.ordinal()))
+				.inputItems(new ComparableStack(ModBlocks.brick_concrete, 6), new OreDictStack(STEEL.plate(), 6)));
+
+		this.register(new GenericRecipe("ass.reactor_conductor").setup(130, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.CONDUCTOR.ordinal()))
+				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(CU.plate(), 12), new OreDictStack(W.wireFine(), 4), new ComparableStack(ModItems.tank_steel, 3)));
+
+		this.register(new GenericRecipe("ass.reactor_computer").setup(250, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.COMPUTER.ordinal()))
+				.inputItems(new ComparableStack(ModBlocks.reactor_part, 2, ReactorPart.CONDUCTOR.ordinal()), new OreDictStack(STEEL.ingot(), 8), new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BASIC)));
 
 		// PWR
 		this.register(new GenericRecipe("ass.pwrfuel").setup(200, 500).outputItems(new ItemStack(ModBlocks.pwr_fuel, 4))

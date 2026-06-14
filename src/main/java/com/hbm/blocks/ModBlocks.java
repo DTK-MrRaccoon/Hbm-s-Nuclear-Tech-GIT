@@ -942,6 +942,8 @@ public class ModBlocks {
 	public static Block pwr_controller;
 	public static Block pwr_block;
 
+	public static Block reactor_part;
+
 	public static Block fusion_conductor;
 	public static Block fusion_center;
 	public static Block fusion_motor;
@@ -2171,6 +2173,8 @@ public class ModBlocks {
 		pwr_port = new BlockGenericPWR(Material.iron).setBlockName("pwr_port").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":pwr_port");
 		pwr_controller = new MachinePWRController(Material.iron).setBlockName("pwr_controller").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":pwr_casing_blank");
 		pwr_block = new BlockPWR(Material.iron).setBlockName("pwr_block").setHardness(5.0F).setResistance(10.0F).setCreativeTab(null).setBlockTextureName(RefStrings.MODID + ":pwr_block");
+
+		reactor_part = new BlockReactorPart().setBlockName("reactor_part").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab);
 
 		fusion_conductor = new BlockToolConversionPillar(Material.iron).addVariant("_welded").setBlockName("fusion_conductor").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_conductor");
 		fusion_center = new BlockPillar(Material.iron, RefStrings.MODID + ":fusion_center_top_alt").setBlockName("fusion_center").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":fusion_center_side_alt");
@@ -3658,6 +3662,9 @@ public class ModBlocks {
 		register(pwr_port);
 		register(pwr_controller);
 		register(pwr_block);
+
+		// big reactor
+		register(reactor_part);
 
 		//Multiblock Generators
 		register(fusion_conductor);

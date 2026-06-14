@@ -20,7 +20,7 @@ public class TileEntityHeatPipe extends TileEntityLoadedBase implements IHeatPip
 	public int heat;
 	public int maxHeat = 500000;
 	public boolean[] connections = new boolean[6];
-	public static int transferRate = 25000;
+	public static int transferRate = 250000;
 	public static float baseLoss = 0.035F;
 	public static float asbestosLoss = 0.001F;
 	public static float polymerLoss = 0.015F;

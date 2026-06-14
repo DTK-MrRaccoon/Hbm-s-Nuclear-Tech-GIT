@@ -140,6 +140,7 @@ public class TileMappings {
 		put(TileEntityMachineSatLinker.class, "tileentity_satlinker");
 		put(TileEntityReactorResearch.class, "tileentity_small_reactor");
 		put(TileEntityMachineReactorSmall.class, "tileentity_reactor_small");
+		put(TileEntityMachineReactorLarge.class, "tileentity_reactor_large");
 		put(TileEntityMachineKrusty.class, "tileentity_krusty");
 		put(TileEntityVaultDoorMigration.class, "tileentity_vault_door");
 		put(TileEntityRadiobox.class, "tileentity_radio_broadcaster");

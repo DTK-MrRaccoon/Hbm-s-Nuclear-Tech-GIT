@@ -605,7 +605,7 @@ public class ModItems {
 
 	public static Item wiring_red_copper;
 	public static Item wrench;
-	
+
 	public static Item shell;
 	public static Item pipe;
 	public static Item fins_flat;
@@ -2619,7 +2619,7 @@ public class ModItems {
 		powder_beryllium = new Item().setUnlocalizedName("powder_beryllium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_beryllium");
 		powder_copper = new Item().setUnlocalizedName("powder_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper");
 		powder_copper_sulfate = new Item().setUnlocalizedName("powder_copper_sulfate").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper_sulfate");
-		powder_copper_sulfate_tiny = new Item().setUnlocalizedName("powder_copper_sulfate_tiny").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper_sulfate_tiny");		
+		powder_copper_sulfate_tiny = new Item().setUnlocalizedName("powder_copper_sulfate_tiny").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper_sulfate_tiny");
 		powder_gold = new Item().setUnlocalizedName("powder_gold").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_gold");
 		powder_iron = new Item().setUnlocalizedName("powder_iron").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_iron");
 		powder_titanium = new Item().setUnlocalizedName("powder_titanium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_titanium");
@@ -2814,7 +2814,7 @@ public class ModItems {
 
 		wiring_red_copper = new ItemWiring().setUnlocalizedName("wiring_red_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":wiring_red_copper");
 		wrench = new ItemWrench(MainRegistry.tMatSteel).setUnlocalizedName("wrench").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":wrench");
-		
+
 		pellet_rtg_depleted = new ItemRTGPelletDepleted().setContainerItem(plate_iron).setUnlocalizedName("pellet_rtg_depleted").setCreativeTab(MainRegistry.controlTab);
 
 		pellet_rtg_radium = new ItemRTGPellet(3).setDecays(DepletedRTGMaterial.LEAD, (long) (RTGUtil.getLifespan(16.0F, HalfLifeType.LONG, false) * 1.5)).setUnlocalizedName("pellet_rtg_radium").setCreativeTab(MainRegistry.controlTab).setMaxStackSize(1).setTextureName(RefStrings.MODID + ":pellet_rtg_radium");
@@ -3980,7 +3980,7 @@ public class ModItems {
 
 		battery_pack = new ItemBatteryPack().setUnlocalizedName("battery_pack").setTextureName(RefStrings.MODID + ":battery_generic_new");
 		battery_sc = new ItemBatterySC().setUnlocalizedName("battery_sc").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":battery_sc");
- 
+
 		screwdriver = new ItemTooling(ToolType.SCREWDRIVER, 100).setUnlocalizedName("screwdriver");
 		screwdriver_desh = new ItemTooling(ToolType.SCREWDRIVER, 0).setUnlocalizedName("screwdriver_desh");
 		hand_drill = new ItemTooling(ToolType.HAND_DRILL, 100).setUnlocalizedName("hand_drill");
@@ -4999,7 +4999,7 @@ public class ModItems {
 		orange6 = new Item().setUnlocalizedName("orange6").setTextureName(RefStrings.MODID + ":orange6");
 		orange7 = new Item().setUnlocalizedName("orange7").setTextureName(RefStrings.MODID + ":orange7");
 		orange8 = new Item().setUnlocalizedName("orange8").setTextureName(RefStrings.MODID + ":orange8");
-		
+
 		nothing = new Item().setUnlocalizedName("nothing").setTextureName(RefStrings.MODID + ":nothing");
 		broken_item = new BrokenItem().setUnlocalizedName("broken_item").setTextureName(RefStrings.MODID + ":broken_item");
 
@@ -7217,11 +7217,11 @@ public class ModItems {
 		GameRegistry.registerItem(orange7, orange7.getUnlocalizedName());
 		GameRegistry.registerItem(orange8, orange8.getUnlocalizedName());
 		GameRegistry.registerItem(achievement_icon, achievement_icon.getUnlocalizedName());
-		
+
 		GameRegistry.registerItem(mysteryshovel, mysteryshovel.getUnlocalizedName());
 		GameRegistry.registerItem(memory, memory.getUnlocalizedName());
 		GameRegistry.registerItem(conveyor_wand, conveyor_wand.getUnlocalizedName());
-		
+
 		GameRegistry.registerItem(nothing, nothing.getUnlocalizedName());
 		GameRegistry.registerItem(broken_item, broken_item.getUnlocalizedName());
 	}
