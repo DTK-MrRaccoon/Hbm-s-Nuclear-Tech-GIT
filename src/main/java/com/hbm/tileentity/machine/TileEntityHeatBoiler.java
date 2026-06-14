@@ -25,6 +25,8 @@ import com.hbm.tileentity.TileEntityLoadedBase;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,7 +38,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.EnumSkyBlock;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiver, IConfigurableMachine, IFluidCopiable {
+public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPacketReceiver, IFluidStandardTransceiver, IConfigurableMachine, IFluidCopiable, IRORValueProvider {
 
 	public int heat;
 	public FluidTank[] tanks;
@@ -182,6 +184,25 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 				diff = (int) Math.ceil(diff * diffusion);
 				diff = Math.min(diff, this.maxHeat - this.heat);
 				source.useUpHeat(diff);
+				this.heat += diff;
+				if(this.heat > this.maxHeat)
+					this.heat = this.maxHeat;
+				return;
+			}
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int diff = pipe.getHeatStored() - this.heat;
+			
+			if(diff == 0) {
+				return;
+			}
+			
+			if(diff > 0) {
+				diff = (int) Math.ceil(diff * diffusion);
+				diff = Math.min(diff, this.maxHeat - this.heat);
+				pipe.useUpHeat(diff);
 				this.heat += diff;
 				if(this.heat > this.maxHeat)
 					this.heat = this.maxHeat;
@@ -355,5 +376,25 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 		writer.name("I:maxHeat").value(maxHeat);
 		writer.name("D:diffusion").value(diffusion);
 		writer.name("B:canExplode").value(canExplode);
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "input",
+				PREFIX_VALUE + "output"
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if (hasExploded) {
+			if ((PREFIX_VALUE + "input").equals(name))		return "0";
+			if ((PREFIX_VALUE + "output").equals(name))		return "0";
+			return null;
+		}
+		if ((PREFIX_VALUE + "input").equals(name))		return "" + tanks[0].getFill();
+		if ((PREFIX_VALUE + "output").equals(name))		return "" + tanks[1].getFill();
+		return null;
 	}
 }

@@ -14,6 +14,9 @@ import com.hbm.tileentity.TileEntityMachinePolluting;
 import com.hbm.util.fauxpointtwelve.DirPos;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -21,10 +24,12 @@ import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implements IGUIProvider, IFluidStandardTransceiver, IHeatSource, IControlReceiver, IFluidCopiable {
+public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implements IGUIProvider, IFluidStandardTransceiver, IHeatSource, IControlReceiver, IFluidCopiable, IRORValueProvider, IRORInteractive {
 	
 	public boolean isOn = false;
 	public FluidTank tank;
@@ -95,7 +100,32 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 			if(shouldCool)
 				this.heatEnergy = Math.max(this.heatEnergy - Math.max(this.heatEnergy / 1000, 1), 0);
 			
+			this.pushToPipes();
+			
 			this.networkPackNT(25);
+		}
+	}
+	
+	protected void pushToPipes() {
+		if(this.heatEnergy <= 0) return;
+		
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+			int ix = this.xCoord + dir.offsetX;
+			int iy = this.yCoord + dir.offsetY;
+			int iz = this.zCoord + dir.offsetZ;
+			TileEntity te = worldObj.getTileEntity(ix, iy, iz);
+			
+			if(te instanceof IHeatPipe) {
+				IHeatPipe pipe = (IHeatPipe) te;
+				int space = pipe.getMaxHeat() - pipe.getHeatStored();
+				if(space <= 0) continue;
+				int toSend = Math.min(this.heatEnergy, 1000);
+				toSend = Math.min(toSend, space);
+				if(toSend > 0) {
+					pipe.setHeat(pipe.getHeatStored() + toSend);
+					this.heatEnergy -= toSend;
+				}
+			}
 		}
 	}
 	
@@ -233,5 +263,48 @@ public class TileEntityHeaterOilburner extends TileEntityMachinePolluting implem
 		tank.setTankType(Fluids.fromID(id));
 		if(nbt.hasKey("isOn")) isOn = nbt.getBoolean("isOn");
 		if(nbt.hasKey("burnRate")) setting = nbt.getInteger("burnRate");
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+				PREFIX_VALUE + "heat",
+				PREFIX_VALUE + "fuel",
+				PREFIX_VALUE + "burnRate",
+				PREFIX_VALUE + "state",
+				PREFIX_FUNCTION + "setState" + NAME_SEPARATOR + "active",
+				PREFIX_FUNCTION + "setBurnRate" + NAME_SEPARATOR + "rate"
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "heat").equals(name))		return "" + heatEnergy;
+		if((PREFIX_VALUE + "fuel").equals(name))		return "" + tank.getFill();
+		if((PREFIX_VALUE + "burnRate").equals(name))	return "" + setting;
+		if((PREFIX_VALUE + "state").equals(name))		return isOn ? "1" : "0";
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if((PREFIX_FUNCTION + "setState").equals(name)) {
+			this.isOn = params[0].equals("1");
+			this.markChanged();
+			return null;
+		}
+		if((PREFIX_FUNCTION + "setBurnRate").equals(name)) {
+			try {
+				int rate = Integer.parseInt(params[0]);
+				if(rate < 1) rate = 1;
+				if(rate > 10) rate = 10;
+				this.setting = rate;
+				this.markChanged();
+				return null;
+			} catch (NumberFormatException e) {
+				return "Invalid number";
+			}
+		}
+		return null;
 	}
 }

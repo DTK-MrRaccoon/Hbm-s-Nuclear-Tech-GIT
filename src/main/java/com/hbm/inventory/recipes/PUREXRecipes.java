@@ -41,6 +41,12 @@ public class PUREXRecipes extends GenericRecipes<GenericRecipe> {
 		long watzPower = 10_000;
 		long vitrification = 1_000;
 		
+		this.register(new GenericRecipe("purex.uzh").setup(600, 1_000)
+				.inputItems(new ComparableStack(ModItems.billet_uranium_fuel),
+						new OreDictStack(ZR.billet(), 3))
+				.inputFluids(new FluidStack(Fluids.NITRIC_ACID, 1000), new FluidStack(Fluids.HYDROGEN, 4000))
+				.outputItems(new ItemStack(ModItems.billet_uzh, 4)));
+		
 		// Clearing acid
 		this.register(new GenericRecipe("purex.acidcleaning").setup(600, 5_000).setIcon(ModItems.fluid_icon, Fluids.CONTAMINATED_ACID.getID())
 				.inputFluids(new FluidStack(Fluids.CONTAMINATED_ACID, 16_000), new FluidStack(Fluids.NITRIC_ACID, 250))

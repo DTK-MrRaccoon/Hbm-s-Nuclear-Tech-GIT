@@ -38,8 +38,8 @@ public class TileEntityMachineTeleporter extends TileEntityLoadedBase implements
 	public int targetY = -1;
 	public int targetZ = -1;
 	public int targetDim = 0;
-	public static final int maxPower = 1_500_000;
-	public static final int consumption = 1_000_000;
+	public static final int maxPower = 10_000_000;
+	public static final int consumption = 5_000_000;
 
 	@Override
 	public void updateEntity() {

@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
 import com.hbm.blocks.BlockDummyable;
+import com.hbm.config.ServerConfig;
 import com.hbm.handler.pollution.PollutionHandler;
 import com.hbm.handler.pollution.PollutionHandler.PollutionType;
 import com.hbm.handler.threading.PacketThreading;
@@ -29,6 +30,7 @@ import com.hbm.util.BobMathUtil;
 import com.hbm.util.CrucibleUtil;
 
 import api.hbm.block.ICrucibleAcceptor;
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.common.network.NetworkRegistry.TargetPoint;
 import cpw.mods.fml.relauncher.Side;
@@ -355,6 +357,26 @@ public class TileEntityCrucible extends TileEntityMachineBase implements IGUIPro
 				return;
 			}
 		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int diff = pipe.getHeatStored() - this.heat;
+			
+			if(diff == 0) {
+				return;
+			}
+			
+			diff = Math.min(diff, this.maxHeat - this.heat);
+			
+			if(diff > 0) {
+				diff = (int) Math.ceil(diff * diffusion);
+				pipe.useUpHeat(diff);
+				this.heat += diff;
+				if(this.heat > this.maxHeat)
+					this.heat = this.maxHeat;
+				return;
+			}
+		}
 
 		this.heat = Math.max(this.heat - Math.max(this.heat / 1000, 1), 0);
 	}
@@ -381,7 +403,7 @@ public class TileEntityCrucible extends TileEntityMachineBase implements IGUIPro
 			for(MaterialStack material : materials) {
 				boolean recipeMaterial = recipe != null && (getQuantaFromType(recipe.input, material.material) > 0 || getQuantaFromType(recipe.output, material.material) > 0);
 
-				if(recipe == null || recipeMaterial) {
+				if((recipe == null && !ServerConfig.LEGACY_CRUCIBLE_RULES.get()) || recipeMaterial) {
 					this.addToStack(this.recipeStack, material);
 				} else {
 					this.addToStack(this.wasteStack, material);

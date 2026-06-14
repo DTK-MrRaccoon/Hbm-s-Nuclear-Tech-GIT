@@ -2,8 +2,9 @@ package com.hbm.render.block;
 
 import org.lwjgl.opengl.GL11;
 
-import com.hbm.blocks.machine.Spotlight;
+import com.hbm.blocks.machine.SpotlightBase;
 import com.hbm.blocks.machine.SpotlightModular;
+import com.hbm.blocks.machine.SpotlightModularPowered;
 import com.hbm.render.util.ObjUtil;
 
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -18,8 +19,8 @@ public class RenderLight implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelId, RenderBlocks renderer) {
-		if (!(block instanceof Spotlight)) return;
-		Spotlight spot = (Spotlight) block;
+		if(!(block instanceof SpotlightBase)) return;
+		SpotlightBase spot = (SpotlightBase) block;
 
 		GL11.glPushMatrix();
 		Tessellator tessellator = Tessellator.instance;
@@ -41,8 +42,8 @@ public class RenderLight implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer) {
-		if (!(block instanceof Spotlight)) return true;
-		Spotlight spot = (Spotlight) block;
+		if(!(block instanceof SpotlightBase)) return true;
+		SpotlightBase spot = (SpotlightBase) block;
 
 		Tessellator tessellator = Tessellator.instance;
 		ForgeDirection dir = spot.getDirection(world, x, y, z);
@@ -56,28 +57,44 @@ public class RenderLight implements ISimpleBlockRenderingHandler {
 		float roll = 0;
 
 		int connectionCount = 0;
-		if (spot instanceof SpotlightModular) {
-			ForgeDirection connectionDirection = null;
+		// Check modular variants (both powered and non-powered)
+		if(spot instanceof SpotlightModular) {
 			SpotlightModular modular = (SpotlightModular) spot;
+			ForgeDirection connectionDirection = null;
 
 			// Searching through only adjacent blocks is simple, iterate through all directions ignoring the root and its opposite
 			// Once we have found any valid connection, we'll only connect in that one axis
 			for (ForgeDirection availableDir : ForgeDirection.VALID_DIRECTIONS) {
-				if (availableDir == dir || availableDir == dir.getOpposite()) continue;
-				if (modular.canConnectTo(world, x + availableDir.offsetX, y + availableDir.offsetY, z + availableDir.offsetZ)) {
+				if(availableDir == dir || availableDir == dir.getOpposite()) continue;
+				if(modular.canConnectTo(world, x + availableDir.offsetX, y + availableDir.offsetY, z + availableDir.offsetZ)) {
 					connectionCount++;
 					connectionDirection = availableDir;
-
 					break;
 				}
 			}
-
-			if (connectionDirection != null) {
+			if(connectionDirection != null) {
 				// Check if we're sandwiched between two lights
-				if (modular.canConnectTo(world, x - connectionDirection.offsetX, y - connectionDirection.offsetY, z - connectionDirection.offsetZ)) {
+				if(modular.canConnectTo(world, x - connectionDirection.offsetX, y - connectionDirection.offsetY, z - connectionDirection.offsetZ)) {
 					connectionCount++;
 				}
+				roll = getRotation(connectionDirection, dir);
+			}
+		} else if(spot instanceof SpotlightModularPowered) {
+			SpotlightModularPowered modular = (SpotlightModularPowered) spot;
+			ForgeDirection connectionDirection = null;
 
+			for (ForgeDirection availableDir : ForgeDirection.VALID_DIRECTIONS) {
+				if(availableDir == dir || availableDir == dir.getOpposite()) continue;
+				if(modular.canConnectTo(world, x + availableDir.offsetX, y + availableDir.offsetY, z + availableDir.offsetZ, x, y, z)) {
+					connectionCount++;
+					connectionDirection = availableDir;
+					break;
+				}
+			}
+			if(connectionDirection != null) {
+				if(modular.canConnectTo(world, x - connectionDirection.offsetX, y - connectionDirection.offsetY, z - connectionDirection.offsetZ, x, y, z)) {
+					connectionCount++;
+				}
 				roll = getRotation(connectionDirection, dir);
 			}
 		}
@@ -96,7 +113,7 @@ public class RenderLight implements ISimpleBlockRenderingHandler {
 
 	@Override
 	public int getRenderId() {
-		return Spotlight.renderID;
+		return SpotlightBase.renderID;
 	}
 
 	// This is very ad-hoc, which isn't ideal
@@ -114,5 +131,4 @@ public class RenderLight implements ISimpleBlockRenderingHandler {
 			default: return 0;
 		}
 	}
-
 }

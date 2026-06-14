@@ -1,19 +1,29 @@
 package com.hbm.tileentity;
 
+import com.hbm.config.GeneralConfig;
 import com.hbm.handler.threading.PacketThreading;
 import com.hbm.packet.toclient.BufPacket;
 import com.hbm.sound.AudioWrapper;
+import com.hbm.util.fauxpointtwelve.BlockPos;
 
+import api.hbm.fluidmk2.IFluidUserMK2;
 import api.hbm.tile.ILoadedTile;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import io.netty.buffer.ByteBuf;
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class TileEntityLoadedBase extends TileEntity implements ILoadedTile, IBufPacketReceiver {
 
 	public boolean isLoaded = true;
 	public boolean muffled = false;
+	public boolean tilted = false;
+	public int tiltBlocksChecked = 0;
+	public int tiltBlocksValid = 0;
 
 	@Override
 	public boolean isLoaded() {
@@ -24,6 +34,13 @@ public class TileEntityLoadedBase extends TileEntity implements ILoadedTile, IBu
 	public void onChunkUnload() {
 		super.onChunkUnload();
 		this.isLoaded = false;
+
+		if(this instanceof IFluidUserMK2) markChanged();
+	}
+
+	/** The "chunks is modified, pls don't forget to save me" effect of markDirty, minus the block updates */
+	public void markChanged() {
+		this.worldObj.markTileEntityChunkModified(this.xCoord, this.yCoord, this.zCoord, this);
 	}
 
 	public AudioWrapper createAudioLoop() { return null; }
@@ -39,12 +56,14 @@ public class TileEntityLoadedBase extends TileEntity implements ILoadedTile, IBu
 	public void readFromNBT(NBTTagCompound nbt) {
 		super.readFromNBT(nbt);
 		this.muffled = nbt.getBoolean("muffled");
+		this.tilted = nbt.getBoolean("tilted");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt) {
 		super.writeToNBT(nbt);
 		nbt.setBoolean("muffled", muffled);
+		nbt.setBoolean("tilted", tilted);
 	}
 
 	public float getVolume(float baseVolume) {
@@ -56,11 +75,13 @@ public class TileEntityLoadedBase extends TileEntity implements ILoadedTile, IBu
 	@Override
 	public void serialize(ByteBuf buf) {
 		buf.writeBoolean(muffled);
+		buf.writeBoolean(tilted);
 	}
 
 	@Override
 	public void deserialize(ByteBuf buf) {
 		this.muffled = buf.readBoolean();
+		this.tilted = buf.readBoolean();
 	}
 
 	/** Sends a sync packet that uses ByteBuf for efficient information-cramming */
@@ -84,5 +105,14 @@ public class TileEntityLoadedBase extends TileEntity implements ILoadedTile, IBu
 
 		PacketThreading.createAllAroundThreadedPacket(packet, new NetworkRegistry.TargetPoint(this.worldObj.provider.dimensionId, xCoord, yCoord, zCoord, range));
 	}
+	
+	public int getFloorCount() { return 0; }
+	public BlockPos getFloorPosFromIndex(int index) { return null; }
 
+	public BlockPos standardFloor3x3(int index) {
+		return new BlockPos(xCoord - 1 + (index / 2) * 2, yCoord - 1, zCoord - 2 + (index % 2) * 2);
+	}
+	public BlockPos standardFloor5x5(int index) {
+		return new BlockPos(xCoord - 2 + (index / 3) * 2, yCoord - 1, zCoord - 2 + (index % 3) * 2);
+	}
 }

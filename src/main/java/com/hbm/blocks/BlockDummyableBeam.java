@@ -38,28 +38,6 @@ public class BlockDummyableBeam extends BlockDummyable implements ILookOverlay {
 	}
 
 	@Override
-	public int[] findCore(World world, int x, int y, int z) {
-		int metadata = world.getBlockMetadata(x, y, z);
-
-		// if it's an extra, remove the extra-ness
-		if(metadata >= extra) metadata -= extra;
-
-		ForgeDirection dir = ForgeDirection.getOrientation(metadata).getOpposite();
-
-		x += dir.offsetX;
-		y += dir.offsetY;
-		z += dir.offsetZ;
-
-		Block b = world.getBlock(x, y, z);
-
-		if(b instanceof BlockDummyable && !(b instanceof BlockDummyableBeam)) {
-			return ((BlockDummyable) b).findCore(world, x, y, z);
-		}
-
-		return null;
-	}
-
-	@Override
 	public void breakBlock(World world, int x, int y, int z, Block block, int i) {
 		int metadata = world.getBlockMetadata(x, y, z);
 

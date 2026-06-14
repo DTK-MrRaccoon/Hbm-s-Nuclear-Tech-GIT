@@ -66,6 +66,7 @@ public class PressRecipes extends SerializableRecipe {
 		makeRecipe(StampType.FLAT, new OreDictStack(ANY_COKE.gem()),						ModItems.ingot_graphite);
 		makeRecipe(StampType.FLAT, new ComparableStack(ModItems.meteorite_sword_reforged),	ModItems.meteorite_sword_hardened);
 		makeRecipe(StampType.FLAT, new ComparableStack(Blocks.log, 1, 3),					ModItems.ball_resin);
+		makeRecipe(StampType.FLAT, new ComparableStack(ModItems.powder_copper_sulfate, 4), new ItemStack(ModItems.crystal_copper_sulfate));
 
 		makeRecipe(StampType.FLAT, new OreDictStack(COAL.dust()),							DictFrame.fromOne(ModItems.briquette, EnumBriquetteType.COAL));
 		makeRecipe(StampType.FLAT, new OreDictStack(LIGNITE.dust()),						DictFrame.fromOne(ModItems.briquette, EnumBriquetteType.LIGNITE));

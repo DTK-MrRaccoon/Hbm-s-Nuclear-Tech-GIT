@@ -32,6 +32,7 @@ import com.hbm.items.weapon.sedna.BulletConfig;
 import com.hbm.items.weapon.sedna.ItemGunBaseNT;
 import com.hbm.main.ResourceManager;
 import com.hbm.render.item.weapon.sedna.*;
+import com.hbm.tileentity.machine.storage.TileEntityBatterySocket;
 
 import net.minecraftforge.client.MinecraftForgeClient;
 
@@ -214,7 +215,7 @@ public class GunFactoryClient {
 		nuke_hive.setRenderer(LegoClient.RENDER_HIVE);
 		nuke_balefire.setRenderer(LegoClient.RENDER_NUKE_BALEFIRE);
 
-		setRendererBulkBeam(LegoClient.RENDER_LIGHTNING, energy_tesla, energy_tesla_overcharge, energy_tesla_ir);
+		setRendererBulkBeam(LegoClient.RENDER_LIGHTNING, energy_tesla, energy_tesla_overcharge, energy_tesla_ir, TileEntityBatterySocket.discharge);
 		setRendererBulkBeam(LegoClient.RENDER_LIGHTNING_SUB, energy_tesla_ir_sub);
 		setRendererBulkBeam(LegoClient.RENDER_TAU, tau_uranium);
 		setRendererBulkBeam(LegoClient.RENDER_TAU_CHARGE, tau_uranium_charge);

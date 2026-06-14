@@ -14,6 +14,7 @@ import com.hbm.blocks.machine.MachineFan.TileEntityFan;
 import com.hbm.blocks.machine.PistonInserter.TileEntityPistonInserter;
 import com.hbm.blocks.machine.WatzPump.TileEntityWatzPump;
 import com.hbm.blocks.network.FluidPump.TileEntityFluidPump;
+import com.hbm.blocks.network.HeatPipe;
 import com.hbm.config.GeneralConfig;
 import com.hbm.entity.cart.EntityMinecartCrate;
 import com.hbm.entity.cart.EntityMinecartNTM;
@@ -317,6 +318,7 @@ public class ClientProxy extends ServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatterySocket.class, new RenderBatterySocket());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityBatteryREDD.class, new RenderBatteryREDD());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineLargeTurbine.class, new RenderBigTurbine());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineIndustrialTurbine.class, new RenderIndustrialTurbine());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineReactorBreeding.class, new RenderBreeder());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySolarBoiler.class, new RenderSolarBoiler());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityMachineSolarPanel.class, new RenderSolarPanel());
@@ -405,7 +407,9 @@ public class ClientProxy extends ServerProxy {
 		//network
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylon.class, new RenderPylon());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConnector.class, new RenderConnector());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityConnectorSuper.class, new RenderConnectorSuper());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylonMedium.class, new RenderPylonMedium());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityTransformerMedium.class, new RenderTransformerMedium());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPylonLarge.class, new RenderPylonLarge());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntitySubstation.class, new RenderSubstation());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityPipeAnchor.class, new RenderPipeAnchor());
@@ -427,17 +431,16 @@ public class ClientProxy extends ServerProxy {
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKControlAuto.class, new RenderRBMKControlRod());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityCraneConsole.class, new RenderCraneConsole());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKConsole.class, new RenderRBMKConsole());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKAbsorber.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKBlank.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKBoiler.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKModerator.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKOutgasser.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKReflector.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRod.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRodReaSim.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKCooler.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKStorage.class, new RenderRBMKLid());
-		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKHeater.class, new RenderRBMKLid());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKDisplay.class, new RenderRBMKDisplay());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKKeyPad.class, new RenderRBMKKeyPad());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKGauge.class, new RenderRBMKGauge());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKNumitron.class, new RenderRBMKNumitron());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKGraph.class, new RenderRBMKGraph());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKLever.class, new RenderRBMKLever());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKIndicator.class, new RenderRBMKIndicator());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKTerminal.class, new RenderRBMKTerminal());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRod.class, new RenderRBMKFuelChannel());
+		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKRodReaSim.class, new RenderRBMKFuelChannel());
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityRBMKAutoloader.class, new RenderRBMKAutoloader());
 		//ITER
 		ClientRegistry.bindTileEntitySpecialRenderer(TileEntityITER.class, new RenderITER());
@@ -664,6 +667,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeElectric.class, new RenderSnowball(ModItems.grenade_electric));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadePoison.class, new RenderSnowball(ModItems.grenade_poison));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeGas.class, new RenderSnowball(ModItems.grenade_gas));
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.class, new com.hbm.render.entity.elevator.RenderElevatorPlatform());
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeSchrabidium.class, new RenderSnowball(ModItems.grenade_schrabidium));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeNuke.class, new RenderSnowball(ModItems.grenade_nuke));
 		RenderingRegistry.registerEntityRenderingHandler(EntityGrenadeNuclear.class, new RenderSnowball(ModItems.grenade_nuclear));
@@ -801,6 +805,9 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityPigeon.class, new RenderPigeon(new ModelPigeon(), 0.3F));
 		RenderingRegistry.registerEntityRenderingHandler(EntityDummy.class, new RenderDummy());
 		RenderingRegistry.registerEntityRenderingHandler(EntityUndeadSoldier.class, new RenderUndeadSoldier());
+		RenderingRegistry.registerEntityRenderingHandler(EntityTundraWolf.class, new RenderTundraWolf());
+		RenderingRegistry.registerEntityRenderingHandler(EntityGoldenWolf.class, new RenderGoldenWolf());
+		RenderingRegistry.registerEntityRenderingHandler(EntityAlphaWolf.class, new RenderAlphaWolf());
 		//"particles" (abysmal dogshit)
 		RenderingRegistry.registerEntityRenderingHandler(EntityChlorineFX.class, new MultiCloudRenderer(new Item[] { ModItems.chlorine1, ModItems.chlorine2, ModItems.chlorine3, ModItems.chlorine4, ModItems.chlorine5, ModItems.chlorine6, ModItems.chlorine7, ModItems.chlorine8 }));
 		RenderingRegistry.registerEntityRenderingHandler(EntityPinkCloudFX.class, new MultiCloudRenderer(new Item[] { ModItems.pc1, ModItems.pc2, ModItems.pc3, ModItems.pc4, ModItems.pc5, ModItems.pc6, ModItems.pc7, ModItems.pc8 }));
@@ -808,10 +815,16 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerEntityRenderingHandler(EntityOrangeFX.class, new MultiCloudRenderer(new Item[] { ModItems.orange1, ModItems.orange2, ModItems.orange3, ModItems.orange4, ModItems.orange5, ModItems.orange6, ModItems.orange7, ModItems.orange8 }));
 		RenderingRegistry.registerEntityRenderingHandler(EntityFogFX.class, new FogRenderer());
 		RenderingRegistry.registerEntityRenderingHandler(EntityEMPBlast.class, new RenderEMPBlast());
+
+		// Elevator System
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.class, new com.hbm.render.entity.elevator.RenderElevatorPlatform());
+		RenderingRegistry.registerEntityRenderingHandler(com.hbm.tileentity.machine.elevator.EntityElevatorPlatform.ElevatorSolidEntity.class, new RenderEmpty());
 	}
 
 	@Override
 	public void registerBlockRenderer() {
+
+		HeatPipe.renderID = RenderingRegistry.getNextAvailableRenderId();
 
 		RenderingRegistry.registerBlockHandler(new RenderISBRHUniversal());
 
@@ -847,6 +860,7 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerBlockHandler(new RenderBlockSideRotation());
 		RenderingRegistry.registerBlockHandler(new RenderDiode());
 		RenderingRegistry.registerBlockHandler(new RenderBoxDuct());
+		RenderingRegistry.registerBlockHandler(new RenderHeatPipe());
 		RenderingRegistry.registerBlockHandler(new RenderBlockDecoModel(ModBlocks.deco_computer.getRenderType(), ResourceManager.deco_computer));
 		RenderingRegistry.registerBlockHandler(new RenderReeds());
 		RenderingRegistry.registerBlockHandler(new RenderHangingVine());
@@ -856,7 +870,6 @@ public class ClientProxy extends ServerProxy {
 		RenderingRegistry.registerBlockHandler(new RenderCapacitor());
 		RenderingRegistry.registerBlockHandler(new RenderPedestal());
 		RenderingRegistry.registerBlockHandler(new RenderLight());
-		RenderingRegistry.registerBlockHandler(new RenderLightPowered());
 		RenderingRegistry.registerBlockHandler(new RenderCRT());
 		RenderingRegistry.registerBlockHandler(new RenderToaster());
 		RenderingRegistry.registerBlockHandler(new RenderPartitioner());
@@ -1759,6 +1772,10 @@ public class ClientProxy extends ServerProxy {
 			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRBMKFlame(man, world, x, y, z, maxAge));
 		}
 
+		if("rbmksteam".equals(type)) {
+			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRBMKSteam(man, world, x, y, z));
+		}
+
 		if("rbmkmush".equals(type)) {
 			float scale = data.getFloat("scale");
 			Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleRBMKMush(man, world, x, y, z, scale));
@@ -1833,6 +1850,7 @@ public class ClientProxy extends ServerProxy {
 
 		if("giblets".equals(type)) {
 			int ent = data.getInteger("ent");
+			int gibType = data.getInteger("gibType");
 			this.vanish(ent);
 			Entity e = world.getEntityByID(ent);
 
@@ -1856,7 +1874,7 @@ public class ClientProxy extends ServerProxy {
 				mult *= 10;
 
 			for(int i = 0; i < count; i++) {
-				Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleGiblet(man, world, x, y, z, rand.nextGaussian() * 0.25 * mult, rand.nextDouble() * mult, rand.nextGaussian() * 0.25 * mult));
+				Minecraft.getMinecraft().effectRenderer.addEffect(new ParticleGiblet(man, world, x, y, z, rand.nextGaussian() * 0.25 * mult, rand.nextDouble() * mult, rand.nextGaussian() * 0.25 * mult, gibType));
 			}
 		}
 

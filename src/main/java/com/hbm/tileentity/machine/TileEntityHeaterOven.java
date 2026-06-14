@@ -10,6 +10,7 @@ import com.hbm.lib.RefStrings;
 import com.hbm.module.ModuleBurnTime;
 import com.hbm.tileentity.IConfigurableMachine;
 
+import api.hbm.tile.IHeatPipe;
 import api.hbm.tile.IHeatSource;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -67,6 +68,13 @@ public class TileEntityHeaterOven extends TileEntityFireboxBase implements IConf
 			int toPull = Math.max(Math.min(source.getHeatStored(), this.getMaxHeat() - this.heatEnergy), 0);
 			this.heatEnergy += toPull * heatEff;
 			source.useUpHeat(toPull);
+		}
+		
+		if(con instanceof IHeatPipe) {
+			IHeatPipe pipe = (IHeatPipe) con;
+			int toPull = Math.max(Math.min(pipe.getHeatStored(), this.getMaxHeat() - this.heatEnergy), 0);
+			this.heatEnergy += toPull * heatEff;
+			pipe.useUpHeat(toPull);
 		}
 	}
 

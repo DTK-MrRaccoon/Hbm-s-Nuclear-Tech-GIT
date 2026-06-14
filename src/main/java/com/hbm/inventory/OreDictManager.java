@@ -163,6 +163,7 @@ public class OreDictManager {
 	public static final DictFrame ALLOY = new DictFrame("AdvancedAlloy");
 	/** TUNGSTEN */
 	public static final DictFrame W = new DictFrame("Tungsten");
+	public static final DictFrame WC = new DictFrame("TungstenCarbide");
 	/** ALUMINUM */
 	public static final DictFrame AL = new DictFrame("Aluminum");
 	public static final DictFrame STEEL = new DictFrame("Steel");
@@ -243,6 +244,7 @@ public class OreDictManager {
 	public static final DictFrame SLAG = new DictFrame("Slag");
 	public static final DictFrame BAUXITE = new DictFrame("Bauxite");
 	public static final DictFrame CRYOLITE = new DictFrame("Cryolite");
+	public static final DictFrame COPPERSULFATE = new DictFrame("CopperSulfate");
 	/*
 	 * HAZARDS, MISC
 	 */
@@ -379,6 +381,7 @@ public class OreDictManager {
 		MINGRADE															.ingot(ingot_red_copper)											.dust(powder_red_copper)										.block(block_red_copper);
 		ALLOY																.ingot(ingot_advanced_alloy)										.dust(powder_advanced_alloy)	.plate(plate_advanced_alloy)	.block(block_advanced_alloy);
 		W																	.ingot(ingot_tungsten)												.dust(powder_tungsten)											.block(block_tungsten)		.ore(ore_tungsten, ore_nether_tungsten)	.oreNether(ore_nether_tungsten);
+		WC																	.ingot(ingot_tungsten_carbide);
 		AL																	.ingot(ingot_aluminium)												.dust(powder_aluminium)			.plate(plate_aluminium)			.block(block_aluminium)		.ore(ore_aluminium);
 		STEEL																.ingot(ingot_steel)				.dustSmall(powder_steel_tiny)		.dust(powder_steel)				.plate(plate_steel)				.block(block_steel);
 		TCALLOY																.ingot(ingot_tcalloy)												.dust(powder_tcalloy)											.block(block_tcalloy);
@@ -443,6 +446,7 @@ public class OreDictManager {
 		LIMESTONE																		.dust(powder_limestone)							.ore(fromOne(stone_resource, EnumStoneType.LIMESTONE));
 		BAUXITE																															.gem(fromOne(stone_resource, EnumStoneType.BAUXITE));
 		CRYOLITE	.crystal(fromOne(chunk_ore, EnumChunkType.CRYOLITE));
+		COPPERSULFATE	.dust(powder_copper_sulfate)	.dustSmall(powder_copper_sulfate_tiny);
 		SLAG																									.block(block_slag);
 
 		/*

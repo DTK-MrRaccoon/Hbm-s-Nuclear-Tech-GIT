@@ -251,8 +251,11 @@ public class MineralRecipes {
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.ingot_mercury, 2), new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.MERCURY.ordinal()) });
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_neptunium, 3), new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.NEPTUNIUM.ordinal()) });
 		GameRegistry.addShapelessRecipe(new ItemStack(ModItems.billet_zirconium, 3), new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.ZIRCONIUM.ordinal()) });
-		if(OreDictionary.doesOreNameExist("ingotNickel"))
-			GameRegistry.addShapelessRecipe(new ItemStack(OreDictionary.getOres("ingotNickel").get(0).getItem(), 2), new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.NICKEL.ordinal()) });
+		if(OreDictionary.doesOreNameExist("ingotNickel")) {
+			ItemStack nickel = OreDictionary.getOres("ingotNickel").get(0).copy();
+			nickel.stackSize = 2;
+			GameRegistry.addShapelessRecipe(nickel, new Object[] { new ItemStack(ModItems.pellet_rtg_depleted, 1, DepletedRTGMaterial.NICKEL.ordinal()) });
+		}
 		
 		GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(ModBlocks.block_copper), 1), new Object[] { "###", "###", "###", '#', ModItems.ingot_copper });
 		GameRegistry.addRecipe(new ItemStack(Item.getItemFromBlock(ModBlocks.block_fluorite), 1), new Object[] { "###", "###", "###", '#', ModItems.fluorite });
@@ -433,6 +436,7 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ItemStack(ModItems.ammo_container, 1, 1), new Object[] { "##", "##", '#', ModItems.nitra });
 		GameRegistry.addRecipe(new ItemStack(ModBlocks.glass_polarized, 4), new Object[] { "##", "##", '#', DictFrame.fromOne(ModItems.part_generic, EnumPartType.GLASS_POLARIZED) });
 		add1To9Pair(ModItems.powder_paleogenite, ModItems.powder_paleogenite_tiny);
+		add1To9Pair(ModItems.powder_copper_sulfate, ModItems.powder_copper_sulfate_tiny);
 		add1To9Pair(ModItems.ingot_osmiridium, ModItems.nugget_osmiridium);
 
 		GameRegistry.addRecipe(new ItemStack(ModItems.egg_balefire_shard, 1), new Object[] { "##", "##", '#', ModItems.powder_balefire });
