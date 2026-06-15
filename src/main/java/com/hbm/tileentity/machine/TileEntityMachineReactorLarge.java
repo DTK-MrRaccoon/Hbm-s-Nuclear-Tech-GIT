@@ -7,6 +7,7 @@ import com.hbm.blocks.ModBlocks;
 import com.hbm.blocks.machine.BlockReactorPart;
 import com.hbm.config.MobConfig;
 import com.hbm.explosion.ExplosionNukeGeneric;
+import com.hbm.handler.CompatHandler;
 import com.hbm.handler.radiation.ChunkRadiationManager;
 import com.hbm.inventory.FluidContainerRegistry;
 import com.hbm.inventory.container.ContainerReactorMultiblock;
@@ -17,15 +18,20 @@ import com.hbm.inventory.gui.GUIReactorMultiblock;
 import com.hbm.interfaces.IControlReceiver;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemBreedingRod;
-import com.hbm.packet.PacketDispatcher;
-import com.hbm.packet.toserver.NBTControlPacket;
 import com.hbm.tileentity.IGUIProvider;
 import com.hbm.tileentity.TileEntityLoadedBase;
 
 import api.hbm.fluid.IFluidStandardTransceiver;
+import api.hbm.redstoneoverradio.IRORValueProvider;
+import api.hbm.redstoneoverradio.IRORInteractive;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import io.netty.buffer.ByteBuf;
+import li.cil.oc.api.machine.Arguments;
+import li.cil.oc.api.machine.Callback;
+import li.cil.oc.api.machine.Context;
+import li.cil.oc.api.network.SimpleComponent;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
@@ -39,7 +45,8 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implements ISidedInventory, IFluidStandardTransceiver, IGUIProvider, IControlReceiver {
+@Optional.InterfaceList({@Optional.Interface(iface = "li.cil.oc.api.network.SimpleComponent", modid = "OpenComputers")})
+public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implements ISidedInventory, IFluidStandardTransceiver, IGUIProvider, IControlReceiver, SimpleComponent, IRORValueProvider, IRORInteractive, CompatHandler.OCComponent {
 
 	private ItemStack slots[];
 
@@ -61,8 +68,9 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	public static final int billetsPerLayer = 32;
 	public static final int fuelUnitsPerBillet = 1000;
-	public static final int cycleDuration = 480000;
-	private static final double steamFactor = 160.0 * 100.0;
+	public static final int cycleDuration = 115200;
+
+	private double fuelBurnAccumulator = 0;
 
 	private static final int[] slots_top = new int[] { 0, 4, 6 };
 	private static final int[] slots_bottom = new int[] { 1, 3, 5, 7 };
@@ -91,7 +99,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private boolean isPartAt(int x, int y, int z, BlockReactorPart.ReactorPart expected) {
 		Block b = worldObj.getBlock(x, y, z);
 		if (b != ModBlocks.reactor_part) return false;
-		
+
 		int meta = worldObj.getBlockMetadata(x, y, z);
 		return BlockReactorPart.getSubtype(meta) == expected;
 	}
@@ -99,20 +107,20 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private boolean isEjectorFacing(int x, int y, int z, ForgeDirection facing) {
 		Block b = worldObj.getBlock(x, y, z);
 		if (b != ModBlocks.reactor_part) return false;
-		
+
 		int meta = worldObj.getBlockMetadata(x, y, z);
 		if (BlockReactorPart.getSubtype(meta) != BlockReactorPart.ReactorPart.EJECTOR) return false;
-		
+
 		return BlockReactorPart.getDirection(meta) == facing;
 	}
 
 	private boolean isInserterFacing(int x, int y, int z, ForgeDirection facing) {
 		Block b = worldObj.getBlock(x, y, z);
 		if (b != ModBlocks.reactor_part) return false;
-		
+
 		int meta = worldObj.getBlockMetadata(x, y, z);
 		if (BlockReactorPart.getSubtype(meta) != BlockReactorPart.ReactorPart.INSERTER) return false;
-		
+
 		return BlockReactorPart.getDirection(meta) == facing;
 	}
 
@@ -203,16 +211,25 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private void generate() {
 		if(rods <= 0 || fuel <= 0) return;
 
-		int consumption = (int) ((maxFuel / (double) cycleDuration) * (rods / 100.0));
-		if(consumption > fuel) consumption = fuel;
-		if(consumption + waste > maxWaste) consumption = maxWaste - waste;
-		
-		fuel -= consumption;
-		waste += consumption;
+		double burnRate = (maxFuel / (double) cycleDuration) * (rods / 100.0);
+		fuelBurnAccumulator += burnRate;
+		int consumption = (int) fuelBurnAccumulator;
+		if (consumption > 0) {
+			if (consumption > fuel) consumption = fuel;
+			if (consumption + waste > maxWaste) consumption = maxWaste - waste;
 
-		int heat = (int) (((double) consumption / size) * type.heat);
-		this.coreHeat += heat;
-		if(this.coreHeat > maxCoreHeat) this.coreHeat = maxCoreHeat;
+			if (consumption > 0) {
+				fuel -= consumption;
+				waste += consumption;
+				fuelBurnAccumulator -= consumption;
+
+				int heat = (int) (((double) consumption / size) * type.heat);
+				this.coreHeat += heat;
+				if(this.coreHeat > maxCoreHeat) this.coreHeat = maxCoreHeat;
+			} else {
+				fuelBurnAccumulator = 0;
+			}
+		}
 	}
 
 	@Override
@@ -235,22 +252,44 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 			if(rods > 0) generate();
 
-			if (this.coreHeat > 0 && this.tanks[1].getFill() > 0 && this.hullHeat < this.maxHullHeat) {
-				this.hullHeat += this.coreHeat * 0.175;
-				this.coreHeat -= this.coreHeat * 0.1;
-				this.tanks[1].setFill(this.tanks[1].getFill() - 10);
-				if (this.tanks[1].getFill() < 0) this.tanks[1].setFill(0);
+			if(coreHeat > hullHeat) {
+				double coeff = 0.6;
+				double transfer = (coreHeat - hullHeat) * coeff;
+				coreHeat -= (int)Math.round(transfer);
+				hullHeat += (int)Math.round(transfer);
 			}
-			
-			if (this.hullHeat > maxHullHeat) this.hullHeat = maxHullHeat;
-			
+
+			if(coreHeat > 0) coreHeat -= 3;
+			if(hullHeat > 0) hullHeat -= 4;
+
+			if(tanks[1].getFill() >= 5) {
+				int coolantUsed = 0;
+				if(coreHeat > 47500) {
+					int excess = coreHeat - 47500;
+					int cooling = Math.min((excess * excess) / 20000 * 5 / 4, 6250);
+					cooling = Math.max(12, cooling);
+					coreHeat -= cooling;
+					coolantUsed += Math.max(1, cooling / 150);
+				}
+				if(coolantUsed > 0) {
+					tanks[1].setFill(Math.max(0, tanks[1].getFill() - (coolantUsed * 10)));
+				}
+			}
+
+			if(coreHeat < 0) coreHeat = 0;
+			if(hullHeat < 0) hullHeat = 0;
+			if(coreHeat > maxCoreHeat) coreHeat = maxCoreHeat;
+			if(hullHeat > maxHullHeat) hullHeat = maxHullHeat;
+
+			if(coreHeat >= maxCoreHeat * 0.995 || hullHeat >= maxHullHeat * 0.995) {
+				explode();
+				return;
+			}
+
 			if (this.hullHeat > 0 && this.tanks[0].getFill() > 0) {
 				generateSteam();
-				this.hullHeat -= this.hullHeat * 0.085;
 			}
-			
-			if (this.coreHeat > maxCoreHeat) this.explode();
-			
+
 			if (rods > 0 && coreHeat > 0 && age == 5) {
 				float rad = (float)coreHeat / (float)maxCoreHeat * 50F;
 				rad *= checkHull();
@@ -272,7 +311,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private void handleFuelRodInput() {
 		if(slots[4] != null && (slots[4].getItem() instanceof ItemBreedingRod || isBilletFuel(slots[4]))) {
 			ItemStack input = slots[4];
-			
+
 			if(isBilletFuel(input)) {
 				ReactorFuelType billetType = getFuelTypeFromBillet(input);
 				if(billetType != ReactorFuelType.UNKNOWN) {
@@ -291,7 +330,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 				}
 				return;
 			}
-			
+
 			ItemStack rod = input;
 			if(ItemBreedingRod.isFuelRod(rod)) {
 				ReactorFuelType rodType = getFuelType(rod);
@@ -299,10 +338,10 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 					if(fuel > 0 || waste > 0) {
 						if(rodType != this.type) return;
 					}
-					
+
 					int multiplier = 1;
 					Item emptyRodType = ModItems.rod_empty;
-					
+
 					if(rod.getItem() == ModItems.rod_dual) {
 						multiplier = 2;
 						emptyRodType = ModItems.rod_dual_empty;
@@ -310,7 +349,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 						multiplier = 4;
 						emptyRodType = ModItems.rod_quad_empty;
 					}
-					
+
 					int addFuel = fuelUnitsPerBillet * multiplier;
 					if(fuel + addFuel <= maxFuel) {
 						ItemStack emptyStack = new ItemStack(emptyRodType);
@@ -325,7 +364,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 							if(fuel == 0 && waste == 0) this.type = rodType;
 							fuel += addFuel;
 						}
-						
+
 						if(slots[4].stackSize <= 0) slots[4] = null;
 					}
 				}
@@ -337,7 +376,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		if(slots[6] != null && (slots[6].getItem() == ModItems.rod_empty || slots[6].getItem() == ModItems.rod_dual_empty || slots[6].getItem() == ModItems.rod_quad_empty)) {
 			int multiplier = 1;
 			Item wasteRodType = ModItems.rod;
-			
+
 			if(slots[6].getItem() == ModItems.rod_dual_empty) {
 				multiplier = 2;
 				wasteRodType = ModItems.rod_dual;
@@ -345,7 +384,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 				multiplier = 4;
 				wasteRodType = ModItems.rod_quad;
 			}
-			
+
 			int wasteNeeded = fuelUnitsPerBillet * multiplier;
 			if(waste >= wasteNeeded) {
 				ItemStack wasteRod = new ItemStack(wasteRodType, 1, ItemBreedingRod.BreedingRodType.WASTE.ordinal());
@@ -358,7 +397,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 					slots[6].stackSize--;
 					waste -= wasteNeeded;
 				}
-				
+
 				if(slots[6].stackSize <= 0) slots[6] = null;
 			}
 		}
@@ -366,11 +405,11 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 
 	private boolean isBilletFuel(ItemStack stack) {
 		if(stack == null) return false;
-		return stack.getItem() == ModItems.billet_u235 || 
+		return stack.getItem() == ModItems.billet_u235 ||
 			   stack.getItem() == ModItems.billet_u233 ||
-			   stack.getItem() == ModItems.billet_uranium_fuel || 
+			   stack.getItem() == ModItems.billet_uranium_fuel ||
 			   stack.getItem() == ModItems.billet_thorium_fuel ||
-			   stack.getItem() == ModItems.billet_mox_fuel || 
+			   stack.getItem() == ModItems.billet_mox_fuel ||
 			   stack.getItem() == ModItems.billet_plutonium_fuel ||
 			   stack.getItem() == ModItems.billet_schrabidium;
 	}
@@ -404,7 +443,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		for(ForgeDirection dir : new ForgeDirection[] {ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST}) {
 			int hatchX = xCoord + dir.offsetX * 2;
 			int hatchZ = zCoord + dir.offsetZ * 2;
-			
+
 			if(isPartAt(hatchX, yCoord, hatchZ, BlockReactorPart.ReactorPart.HATCH)) {
 				int connX = hatchX + dir.offsetX;
 				int connZ = hatchZ + dir.offsetZ;
@@ -413,7 +452,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 				this.sendFluid(tanks[2], worldObj, connX, yCoord, connZ, dir);
 			}
 		}
-		
+
 		int topY = yCoord + height + 1;
 		int botY = yCoord - depth - 1;
 		this.sendFluid(tanks[2], worldObj, xCoord, topY, zCoord, ForgeDirection.UP);
@@ -423,12 +462,12 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	private void tryEjectInto(int x, int y, int z) {
 		int ejectSize = fuelUnitsPerBillet;
 		if(waste < ejectSize) return;
-		
+
 		TileEntity te = worldObj.getTileEntity(x, y, z);
 		if(te instanceof net.minecraft.inventory.IInventory) {
 			net.minecraft.inventory.IInventory chest = (net.minecraft.inventory.IInventory) te;
 			ItemStack wasteItem = new ItemStack(ModItems.billet_nuclear_waste, 1);
-			
+
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				ItemStack slot = chest.getStackInSlot(i);
 				if(slot != null && slot.getItem() == wasteItem.getItem() && slot.stackSize < slot.getMaxStackSize()) {
@@ -437,7 +476,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 					return;
 				}
 			}
-			
+
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				if(chest.getStackInSlot(i) == null) {
 					chest.setInventorySlotContents(i, wasteItem.copy());
@@ -454,14 +493,14 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 			net.minecraft.inventory.IInventory chest = (net.minecraft.inventory.IInventory) te;
 			for(int i = 0; i < chest.getSizeInventory(); i++) {
 				ItemStack stack = chest.getStackInSlot(i);
-				
+
 				if(stack != null && isBilletFuel(stack)) {
 					ReactorFuelType billetType = getFuelTypeFromBillet(stack);
 					if(billetType != ReactorFuelType.UNKNOWN) {
 						if(fuel > 0 || waste > 0) {
 							if(billetType != this.type) continue;
 						}
-						
+
 						if(slots[4] == null) {
 							slots[4] = stack.copy();
 							slots[4].stackSize = 1;
@@ -479,30 +518,33 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	}
 
 	private void generateSteam() {
-		double steam = ((double) hullHeat / (double) maxHullHeat) * steamFactor * size;
+		double steam = ((double) hullHeat / (double) maxHullHeat) * 160.0 * size * 100.0;
 		double water = steam;
 		FluidType steamType = tanks[2].getTankType();
-		
+
 		if(steamType == Fluids.STEAM) water /= 100D;
 		if(steamType == Fluids.HOTSTEAM) water /= 10;
-		
+
 		tanks[0].setFill(tanks[0].getFill() - (int) Math.ceil(water));
 		tanks[2].setFill(tanks[2].getFill() + (int) Math.floor(steam));
-		
+
 		if(tanks[0].getFill() < 0) tanks[0].setFill(0);
 		if(tanks[2].getFill() > tanks[2].getMaxFill()) tanks[2].setFill(tanks[2].getMaxFill());
+
+		hullHeat -= (int)(hullHeat * 0.01);
+		if(hullHeat < 0) hullHeat = 0;
 	}
 
 	private void explode() {
 		for (int i = 0; i < slots.length; i++) {
 			this.slots[i] = null;
 		}
-		
+
 		int rad = (int)(((long)fuel) * 25000L / (maxFuel * 15L));
 		ChunkRadiationManager.proxy.incrementRad(worldObj, xCoord, yCoord, zCoord, rad);
 		worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 7.5F, true);
 		ExplosionNukeGeneric.waste(worldObj, this.xCoord, this.yCoord, this.zCoord, 35);
-		
+
 		for(int i = yCoord - depth; i <= yCoord + height; i++) {
 			if(worldObj.rand.nextInt(2) == 0) randomizeRadBlock(this.xCoord + 1, i, this.zCoord + 1);
 			if(worldObj.rand.nextInt(2) == 0) randomizeRadBlock(this.xCoord + 1, i, this.zCoord - 1);
@@ -510,9 +552,9 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 			if(worldObj.rand.nextInt(2) == 0) randomizeRadBlock(this.xCoord - 1, i, this.zCoord + 1);
 			if(worldObj.rand.nextInt(5) == 0) worldObj.createExplosion(null, this.xCoord, this.yCoord, this.zCoord, 5.0F, true);
 		}
-		
+
 		worldObj.setBlock(this.xCoord, this.yCoord, this.zCoord, ModBlocks.sellafield, 5, 3);
-		
+
 		if(MobConfig.enableElementals) {
 			List<EntityPlayer> players = worldObj.getEntitiesWithinAABB(EntityPlayer.class, AxisAlignedBB.getBoundingBox(xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5).expand(100, 100, 100));
 			for(EntityPlayer player : players) {
@@ -603,7 +645,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 			ReactorFuelType stackType = ReactorFuelType.UNKNOWN;
 			if(isBilletFuel(stack)) stackType = getFuelTypeFromBillet(stack);
 			else if(stack.getItem() instanceof ItemBreedingRod) stackType = getFuelType(stack);
-			
+
 			if(stackType == ReactorFuelType.UNKNOWN) return false;
 			if(fuel > 0 || waste > 0) {
 				return stackType == this.type;
@@ -641,15 +683,16 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		waste = nbt.getInteger("waste");
 		compression = nbt.getInteger("compression");
 		size = nbt.getInteger("size");
-		
+		fuelBurnAccumulator = nbt.getDouble("fuelBurnAcc");
+
 		if(size < 1) size = 1;
-		
+
 		slots = new ItemStack[getSizeInventory()];
 		tanks[0].readFromNBT(nbt, "water");
 		tanks[1].readFromNBT(nbt, "coolant");
 		tanks[2].readFromNBT(nbt, "steam");
 		type = ReactorFuelType.getEnum(nbt.getInteger("type"));
-		
+
 		for (int i = 0; i < list.tagCount(); i++) {
 			NBTTagCompound nbt1 = list.getCompoundTagAt(i);
 			byte b0 = nbt1.getByte("slot");
@@ -670,13 +713,14 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		nbt.setInteger("waste", waste);
 		nbt.setInteger("compression", compression);
 		nbt.setInteger("size", size);
-		
+		nbt.setDouble("fuelBurnAcc", fuelBurnAccumulator);
+
 		NBTTagList list = new NBTTagList();
 		tanks[0].writeToNBT(nbt, "water");
 		tanks[1].writeToNBT(nbt, "coolant");
 		tanks[2].writeToNBT(nbt, "steam");
 		nbt.setInteger("type", type.getID());
-		
+
 		for (int i = 0; i < slots.length; i++) {
 			if (slots[i] != null) {
 				NBTTagCompound nbt1 = new NBTTagCompound();
@@ -714,6 +758,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		buf.writeInt(type.getID());
 		buf.writeInt(compression);
 		buf.writeInt(size);
+		buf.writeDouble(fuelBurnAccumulator);
 		for(int i = 0; i < 3; i++) tanks[i].serialize(buf);
 	}
 
@@ -728,10 +773,11 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		type = ReactorFuelType.getEnum(buf.readInt());
 		compression = buf.readInt();
 		size = buf.readInt();
-		
+		fuelBurnAccumulator = buf.readDouble();
+
 		if(size < 1) size = 1;
 		for(int i = 0; i < 3; i++) tanks[i].deserialize(buf);
-		
+
 		updateMaxCapacities();
 	}
 
@@ -743,7 +789,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	@Override
 	public void receiveControl(NBTTagCompound data) {
 		if(data.hasKey("rods")) this.rods = data.getInteger("rods");
-		
+
 		if(data.hasKey("compression")) {
 			this.compression = data.getInteger("compression");
 			if(this.compression == 0) tanks[2].setTankType(Fluids.STEAM);
@@ -758,7 +804,7 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	public int getFuelScaled(int i) { return maxFuel > 0 ? (fuel * i) / maxFuel : 0; }
 	public int getWasteScaled(int i) { return maxWaste > 0 ? (waste * i) / maxWaste : 0; }
 	public int getSteamScaled(int i) { return tanks[2].getMaxFill() > 0 ? (tanks[2].getFill() * i) / tanks[2].getMaxFill() : 0; }
-	
+
 	public boolean hasCoreHeat() { return coreHeat > 0; }
 	public boolean hasHullHeat() { return hullHeat > 0; }
 
@@ -771,21 +817,21 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 		U235(3000),
 		U233(4000),
 		UNKNOWN(0);
-		
+
 		private int heat;
-		
+
 		private ReactorFuelType(int i) {
 			heat = i;
 		}
-		
+
 		public int getHeat() {
 			return heat;
 		}
-		
+
 		public int getID() {
 			return Arrays.asList(ReactorFuelType.values()).indexOf(this);
 		}
-		
+
 		public static ReactorFuelType getEnum(int i) {
 			if(i < ReactorFuelType.values().length) return ReactorFuelType.values()[i];
 			else return ReactorFuelType.UNKNOWN;
@@ -816,5 +862,214 @@ public class TileEntityMachineReactorLarge extends TileEntityLoadedBase implemen
 	@SideOnly(Side.CLIENT)
 	public Object provideGUI(int ID, EntityPlayer player, World world, int x, int y, int z) {
 		return new GUIReactorMultiblock(player.inventory, this);
+	}
+
+	// Opencomputers methods
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public String getComponentName() {
+		return "ntm_reactor_large";
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getCoreHeat(Context context, Arguments args) {
+		return new Object[] {Math.round(coreHeat * 0.00002D * 980D + 20D)};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getHullHeat(Context context, Arguments args) {
+		return new Object[] {Math.round(hullHeat * 0.00001D * 980D + 20D)};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getFuel(Context context, Arguments args) {
+		return new Object[] {fuel / 1000, maxFuel / 1000};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getWaste(Context context, Arguments args) {
+		return new Object[] {waste / 1000, maxWaste / 1000};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getRods(Context context, Arguments args) {
+		return new Object[] {rods, rodsMax};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getCompression(Context context, Arguments args) {
+		return new Object[] {compression};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getSize(Context context, Arguments args) {
+		return new Object[] {size};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getSteam(Context context, Arguments args) {
+		return new Object[] {tanks[2].getFill(), tanks[2].getMaxFill(), tanks[2].getTankType().getName()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getWater(Context context, Arguments args) {
+		return new Object[] {tanks[0].getFill(), tanks[0].getMaxFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getCoolant(Context context, Arguments args) {
+		return new Object[] {tanks[1].getFill(), tanks[1].getMaxFill()};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getFuelType(Context context, Arguments args) {
+		return new Object[] {type.name()};
+	}
+
+	@Callback(direct = true, limit = 4)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] setRods(Context context, Arguments args) {
+		int value = args.checkInteger(0);
+		if (value < 0) value = 0;
+		if (value > 100) value = 100;
+		this.rods = value;
+		this.markDirty();
+		return new Object[] {value};
+	}
+
+	@Callback(direct = true, limit = 4)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] setCompression(Context context, Arguments args) {
+		int value = args.checkInteger(0);
+		if (value < 0) value = 0;
+		if (value > 2) value = 2;
+		this.compression = value;
+		if(this.compression == 0) tanks[2].setTankType(Fluids.STEAM);
+		else if(this.compression == 1) tanks[2].setTankType(Fluids.HOTSTEAM);
+		else tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
+		this.markDirty();
+		return new Object[] {value};
+	}
+
+	@Callback(direct = true)
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] getInfo(Context context, Arguments args) {
+		return new Object[] {
+			Math.round(coreHeat * 0.00002D * 980D + 20D),
+			Math.round(hullHeat * 0.00001D * 980D + 20D),
+			fuel / 1000, maxFuel / 1000,
+			waste / 1000, maxWaste / 1000,
+			rods, rodsMax,
+			compression,
+			size,
+			tanks[0].getFill(), tanks[0].getMaxFill(),
+			tanks[1].getFill(), tanks[1].getMaxFill(),
+			tanks[2].getFill(), tanks[2].getMaxFill(),
+			type.name()
+		};
+	}
+
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public String[] methods() {
+		return new String[] {
+			"getCoreHeat", "getHullHeat", "getFuel", "getWaste", "getRods",
+			"getCompression", "getSize", "getSteam", "getWater", "getCoolant",
+			"getFuelType", "setRods", "setCompression", "getInfo"
+		};
+	}
+
+	@Override
+	@Optional.Method(modid = "OpenComputers")
+	public Object[] invoke(String method, Context context, Arguments args) throws Exception {
+		switch(method) {
+			case "getCoreHeat": return getCoreHeat(context, args);
+			case "getHullHeat": return getHullHeat(context, args);
+			case "getFuel": return getFuel(context, args);
+			case "getWaste": return getWaste(context, args);
+			case "getRods": return getRods(context, args);
+			case "getCompression": return getCompression(context, args);
+			case "getSize": return getSize(context, args);
+			case "getSteam": return getSteam(context, args);
+			case "getWater": return getWater(context, args);
+			case "getCoolant": return getCoolant(context, args);
+			case "getFuelType": return getFuelType(context, args);
+			case "setRods": return setRods(context, args);
+			case "setCompression": return setCompression(context, args);
+			case "getInfo": return getInfo(context, args);
+		}
+		throw new NoSuchMethodException();
+	}
+
+	@Override
+	public String[] getFunctionInfo() {
+		return new String[] {
+			PREFIX_VALUE + "core_heat",
+			PREFIX_VALUE + "hull_heat",
+			PREFIX_VALUE + "fuel",
+			PREFIX_VALUE + "waste",
+			PREFIX_VALUE + "rods",
+			PREFIX_VALUE + "compression",
+			PREFIX_VALUE + "size",
+			PREFIX_VALUE + "steam",
+			PREFIX_VALUE + "water",
+			PREFIX_VALUE + "coolant",
+			PREFIX_FUNCTION + "setRods" + NAME_SEPARATOR + "value",
+			PREFIX_FUNCTION + "setCompression" + NAME_SEPARATOR + "value"
+		};
+	}
+
+	@Override
+	public String provideRORValue(String name) {
+		if((PREFIX_VALUE + "core_heat").equals(name)) return "" + Math.round(coreHeat * 0.00002D * 980D + 20D);
+		if((PREFIX_VALUE + "hull_heat").equals(name)) return "" + Math.round(hullHeat * 0.00001D * 980D + 20D);
+		if((PREFIX_VALUE + "fuel").equals(name)) return "" + (fuel / 1000);
+		if((PREFIX_VALUE + "waste").equals(name)) return "" + (waste / 1000);
+		if((PREFIX_VALUE + "rods").equals(name)) return "" + rods;
+		if((PREFIX_VALUE + "compression").equals(name)) return "" + compression;
+		if((PREFIX_VALUE + "size").equals(name)) return "" + size;
+		if((PREFIX_VALUE + "steam").equals(name)) return "" + tanks[2].getFill();
+		if((PREFIX_VALUE + "water").equals(name)) return "" + tanks[0].getFill();
+		if((PREFIX_VALUE + "coolant").equals(name)) return "" + tanks[1].getFill();
+		return null;
+	}
+
+	@Override
+	public String runRORFunction(String name, String[] params) {
+		if((PREFIX_FUNCTION + "setRods").equals(name) && params.length > 0) {
+			try {
+				int val = Integer.parseInt(params[0]);
+				if(val < 0) val = 0;
+				if(val > 100) val = 100;
+				this.rods = val;
+				this.markDirty();
+			} catch(NumberFormatException e) {}
+			return null;
+		}
+		if((PREFIX_FUNCTION + "setCompression").equals(name) && params.length > 0) {
+			try {
+				int val = Integer.parseInt(params[0]);
+				if(val < 0) val = 0;
+				if(val > 2) val = 2;
+				this.compression = val;
+				if(this.compression == 0) tanks[2].setTankType(Fluids.STEAM);
+				else if(this.compression == 1) tanks[2].setTankType(Fluids.HOTSTEAM);
+				else tanks[2].setTankType(Fluids.SUPERHOTSTEAM);
+				this.markDirty();
+			} catch(NumberFormatException e) {}
+			return null;
+		}
+		return null;
 	}
 }

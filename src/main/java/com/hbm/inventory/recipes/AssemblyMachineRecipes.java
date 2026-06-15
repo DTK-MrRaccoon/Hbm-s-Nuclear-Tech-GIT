@@ -607,7 +607,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(STEEL.ingot(), 4), new OreDictStack(DURA.plate(), 8), new OreDictStack(PB.plate(), 4), new OreDictStack(ZR.ingot(), 2)));
 
 		this.register(new GenericRecipe("ass.reactor_control").setup(100, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.CONTROL.ordinal()))
-				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(PB.ingot(), 12), new OreDictStack(W.bolt(), 12), new ComparableStack(ModItems.motor, 1)));
+				.inputItems(new OreDictStack(STEEL.ingot(), 8), new OreDictStack(B.ingot(), 4), new OreDictStack(W.bolt(), 12), new ComparableStack(ModItems.motor, 1)));
 
 		this.register(new GenericRecipe("ass.reactor_hatch").setup(150, 100).outputItems(new ItemStack(ModBlocks.reactor_part, 1, ReactorPart.HATCH.ordinal()))
 				.inputItems(new ComparableStack(ModBlocks.brick_concrete, 6), new OreDictStack(STEEL.plate(), 6)));

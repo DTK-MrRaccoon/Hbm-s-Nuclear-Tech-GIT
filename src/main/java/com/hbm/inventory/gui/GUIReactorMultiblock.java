@@ -67,6 +67,44 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		if(type == Fluids.SUPERHOTSTEAM) s = "100x";
 		String[] text4 = new String[] { "Steam compression switch", "Current compression level: " + s };
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 63, guiTop + 107, 14, 18, mouseX, mouseY, text4);
+
+		String[] waterInfo = new String[] { "Water is the primary coolant.",
+				"It absorbs heat from the hull and",
+				"generates steam.",
+				"",
+				"Coolant is for emergency use only.",
+				"It will cool the core when water",
+				"is depleted." };
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, waterInfo);
+		
+		String[] rodInfo = new String[] { "Raise/lower the control rods",
+				"using the slider on the right." };
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 52, 16, 16, guiLeft - 8, guiTop + 52 + 16, rodInfo);
+
+		String[] reactorStats = new String[] { 
+			"Reactor Statistics:",
+			"Rods: " + reactor.rods + "%",
+			"Core Heat: " + reactor.coreHeat + "/" + reactor.maxCoreHeat,
+			"Hull Heat: " + reactor.hullHeat + "/" + reactor.maxHullHeat,
+			"Fuel: " + displayFuel + "/" + displayMaxFuel + " billets"
+		};
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 68, 16, 16, guiLeft - 8, guiTop + 68 + 16, reactorStats);
+
+		int warningY = 84;
+		if(reactor.tanks[0].getFill() <= 0) {
+			String[] text2 = new String[] { "Warning: Water depleted!" };
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + warningY, 16, 16, guiLeft - 8, guiTop + warningY + 16, text2);
+			warningY += 16;
+		}
+
+		boolean overheating = (reactor.coreHeat > 47500 || reactor.hullHeat > 94900);
+		boolean coolantSaving = (reactor.tanks[1].getFill() > 0);
+		if(overheating && coolantSaving) {
+			String[] text5 = new String[] { "Reactor overheating!",
+					"Coolant is preventing meltdown." };
+			this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + warningY, 16, 16, guiLeft - 8, guiTop + warningY + 16, text5);
+			warningY += 16;
+		}
 	}
 
 	@Override
@@ -145,5 +183,20 @@ public class GUIReactorMultiblock extends GuiInfoContainer {
 		}
 		reactor.tanks[0].renderTank(guiLeft + 8, guiTop + 88, this.zLevel, 16, 52);
 		reactor.tanks[1].renderTank(guiLeft + 26, guiTop + 88, this.zLevel, 16, 52);
+
+		this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 2);
+		this.drawInfoPanel(guiLeft - 16, guiTop + 52, 16, 16, 3);
+		this.drawInfoPanel(guiLeft - 16, guiTop + 68, 16, 16, 7);
+		
+		int warningY = 84;
+		if(reactor.tanks[0].getFill() <= 0 && reactor.coreHeat > 0) {
+			this.drawInfoPanel(guiLeft - 16, guiTop + warningY, 16, 16, 6);
+			warningY += 16;
+		}
+		boolean overheating = (reactor.coreHeat > 47500 || reactor.hullHeat > 94900);
+		boolean coolantSaving = (reactor.tanks[1].getFill() > 0);
+		if(overheating && coolantSaving) {
+			this.drawInfoPanel(guiLeft - 16, guiTop + warningY, 16, 16, 6);
+		}
 	}
 }
