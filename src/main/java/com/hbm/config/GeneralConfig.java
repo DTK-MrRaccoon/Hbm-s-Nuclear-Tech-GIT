@@ -39,6 +39,7 @@ public class GeneralConfig {
 	public static boolean enableMekanismChanges = true;
 	public static boolean enableServerRecipeSync = false;
 	public static boolean enableLoadScreenReplacement = true;
+	public static boolean enableMachineGravity = false;
 	public static int normalSoundChannels = 200;
 
 	public static boolean enableExpensiveMode = false;
@@ -51,6 +52,7 @@ public class GeneralConfig {
 	public static boolean enable528NetherBurn = true;
 	public static boolean enable528PressurizedRecipes = true;
 	public static boolean enable528ExplosiveEnergistics = true;
+	public static boolean enable528MachineGravity = true;
 	public static int coltanRate = 2;
 
 	public static boolean enableLBSM = false;
@@ -118,6 +120,7 @@ public class GeneralConfig {
 		preferredOutputMod = CommonConfig.createConfigStringList(config,CATEGORY_GENERAL,"1.42_preferredOutputMod",
 				"The mod which is preferred as output when certain machines autogenerate recipes. Currently used for the shredder", new String[] {RefStrings.MODID});
 		enableLoadScreenReplacement = config.get(CATEGORY_GENERAL, "1.43_enableLoadScreenReplacement", true, "Tries to replace the vanilla load screen with the 'tip of the day' one, may clash with other mods trying to do the same.").getBoolean(true);
+		enableMachineGravity = config.get(CATEGORY_GENERAL, "1.44_enableMachineGravity", false, "Requires large large machines to have a proper foundation, or else they tilt and break. Independent from the 528 version of this config, which does the same, but only works with 528 enabled.").getBoolean(false);
 		enableExpensiveMode = config.get(CATEGORY_GENERAL, "1.99_enableExpensiveMode", false, "It does what the name implies.").getBoolean(false);
 
 		final String CATEGORY_528 = CommonConfig.CATEGORY_528;
@@ -135,6 +138,7 @@ public class GeneralConfig {
 		enable528NetherBurn = CommonConfig.createConfigBool(config, CATEGORY_528, "X528_enable528NetherBurn", "Whether players burn in the nether", true);
 		enable528PressurizedRecipes = CommonConfig.createConfigBool(config, CATEGORY_528, "X528_enable528PressurizedRecipes", "Sets some recipes to require pressurized input fluid", true);
 		enable528ExplosiveEnergistics = CommonConfig.createConfigBool(config, CATEGORY_528, "X528_enable528ExplosiveEnergistics", "Renders AE2 unusable.", true);
+		enable528MachineGravity = CommonConfig.createConfigBool(config, CATEGORY_528, "X528_enable528MachineGravity", "Requires most large machines to have a proper foundation, or else they tilt and break.", true);
 		coltanRate = CommonConfig.createConfigInt(config, CATEGORY_528, "X528_oreColtanFrequency", "Determines how many coltan ore veins are to be expected in a chunk. These values do not affect the frequency in deposits, and only apply if random coltan spanwing is enabled.", 2);
 
 		final String CATEGORY_LBSM = CommonConfig.CATEGORY_LBSM;
@@ -168,6 +172,7 @@ public class GeneralConfig {
 			enable528NetherBurn = false;
 			enable528PressurizedRecipes = false;
 			enable528ExplosiveEnergistics = false;
+			enable528MachineGravity = false;
 		}
 	}
 }

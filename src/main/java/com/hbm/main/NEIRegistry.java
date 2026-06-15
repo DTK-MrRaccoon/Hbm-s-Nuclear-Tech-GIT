@@ -17,6 +17,7 @@ public class NEIRegistry {
 
 		handlers.add(new AnnihilatorHandler());
 		handlers.add(new SolderingStationHandler());
+		handlers.add(new BlastFurnaceHandler());
 		handlers.add(new AnvilRecipeHandler());
 		handlers.add(new SmithingRecipeHandler());
 		handlers.add(new PressRecipeHandler());

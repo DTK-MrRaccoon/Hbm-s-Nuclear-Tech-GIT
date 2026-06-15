@@ -9,6 +9,7 @@ import com.hbm.items.ItemEnums.EnumCokeType;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemRTGPelletDepleted;
+import com.hbm.items.machine.ItemBatteryPack.EnumBatteryPack;
 import com.hbm.items.tool.ItemBlowtorch;
 
 import net.minecraft.init.Items;
@@ -45,7 +46,7 @@ public class ItemPoolsComponent {
 					weighted(ModItems.coil_copper_torus, 0, 1, 2, 3),
 					weighted(ModItems.wire_fine, Mats.MAT_MINGRADE.id, 1, 8, 5),
 					weighted(ModItems.piston_selenium, 0, 1, 1, 3),
-					weighted(ModItems.battery_advanced_cell, 0, 1, 1, 3),
+					weighted(ModItems.battery_pack, EnumBatteryPack.BATTERY_LEAD.ordinal(), 1, 1, 3),
 					weighted(ModItems.circuit, EnumCircuitType.VACUUM_TUBE.ordinal(), 1, 2, 4),
 					weighted(ModItems.circuit, EnumCircuitType.PCB.ordinal(), 1, 3, 5),
 					weighted(ModItems.circuit, EnumCircuitType.CAPACITOR.ordinal(), 1, 1, 3),
@@ -81,7 +82,7 @@ public class ItemPoolsComponent {
 					weighted(ModItems.missile_generic, 0, 1, 1, 4),
 					weighted(ModItems.missile_incendiary, 0, 1, 1, 4),
 					weighted(ModItems.gas_mask_m65, 0, 1, 1, 5),
-					weighted(ModItems.battery_advanced, 0, 1, 1, 5),
+					weighted(ModItems.battery_pack, EnumBatteryPack.BATTERY_LEAD.ordinal(), 1, 1, 3),
 					weighted(ModItems.designator, 0, 1, 1, 5),
 					weighted(ModItems.thruster_small, 0, 1, 1, 5),
 					weighted(ModItems.thruster_medium, 0, 1, 1, 4),
@@ -100,8 +101,6 @@ public class ItemPoolsComponent {
 					weighted(Items.book, 0, 1, 3, 4),
 					weighted(ModItems.twinkie, 0, 1, 2, 6),
 					weighted(ModItems.coffee, 0, 1, 1, 4),
-					weighted(ModItems.bean_raw, 0, 1, 4, 4),
-					weighted(ModItems.teaseeds, 0, 1, 4, 3),
 					weighted(ModItems.flame_politics, 0, 1, 1, 2),
 					weighted(ModItems.ring_pull, 0, 1, 1, 4),
 					weighted(ModItems.can_empty, 0, 1, 1, 2),
@@ -111,7 +110,8 @@ public class ItemPoolsComponent {
 					weighted(ModItems.cap_nuka, 0, 1, 16, 2),
 					weighted(ModItems.book_guide, 3, 1, 1, 1),
 					weighted(ModBlocks.deco_computer, 0, 1, 1, 1),
-					weighted(ModItems.blueprint_folder, 0, 1, 1, 1)
+					weighted(ModItems.blueprint_folder, 0, 1, 1, 1),
+					weighted(ModItems.coin_token, 0, 1, 1, 2)
 			};
 		}};
 
@@ -123,11 +123,12 @@ public class ItemPoolsComponent {
 					weighted(Items.map, 0, 1, 1, 50),
 					weighted(Items.writable_book, 0, 1, 1, 30),
 					weighted(ModItems.cigarette, 0, 1, 16, 20),
-					weighted(ModItems.toothpicks, 0, 1, 16, 10),
 					weighted(ModItems.dust, 0, 1, 1, 40),
 					weighted(ModItems.dust_tiny, 0, 1, 3, 75),
 					weighted(ModItems.ink, 0, 1, 1, 1),
-					weighted(ModItems.blueprint_folder, 0, 1, 1, 5)
+					weighted(ModItems.screwdriver, 0, 1, 1, 10),
+					weighted(ModItems.blueprint_folder, 0, 1, 1, 5),
+					weighted(ModItems.coin_token, 0, 1, 1, 30)
 			};
 		}};
 
@@ -192,7 +193,8 @@ public class ItemPoolsComponent {
 					weighted(Items.experience_bottle, 0, 1, 3, 1),
 					weighted(ModItems.blueprint_folder, 0, 1, 1, 1),
 					weighted(ModItems.blueprint_folder, 1, 1, 1, 1),
-					weighted(ModItems.ammo_container, 0, 1, 1, 1)
+					weighted(ModItems.ammo_container, 0, 1, 1, 1),
+					weighted(ModItems.coin_token, 0, 1, 1, 5)
 			};
 		}};
 

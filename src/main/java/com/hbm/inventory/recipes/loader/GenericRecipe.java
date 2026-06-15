@@ -17,6 +17,8 @@ import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.EnumChatFormatting;
@@ -39,6 +41,18 @@ public class GenericRecipe {
 
 	public GenericRecipe(String name) {
 		this.name = name;
+	}
+
+
+	public void printNEIExtras() {
+
+		FontRenderer fontRenderer = Minecraft.getMinecraft().fontRenderer;
+		String duration = BobMathUtil.getShortNumber(this.duration) + " ticks";
+		String consumption = BobMathUtil.getShortNumber(this.power) + "HE/t";
+
+		int side = 164;
+		fontRenderer.drawString(duration, side - fontRenderer.getStringWidth(duration), 45, 0x404040);
+		fontRenderer.drawString(consumption, side - fontRenderer.getStringWidth(consumption), 57, 0x404040);
 	}
 
 	public boolean isPooled() { return blueprintPools != null; }

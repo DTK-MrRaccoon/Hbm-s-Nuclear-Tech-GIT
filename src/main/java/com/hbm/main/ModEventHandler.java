@@ -400,10 +400,10 @@ public class ModEventHandler {
 				MobUtil.equipFullSet(entity, ModItems.hazmat_helmet, ModItems.hazmat_plate, ModItems.hazmat_legs, ModItems.hazmat_boots);
 				return;
 			}
-			slotPools = MobUtil.slotPoolCommon;
+			slotPools = MobUtil.slotPoolCommonS;
 
 		} else if(entity instanceof EntitySkeleton) {
-			slotPools = MobUtil.slotPoolRanged;
+			slotPools = MobUtil.slotPoolRangedS;
 			ItemStack bowReplacement = getSkelegun(soot, world.rand);
 			slotPools.put(0, createSlotPool(50, bowReplacement != null ? new Object[][]{{bowReplacement, 1}} : new Object[][]{}));
 		}
@@ -1313,9 +1313,12 @@ public class ModEventHandler {
 
 		if(stack != null && stack.getItem() instanceof ItemFood) {
 
-			if(stack.hasTagCompound() && stack.getTagCompound().getBoolean("ntmCyanide")) {
-				for(int i = 0; i < 10; i++) {
+			if(stack.hasTagCompound()) {
+				if(stack.getTagCompound().getBoolean("ntmCyanide")) for(int i = 0; i < 10; i++) {
 					event.entityPlayer.attackEntityFrom(rand.nextBoolean() ? ModDamageSource.euthanizedSelf : ModDamageSource.euthanizedSelf2, 1000);
+				}
+				if(stack.getTagCompound().getBoolean("ntmRedPill")) for(int i = 0; i < 10; i++) {
+					event.entityPlayer.addPotionEffect(new PotionEffect(HbmPotion.death.id, 60 * 60 * 20, 0));
 				}
 			}
 		}

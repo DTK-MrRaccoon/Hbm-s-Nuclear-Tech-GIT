@@ -45,6 +45,9 @@ import com.hbm.world.feature.BedrockOre;
 import com.hbm.world.feature.OreCave;
 import com.hbm.world.feature.OreLayer3D;
 import com.hbm.world.feature.SchistStratum;
+import com.hbm.world.gen.util.LogicBlockActions;
+import com.hbm.world.gen.util.LogicBlockConditions;
+import com.hbm.world.gen.util.LogicBlockInteractions;
 import com.hbm.world.generator.CellularDungeonFactory;
 import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -583,6 +586,10 @@ public class MainRegistry {
 		AchievementHandler.register();
 
 		MobUtil.intializeMobPools();
+
+		LogicBlockActions.initialize();
+		LogicBlockConditions.initialize();
+		LogicBlockInteractions.initialize();
 
 		proxy.registerMissileItems();
 

@@ -65,7 +65,8 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.canister_full, Fluids.BIOFUEL.getID(), 1, 2, 3),
 					weighted(ModItems.gas_mask_m65, 60, 1, 1, 2),
 					weighted(ModItems.gas_mask_filter, 0, 1, 1, 3),
-					weighted(ModItems.blueprint_folder, 0, 1, 1, 1)
+					weighted(ModItems.blueprint_folder, 0, 1, 1, 1),
+					weighted(ModItems.coin_token, 0, 1, 1, 2)
 			};
 		}};
 
@@ -219,6 +220,8 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.ingot_advanced_alloy, 0, 2, 16, 5),
 					weighted(ModItems.wire_fine, Mats.MAT_ALLOY.id, 8, 32, 5),
 					weighted(ModItems.coil_advanced_alloy, 0, 2, 16, 5),
+					weighted(ModItems.coil_copper, 0, 2, 16, 5),
+					weighted(ModItems.wire_fine, Mats.MAT_MINGRADE.id, 8, 32, 5),
 					weighted(ModItems.cell_deuterium, 0, 1, 8, 5),
 					weighted(ModItems.cell_tritium, 0, 1, 8, 5),
 					weighted(ModItems.cell_antimatter, 0, 1, 1, 1),
@@ -226,6 +229,8 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.powder_niobium, 0, 1, 1, 1),
 					weighted(ModBlocks.fusion_conductor, 0, 2, 4, 5),
 					weighted(ModBlocks.fusion_heater, 0, 1, 3, 5),
+					weighted(ModItems.wire_dense, Mats.MAT_MINGRADE.id, 2, 4, 5),
+					weighted(ModItems.wire_dense, Mats.MAT_GOLD.id, 1, 3, 5),
 					weighted(ModBlocks.pwr_fuel, 0, 1, 2, 5),
 					weighted(ModBlocks.block_tungsten, 0, 3, 8, 5),
 					weighted(ModBlocks.red_wire_coated, 0, 4, 8, 5),

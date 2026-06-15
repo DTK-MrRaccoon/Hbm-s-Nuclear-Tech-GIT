@@ -57,6 +57,7 @@ public class ResourceManager {
 	public static final IModelCustom furnace_iron = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/furnace_iron.obj"));
 	public static final IModelCustom furnace_steel = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/furnace_steel.obj"));
 	public static final IModelCustom combination_oven = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/combination_oven.obj"));
+	public static final IModelCustom blast_furnace = new HFRWavefrontObject("models/machines/blast_furnace.obj").noSmooth().asVBO();
 
 	//Landmines
 	public static final IModelCustom mine_ap = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/bombs/ap_mine.obj")).asVBO();
@@ -100,6 +101,7 @@ public class ResourceManager {
 	public static final IModelCustom fluidtank = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/fluidtank.obj")).asVBO();
 	public static final IModelCustom fluidtank_exploded = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/fluidtank_exploded.obj")).asVBO();
 	public static final IModelCustom bat9000 = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/bat9000.obj")).asVBO();
+	public static final IModelCustom bigasstank = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/bigasstank.obj")).asVBO();
 	public static final IModelCustom orbus = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/orbus.obj")).asVBO();
 	public static final IModelCustom radtank = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/radtank.obj")).asVBO();
 
@@ -198,7 +200,8 @@ public class ResourceManager {
 	public static final IModelCustom microwave = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/microwave.obj"));
 
 	//Big Man Johnson
-	public static final IModelCustom autosaw = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/autosaw.obj"));
+	public static final IModelCustom autosaw = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/autosaw.obj")).noSmooth().asVBO();
+	public static final IModelCustom thresher = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/thresher.obj")).asVBO();
 
 	//Mining Drill
 	public static final IModelCustom mining_drill = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/mining_drill.obj")).asVBO();
@@ -408,6 +411,8 @@ public class ResourceManager {
 	public static final ResourceLocation silo_hatch_large_tex = new ResourceLocation(RefStrings.MODID, "textures/models/doors/silo_hatch_large.png");
 	public static IModelCustomNamed silo_hatch_large = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/doors/silo_hatch_large.obj")).asVBO();
 
+	//Vending Machine
+	public static final IModelCustom vending_machine = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/vending_machine.obj")).noSmooth().asVBO();
 
 	//Skeleton
 	public static final IModelCustom skeleton_holder = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/blocks/skeleton_holder.obj"),false).asVBO();
@@ -463,6 +468,7 @@ public class ResourceManager {
 
 	//TELEX
 	public static final IModelCustom telex = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/telex.obj"));
+	public static final IModelCustom autocal = AdvancedModelLoader.loadModel(new ResourceLocation(RefStrings.MODID, "models/machines/autocal.obj"));
 
 	//Transporter
 	public static final IModelCustom transporter_pad = new HFRWavefrontObject(new ResourceLocation(RefStrings.MODID, "models/machines/transporter_pad.obj")).asVBO();
@@ -540,6 +546,7 @@ public class ResourceManager {
 	public static final ResourceLocation furnace_iron_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/furnace_iron.png");
 	public static final ResourceLocation furnace_steel_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/furnace_steel.png");
 	public static final ResourceLocation combination_oven_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/combination_oven.png");
+	public static final ResourceLocation blast_furnace_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/blast_furnace.png");
 
 	//Oil Pumps
 	public static final ResourceLocation derrick_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/derrick.png");
@@ -579,6 +586,7 @@ public class ResourceManager {
 	public static final ResourceLocation tank_inner_tex = new ResourceLocation(RefStrings.MODID, "textures/models/tank/tank_inner.png");
 	public static final ResourceLocation tank_label_tex = new ResourceLocation(RefStrings.MODID, "textures/models/tank/tank_NONE.png");
 	public static final ResourceLocation bat9000_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/bat9000.png");
+	public static final ResourceLocation bigasstank_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/bigasstank.png");
 	public static final ResourceLocation orbus_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/orbus.png");
 	public static final ResourceLocation radtank_tex = new ResourceLocation(RefStrings.MODID, "textures/models/radtank.png");
 
@@ -691,6 +699,7 @@ public class ResourceManager {
 
 	//Big Man Johnson
 	public static final ResourceLocation autosaw_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/autosaw.png");
+	public static final ResourceLocation thresher_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/thresher.png");
 
 	//Mining Drill
 	public static final ResourceLocation mining_drill_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/mining_drill.png");
@@ -886,6 +895,9 @@ public class ResourceManager {
 	public static final ResourceLocation transition_seal_tex = new ResourceLocation(RefStrings.MODID, "textures/models/doors/transition_seal.png");
 	public static final ResourceLocation fire_door_tex = new ResourceLocation(RefStrings.MODID, "textures/models/doors/fire_door.png");
 
+	//Vending Machine
+	public static final ResourceLocation vending_machine_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/vending_machine.png");
+
 	//Skeleton
 	public static final ResourceLocation skeleton_holder_tex = new ResourceLocation(RefStrings.MODID, "textures/particle/skeleton.png");
 
@@ -960,6 +972,7 @@ public class ResourceManager {
 
 	//TELEX
 	public static final ResourceLocation telex_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/telex.png");
+	public static final ResourceLocation autocal_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/autocal.png");
 
 	//Transporter
 	public static final ResourceLocation transporter_pad_tex = new ResourceLocation(RefStrings.MODID, "textures/models/machines/transporter_pad.png");

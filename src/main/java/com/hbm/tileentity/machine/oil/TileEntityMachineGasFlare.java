@@ -24,6 +24,7 @@ import com.hbm.tileentity.IUpgradeInfoProvider;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.util.CompatEnergyControl;
 import com.hbm.util.ParticleUtil;
+import com.hbm.util.fauxpointtwelve.BlockPos;
 import com.hbm.util.fauxpointtwelve.DirPos;
 import com.hbm.util.i18n.I18nUtil;
 
@@ -104,6 +105,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 	public void updateEntity() {
 
 		if(!worldObj.isRemote) {
+			this.checkTilt(TiltType.CONFIG, false);
 
 			this.fluidUsed = 0;
 			this.output = 0;
@@ -119,7 +121,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 			int maxVent = 50;
 			int maxBurn = 10;
 
-			if(isOn && tank.getFill() > 0) {
+			if(isOn && tank.getFill() > 0 && !this.tilted) {
 
 				upgradeManager.checkSlots(this, slots, 4, 5);
 				int burn = upgradeManager.getLevel(UpgradeType.SPEED);
@@ -137,7 +139,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 						tank.getTankType().onFluidRelease(this, tank, eject);
 
 						if(worldObj.getTotalWorldTime() % 7 == 0)
-							this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 16, this.zCoord, "random.fizz", getVolume(1.5F), 0.5F);
+							this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 11, this.zCoord, "random.fizz", getVolume(1.5F), 0.5F);
 
 						if(worldObj.getTotalWorldTime() % 5 == 0 && eject > 0) {
 							FT_Polluting.pollute(worldObj, xCoord, yCoord, zCoord, tank.getTankType(), FluidReleaseType.SPILL, eject * 5);
@@ -164,7 +166,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 						if(power > maxPower)
 							power = maxPower;
 
-						ParticleUtil.spawnGasFlame(worldObj, this.xCoord + 0.5F, this.yCoord + 16.75F, this.zCoord + 0.5F, worldObj.rand.nextGaussian() * 0.15, 0.2, worldObj.rand.nextGaussian() * 0.15);
+						ParticleUtil.spawnGasFlame(worldObj, this.xCoord + 0.5F, this.yCoord + 11.75F, this.zCoord + 0.5F, worldObj.rand.nextGaussian() * 0.15, 0.2, worldObj.rand.nextGaussian() * 0.15);
 
 						List<Entity> list = worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord - 1, yCoord + 12, zCoord - 2, xCoord + 2, yCoord + 17, zCoord + 2));
 						for(Entity e : list) {
@@ -173,7 +175,7 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 						}
 
 						if(worldObj.getTotalWorldTime() % 3 == 0)
-							this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 16, this.zCoord, "hbm:weapon.flamethrowerShoot", getVolume(1.5F), 0.75F);
+							this.worldObj.playSoundEffect(this.xCoord, this.yCoord + 11, this.zCoord, "hbm:weapon.flamethrowerShoot", getVolume(1.5F), 0.75F);
 
 						if(worldObj.getTotalWorldTime() % 5 == 0 && eject > 0) {
 							FT_Polluting.pollute(worldObj, xCoord, yCoord, zCoord, tank.getTankType(), FluidReleaseType.BURN, eject * 5);
@@ -202,14 +204,53 @@ public class TileEntityMachineGasFlare extends TileEntityMachineBase implements 
 
 					data.setDouble("posX", xCoord + 0.5);
 					data.setDouble("posZ", zCoord + 0.5);
-					data.setDouble("posY", yCoord + 16);
+					data.setDouble("posY", yCoord + 11);
 
 					MainRegistry.proxy.effectNT(data);
 
 				}
+
+				if(doesBurn && tank.getTankType().hasTrait(FT_Flammable.class) && MainRegistry.proxy.me().getDistanceSq(xCoord, yCoord + 10, zCoord) <= 1024) {
+
+					NBTTagCompound data = new NBTTagCompound();
+					data.setString("type", "vanillaExt");
+					data.setString("mode", "smoke");
+					data.setBoolean("noclip", true);
+					data.setInteger("overrideAge", 50);
+
+					if(worldObj.getTotalWorldTime() % 2 == 0) {
+						data.setDouble("posX", xCoord + 1.5);
+						data.setDouble("posZ", zCoord + 1.5);
+						data.setDouble("posY", yCoord + 10.75);
+					} else {
+						data.setDouble("posX", xCoord + 1.125);
+						data.setDouble("posZ", zCoord - 0.5);
+						data.setDouble("posY", yCoord + 11.75);
+					}
+
+					MainRegistry.proxy.effectNT(data);
+					
+					/*NBTTagCompound smokeData = new NBTTagCompound();
+					smokeData.setString("type", "tower");
+					smokeData.setFloat("lift", 2F);
+					smokeData.setFloat("base", 0.5F);
+					smokeData.setFloat("max", 2F);
+					smokeData.setFloat("strafe", 0.025F);
+					smokeData.setInteger("life", 150 + worldObj.rand.nextInt(20));
+					smokeData.setInteger("color", 0x202020);
+
+					smokeData.setDouble("posX", xCoord + 0.5);
+					smokeData.setDouble("posZ", zCoord + 0.5);
+					smokeData.setDouble("posY", yCoord + 11);
+
+					MainRegistry.proxy.effectNT(smokeData);*/
+				}
 			}
 		}
 	}
+	
+	@Override public int getFloorCount() { return 2 * 2; }
+	@Override public BlockPos getFloorPosFromIndex(int index) { return this.standardFloor3x3(index); }
 
 	public DirPos[] getConPos() {
 		return new DirPos[] {

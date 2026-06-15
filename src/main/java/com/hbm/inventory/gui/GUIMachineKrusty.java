@@ -12,7 +12,7 @@ import com.hbm.module.NumberDisplay;
 import com.hbm.packet.PacketDispatcher;
 import com.hbm.packet.toserver.NBTControlPacket;
 import com.hbm.tileentity.machine.TileEntityMachineKrusty;
-import com.hbm.render.util.GaugeUtil;
+//import com.hbm.render.util.GaugeUtil;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.PositionedSoundRecord;
@@ -142,7 +142,7 @@ public class GUIMachineKrusty extends GuiInfoContainer {
 
 		this.drawInfoPanel(guiLeft - 14, guiTop + 61, 16, 16, 2);
 		
-		GaugeUtil.drawSmoothGauge(guiLeft + 121, guiTop + 106, this.zLevel, (double) krusty.tanks[0].getFill() / (double) krusty.tanks[0].getMaxFill(), 5, 2, 1, 0x7F0000);
+		//GaugeUtil.drawSmoothGauge(guiLeft + 121, guiTop + 106, this.zLevel, (double) krusty.tanks[0].getFill() / (double) krusty.tanks[0].getMaxFill(), 5, 2, 1, 0x7F0000);
 		
 		int powerHeight = (int) (krusty.power * 53 / krusty.maxPower);
 		drawTexturedModalRect(guiLeft + 143, guiTop + 69 - powerHeight, 176, 52 - powerHeight, 16, powerHeight);

@@ -47,7 +47,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 					.inputItems(new ComparableStack(ModItems.circuit, 1, EnumCircuitType.SILICON),
 							new ComparableStack(ModItems.plate_polymer, 3),
 							new OreDictStack(GOLD.wireFine(), 4)).setPools(POOL_PREFIX_528 + "chip"),
-					DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), 50, GeneralConfig.enableExpensiveMode ? 10 : 90);
+					DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
 			
 			registerPair(new GenericRecipe("precass.chip_bismoid").setup(200, 1_000L)
 					.inputItems(new ComparableStack(ModItems.circuit, 4, EnumCircuitType.SILICON),
@@ -55,7 +55,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 							new OreDictStack(ANY_BISMOID.nugget(), 2),
 							new OreDictStack(GOLD.wireFine(), 4))
 					.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 1_000)).setPools(POOL_PREFIX_528 + "chip_bismoid"),
-					DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP_BISMOID), 50, GeneralConfig.enableExpensiveMode ? 10 : 75);
+					DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP_BISMOID), 50, GeneralConfig.enableExpensiveMode ? 25 : 75);
 
 		registerPair(new GenericRecipe("precass.chip_quantum").setup(300, 20_000L)
 				.inputItems(new ComparableStack(ModItems.circuit, 8, EnumCircuitType.SILICON),
@@ -64,14 +64,14 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.pellet_charged, 4),
 						new OreDictStack(GOLD.wireFine(), 8))
 				.inputFluids(new FluidStack(Fluids.HELIUM4, 4_000)).setPools(POOL_PREFIX_528 + "chip_quantum"),
-				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP_QUANTUM), 50, GeneralConfig.enableExpensiveMode ? 10 : 50);
+				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP_QUANTUM), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
 			
 		registerPair(new GenericRecipe("precass.atomic_clock").setup(200, 2_000L)
 					.inputItems(new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CHIP),
 						new OreDictStack(ANY_PLASTIC.ingot(), 4),
 						new OreDictStack(ZR.wireFine(), 8),
 						new OreDictStack(SR.dust(), 1)).setPools(POOL_PREFIX_528 + "strontium"),
-				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ATOMIC_CLOCK), 50, GeneralConfig.enableExpensiveMode ? 10 : 50);
+				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ATOMIC_CLOCK), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
 			
 			addFirstUpgrade(ModItems.upgrade_speed_1, ModItems.upgrade_speed_2, "precass.upgrade_speed_ii");
 			addSecondUpgrade(ModItems.upgrade_speed_2, ModItems.upgrade_speed_3, "precass.upgrade_speed_iii");
@@ -90,7 +90,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 							new OreDictStack(BIGMT.ingot(), 16),
 							new OreDictStack(ANY_HARDPLASTIC.ingot(), 16),
 							new ComparableStack(ModItems.circuit, 16, EnumCircuitType.ADVANCED)),
-					new ItemStack(ModItems.upgrade_overdrive_1), 10, GeneralConfig.enableExpensiveMode ? 10 : 50);
+					new ItemStack(ModItems.upgrade_overdrive_1), 10, GeneralConfig.enableExpensiveMode ? 50 : 50);
 			registerPair(new GenericRecipe("precass.upgrade_overdive_ii").setup(600, 5_000)
 					.inputItems(new ComparableStack(ModItems.upgrade_overdrive_1, 1),
 							new ComparableStack(ModItems.upgrade_speed_3, 1),
@@ -98,7 +98,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 							new OreDictStack(BIGMT.ingot(), 16),
 							new ComparableStack(ModItems.ingot_cft, 8),
 							new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CAPACITOR_BOARD)),
-					new ItemStack(ModItems.upgrade_overdrive_2), 10, GeneralConfig.enableExpensiveMode ? 10 : 50);
+					new ItemStack(ModItems.upgrade_overdrive_2), 10, GeneralConfig.enableExpensiveMode ? 50 : 50);
 			registerPair(new GenericRecipe("precass.upgrade_overdive_iii").setup(1_200, 100_000)
 					.inputItems(new ComparableStack(ModItems.upgrade_overdrive_2, 1),
 							new ComparableStack(ModItems.upgrade_speed_3, 1),
@@ -106,7 +106,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 							new OreDictStack(ANY_BISMOIDBRONZE.ingot(), 16),
 							new ComparableStack(ModItems.ingot_cft, 16),
 							new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BISMOID)),
-					new ItemStack(ModItems.upgrade_overdrive_3), 5, GeneralConfig.enableExpensiveMode ? 10 : 50);
+					new ItemStack(ModItems.upgrade_overdrive_3), 5, GeneralConfig.enableExpensiveMode ? 50 : 50);
 		}
 		
 		int min = 1_200;
@@ -119,7 +119,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.upgrade_speed_1),
 						new OreDictStack(PB.wireFine(), 16))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 1_000)),
-				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER), 10, GeneralConfig.enableExpensiveMode ? 50 : 90);
+				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER), 10, GeneralConfig.enableExpensiveMode ? 75 : 25);
 
 		registerPair(new GenericRecipe("precass.controller_advanced").setup(600, 25_000)
 				.inputItems(new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CHIP_BISMOID),
@@ -129,7 +129,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.upgrade_speed_3),
 						new OreDictStack(PB.wireFine(), 24))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 4_000)),
-				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_ADVANCED), 10, GeneralConfig.enableExpensiveMode ? 33 : 75);
+				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_ADVANCED), 10, GeneralConfig.enableExpensiveMode ? 50 : 75);
 
 		registerPair(new GenericRecipe("precass.controller_quantum").setup(600, 250_000)
 				.inputItems(new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CHIP_QUANTUM),
@@ -139,7 +139,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.upgrade_overdrive_1),
 						new OreDictStack(PB.wireFine(), 32))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 6_000)),
-				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_QUANTUM), 5, GeneralConfig.enableExpensiveMode ? 10 : 50);
+				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_QUANTUM), 5, GeneralConfig.enableExpensiveMode ? 25 : 50);
 
 		this.register(new GenericRecipe("precass.blueprints").setup(5 * min, 20_000L)
 				.inputItems(new ComparableStack(Items.paper, 16),

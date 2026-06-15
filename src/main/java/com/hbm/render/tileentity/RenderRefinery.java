@@ -23,6 +23,12 @@ public class RenderRefinery extends TileEntitySpecialRenderer {
 		
 		TileEntityMachineRefinery refinery = (TileEntityMachineRefinery) tileEntity;
 
+		if(refinery.tilted) {
+			GL11.glTranslated(0, -0.25, 0);
+			GL11.glRotated(10, 0, 0, 1);
+			GL11.glRotated(5, 0, 1, 0);
+		}
+
 		GL11.glShadeModel(GL11.GL_SMOOTH);
 		
 		if(refinery.hasExploded) {
