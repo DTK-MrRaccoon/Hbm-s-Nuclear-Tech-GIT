@@ -51,7 +51,10 @@ public class ItemWasteShort extends Item {
 		PLUTONIUM240("Plutonium-240", 350, 1000),	//funny fission fragments + pu241 / u238  + lead
 		PLUTONIUM241("Plutonium-241", 500, 1000),	//funny fission fragments + am241 / 242 / np237 + bismuth
 		AMERICIUM242("Americium-242", 750, 1000),	//funny fission fragments + californium / np237 + pu241
-		SCHRABIDIUM("Schrabidium-326", 1000, 1000); //funniest fission fragments
+		SCHRABIDIUM("Schrabidium-326", 1000, 1000), //funniest fission fragments
+		AMERICIUM241("Americium-241", 650, 1000),
+		PLUTONIUM242("Plutonium-242", 600, 1000),
+		AMERICIUM243("Americium-243", 700, 1000);
 		
 		public String name;
 		public int liquid;

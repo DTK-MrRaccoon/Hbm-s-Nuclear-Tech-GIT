@@ -126,6 +126,14 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 						new ItemStack(ModItems.nuclear_waste_tiny, 3))
 				.setIconToFirstIngredient());
 
+		this.register((PUREXRecipe) new PUREXRecipe("purex.zirnoxheu234").setup(100, zirnoxPower).setNameWrapper("purex.recycle").setGroup(autoZirnox, this)
+				.inputItems(new ComparableStack(ModItems.waste_u234))
+				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
+				.outputItems(new ItemStack(ModItems.nugget_u234, 1),
+						new ItemStack(ModItems.nugget_u235, 4),
+						new ItemStack(ModItems.nuclear_waste_tiny, 1))
+				.setIconToFirstIngredient());
+
 		this.register((PUREXRecipe) new PUREXRecipe("purex.zirnoxheu235").setup(100, zirnoxPower).setNameWrapper("purex.recycle").setGroup(autoZirnox, this)
 				.inputItems(new ComparableStack(ModItems.waste_u235))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
@@ -362,6 +370,7 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.outputFluids(new FluidStack(Fluids.THORIUM_SALT, 16_000))
 				.outputItems(
 						new ChanceOutput(new ItemStack(ModItems.nugget_u233, 1), 0.5F),
+						new ChanceOutput(new ItemStack(ModItems.nugget_u234, 1), 0.05F),
 						new ChanceOutput(new ItemStack(ModItems.nuclear_waste_tiny, 1), 0.25F)));
 		
 		// Watz

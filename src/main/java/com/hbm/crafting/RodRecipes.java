@@ -36,6 +36,7 @@ public class RodRecipes {
 		addZIRNOXRod(ModItems.billet_mox_fuel, EnumZirnoxType.MOX_FUEL);
 		addZIRNOXRod(ModItems.billet_plutonium_fuel, EnumZirnoxType.PLUTONIUM_FUEL);
 		addZIRNOXRod(U233, EnumZirnoxType.U233_FUEL);
+		addZIRNOXRod(U234, EnumZirnoxType.U234);
 		addZIRNOXRod(U235, EnumZirnoxType.U235_FUEL);
 		addZIRNOXRod(ModItems.billet_les, EnumZirnoxType.LES_FUEL);
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rod_zirnox, 1, EnumZirnoxType.LITHIUM.ordinal()), new Object[] { ModItems.rod_zirnox_empty, LI.ingot(), LI.ingot() });
@@ -47,6 +48,7 @@ public class RodRecipes {
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_mox, 2, 1), new Object[] { ModItems.rod_zirnox_mox_fuel_depleted });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_plutonium, 2, 1), new Object[] { ModItems.rod_zirnox_plutonium_fuel_depleted });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_u233, 2, 1), new Object[] { ModItems.rod_zirnox_u233_fuel_depleted });
+		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_u234, 2, 1), new Object[] { ModItems.rod_zirnox_u234_depleted });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_u235, 2, 1), new Object[] { ModItems.rod_zirnox_u235_fuel_depleted });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_schrabidium, 2, 1), new Object[] { ModItems.rod_zirnox_les_fuel_depleted });
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.waste_zfb_mox, 2, 1), new Object[] { ModItems.rod_zirnox_zfb_mox_depleted });
@@ -120,10 +122,12 @@ public class RodRecipes {
 		addRBMKRod(PURG, ModItems.rbmk_fuel_mep);
 		addRBMKRod(PU239, ModItems.rbmk_fuel_hep239);
 		addRBMKRod(PU241, ModItems.rbmk_fuel_hep241);
+		addRBMKRod(PU242, ModItems.rbmk_fuel_hep242);
 		addRBMKRod(ModItems.billet_americium_fuel, ModItems.rbmk_fuel_lea);
 		addRBMKRod(AMRG, ModItems.rbmk_fuel_mea);
 		addRBMKRod(AM241, ModItems.rbmk_fuel_hea241);
 		addRBMKRod(AM242, ModItems.rbmk_fuel_hea242);
+		addRBMKRod(AM243, ModItems.rbmk_fuel_hea243);
 		addRBMKRod(ModItems.billet_neptunium_fuel, ModItems.rbmk_fuel_men);
 		addRBMKRod(NP237, ModItems.rbmk_fuel_hen);
 		addRBMKRod(ModItems.billet_po210be, ModItems.rbmk_fuel_po210be);

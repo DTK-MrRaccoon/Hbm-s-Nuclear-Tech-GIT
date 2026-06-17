@@ -30,6 +30,7 @@ public class FuelPoolRecipes extends SerializableRecipe {
 		recipes.put(new ComparableStack(ModItems.waste_mox, 1, 1), new ItemStack(ModItems.waste_mox));
 		recipes.put(new ComparableStack(ModItems.waste_plutonium, 1, 1), new ItemStack(ModItems.waste_plutonium));
 		recipes.put(new ComparableStack(ModItems.waste_u233, 1, 1), new ItemStack(ModItems.waste_u233));
+		recipes.put(new ComparableStack(ModItems.waste_u234, 1, 1), new ItemStack(ModItems.waste_u234));
 		recipes.put(new ComparableStack(ModItems.waste_u235, 1, 1), new ItemStack(ModItems.waste_u235));
 		recipes.put(new ComparableStack(ModItems.waste_schrabidium, 1, 1), new ItemStack(ModItems.waste_schrabidium));
 		recipes.put(new ComparableStack(ModItems.waste_zfb_mox, 1, 1), new ItemStack(ModItems.waste_zfb_mox));
