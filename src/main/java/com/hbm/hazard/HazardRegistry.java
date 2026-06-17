@@ -43,6 +43,7 @@ public class HazardRegistry {
 	//AC227		            22a		β−	030.00Rad/s Spicy
 	//TH232		14,000,000,000a		α	000.10Rad/s
 	//U233		       160,000a		α	005.00Rad/s
+	//U234                 245,000a		α	003.25Rad/s
 	//U235		   700,000,000a		α	001.00Rad/s
 	//U238		 4,500,000,000a		α	000.25Rad/s
 	//NP237		     2,100,000a		α	002.50Rad/s
@@ -50,8 +51,10 @@ public class HazardRegistry {
 	//PU239		        24,000a		α	005.00Rad/s
 	//PU240		         6,600a		α	007.50Rad/s
 	//PU241		            14a		β−	025.00Rad/s	Spicy
+	//PU242                375,000a		α	000.33Rad/s
 	//AM241		           432a		α	008.50Rad/s
 	//AM242		           141a		β−	009.50Rad/s
+	//AM243                  7,370a		α	000.50Rad/s
 
 	//simplified groups for ReC compat
 	public static final float gen_S = 10_000F;
@@ -86,6 +89,7 @@ public class HazardRegistry {
 	public static final float thf = 1.75F;
 	public static final float u = 0.35F;
 	public static final float u233 = 5.0F;
+	public static final float u234 = 3.25F;
 	public static final float u235 = 1.0F;
 	public static final float u238 = 0.25F;
 	public static final float uf = 0.5F;
@@ -98,9 +102,11 @@ public class HazardRegistry {
 	public static final float pu239 = 5.0F;
 	public static final float pu240 = 7.5F;
 	public static final float pu241 = 25.0F;
+	public static final float pu242 = 0.33F;
 	public static final float puf = 4.25F;
 	public static final float am241 = 8.5F;
 	public static final float am242 = 9.5F;
+	public static final float am243 = 0.5F;
 	public static final float amrg = 9.0F;
 	public static final float amf = 4.75F;
 	public static final float mox = 2.5F;

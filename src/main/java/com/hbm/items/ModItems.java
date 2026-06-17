@@ -80,6 +80,7 @@ public class ModItems {
 	public static Item ingot_th232;
 	public static Item ingot_uranium;
 	public static Item ingot_u233;
+	public static Item ingot_u234;
 	public static Item ingot_u235;
 	public static Item ingot_u238;
 	public static Item ingot_u238m2;
@@ -88,9 +89,11 @@ public class ModItems {
 	public static Item ingot_pu239;
 	public static Item ingot_pu240;
 	public static Item ingot_pu241;
+	public static Item ingot_pu242;
 	public static Item ingot_pu_mix;
 	public static Item ingot_am241;
 	public static Item ingot_am242;
+	public static Item ingot_am243;
 	public static Item ingot_am_mix;
 	public static Item ingot_neptunium;
 	public static Item ingot_polonium;
@@ -217,6 +220,7 @@ public class ModItems {
 
 	public static Item billet_uranium;
 	public static Item billet_u233;
+	public static Item billet_u234;
 	public static Item billet_u235;
 	public static Item billet_u238;
 	public static Item billet_uzh;
@@ -226,9 +230,11 @@ public class ModItems {
 	public static Item billet_pu239;
 	public static Item billet_pu240;
 	public static Item billet_pu241;
+	public static Item billet_pu242;
 	public static Item billet_pu_mix;
 	public static Item billet_am241;
 	public static Item billet_am242;
+	public static Item billet_am243;
 	public static Item billet_am_mix;
 	public static Item billet_neptunium;
 	public static Item billet_polonium;
@@ -272,6 +278,7 @@ public class ModItems {
 	public static Item nugget_th232;
 	public static Item nugget_uranium;
 	public static Item nugget_u233;
+	public static Item nugget_u234;
 	public static Item nugget_u235;
 	public static Item nugget_u238;
 	public static Item nugget_plutonium;
@@ -279,9 +286,11 @@ public class ModItems {
 	public static Item nugget_pu239;
 	public static Item nugget_pu240;
 	public static Item nugget_pu241;
+	public static Item nugget_pu242;
 	public static Item nugget_pu_mix;
 	public static Item nugget_am241;
 	public static Item nugget_am242;
+	public static Item nugget_am243;
 	public static Item nugget_am_mix;
 	public static Item nugget_neptunium;
 	public static Item nugget_polonium;
@@ -2245,6 +2254,7 @@ public class ModItems {
 		ingot_th232 = new Item().setUnlocalizedName("ingot_th232").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_th232");
 		ingot_uranium = new Item().setUnlocalizedName("ingot_uranium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_uranium");
 		ingot_u233 = new Item().setUnlocalizedName("ingot_u233").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_u233");
+		ingot_u234 = new Item().setUnlocalizedName("ingot_u234").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_u234");
 		ingot_u235 = new Item().setUnlocalizedName("ingot_u235").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_u235");
 		ingot_u238 = new Item().setUnlocalizedName("ingot_u238").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_u238");
 		ingot_u238m2 = new ItemUnstable(350, 200).setUnlocalizedName("ingot_u238m2").setCreativeTab(null).setTextureName(RefStrings.MODID + ":ingot_u238m2");
@@ -2253,9 +2263,11 @@ public class ModItems {
 		ingot_pu239 = new Item().setUnlocalizedName("ingot_pu239").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_pu239");
 		ingot_pu240 = new Item().setUnlocalizedName("ingot_pu240").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_pu240");
 		ingot_pu241 = new Item().setUnlocalizedName("ingot_pu241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_pu241");
+		ingot_pu242 = new Item().setUnlocalizedName("ingot_pu242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_pu242");
 		ingot_pu_mix = new Item().setUnlocalizedName("ingot_pu_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_pu_mix");
 		ingot_am241 = new Item().setUnlocalizedName("ingot_am241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_am241");
 		ingot_am242 = new Item().setUnlocalizedName("ingot_am242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_am242");
+		ingot_am243 = new Item().setUnlocalizedName("ingot_am243").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_am243");
 		ingot_am_mix = new Item().setUnlocalizedName("ingot_am_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_am_mix");
 		ingot_neptunium = new ItemCustomLore().setUnlocalizedName("ingot_neptunium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_neptunium");
 		ingot_polonium = new Item().setUnlocalizedName("ingot_polonium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_polonium");
@@ -2356,6 +2368,7 @@ public class ModItems {
 
 		billet_uranium = new Item().setUnlocalizedName("billet_uranium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_uranium");
 		billet_u233 = new Item().setUnlocalizedName("billet_u233").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_u233");
+		billet_u234 = new Item().setUnlocalizedName("billet_u234").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_u234");
 		billet_u235 = new Item().setUnlocalizedName("billet_u235").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_u235");
 		billet_u238 = new Item().setUnlocalizedName("billet_u238").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_u238");
 		billet_uzh = new Item().setUnlocalizedName("billet_uzh").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_uzh");
@@ -2365,9 +2378,11 @@ public class ModItems {
 		billet_pu239 = new Item().setUnlocalizedName("billet_pu239").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_pu239");
 		billet_pu240 = new Item().setUnlocalizedName("billet_pu240").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_pu240");
 		billet_pu241 = new Item().setUnlocalizedName("billet_pu241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_pu241");
+		billet_pu242 = new Item().setUnlocalizedName("billet_pu242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_pu242");
 		billet_pu_mix = new Item().setUnlocalizedName("billet_pu_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_pu_mix");
 		billet_am241 = new Item().setUnlocalizedName("billet_am241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_am241");
 		billet_am242 = new Item().setUnlocalizedName("billet_am242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_am242");
+		billet_am243 = new Item().setUnlocalizedName("billet_am243").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_am243");
 		billet_am_mix = new Item().setUnlocalizedName("billet_am_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_am_mix");
 		billet_neptunium = new Item().setUnlocalizedName("billet_neptunium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_neptunium");
 		billet_polonium = new Item().setUnlocalizedName("billet_polonium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":billet_polonium");
@@ -2509,6 +2524,7 @@ public class ModItems {
 		nugget_th232 = new Item().setUnlocalizedName("nugget_th232").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_th232");
 		nugget_uranium = new Item().setUnlocalizedName("nugget_uranium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_uranium");
 		nugget_u233 = new Item().setUnlocalizedName("nugget_u233").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_u233");
+		nugget_u234 = new Item().setUnlocalizedName("nugget_u234").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_u234");
 		nugget_u235 = new Item().setUnlocalizedName("nugget_u235").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_u235");
 		nugget_u238 = new Item().setUnlocalizedName("nugget_u238").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_u238");
 		nugget_plutonium = new Item().setUnlocalizedName("nugget_plutonium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_plutonium");
@@ -2516,9 +2532,11 @@ public class ModItems {
 		nugget_pu239 = new Item().setUnlocalizedName("nugget_pu239").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_pu239");
 		nugget_pu240 = new Item().setUnlocalizedName("nugget_pu240").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_pu240");
 		nugget_pu241 = new Item().setUnlocalizedName("nugget_pu241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_pu241");
+		nugget_pu242 = new Item().setUnlocalizedName("nugget_pu242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_pu242");
 		nugget_pu_mix = new Item().setUnlocalizedName("nugget_pu_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_pu_mix");
 		nugget_am241 = new Item().setUnlocalizedName("nugget_am241").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_am241");
 		nugget_am242 = new Item().setUnlocalizedName("nugget_am242").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_am242");
+		nugget_am243 = new Item().setUnlocalizedName("nugget_am243").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_am243");
 		nugget_am_mix = new Item().setUnlocalizedName("nugget_am_mix").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_am_mix");
 		nugget_neptunium = new Item().setUnlocalizedName("nugget_neptunium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_neptunium");
 		nugget_polonium = new Item().setUnlocalizedName("nugget_polonium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":nugget_polonium");
@@ -5049,6 +5067,7 @@ public class ModItems {
 		//Ingots
 		GameRegistry.registerItem(ingot_uranium, ingot_uranium.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_u233, ingot_u233.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_u234, ingot_u234.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_u235, ingot_u235.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_u238, ingot_u238.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_u238m2, ingot_u238m2.getUnlocalizedName());
@@ -5058,9 +5077,11 @@ public class ModItems {
 		GameRegistry.registerItem(ingot_pu239, ingot_pu239.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_pu240, ingot_pu240.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_pu241, ingot_pu241.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_pu242, ingot_pu242.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_pu_mix, ingot_pu_mix.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_am241, ingot_am241.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_am242, ingot_am242.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_am243, ingot_am243.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_am_mix, ingot_am_mix.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_neptunium, ingot_neptunium.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_polonium, ingot_polonium.getUnlocalizedName());
@@ -5164,6 +5185,7 @@ public class ModItems {
 		//Billets
 		GameRegistry.registerItem(billet_uranium, billet_uranium.getUnlocalizedName());
 		GameRegistry.registerItem(billet_u233, billet_u233.getUnlocalizedName());
+		GameRegistry.registerItem(billet_u234, billet_u234.getUnlocalizedName());
 		GameRegistry.registerItem(billet_u235, billet_u235.getUnlocalizedName());
 		GameRegistry.registerItem(billet_u238, billet_u238.getUnlocalizedName());
 		GameRegistry.registerItem(billet_uzh, billet_uzh.getUnlocalizedName());
@@ -5173,9 +5195,11 @@ public class ModItems {
 		GameRegistry.registerItem(billet_pu239, billet_pu239.getUnlocalizedName());
 		GameRegistry.registerItem(billet_pu240, billet_pu240.getUnlocalizedName());
 		GameRegistry.registerItem(billet_pu241, billet_pu241.getUnlocalizedName());
+		GameRegistry.registerItem(billet_pu242, billet_pu242.getUnlocalizedName());
 		GameRegistry.registerItem(billet_pu_mix, billet_pu_mix.getUnlocalizedName());
 		GameRegistry.registerItem(billet_am241, billet_am241.getUnlocalizedName());
 		GameRegistry.registerItem(billet_am242, billet_am242.getUnlocalizedName());
+		GameRegistry.registerItem(billet_am243, billet_am243.getUnlocalizedName());
 		GameRegistry.registerItem(billet_am_mix, billet_am_mix.getUnlocalizedName());
 		GameRegistry.registerItem(billet_neptunium, billet_neptunium.getUnlocalizedName());
 		GameRegistry.registerItem(billet_polonium, billet_polonium.getUnlocalizedName());
@@ -5434,6 +5458,7 @@ public class ModItems {
 		//Nuggets
 		GameRegistry.registerItem(nugget_uranium, nugget_uranium.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_u233, nugget_u233.getUnlocalizedName());
+		GameRegistry.registerItem(nugget_u234, nugget_u234.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_u235, nugget_u235.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_u238, nugget_u238.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_th232, nugget_th232.getUnlocalizedName());
@@ -5442,9 +5467,11 @@ public class ModItems {
 		GameRegistry.registerItem(nugget_pu239, nugget_pu239.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_pu240, nugget_pu240.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_pu241, nugget_pu241.getUnlocalizedName());
+		GameRegistry.registerItem(nugget_pu242, nugget_pu242.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_pu_mix, nugget_pu_mix.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_am241, nugget_am241.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_am242, nugget_am242.getUnlocalizedName());
+		GameRegistry.registerItem(nugget_am243, nugget_am243.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_am_mix, nugget_am_mix.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_neptunium, nugget_neptunium.getUnlocalizedName());
 		GameRegistry.registerItem(nugget_polonium, nugget_polonium.getUnlocalizedName());

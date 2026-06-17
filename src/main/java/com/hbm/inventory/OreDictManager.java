@@ -126,6 +126,7 @@ public class OreDictManager {
 	 */
 	public static final DictFrame U = new DictFrame(Compat.isModLoaded(Compat.MOD_GT6) ? "Uraninite" : "Uranium");
 	public static final DictFrame U233 = new DictFrame("Uranium233", "U233");
+	public static final DictFrame U234 = new DictFrame("Uranium234", "U234");
 	public static final DictFrame U235 = new DictFrame("Uranium235", "U235");
 	public static final DictFrame U238 = new DictFrame("Uranium238", "U238");
 	public static final DictFrame TH232 = new DictFrame("Thorium232", "Th232", "Thorium");
@@ -135,8 +136,10 @@ public class OreDictManager {
 	public static final DictFrame PU239 = new DictFrame("Plutonium239", "Pu239");
 	public static final DictFrame PU240 = new DictFrame("Plutonium240", "Pu240");
 	public static final DictFrame PU241 = new DictFrame("Plutonium241", "Pu241");
+	public static final DictFrame PU242 = new DictFrame("Plutonium242", "Pu242");
 	public static final DictFrame AM241 = new DictFrame("Americium241", "Am241");
 	public static final DictFrame AM242 = new DictFrame("Americium242", "Am242");
+	public static final DictFrame AM243 = new DictFrame("Americium243", "Am243");
 	public static final DictFrame AMRG = new DictFrame("AmericiumRG");
 	public static final DictFrame NP237 = new DictFrame("Neptunium237", "Np237", "Neptunium");
 	public static final DictFrame PO210 = new DictFrame("Polonium210", "Po210", "Polonium");
@@ -346,6 +349,7 @@ public class OreDictManager {
 		 */
 		U		.rad(HazardRegistry.u)								.nugget(nugget_uranium)		.billet(billet_uranium)		.ingot(ingot_uranium)		.dust(powder_uranium)									.block(block_uranium)		.ore(ore_uranium, ore_uranium_scorched, ore_gneiss_uranium, ore_gneiss_uranium_scorched, ore_nether_uranium, ore_nether_uranium_scorched, ore_sellafield_uranium_scorched)	.oreNether(ore_nether_uranium, ore_nether_uranium_scorched);
 		U233	.rad(HazardRegistry.u233)							.nugget(nugget_u233)		.billet(billet_u233)		.ingot(ingot_u233)																	.block(block_u233);
+		U234	.rad(HazardRegistry.u234)							.nugget(nugget_u234)		.billet(billet_u234)		.ingot(ingot_u234);
 		U235	.rad(HazardRegistry.u235)							.nugget(nugget_u235)		.billet(billet_u235)		.ingot(ingot_u235)																	.block(block_u235);
 		U238	.rad(HazardRegistry.u238)							.nugget(nugget_u238)		.billet(billet_u238)		.ingot(ingot_u238)																	.block(block_u238);
 		TH232	.rad(HazardRegistry.th232)							.nugget(nugget_th232)		.billet(billet_th232)		.ingot(ingot_th232)			.dust(powder_thorium)									.block(block_thorium)		.ore(ore_thorium);
@@ -355,8 +359,10 @@ public class OreDictManager {
 		PU239	.rad(HazardRegistry.pu239)							.nugget(nugget_pu239)		.billet(billet_pu239)		.ingot(ingot_pu239)																	.block(block_pu239);
 		PU240	.rad(HazardRegistry.pu240)							.nugget(nugget_pu240)		.billet(billet_pu240)		.ingot(ingot_pu240)																	.block(block_pu240);
 		PU241	.rad(HazardRegistry.pu241)							.nugget(nugget_pu241)		.billet(billet_pu241)		.ingot(ingot_pu241);																//.block(block_pu241);
+		PU242	.rad(HazardRegistry.pu242)							.nugget(nugget_pu242)		.billet(billet_pu242)		.ingot(ingot_pu242);
 		AM241	.rad(HazardRegistry.am241)							.nugget(nugget_am241)		.billet(billet_am241)		.ingot(ingot_am241);
 		AM242	.rad(HazardRegistry.am242)							.nugget(nugget_am242)		.billet(billet_am242)		.ingot(ingot_am242);
+		AM243	.rad(HazardRegistry.am243)							.nugget(nugget_am243)		.billet(billet_am243)		.ingot(ingot_am243);
 		AMRG	.rad(HazardRegistry.amrg)							.nugget(nugget_am_mix)		.billet(billet_am_mix)		.ingot(ingot_am_mix);
 		NP237	.rad(HazardRegistry.np237)							.nugget(nugget_neptunium)	.billet(billet_neptunium)	.ingot(ingot_neptunium)		.dust(powder_neptunium)									.block(block_neptunium);
 		PO210	.rad(HazardRegistry.po210)	.hot(3)					.nugget(nugget_polonium)	.billet(billet_polonium)	.ingot(ingot_polonium)		.dust(powder_polonium)									.block(block_polonium);

@@ -87,8 +87,10 @@ public class MineralRecipes {
 		add1To9Pair(ModItems.ingot_arsenic, ModItems.nugget_arsenic);
 
 		add1To9Pair(ModItems.ingot_pu241, ModItems.nugget_pu241);
+		add1To9Pair(ModItems.ingot_pu242, ModItems.nugget_pu242);
 		add1To9Pair(ModItems.ingot_am241, ModItems.nugget_am241);
 		add1To9Pair(ModItems.ingot_am242, ModItems.nugget_am242);
+		add1To9Pair(ModItems.ingot_am243, ModItems.nugget_am243);
 		add1To9Pair(ModItems.ingot_am_mix, ModItems.nugget_am_mix);
 		add1To9Pair(ModItems.ingot_americium_fuel, ModItems.nugget_americium_fuel);
 		
@@ -115,6 +117,7 @@ public class MineralRecipes {
 		addBillet(ModItems.billet_sr90,					ModItems.ingot_sr90,				ModItems.nugget_sr90, SR90.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_uranium,				ModItems.ingot_uranium,				ModItems.nugget_uranium, U.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_u233,					ModItems.ingot_u233,				ModItems.nugget_u233, U233.all(MaterialShapes.NUGGET));
+		addBillet(ModItems.billet_u234,					ModItems.ingot_u234,				ModItems.nugget_u234, U234.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_u235,					ModItems.ingot_u235,				ModItems.nugget_u235, U235.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_u238,					ModItems.ingot_u238,				ModItems.nugget_u238, U238.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_th232,				ModItems.ingot_th232,				ModItems.nugget_th232, TH232.all(MaterialShapes.NUGGET));
@@ -123,9 +126,11 @@ public class MineralRecipes {
 		addBillet(ModItems.billet_pu239,				ModItems.ingot_pu239,				ModItems.nugget_pu239, PU239.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_pu240,				ModItems.ingot_pu240,				ModItems.nugget_pu240, PU240.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_pu241,				ModItems.ingot_pu241,				ModItems.nugget_pu241, PU241.all(MaterialShapes.NUGGET));
+		addBillet(ModItems.billet_pu242,				ModItems.ingot_pu242,				ModItems.nugget_pu242, PU242.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_pu_mix,				ModItems.ingot_pu_mix,				ModItems.nugget_pu_mix);
 		addBillet(ModItems.billet_am241,				ModItems.ingot_am241,				ModItems.nugget_am241, AM241.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_am242,				ModItems.ingot_am242,				ModItems.nugget_am242, AM242.all(MaterialShapes.NUGGET));
+		addBillet(ModItems.billet_am243,				ModItems.ingot_am243,				ModItems.nugget_am243, AM243.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_am_mix,				ModItems.ingot_am_mix,				ModItems.nugget_am_mix);
 		addBillet(ModItems.billet_neptunium,			ModItems.ingot_neptunium,			ModItems.nugget_neptunium, NP237.all(MaterialShapes.NUGGET));
 		addBillet(ModItems.billet_polonium,				ModItems.ingot_polonium,			ModItems.nugget_polonium, PO210.all(MaterialShapes.NUGGET));
@@ -205,6 +210,7 @@ public class MineralRecipes {
 		
 		/*addBilletToIngot(ModItems.ingot_uranium, ModItems.billet_uranium);
 		addBilletToIngot(ModItems.ingot_u233, ModItems.billet_u233);
+		addBilletToIngot(ModItems.ingot_u234, ModItems.billet_u234);
 		addBilletToIngot(ModItems.ingot_u235, ModItems.billet_u235);
 		addBilletToIngot(ModItems.ingot_u238, ModItems.billet_u238);
 		addBilletToIngot(ModItems.ingot_plutonium, ModItems.billet_plutonium);
@@ -212,9 +218,11 @@ public class MineralRecipes {
 		addBilletToIngot(ModItems.ingot_pu239, ModItems.billet_pu239);
 		addBilletToIngot(ModItems.ingot_pu240, ModItems.billet_pu240);
 		addBilletToIngot(ModItems.ingot_pu241, ModItems.billet_pu241);
+		addBilletToIngot(ModItems.ingot_pu242, ModItems.billet_pu242);
 		addBilletToIngot(ModItems.ingot_pu_mix, ModItems.billet_pu_mix);
 		addBilletToIngot(ModItems.ingot_am241, ModItems.billet_am241);
 		addBilletToIngot(ModItems.ingot_am242, ModItems.billet_am242);
+		addBilletToIngot(ModItems.ingot_am243, ModItems.billet_am243);
 		addBilletToIngot(ModItems.ingot_am_mix, ModItems.billet_am_mix);
 		addBilletToIngot(ModItems.ingot_uranium_fuel, ModItems.billet_uranium_fuel);
 		addBilletToIngot(ModItems.ingot_plutonium_fuel, ModItems.billet_plutonium_fuel);
@@ -375,6 +383,8 @@ public class MineralRecipes {
 		GameRegistry.addRecipe(new ItemStack(ModItems.nugget_uranium, 9), new Object[] { "#", '#', ModItems.ingot_uranium });
 		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_u233, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_u233 });
 		GameRegistry.addRecipe(new ItemStack(ModItems.nugget_u233, 9), new Object[] { "#", '#', ModItems.ingot_u233 });
+		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_u234, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_u234 });
+		GameRegistry.addRecipe(new ItemStack(ModItems.nugget_u234, 9), new Object[] { "#", '#', ModItems.ingot_u234 });
 		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_u235, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_u235 });
 		GameRegistry.addRecipe(new ItemStack(ModItems.nugget_u235, 9), new Object[] { "#", '#', ModItems.ingot_u235 });
 		GameRegistry.addRecipe(new ItemStack(ModItems.ingot_u238, 1), new Object[] { "###", "###", "###", '#', ModItems.nugget_u238 });
