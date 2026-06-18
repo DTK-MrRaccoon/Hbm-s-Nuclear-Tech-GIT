@@ -41,6 +41,7 @@ public class HazardRegistry {
 	//PO210		           138d		α	075.00Rad/s	Spicy
 	//RA226		         1,600a		α	007.50Rad/s
 	//AC227		            22a		β−	030.00Rad/s Spicy
+	//PA230			  17.4d		β-	100.00Rad/s
 	//TH232		14,000,000,000a		α	000.10Rad/s
 	//U233		       160,000a		α	005.00Rad/s
 	//U234                 245,000a		α	003.25Rad/s
@@ -85,6 +86,8 @@ public class HazardRegistry {
 	public static final float po210 = 75.0F;
 	public static final float ra226 = 7.5F;
 	public static final float ac227 = 30.0F;
+	public static final float pa230 = 100.0F;
+	public static final float pameu = 95.0F;
 	public static final float th232 = 0.1F;
 	public static final float thf = 1.75F;
 	public static final float u = 0.35F;
@@ -345,6 +348,9 @@ public class HazardRegistry {
 		HazardSystem.register(billet_ra226be, makeData(RADIATION, rabe * billet));
 		HazardSystem.register(billet_pu238be, makeData(RADIATION, pube * billet));
 
+		HazardSystem.register(nugget_pa230, makeData(RADIATION, pa230 * nugget));
+		HazardSystem.register(billet_pameu, makeData(RADIATION, pameu * billet));
+
 		registerRTGPellet(pellet_rtg, pu238 * rtg, 0, 3F);
 		registerRTGPellet(pellet_rtg_radium, ra226 * rtg, 0);
 		registerRTGPellet(pellet_rtg_weak, (pu238 + (u238 * 2)) * billet, 0);
@@ -392,6 +398,7 @@ public class HazardRegistry {
 		registerRBMKRod(rbmk_fuel_heu235, u235 * rod_rbmk, wst * rod_rbmk * 30F);
 		registerRBMKRod(rbmk_fuel_uzh, uzh * rod_rbmk, wst * rod_rbmk * 20F);
 		registerRBMKRod(rbmk_fuel_thmeu, thf * rod_rbmk, wst * rod_rbmk * 17.5F);
+		registerRBMKRod(rbmk_fuel_pameu, pameu * rod_rbmk, wst * rod_rbmk * 25F);
 		registerRBMKRod(rbmk_fuel_lep, puf * rod_rbmk, wst * rod_rbmk * 25F);
 		registerRBMKRod(rbmk_fuel_mep, purg * rod_rbmk, wst * rod_rbmk * 30F);
 		registerRBMKRod(rbmk_fuel_hep239, pu239 * rod_rbmk, wst * rod_rbmk * 32.5F);
@@ -428,6 +435,7 @@ public class HazardRegistry {
 		registerRBMKPellet(rbmk_pellet_heu235, u235 * billet, wst * billet * 30F);
 		registerRBMKPellet(rbmk_pellet_uzh, uzh * billet, wst * billet * 20F);
 		registerRBMKPellet(rbmk_pellet_thmeu, thf * billet, wst * billet * 17.5F);
+		registerRBMKPellet(rbmk_pellet_pameu, pameu * billet, wst * billet * 25F);
 		registerRBMKPellet(rbmk_pellet_lep, puf * billet, wst * billet * 25F);
 		registerRBMKPellet(rbmk_pellet_mep, purg * billet, wst * billet * 30F);
 		registerRBMKPellet(rbmk_pellet_hep239, pu239 * billet, wst * billet * 32.5F);

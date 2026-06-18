@@ -215,6 +215,22 @@ public class SILEXRecipes {
 					.addOut(new ItemStack(ModItems.nugget_u234), 1 + i * 2)
 					.addOut(new ItemStack(ModItems.nuclear_waste_long_tiny, 1, ItemWasteLong.WasteClass.THORIUM.ordinal()), 10 + 16 * i) );
 
+			// PAMEU //
+			recipes.put(new ComparableStack(ModItems.rbmk_pellet_pameu, 1, i), new SILEXRecipe(600, 100, 1)
+				.addOut(new ItemStack(ModItems.nugget_u233), 20 + i * 2)
+				.addOut(new ItemStack(ModItems.nugget_u235), 5 + i)
+				.addOut(new ItemStack(ModItems.nugget_pa230), 2 + i / 2)
+				.addOut(new ItemStack(ModItems.nuclear_waste_tiny), 73 - i * 4)
+			);
+
+			recipes.put(new ComparableStack(ModItems.rbmk_pellet_pameu, 1, i + 5), new SILEXRecipe(600, 100, 1)
+				.addOut(new ItemStack(ModItems.powder_xe135_tiny), 1)
+				.addOut(new ItemStack(ModItems.nugget_u233), 20 + i * 2)
+				.addOut(new ItemStack(ModItems.nugget_u235), 5 + i)
+				.addOut(new ItemStack(ModItems.nugget_pa230), 2 + i / 2)			
+				.addOut(new ItemStack(ModItems.nuclear_waste_tiny), 72 - i * 4)
+			);
+
 			// LEP //
 			recipes.put(new ComparableStack(ModItems.rbmk_pellet_lep, 1, i), new SILEXRecipe(600, 100, 1)
 					.addOut(new ItemStack(ModItems.nugget_plutonium_fuel), 84 - i * 14)

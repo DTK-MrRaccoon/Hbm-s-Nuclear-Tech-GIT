@@ -28,9 +28,11 @@ public class CyclotronRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 
+
+
 		/// LITHIUM START ///
 		int liA = 50;
-
+		makeRecipe(new ComparableStack(ModItems.part_lithium), new OreDictStack("dustThorium"), new ItemStack(ModItems.nugget_pa230), liA);
 		makeRecipe(new ComparableStack(ModItems.part_lithium), new OreDictStack("dustLithium"), new ItemStack(ModItems.powder_beryllium), liA);
 		makeRecipe(new ComparableStack(ModItems.part_lithium), new OreDictStack("dustBeryllium"), new ItemStack(ModItems.powder_boron), liA);
 		makeRecipe(new ComparableStack(ModItems.part_lithium), new OreDictStack("dustBoron"), new ItemStack(ModItems.powder_coal), liA);
