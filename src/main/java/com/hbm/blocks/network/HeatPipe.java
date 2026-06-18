@@ -13,6 +13,7 @@ import com.hbm.tileentity.network.TileEntityHeatPipe;
 import com.hbm.util.BobMathUtil;
 import com.hbm.util.i18n.I18nUtil;
 
+import api.hbm.block.IToolable;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
@@ -34,7 +35,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.RenderGameOverlayEvent.Pre;
 import net.minecraftforge.common.util.ForgeDirection;
 
-public class HeatPipe extends FluidDuctBase implements ILookOverlay, ITooltipProvider {
+public class HeatPipe extends FluidDuctBase implements ILookOverlay, ITooltipProvider, IToolable {
 
 	@SideOnly(Side.CLIENT) public IIcon iconStraight;
 	@SideOnly(Side.CLIENT) public IIcon iconEnd;
@@ -157,18 +158,30 @@ public class HeatPipe extends FluidDuctBase implements ILookOverlay, ITooltipPro
 				}
 				return true;
 			}
-			if(held.getItem() == ModItems.screwdriver && pipe.insulation > 0) {
-				if(!world.isRemote) {
-					Item dropItem = pipe.insulation == 1 ? ModItems.ingot_asbestos : ModItems.plate_polymer;
-					world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(dropItem)));
-					pipe.insulation = 0;
-					pipe.markDirty();
-					world.markBlockForUpdate(x, y, z);
-				}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean onScrew(World world, EntityPlayer player, int x, int y, int z, int side, float fX, float fY, float fZ, ToolType tool) {
+		if(tool != ToolType.SCREWDRIVER) return false;
+		
+		TileEntity te = world.getTileEntity(x, y, z);
+		if(!(te instanceof TileEntityHeatPipe)) return false;
+		
+		TileEntityHeatPipe pipe = (TileEntityHeatPipe) te;
+		
+		if(!world.isRemote) {
+			if(pipe.insulation > 0) {
+				Item dropItem = pipe.insulation == 1 ? ModItems.ingot_asbestos : ModItems.plate_polymer;
+				world.spawnEntityInWorld(new EntityItem(world, x + 0.5, y + 0.5, z + 0.5, new ItemStack(dropItem)));
+				pipe.insulation = 0;
+				pipe.markDirty();
+				world.markBlockForUpdate(x, y, z);
 				return true;
 			}
 		}
-		return false;
+		return true;
 	}
 
 	@Override

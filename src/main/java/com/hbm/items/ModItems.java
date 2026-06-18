@@ -3367,9 +3367,9 @@ public class ModItems {
 				.setTint(tintPlutonium).setUnlocalizedName("rbmk_fuel_hep241").setTextureName(RefStrings.MODID + ":rbmk_fuel_hep241");
 		rbmk_fuel_hep242 = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_hep242)
 				.setYield(100000000D)
-				.setStats(20)
-				.setFunction(EnumBurnFunc.LOG_TEN)
-				.setHeat(0.5D)
+				.setStats(25)
+				.setFunction(EnumBurnFunc.LINEAR)
+				.setHeat(0.35D)
 				.setMeltingPoint(2744)
 				.setNeutronTypes(NType.FAST, NType.FAST)
 				.setTint(tintPlutonium)
@@ -3407,7 +3407,7 @@ public class ModItems {
 				.setTint(tintAmericium).setUnlocalizedName("rbmk_fuel_hea242").setTextureName(RefStrings.MODID + ":rbmk_fuel_hea242");
 		rbmk_fuel_hea243 = (ItemRBMKRod) new ItemRBMKRod(rbmk_pellet_hea243)
 				.setYield(500000000D)
-				.setStats(45)
+				.setStats(55)
 				.setFunction(EnumBurnFunc.SQUARE_ROOT)
 				.setHeat(1.0D)
 				.setMeltingPoint(2386)
