@@ -438,6 +438,15 @@ public class PUREXRecipes extends GenericRecipes<PUREXRecipe> {
 				.outputFluids(new FluidStack(Fluids.WATZ, 1_000))
 				.setIconToFirstIngredient());
 
+		this.register((PUREXRecipe) new PUREXRecipe("purex.watzhep").setup(60, watzPower).setNameWrapper("purex.recycle").setGroup(autoWatz, this)
+				.inputItems(new ComparableStack(ModItems.watz_pellet_depleted, 1, EnumWatzType.HEP))
+				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))
+				.outputItems(new ItemStack(ModItems.nugget_am243, 4),
+						new ItemStack(ModItems.nugget_bismuth, 4),
+						new ItemStack(ModItems.nuclear_waste, 12))
+				.outputFluids(new FluidStack(Fluids.WATZ, 1_000))
+				.setIconToFirstIngredient());
+
 		this.register((PUREXRecipe) new PUREXRecipe("purex.watzlead").setup(60, watzPower).setNameWrapper("purex.recycle").setGroup(autoWatz, this)
 				.inputItems(new ComparableStack(ModItems.watz_pellet_depleted, 1, EnumWatzType.LEAD))
 				.inputFluids(new FluidStack(Fluids.KEROSENE, 500), new FluidStack(Fluids.NITRIC_ACID, 250))

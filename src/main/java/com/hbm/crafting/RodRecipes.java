@@ -148,12 +148,13 @@ public class RodRecipes {
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.rbmk_fuel_drx, 1), new Object[] { ModItems.rbmk_fuel_balefire, ModItems.particle_digamma });
 
 		addPellet(SA326,							EnumWatzType.SCHRABIDIUM);
-		addPellet(ModItems.ingot_hes,				EnumWatzType.HES);
-		addPellet(ModItems.ingot_schrabidium_fuel,	EnumWatzType.MES);
-		addPellet(ModItems.ingot_les,				EnumWatzType.LES);
+		addPellet(ModItems.ingot_hes,						EnumWatzType.HES);
+		addPellet(ModItems.ingot_schrabidium_fuel,				EnumWatzType.MES);
+		addPellet(ModItems.ingot_les,						EnumWatzType.LES);
 		addPellet(NP237,							EnumWatzType.HEN);
-		addPellet(ModItems.ingot_uranium_fuel,		EnumWatzType.MEU);
-		addPellet(ModItems.ingot_pu_mix,			EnumWatzType.MEP);
+		addPellet(ModItems.ingot_uranium_fuel,					EnumWatzType.MEU);
+		addPellet(ModItems.ingot_pu_mix,					EnumWatzType.MEP);
+		addPellet(ModItems.ingot_pu242,						EnumWatzType.HEP);
 		addPellet(PB,								EnumWatzType.LEAD);
 		addPellet(B,								EnumWatzType.BORON);
 		addPellet(U238,								EnumWatzType.DU);
