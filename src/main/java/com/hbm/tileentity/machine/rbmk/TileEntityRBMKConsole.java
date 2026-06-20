@@ -490,6 +490,9 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 				stats.add(EnumChatFormatting.RED + Fluids.fromID(this.data.getShort("hottype")).getLocalizedName() + " " +
 			this.data.getInteger("steam") + "/" + this.data.getInteger("maxSteam") + "mB");
 				break;
+			case COPPER:
+				stats.add(EnumChatFormatting.GOLD + "TU/t: " + this.data.getInteger("tuOutput"));
+				break;
 			}
 
 			if(data.getBoolean("moderated"))
@@ -513,7 +516,8 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 		BREEDER(100),
 		STORAGE(110),
 		COOLER(120),
-		HEATEX(130);
+		HEATEX(130),
+		COPPER(140);
 
 		public int offset;
 
@@ -683,6 +687,13 @@ public class TileEntityRBMKConsole extends TileEntityMachineBase implements ICon
 						data_table.put("slot" + k + "rodName", loadedItem.getItem().getUnlocalizedName());
 					}
 				}
+			}
+
+			if (te instanceof TileEntityRBMKCopper) {
+				TileEntityRBMKCopper copper = (TileEntityRBMKCopper) te;
+				data_table.put("tuOutput", column_data.getInteger("tuOutput"));
+				data_table.put("conversion", column_data.getDouble("conversion"));
+				data_table.put("maxTransfer", column_data.getInteger("maxTransfer"));
 			}
 
 			return new Object[] {data_table};

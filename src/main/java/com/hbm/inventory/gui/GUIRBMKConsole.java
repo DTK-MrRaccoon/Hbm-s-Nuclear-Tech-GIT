@@ -345,6 +345,7 @@ public class GUIRBMKConsole extends GuiScreen {
 			case REFLECTOR: break;
 			case OUTGASSER: break;
 			case BREEDER: break;
+			case COPPER: break;
 			
 			case CONTROL:
 				int color = col.data.getShort("color");

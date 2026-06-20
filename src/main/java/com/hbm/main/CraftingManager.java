@@ -688,7 +688,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube, 24), new Object[] { "CRC", 'C', CU.plateWelded(), 'R', ANY_RUBBER.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube_paintable, 4), new Object[] { "SAS", "A A", "SAS", 'S', STEEL.plate(), 'A', ModBlocks.pneumatic_tube});
 		addRecipeAuto(new ItemStack(ModBlocks.pipe_anchor, 2), new Object[] { "P", "P", "S", 'P', STEEL.pipe(), 'S', STEEL.ingot() });
-		addRecipeAuto(new ItemStack(ModBlocks.heat_pipe, 16), new Object[] { "CCC", "CBC", "CCC", 'C', CU.plateCast(), 'B', CU.block() });
+		addRecipeAuto(new ItemStack(ModBlocks.heat_pipe, 16), new Object[] { " C ", "CBC", " C ", 'C', CU.plateCast(), 'B', CU.block() });
 
 		addRecipeAuto(new ItemStack(ModItems.template_folder, 1), new Object[] { "LPL", "BPB", "LPL", 'P', Items.paper, 'L', "dye", 'B', "dye" });
 		addRecipeAuto(new ItemStack(ModItems.pellet_antimatter, 1), new Object[] { "###", "###", "###", '#', ModItems.cell_antimatter });
@@ -955,6 +955,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.rbmk_lever, 1), new Object[] { "R", "C", "B", 'R', ModBlocks.radio_torch_sender, 'B', ModBlocks.rbmk_display_blank, 'C', CU.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.rbmk_indicator, 1), new Object[] { "R", "C", "B", 'R', ModBlocks.radio_torch_receiver, 'B', ModBlocks.rbmk_display_blank, 'C', ModItems.coil_tungsten });
 		addRecipeAuto(new ItemStack(ModBlocks.rbmk_terminal, 1), new Object[] { "R ", "CD", "B ", 'R', ModBlocks.radio_torch_sender, 'B', ModBlocks.rbmk_display_blank, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ANALOG), 'D', ModItems.crt_display });
+		addRecipeAuto(new ItemStack(ModBlocks.rbmk_copper, 1), new Object[] { " C ", "CRC", " C ", 'C', CU.block(), 'R', ModBlocks.rbmk_blank });
 
 		addRecipeAuto(new ItemStack(ModItems.rtty_pager, 1), new Object[] { "R", "C", "S", 'R', ModBlocks.radio_torch_receiver, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.BASIC), 'S', STEEL.plate() });
 

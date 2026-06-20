@@ -925,6 +925,11 @@ public class AnvilRecipes extends SerializableRecipe {
 						new AnvilOutput(new ItemStack(ModBlocks.rbmk_blank, 1)),
 						new AnvilOutput(new ItemStack(ModBlocks.crate_steel, 2))
 				}).setTier(4));
+		constructionRecipes.add(new AnvilConstructionRecipe(
+				new ComparableStack(ModBlocks.rbmk_copper), new AnvilOutput[] {
+						new AnvilOutput(new ItemStack(ModBlocks.rbmk_blank, 1)),
+						new AnvilOutput(new ItemStack(ModBlocks.block_copper, 4))
+				}).setTier(4));
 
 		if(!GeneralConfig.enable528) {
 

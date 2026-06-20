@@ -1192,6 +1192,7 @@ public class ModBlocks {
 	public static Block rbmk_storage;
 	public static Block rbmk_cooler;
 	public static Block rbmk_heater;
+	public static Block rbmk_copper;
 	public static Block rbmk_console;
 	public static Block rbmk_crane_console;
 	public static Block rbmk_display_blank;
@@ -2324,6 +2325,7 @@ public class ModBlocks {
 		rbmk_storage = new RBMKStorage().setBlockName("rbmk_storage").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_storage");
 		rbmk_cooler = new RBMKCooler().setBlockName("rbmk_cooler").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_cooler");
 		rbmk_heater = new RBMKHeater().setBlockName("rbmk_heater").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_heater");
+		rbmk_copper = new RBMKCopper().setBlockName("rbmk_copper").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_copper");
 		rbmk_console = new RBMKConsole().setBlockName("rbmk_console").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_console");
 		rbmk_crane_console = new RBMKCraneConsole().setBlockName("rbmk_crane_console").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_crane_console");
 		rbmk_display_blank = new RBMKMiniPanelBase().setBlockName("rbmk_display_blank").setCreativeTab(MainRegistry.machineTab).setBlockTextureName(RefStrings.MODID + ":rbmk/rbmk_display");
@@ -3406,6 +3408,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(rbmk_storage, rbmk_storage.getUnlocalizedName());
 		GameRegistry.registerBlock(rbmk_cooler, rbmk_cooler.getUnlocalizedName());
 		GameRegistry.registerBlock(rbmk_heater, rbmk_heater.getUnlocalizedName());
+		GameRegistry.registerBlock(rbmk_copper, rbmk_copper.getUnlocalizedName());
 		GameRegistry.registerBlock(rbmk_console, rbmk_console.getUnlocalizedName());
 		GameRegistry.registerBlock(rbmk_crane_console, rbmk_crane_console.getUnlocalizedName());
 		register(rbmk_display_blank);
