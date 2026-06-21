@@ -63,8 +63,8 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 		super(24);
 		this.locks = new ItemStack[slots.length];
 		this.tanks = new FluidTank[3];
-		this.tanks[0] = new FluidTank(Fluids.COOLANT, 64_000);
-		this.tanks[1] = new FluidTank(Fluids.COOLANT_HOT, 64_000);
+		this.tanks[0] = new FluidTank(Fluids.PERFLUOROMETHYL, 64_000);
+		this.tanks[1] = new FluidTank(Fluids.PERFLUOROMETHYL_HOT, 64_000);
 		this.tanks[2] = new FluidTank(Fluids.WATZ, 64_000);
 		resetSharedTanks();
 	}
@@ -76,8 +76,8 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 	
 	protected void resetSharedTanks() {
 		this.sharedTanks = new FluidTank[3];
-		this.sharedTanks[0] = new FluidTank(Fluids.COOLANT, 64_000);
-		this.sharedTanks[1] = new FluidTank(Fluids.COOLANT_HOT, 64_000);
+		this.sharedTanks[0] = new FluidTank(Fluids.PERFLUOROMETHYL, 64_000);
+		this.sharedTanks[1] = new FluidTank(Fluids.PERFLUOROMETHYL_HOT, 64_000);
 		this.sharedTanks[2] = new FluidTank(Fluids.WATZ, 64_000);
 		this.sharedTanks[0].setFill(tanks[0].getFill());
 		this.sharedTanks[1].setFill(tanks[1].getFill());
@@ -181,13 +181,13 @@ public class TileEntityWatz extends TileEntityMachineBase implements IFluidStand
 	
 	/** basic sanity checking, usually wouldn't do anything except when NBT loading borks */
 	public void setupCoolant() {
-		tanks[0].setTankType(Fluids.COOLANT);
+		tanks[0].setTankType(Fluids.PERFLUOROMETHYL);
 		tanks[1].setTankType(tanks[0].getTankType().getTrait(FT_Heatable.class).getFirstStep().typeProduced);
 	}
 	
 	public void updateCoolant(FluidTank[] tanks) {
 		
-		double coolingFactor = 0.2D; //20% per tick
+		double coolingFactor = 0.47D; //47% per tick
 		double heatToUse = this.heat * coolingFactor;
 		
 		FT_Heatable trait = tanks[0].getTankType().getTrait(FT_Heatable.class);
