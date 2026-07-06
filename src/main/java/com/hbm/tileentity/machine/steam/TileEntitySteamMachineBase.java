@@ -33,8 +33,12 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 	private boolean wasActiveLastTick = false;
 
 	protected TileEntitySteamMachineBase(int slotCount, int steamCap, int wasteCap) {
+		this(slotCount, Fluids.STEAM, steamCap, wasteCap);
+	}
+
+	protected TileEntitySteamMachineBase(int slotCount, FluidType fuelType, int steamCap, int wasteCap) {
 		super(slotCount);
-		this.steam = new FluidTank(Fluids.STEAM, steamCap);
+		this.steam = new FluidTank(fuelType, steamCap);
 		this.spentSteam = new FluidTank(Fluids.SPENTSTEAM, wasteCap);
 	}
 
@@ -44,6 +48,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 
 	protected abstract int getRequiredSteamPerTick();
 	protected abstract void updateMachineMetrics(boolean isProcessing, int steamAvailable);
+	protected int getSteamToWasteRatio() { return 100; }
 	protected abstract void serializeMachine(ByteBuf buf);
 	protected abstract void deserializeMachine(ByteBuf buf);
 	protected abstract void readMachineNBT(NBTTagCompound nbt);
@@ -160,8 +165,9 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 				steamConsumedLastTick = steamAvailable;
 
 				steamRemainder += steamAvailable;
-				int wasteToProduce = steamRemainder / 100;
-				steamRemainder %= 100;
+				int wasteRatio = Math.max(1, getSteamToWasteRatio());
+				int wasteToProduce = steamRemainder / wasteRatio;
+				steamRemainder %= wasteRatio;
 
 				if(wasteToProduce > 0) {
 					int space = spentSteam.getMaxFill() - spentSteam.getFill();

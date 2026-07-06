@@ -11,6 +11,7 @@ import com.hbm.tileentity.machine.steam.TileEntitySteamMachineBase;
 import com.hbm.tileentity.machine.steam.TileEntitySteamFurnace;
 import com.hbm.tileentity.machine.steam.TileEntitySteamShredder;
 import com.hbm.tileentity.machine.steam.TileEntitySteamPress;
+import com.hbm.tileentity.machine.steam.TileEntityOsmiridiumFurnace;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -38,7 +39,8 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	public static enum SteamMachineType {
 		FURNACE,
 		SHREDDER,
-		PRESS
+		PRESS,
+		OSMIRIDIUM_FURNACE
 	}
 
 	private static final ForgeDirection[] FACING_DIR = new ForgeDirection[] {
@@ -53,6 +55,14 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	private IIcon[] iconsTop;
 	@SideOnly(Side.CLIENT)
 	private IIcon[] iconsTopOn;
+	@SideOnly(Side.CLIENT)
+	private IIcon[] iconsBack;
+	@SideOnly(Side.CLIENT)
+	private IIcon[] iconsBackOn;
+	@SideOnly(Side.CLIENT)
+	private IIcon[] iconsSide;
+	@SideOnly(Side.CLIENT)
+	private IIcon[] iconsSideOn;
 	@SideOnly(Side.CLIENT)
 	private IIcon iconSide;
 
@@ -88,6 +98,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			case 0: return new TileEntitySteamFurnace();
 			case 1: return new TileEntitySteamShredder();
 			case 2: return new TileEntitySteamPress();
+			case 3: return new TileEntityOsmiridiumFurnace();
 			default: return new TileEntitySteamFurnace();
 		}
 	}
@@ -105,6 +116,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsFrontOn = new IIcon[SteamMachineType.values().length];
 		this.iconsTop = new IIcon[SteamMachineType.values().length];
 		this.iconsTopOn = new IIcon[SteamMachineType.values().length];
+		this.iconsBack = new IIcon[SteamMachineType.values().length];
+		this.iconsBackOn = new IIcon[SteamMachineType.values().length];
+		this.iconsSide = new IIcon[SteamMachineType.values().length];
+		this.iconsSideOn = new IIcon[SteamMachineType.values().length];
 
 		this.iconsFront[0] = reg.registerIcon(base + "steam_furnace_front");
 		this.iconsFrontOn[0] = reg.registerIcon(base + "steam_furnace_front_on");
@@ -112,6 +127,8 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsFrontOn[1] = this.iconsFront[1];
 		this.iconsFront[2] = reg.registerIcon(base + "steam_press_front");
 		this.iconsFrontOn[2] = reg.registerIcon(base + "steam_press_front_on");
+		this.iconsFront[3] = reg.registerIcon(base + "osmiridium_furnace_front");
+		this.iconsFrontOn[3] = reg.registerIcon(base + "osmiridium_furnace_front_on");
 
 		this.iconsTop[0] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[0] = this.iconsTop[0];
@@ -119,8 +136,27 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsTopOn[1] = reg.registerIcon(base + "steam_shredder_top_on");
 		this.iconsTop[2] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[2] = this.iconsTop[2];
+		this.iconsTop[3] = reg.registerIcon(base + "osmiridium_furance_top");
+		this.iconsTopOn[3] = this.iconsTop[3];
+
+		this.iconsBack[0] = this.iconsTop[0];
+		this.iconsBackOn[0] = this.iconsTopOn[0];
+		this.iconsBack[1] = reg.registerIcon(base + "steam_shredder_top");
+		this.iconsBackOn[1] = reg.registerIcon(base + "steam_shredder_top_on");
+		this.iconsBack[2] = this.iconsTop[2];
+		this.iconsBackOn[2] = this.iconsTopOn[2];
+		this.iconsBack[3] = reg.registerIcon(base + "osmiridium_furnace_pipe");
+		this.iconsBackOn[3] = this.iconsBack[3];
 
 		this.iconSide = reg.registerIcon(base + "steam_machine_base");
+		this.iconsSide[0] = this.iconSide;
+		this.iconsSideOn[0] = this.iconSide;
+		this.iconsSide[1] = this.iconSide;
+		this.iconsSideOn[1] = this.iconSide;
+		this.iconsSide[2] = this.iconSide;
+		this.iconsSideOn[2] = this.iconSide;
+		this.iconsSide[3] = reg.registerIcon(base + "osmiridium_furnace_base");
+		this.iconsSideOn[3] = this.iconsSide[3];
 		this.blockIcon = this.iconSide;
 	}
 
@@ -133,11 +169,11 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		if(side == front.ordinal()) {
 			return iconsFront[type];
 		} else if(side == front.getOpposite().ordinal()) {
-			return iconsTop[0];
+			return iconsBack[type];
 		} else if(side == 1) {
 			return iconsTop[type];
 		} else {
-			return iconSide;
+			return iconsSide[type];
 		}
 	}
 
@@ -159,11 +195,11 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		if(side == front.ordinal()) {
 			return isOn ? iconsFrontOn[type] : iconsFront[type];
 		} else if(side == front.getOpposite().ordinal()) {
-			return isOn ? iconsTopOn[0] : iconsTop[0];
+			return isOn ? iconsBackOn[type] : iconsBack[type];
 		} else if(side == 1) {
 			return isOn ? iconsTopOn[type] : iconsTop[type];
 		} else {
-			return iconSide;
+			return isOn ? iconsSideOn[type] : iconsSide[type];
 		}
 	}
 
@@ -172,7 +208,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		int meta = world.getBlockMetadata(x, y, z);
 
-		if(getTypeIndex(meta) == 0) {
+		if(getTypeIndex(meta) == 0 || getTypeIndex(meta) == 3) {
 			TileEntity te = world.getTileEntity(x, y, z);
 			if(te instanceof TileEntitySteamMachineBase && ((TileEntitySteamMachineBase) te).steamConsumedLastTick > 0) {
 				ForgeDirection dir = getFacing(meta);

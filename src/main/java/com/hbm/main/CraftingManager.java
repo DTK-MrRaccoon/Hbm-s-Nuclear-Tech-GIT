@@ -365,6 +365,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.FURNACE.ordinal(), 2)), new Object[] { "SCS", "TCT", "SCS", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.SHREDDER.ordinal(), 2)), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', ModItems.turbine_titanium });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.PRESS.ordinal(), 2)), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', STEEL.block() });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.OSMIRIDIUM_FURNACE.ordinal(), 2)), new Object[] { "OCO", "TCT", "OCO", 'O', OSMIRIDIUM.plateCast(), 'C', CU.plate(), 'T', ModItems.tank_steel });
 
 		addRecipeAuto(new ItemStack(ModBlocks.fan), new Object[] { "BPB", "PRP", "BPB", 'B', STEEL.bolt(), 'P', IRON.plate(), 'R', REDSTONE.dust() });
 		addRecipeAuto(new ItemStack(ModBlocks.piston_inserter), new Object[] { "ITI", "TPT", "ITI", 'P', DictFrame.fromOne(ModItems.part_generic, EnumPartType.PISTON_PNEUMATIC), 'I', IRON.plate(), 'T', STEEL.bolt() });
