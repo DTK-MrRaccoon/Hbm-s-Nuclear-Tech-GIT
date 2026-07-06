@@ -58,6 +58,7 @@ import com.hbm.tileentity.machine.oil.*;
 import com.hbm.tileentity.machine.pile.*;
 import com.hbm.tileentity.machine.rbmk.*;
 import com.hbm.tileentity.machine.storage.*;
+import com.hbm.tileentity.machine.steam.*;
 import com.hbm.tileentity.network.*;
 import com.hbm.tileentity.network.pneumatic.*;
 import com.hbm.tileentity.turret.*;
@@ -223,6 +224,10 @@ public class TileMappings {
 		put(TileEntityFloodlightBeam.class, "tileentity_floodlight_beam");
 		put(TileEntityLantern.class, "tileentity_lantern_ordinary");
 		put(TileEntityLanternBehemoth.class, "tileentity_lantern_behemoth");
+		
+		put(TileEntitySteamFurnace.class, "tileentity_steam_furnace");
+		put(TileEntitySteamPress.class, "tileentity_steam_press");
+		put(TileEntitySteamShredder.class, "tileentity_steam_shredder");
 		
 		// Powered lights
 		put(TileEntitySpotlightPowered.class, "tileentity_spotlight_powered");

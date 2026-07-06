@@ -12,6 +12,7 @@ import com.hbm.blocks.generic.BlockNTMSand.EnumSandType;
 import com.hbm.blocks.generic.BlockPlushie.PlushieType;
 import com.hbm.blocks.generic.BlockWoodStructure.EnumWoodStructure;
 import com.hbm.blocks.machine.BlockReactorPart.ReactorPart;
+import com.hbm.blocks.machine.MachineSteamMulti;
 import com.hbm.config.GeneralConfig;
 import com.hbm.crafting.*;
 import com.hbm.crafting.handlers.*;
@@ -123,7 +124,7 @@ public class CraftingManager {
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB), new Object[] { "I", "P", 'I', ModItems.plate_polymer, 'P', CU.plate() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB, 4), new Object[] { "I", "P", 'I', ModItems.plate_polymer, 'P', GOLD.plate() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_CHASSIS), new Object[] { "PPP", "CBB", "PPP", 'P', ANY_PLASTIC.ingot(), 'C', ModItems.crt_display, 'B', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB) });
-		
+
 		if(!GeneralConfig.enable528) {
 			addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), new Object[] { "I", "S", "W", 'I', ModItems.plate_polymer, 'S', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.SILICON), 'W', CU.wireFine() });
 			addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), new Object[] { "I", "S", "W", 'I', ModItems.plate_polymer, 'S', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.SILICON), 'W', GOLD.wireFine() });
@@ -360,9 +361,11 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_furnace_brick_off), new Object[] { "III", "I I", "BBB", 'I', Items.brick, 'B', Blocks.stone });
 		addRecipeAuto(new ItemStack(ModBlocks.furnace_iron), new Object[] { "III", "IFI", "BBB", 'I', IRON.ingot(), 'F', Blocks.furnace, 'B', Blocks.stonebrick });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_mixer), new Object[] { "PIP", "GCG", "PMP", 'P', STEEL.plate(), 'I', DURA.ingot(), 'G', KEY_ANYPANE, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'M', ModItems.motor });
-		
 
-		
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.FURNACE.ordinal(), 2)), new Object[] { "SCS", "TCT", "SCS", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.SHREDDER.ordinal(), 2)), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', ModItems.turbine_titanium });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, MachineSteamMulti.packMeta(MachineSteamMulti.SteamMachineType.PRESS.ordinal(), 2)), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', STEEL.block() });
+
 		addRecipeAuto(new ItemStack(ModBlocks.fan), new Object[] { "BPB", "PRP", "BPB", 'B', STEEL.bolt(), 'P', IRON.plate(), 'R', REDSTONE.dust() });
 		addRecipeAuto(new ItemStack(ModBlocks.piston_inserter), new Object[] { "ITI", "TPT", "ITI", 'P', DictFrame.fromOne(ModItems.part_generic, EnumPartType.PISTON_PNEUMATIC), 'I', IRON.plate(), 'T', STEEL.bolt() });
 
@@ -502,7 +505,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.spotlight_fluoro, 8), new Object[] { "G", "M", "A", 'G', KEY_ANYPANE, 'M', ModItems.ingot_mercury, 'A', ModItems.plate_aluminium });
 		addRecipeAuto(new ItemStack(ModBlocks.spotlight_halogen, 8), new Object[] { "G", "B", "S", 'G', KEY_ANYPANE, 'B', ModItems.powder_bromine, 'S', STEEL.plate() });
 		addRecipeAuto(new ItemStack(ModBlocks.floodlight, 2), new Object[] { "CSC", "TST", "G G", 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR), 'S', STEEL.plate(), 'T', ModItems.coil_tungsten, 'G', KEY_ANYPANE });
-		
+
 		addRecipeAuto(new ItemStack(ModBlocks.spotlight_incandescent_powered_off, 8), new Object[] { "G", "T", "C", 'G', KEY_ANYPANE, 'T', W.wireFine(), 'C', ModItems.coil_tungsten });
 		addRecipeAuto(new ItemStack(ModBlocks.spotlight_fluoro_powered_off, 8), new Object[] { "G", "M", "C", 'G', KEY_ANYPANE, 'M', ModItems.ingot_mercury, 'C', ModItems.coil_tungsten });
 		addRecipeAuto(new ItemStack(ModBlocks.spotlight_halogen_powered_off, 8), new Object[] { "G", "B", "C", 'G', KEY_ANYPANE, 'B', ModItems.powder_bromine, 'C', ModItems.coil_tungsten });
@@ -767,7 +770,7 @@ public class CraftingManager {
 		for(int i = 1; i < Fluids.getAll().length; ++i) {
 			ItemStack id = new ItemStack(ModItems.fluid_identifier_multi, 1, i);
 			ItemFluidIDMulti.setType(id, Fluids.fromID(i), true);
-			
+
 			addShapelessAuto(new ItemStack(ModItems.fluid_duct, 1, i), new Object[] { new ItemStack(ModBlocks.fluid_duct_neo, 1), id });
 
 			addShapelessAuto(new ItemStack(ModItems.fluid_duct, 8, i),
