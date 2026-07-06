@@ -116,6 +116,7 @@ public class FluidPipeAnchor extends FluidDuctBase implements ITooltipProvider, 
 
 		List<String> text = new ArrayList();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
+		this.addDamageInfo(te, text);
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }

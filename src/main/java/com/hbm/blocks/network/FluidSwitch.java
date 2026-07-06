@@ -9,6 +9,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
@@ -22,6 +23,10 @@ public class FluidSwitch extends FluidDuctBase implements ILookOverlay {
 
 	@SideOnly(Side.CLIENT)
 	private IIcon iconOn;
+	@SideOnly(Side.CLIENT)
+	private IIcon iconOnDamaged;
+	@SideOnly(Side.CLIENT)
+	private IIcon iconOffDamaged;
 
 	public FluidSwitch(Material mat) {
 		super(mat);
@@ -32,12 +37,21 @@ public class FluidSwitch extends FluidDuctBase implements ILookOverlay {
 	public void registerBlockIcons(IIconRegister iconRegister) {
 		this.iconOn = iconRegister.registerIcon(RefStrings.MODID + ":fluid_switch_on");
 		this.blockIcon = iconRegister.registerIcon(RefStrings.MODID + ":fluid_switch_off");
+		this.iconOnDamaged = iconRegister.registerIcon(RefStrings.MODID + ":fluid_switch_on_damaged");
+		this.iconOffDamaged = iconRegister.registerIcon(RefStrings.MODID + ":fluid_switch_off_damaged");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int metadata) {
 		return metadata == 1 ? iconOn : blockIcon;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
+		if(isDamagedPipe(world, x, y, z)) return world.getBlockMetadata(x, y, z) == 1 ? iconOnDamaged : iconOffDamaged;
+		return world.getBlockMetadata(x, y, z) == 1 ? iconOn : blockIcon;
 	}
 
 	@Override
@@ -83,6 +97,7 @@ public class FluidSwitch extends FluidDuctBase implements ILookOverlay {
 
 		List<String> text = new ArrayList();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
+		this.addDamageInfo(te, text);
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 }

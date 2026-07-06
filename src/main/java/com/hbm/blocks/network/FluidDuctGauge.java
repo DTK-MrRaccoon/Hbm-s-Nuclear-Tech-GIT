@@ -42,6 +42,8 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IN
 
 	@SideOnly(Side.CLIENT) protected IIcon overlay;
 	@SideOnly(Side.CLIENT) protected IIcon overlayGauge;
+	@SideOnly(Side.CLIENT) protected IIcon overlayDamaged;
+	@SideOnly(Side.CLIENT) protected IIcon overlayGaugeDamaged;
 
 	public FluidDuctGauge() {
 		super(Material.iron);
@@ -58,17 +60,25 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IN
 		this.blockIcon = reg.registerIcon(RefStrings.MODID + ":deco_steel");
 		this.overlay = reg.registerIcon(RefStrings.MODID + ":fluid_duct_paintable_overlay");
 		this.overlayGauge = reg.registerIcon(RefStrings.MODID + ":pipe_gauge");
+		this.overlayDamaged = reg.registerIcon(RefStrings.MODID + ":fluid_duct_paintable_overlay_damaged");
+		this.overlayGaugeDamaged = reg.registerIcon(RefStrings.MODID + ":pipe_gauge_damaged");
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 
+		boolean damaged = isDamagedPipe(world, x, y, z);
+
 		if(RenderBlockMultipass.currentPass == 0) {
 			return blockIcon;
 		}
 
-		return side == world.getBlockMetadata(x, y, z) ? this.overlayGauge : this.overlay;
+		if(side == world.getBlockMetadata(x, y, z)) {
+			return damaged ? this.overlayGaugeDamaged : this.overlayGauge;
+		}
+
+		return damaged ? this.overlayDamaged : this.overlay;
 	}
 
 	@Override
@@ -101,6 +111,7 @@ public class FluidDuctGauge extends FluidDuctBase implements IBlockMultiPass, IN
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
 		text.add(String.format(Locale.US, "%,d", duct.deltaTick) + " mB/t");
 		text.add(String.format(Locale.US, "%,d", duct.deltaLastSecond) + " mB/s");
+		this.addDamageInfo(te, text);
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 

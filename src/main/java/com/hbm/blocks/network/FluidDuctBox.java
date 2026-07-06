@@ -36,6 +36,13 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 	@SideOnly(Side.CLIENT) public IIcon[] iconCurveBL;
 	@SideOnly(Side.CLIENT) public IIcon[] iconCurveBR;
 	@SideOnly(Side.CLIENT) public IIcon[][] iconJunction;
+	@SideOnly(Side.CLIENT) public IIcon[] iconStraightDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[] iconEndDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[] iconCurveTLDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[] iconCurveTRDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[] iconCurveBLDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[] iconCurveBRDamaged;
+	@SideOnly(Side.CLIENT) public IIcon[][] iconJunctionDamaged;
 
 	private static final String[] materials = new String[] { "silver", "copper", "white" };
 
@@ -56,6 +63,13 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 		iconCurveBL = new IIcon[count];
 		iconCurveBR = new IIcon[count];
 		iconJunction = new IIcon[count][5];
+		iconStraightDamaged = new IIcon[count];
+		iconEndDamaged = new IIcon[count];
+		iconCurveTLDamaged = new IIcon[count];
+		iconCurveTRDamaged = new IIcon[count];
+		iconCurveBLDamaged = new IIcon[count];
+		iconCurveBRDamaged = new IIcon[count];
+		iconJunctionDamaged = new IIcon[count][5];
 
 		for(int i = 0; i < count; i++) {
 			iconStraight[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_straight");
@@ -65,6 +79,13 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 			iconCurveBL[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_bl");
 			iconCurveBR[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_br");
 			for(int j = 0; j < 5; j++) iconJunction[i][j] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_junction_" + j);
+			iconStraightDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_straight_damaged");
+			iconEndDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_end_damaged");
+			iconCurveTLDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_tl_damaged");
+			iconCurveTRDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_tr_damaged");
+			iconCurveBLDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_bl_damaged");
+			iconCurveBRDamaged[i] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_curve_br_damaged");
+			for(int j = 0; j < 5; j++) iconJunctionDamaged[i][j] = iconRegister.registerIcon(RefStrings.MODID + ":boxduct_" + materials[i] + "_junction_" + j + "_damaged");
 		}
 	}
 
@@ -85,38 +106,39 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 		int meta = world.getBlockMetadata(x, y, z);
 		int m = rectify(meta);
+		boolean damaged = isDamagedPipe(world, x, y, z);
 
 		if((mask & 0b001111) == 0 && mask > 0) {
-			return (side == 4 || side == 5) ? iconEnd[m] : iconStraight[m];
+			return (side == 4 || side == 5) ? (damaged ? iconEndDamaged[m] : iconEnd[m]) : (damaged ? iconStraightDamaged[m] : iconStraight[m]);
 		} else if((mask & 0b111100) == 0 && mask > 0) {
-			return (side == 2 || side == 3) ? iconEnd[m] : iconStraight[m];
+			return (side == 2 || side == 3) ? (damaged ? iconEndDamaged[m] : iconEnd[m]) : (damaged ? iconStraightDamaged[m] : iconStraight[m]);
 		} else if((mask & 0b110011) == 0 && mask > 0) {
-			return (side == 0 || side == 1) ? iconEnd[m] : iconStraight[m];
+			return (side == 0 || side == 1) ? (damaged ? iconEndDamaged[m] : iconEnd[m]) : (damaged ? iconStraightDamaged[m] : iconStraight[m]);
 		} else if(count == 2) {
 
 			if(side == 0 && nY || side == 1 && pY || side == 2 && nZ || side == 3 && pZ || side == 4 && nX || side == 5 && pX)
-				return iconEnd[m];
+				return (damaged ? iconEndDamaged[m] : iconEnd[m]);
 			if(side == 1 && nY || side == 0 && pY || side == 3 && nZ || side == 2 && pZ || side == 5 && nX || side == 4 && pX)
-				return iconStraight[m];
+				return (damaged ? iconStraightDamaged[m] : iconStraight[m]);
 
-			if(nY && pZ) return side == 4 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && nZ) return side == 5 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && pX) return side == 3 ? iconCurveBR[m] : iconCurveBL[m];
-			if(nY && nX) return side == 2 ? iconCurveBR[m] : iconCurveBL[m];
-			if(pY && pZ) return side == 4 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && nZ) return side == 5 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && pX) return side == 3 ? iconCurveTR[m] : iconCurveTL[m];
-			if(pY && nX) return side == 2 ? iconCurveTR[m] : iconCurveTL[m];
+			if(nY && pZ) return side == 4 ? (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]) : (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]);
+			if(nY && nZ) return side == 5 ? (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]) : (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]);
+			if(nY && pX) return side == 3 ? (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]) : (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]);
+			if(nY && nX) return side == 2 ? (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]) : (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]);
+			if(pY && pZ) return side == 4 ? (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]) : (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]);
+			if(pY && nZ) return side == 5 ? (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]) : (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]);
+			if(pY && pX) return side == 3 ? (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]) : (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]);
+			if(pY && nX) return side == 2 ? (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]) : (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]);
 
-			if(pX && nZ) return side == 0 ? iconCurveTR[m] : iconCurveTR[m];
-			if(pX && pZ) return side == 0 ? iconCurveBR[m] : iconCurveBR[m];
-			if(nX && nZ) return side == 0 ? iconCurveTL[m] : iconCurveTL[m];
-			if(nX && pZ) return side == 0 ? iconCurveBL[m] : iconCurveBL[m];
+			if(pX && nZ) return side == 0 ? (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]) : (damaged ? iconCurveTRDamaged[m] : iconCurveTR[m]);
+			if(pX && pZ) return side == 0 ? (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]) : (damaged ? iconCurveBRDamaged[m] : iconCurveBR[m]);
+			if(nX && nZ) return side == 0 ? (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]) : (damaged ? iconCurveTLDamaged[m] : iconCurveTL[m]);
+			if(nX && pZ) return side == 0 ? (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]) : (damaged ? iconCurveBLDamaged[m] : iconCurveBL[m]);
 
-			return iconJunction[m][meta / 3];
+			return (damaged ? iconJunctionDamaged[m][meta / 3] : iconJunction[m][meta / 3]);
 		}
 
-		return iconJunction[m][meta / 3];
+		return (damaged ? iconJunctionDamaged[m][meta / 3] : iconJunction[m][meta / 3]);
 	}
 
 	@SideOnly(Side.CLIENT)
@@ -313,6 +335,7 @@ public class FluidDuctBox extends FluidDuctBase implements IBlockMulti, ILookOve
 
 		List<String> text = new ArrayList();
 		text.add("&[" + duct.getType().getColor() + "&]" + duct.getType().getLocalizedName());
+		this.addDamageInfo(te, text);
 		ILookOverlay.printGeneric(event, I18nUtil.resolveKey(getUnlocalizedName() + ".name"), 0xffff00, 0x404000, text);
 	}
 
