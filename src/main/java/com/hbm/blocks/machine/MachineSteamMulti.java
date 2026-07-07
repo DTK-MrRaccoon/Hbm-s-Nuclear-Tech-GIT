@@ -7,11 +7,7 @@ import com.hbm.blocks.BlockEnumMulti;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityMachineBase;
-import com.hbm.tileentity.machine.steam.TileEntitySteamMachineBase;
-import com.hbm.tileentity.machine.steam.TileEntitySteamFurnace;
-import com.hbm.tileentity.machine.steam.TileEntitySteamShredder;
-import com.hbm.tileentity.machine.steam.TileEntitySteamPress;
-import com.hbm.tileentity.machine.steam.TileEntityOsmiridiumFurnace;
+import com.hbm.tileentity.machine.steam.*;
 
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -40,6 +36,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		FURNACE,
 		SHREDDER,
 		PRESS,
+		BOILER,
 		OSMIRIDIUM_FURNACE
 	}
 
@@ -71,16 +68,13 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	}
 
 	public static int getTypeIndex(int meta) {
-		if(meta < 0) return 0;
-		int type = meta / 4;
-		if(type < 0 || type >= SteamMachineType.values().length) return 0;
+		int type = meta & 7;
+		if(type >= SteamMachineType.values().length) type = SteamMachineType.values().length - 1;
 		return type;
 	}
 
 	public static int getRotationIndex(int meta) {
-		int rot = meta % 4;
-		if(rot < 0) rot += 4;
-		return rot;
+		return (meta >> 3) & 1;
 	}
 
 	public static ForgeDirection getFacing(int meta) {
@@ -89,7 +83,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 	public static int packMeta(int type, int rotation) {
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
-		return type * 4 + (rotation & 3);
+		return type | ((rotation & 1) << 3);
 	}
 
 	@Override
@@ -98,7 +92,8 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			case 0: return new TileEntitySteamFurnace();
 			case 1: return new TileEntitySteamShredder();
 			case 2: return new TileEntitySteamPress();
-			case 3: return new TileEntityOsmiridiumFurnace();
+			case 3: return new TileEntitySteamBoiler();
+			case 4: return new TileEntityOsmiridiumFurnace();
 			default: return new TileEntitySteamFurnace();
 		}
 	}
@@ -127,8 +122,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsFrontOn[1] = this.iconsFront[1];
 		this.iconsFront[2] = reg.registerIcon(base + "steam_press_front");
 		this.iconsFrontOn[2] = reg.registerIcon(base + "steam_press_front_on");
-		this.iconsFront[3] = reg.registerIcon(base + "osmiridium_furnace_front");
-		this.iconsFrontOn[3] = reg.registerIcon(base + "osmiridium_furnace_front_on");
+		this.iconsFront[3] = reg.registerIcon(base + "machine_boiler_front");
+		this.iconsFrontOn[3] = reg.registerIcon(base + "machine_boiler_front_lit");
+		this.iconsFront[4] = reg.registerIcon(base + "osmiridium_furnace_front");
+		this.iconsFrontOn[4] = reg.registerIcon(base + "osmiridium_furnace_front_on");
 
 		this.iconsTop[0] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[0] = this.iconsTop[0];
@@ -136,8 +133,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsTopOn[1] = reg.registerIcon(base + "steam_shredder_top_on");
 		this.iconsTop[2] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[2] = this.iconsTop[2];
-		this.iconsTop[3] = reg.registerIcon(base + "osmiridium_furance_top");
+		this.iconsTop[3] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[3] = this.iconsTop[3];
+		this.iconsTop[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
+		this.iconsTopOn[4] = this.iconsTop[4];
 
 		this.iconsBack[0] = this.iconsTop[0];
 		this.iconsBackOn[0] = this.iconsTopOn[0];
@@ -145,8 +144,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsBackOn[1] = this.iconsTopOn[0];
 		this.iconsBack[2] = this.iconsTop[2];
 		this.iconsBackOn[2] = this.iconsTopOn[2];
-		this.iconsBack[3] = reg.registerIcon(base + "osmiridium_furnace_pipe");
+		this.iconsBack[3] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsBackOn[3] = this.iconsBack[3];
+		this.iconsBack[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
+		this.iconsBackOn[4] = this.iconsBack[4];
 
 		this.iconSide = reg.registerIcon(base + "steam_machine_base");
 		this.iconsSide[0] = this.iconSide;
@@ -155,35 +156,22 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsSideOn[1] = this.iconSide;
 		this.iconsSide[2] = this.iconSide;
 		this.iconsSideOn[2] = this.iconSide;
-		this.iconsSide[3] = reg.registerIcon(base + "osmiridium_furnace_base");
+		this.iconsSide[3] = reg.registerIcon(base + "machine_boiler_side");
 		this.iconsSideOn[3] = this.iconsSide[3];
+		this.iconsSide[4] = reg.registerIcon(base + "osmiridium_furnace_base");
+		this.iconsSideOn[4] = this.iconsSide[4];
 		this.blockIcon = this.iconSide;
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		boolean isItem = false;
-		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
-		for (int i = 1; i < Math.min(stack.length, 8); i++) {
-			String className = stack[i].getClassName();
-			if (className.contains("RenderBlocks") || className.contains("ItemBlock") || className.contains("Slot")) {
-				isItem = true;
-				break;
-			}
-		}
-
-		int type = 0;
-		if (isItem) {
-			type = meta;
-		} else {
-			type = getTypeIndex(meta);
-		}
+		int type = getTypeIndex(meta);
 
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
 
 		if(side == 0) {
-			return (type == 3) ? iconsBack[3] : iconsTop[0];
+			return iconsBack[type];
 		} else if(side == 1) {
 			return iconsTop[type];
 		} else if(side == 3) {
@@ -200,18 +188,21 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	public IIcon getIcon(IBlockAccess world, int x, int y, int z, int side) {
 		int meta = world.getBlockMetadata(x, y, z);
 		int type = getTypeIndex(meta);
-		ForgeDirection front = getFacing(meta);
-
+		ForgeDirection front = ForgeDirection.NORTH;
 		boolean isOn = false;
 		TileEntity te = world.getTileEntity(x, y, z);
 		if(te instanceof TileEntitySteamMachineBase) {
-			if(((TileEntitySteamMachineBase) te).steamConsumedLastTick > 0) {
-				isOn = true;
-			}
+			front = ((TileEntitySteamMachineBase) te).getFrontDirection();
+			isOn = ((TileEntitySteamMachineBase) te).steamConsumedLastTick > 0;
+		} else if(te instanceof TileEntitySteamBoiler) {
+			front = ((TileEntitySteamBoiler) te).getFrontDirection();
+			isOn = ((TileEntitySteamBoiler) te).burnTime > 0;
 		}
 
+		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
+
 		if(side == 0) {
-			return (type == 3) ? (isOn ? iconsBackOn[3] : iconsBack[3]) : (isOn ? iconsTopOn[0] : iconsTop[0]);
+			return isOn ? iconsBackOn[type] : iconsBack[type];
 		} else if(side == front.ordinal()) {
 			return isOn ? iconsFrontOn[type] : iconsFront[type];
 		} else if(side == front.getOpposite().ordinal()) {
@@ -227,17 +218,28 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World world, int x, int y, int z, Random rand) {
 		int meta = world.getBlockMetadata(x, y, z);
+		int type = getTypeIndex(meta);
+		TileEntity te = world.getTileEntity(x, y, z);
 
-		if(getTypeIndex(meta) == 0 || getTypeIndex(meta) == 3) {
-			TileEntity te = world.getTileEntity(x, y, z);
-			if(te instanceof TileEntitySteamMachineBase && ((TileEntitySteamMachineBase) te).steamConsumedLastTick > 0) {
-				ForgeDirection dir = getFacing(meta);
-				float cX = x + 0.5F;
-				float cY = y + rand.nextFloat() * 0.375F;
-				float cZ = z + 0.5F;
-				float off = 0.52F;
-				float var = rand.nextFloat() * 0.6F - 0.3F;
+		boolean active = false;
+		ForgeDirection dir = ForgeDirection.NORTH;
 
+		if(te instanceof TileEntitySteamMachineBase) {
+			active = ((TileEntitySteamMachineBase) te).steamConsumedLastTick > 0;
+			dir = ((TileEntitySteamMachineBase) te).getFrontDirection();
+		} else if(te instanceof TileEntitySteamBoiler) {
+			active = ((TileEntitySteamBoiler) te).burnTime > 0;
+			dir = ((TileEntitySteamBoiler) te).getFrontDirection();
+		}
+
+		if(active) {
+			float cX = x + 0.5F;
+			float cY = y + rand.nextFloat() * 0.375F;
+			float cZ = z + 0.5F;
+			float off = 0.52F;
+			float var = rand.nextFloat() * 0.6F - 0.3F;
+
+			if(type == 3) {
 				if(dir == ForgeDirection.WEST) {
 					world.spawnParticle("smoke", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
@@ -251,6 +253,16 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 					world.spawnParticle("smoke", cX + var, cY, cZ + off, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", cX + var, cY, cZ + off, 0.0D, 0.0D, 0.0D);
 				}
+			} else if(type == 0 || type == 4) {
+				if(dir == ForgeDirection.WEST) {
+					world.spawnParticle("smoke", cX - off, cY, cZ + var, 0.0D, 0.02D, 0.0D);
+				} else if(dir == ForgeDirection.EAST) {
+					world.spawnParticle("smoke", cX + off, cY, cZ + var, 0.0D, 0.02D, 0.0D);
+				} else if(dir == ForgeDirection.NORTH) {
+					world.spawnParticle("smoke", cX + var, cY, cZ - off, 0.0D, 0.02D, 0.0D);
+				} else if(dir == ForgeDirection.SOUTH) {
+					world.spawnParticle("smoke", cX + var, cY, cZ + off, 0.0D, 0.02D, 0.0D);
+				}
 			}
 		}
 	}
@@ -261,11 +273,18 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
 
 		int rot = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		ForgeDirection dir = FACING_DIR[rot];
+
 		int meta = packMeta(type, rot);
 		world.setBlockMetadataWithNotify(x, y, z, meta, 2);
 
 		world.removeTileEntity(x, y, z);
 		TileEntity te = createNewTileEntity(world, meta);
+		if(te instanceof TileEntitySteamMachineBase) {
+			((TileEntitySteamMachineBase) te).setFrontDirection(dir);
+		} else if(te instanceof TileEntitySteamBoiler) {
+			((TileEntitySteamBoiler) te).setFrontDirection(dir);
+		}
 		world.setTileEntity(x, y, z, te);
 	}
 

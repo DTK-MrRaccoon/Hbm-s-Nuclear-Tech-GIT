@@ -365,6 +365,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.FURNACE.ordinal()), new Object[] { "SCS", "TCT", "SCS", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.SHREDDER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', ModItems.turbine_titanium });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.PRESS.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', STEEL.block() });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', CU.pipe(), });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.OSMIRIDIUM_FURNACE.ordinal()), new Object[] { "OCO", "TCT", "OCO", 'O', OSMIRIDIUM.plateCast(), 'C', CU.plate(), 'T', ModItems.tank_steel });
 
 		addRecipeAuto(new ItemStack(ModBlocks.fan), new Object[] { "BPB", "PRP", "BPB", 'B', STEEL.bolt(), 'P', IRON.plate(), 'R', REDSTONE.dust() });

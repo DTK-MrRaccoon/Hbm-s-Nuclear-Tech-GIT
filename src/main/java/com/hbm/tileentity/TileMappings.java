@@ -226,6 +226,7 @@ public class TileMappings {
 		put(TileEntityLanternBehemoth.class, "tileentity_lantern_behemoth");
 		
 		put(TileEntitySteamFurnace.class, "tileentity_steam_furnace");
+		put(TileEntitySteamBoiler.class, "tileentity_steam_boiler");
 		put(TileEntityOsmiridiumFurnace.class, "tileentity_steam_furnace_osmiridium");
 		put(TileEntitySteamPress.class, "tileentity_steam_press");
 		put(TileEntitySteamShredder.class, "tileentity_steam_shredder");

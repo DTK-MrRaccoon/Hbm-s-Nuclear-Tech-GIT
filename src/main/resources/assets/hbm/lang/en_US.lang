@@ -976,6 +976,7 @@ container.osmiridiumFurnace=Osmiridium Steam Furnace
 container.steamFurnace=Steam Furnace
 container.steamShredder=Steam Shredder
 container.steamPress=Steam Press
+container.steamBoilerSmall=Small Steam Boiler
 
 copytool.filter=Filter
 copytool.invertRedstone=Redstone Inverted
@@ -6183,6 +6184,7 @@ tile.machine_steam_multi.furnace.name=Steam Furance
 tile.machine_steam_multi.osmiridium_furnace.name=Osmiridium Steam Furnace
 tile.machine_steam_multi.shredder.name=Steam Shredder
 tile.machine_steam_multi.press.name=Steam Press
+tile.machine_steam_multi.boiler.name=Small Steam Boiler
 tile.marker_structure.name=Multiblock Structure Marker
 tile.mass_storage.name=Mass Storage Unit
 tile.meteor_battery.name=Starmetal Static Electricity Generator

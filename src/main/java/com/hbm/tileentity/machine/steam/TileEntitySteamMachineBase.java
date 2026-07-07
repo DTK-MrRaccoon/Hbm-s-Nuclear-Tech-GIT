@@ -29,6 +29,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 
 	public int steamConsumedLastTick = 0;
 	protected int steamRemainder = 0;
+	protected ForgeDirection frontDirection = ForgeDirection.NORTH;
 
 	private boolean wasActiveLastTick = false;
 
@@ -55,15 +56,32 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 	protected abstract void writeMachineNBT(NBTTagCompound nbt);
 
 	public ForgeDirection getFrontDirection() {
-		if(this.worldObj == null) return ForgeDirection.NORTH;
-		int meta = this.worldObj.getBlockMetadata(this.xCoord, this.yCoord, this.zCoord);
-		switch(meta % 4) {
-			case 0: return ForgeDirection.NORTH;
-			case 1: return ForgeDirection.EAST;
-			case 2: return ForgeDirection.SOUTH;
-			case 3: return ForgeDirection.WEST;
-			default: return ForgeDirection.NORTH;
+		if(this.frontDirection == null) return ForgeDirection.NORTH;
+		switch(this.frontDirection) {
+			case NORTH:
+			case EAST:
+			case SOUTH:
+			case WEST:
+				return this.frontDirection;
+			default:
+				return ForgeDirection.NORTH;
 		}
+	}
+
+	public void setFrontDirection(ForgeDirection direction) {
+		if(direction == null) direction = ForgeDirection.NORTH;
+		switch(direction) {
+			case NORTH:
+			case EAST:
+			case SOUTH:
+			case WEST:
+				this.frontDirection = direction;
+				break;
+			default:
+				this.frontDirection = ForgeDirection.NORTH;
+				break;
+		}
+		this.markDirty();
 	}
 
 	public ForgeDirection getBackDirection() {
@@ -224,6 +242,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		buf.writeInt(progress);
 		buf.writeInt(maxProgress);
 		buf.writeInt(steamConsumedLastTick);
+		buf.writeByte(this.getFrontDirection().ordinal());
 		serializeMachine(buf);
 	}
 
@@ -235,6 +254,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		progress = buf.readInt();
 		maxProgress = buf.readInt();
 		steamConsumedLastTick = buf.readInt();
+		this.frontDirection = readFacing(buf.readByte());
 		deserializeMachine(buf);
 	}
 
@@ -246,6 +266,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		steam.readFromNBT(nbt, "steam");
 		spentSteam.readFromNBT(nbt, "spent");
 		steamConsumedLastTick = nbt.getInteger("consumedLast");
+		this.frontDirection = readFacing(nbt.getByte("frontDir"));
 		wasActiveLastTick = steamConsumedLastTick > 0;
 		readMachineNBT(nbt);
 	}
@@ -258,7 +279,23 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		steam.writeToNBT(nbt, "steam");
 		spentSteam.writeToNBT(nbt, "spent");
 		nbt.setInteger("consumedLast", steamConsumedLastTick);
+		nbt.setByte("frontDir", (byte) this.getFrontDirection().ordinal());
 		writeMachineNBT(nbt);
+	}
+
+	protected ForgeDirection readFacing(int ordinal) {
+		ForgeDirection[] directions = ForgeDirection.values();
+		if(ordinal < 0 || ordinal >= directions.length) return ForgeDirection.NORTH;
+		ForgeDirection dir = directions[ordinal];
+		switch(dir) {
+			case NORTH:
+			case EAST:
+			case SOUTH:
+			case WEST:
+				return dir;
+			default:
+				return ForgeDirection.NORTH;
+		}
 	}
 
 	@Override
