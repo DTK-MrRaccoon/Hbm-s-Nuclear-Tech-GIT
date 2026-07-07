@@ -105,7 +105,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 	@Override
 	public int damageDropped(int meta) {
-		return packMeta(getTypeIndex(meta), 2);
+		return getTypeIndex(meta);
 	}
 
 	@Override
@@ -141,8 +141,8 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 		this.iconsBack[0] = this.iconsTop[0];
 		this.iconsBackOn[0] = this.iconsTopOn[0];
-		this.iconsBack[1] = reg.registerIcon(base + "steam_shredder_top");
-		this.iconsBackOn[1] = reg.registerIcon(base + "steam_shredder_top_on");
+		this.iconsBack[1] = this.iconsTop[0];
+		this.iconsBackOn[1] = this.iconsTopOn[0];
 		this.iconsBack[2] = this.iconsTop[2];
 		this.iconsBackOn[2] = this.iconsTopOn[2];
 		this.iconsBack[3] = reg.registerIcon(base + "osmiridium_furnace_pipe");
@@ -163,15 +163,33 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIcon getIcon(int side, int meta) {
-		int type = getTypeIndex(meta);
-		ForgeDirection front = getFacing(meta);
+		boolean isItem = false;
+		StackTraceElement[] stack = Thread.currentThread().getStackTrace();
+		for (int i = 1; i < Math.min(stack.length, 8); i++) {
+			String className = stack[i].getClassName();
+			if (className.contains("RenderBlocks") || className.contains("ItemBlock") || className.contains("Slot")) {
+				isItem = true;
+				break;
+			}
+		}
 
-		if(side == front.ordinal()) {
-			return iconsFront[type];
-		} else if(side == front.getOpposite().ordinal()) {
-			return iconsBack[type];
+		int type = 0;
+		if (isItem) {
+			type = meta;
+		} else {
+			type = getTypeIndex(meta);
+		}
+
+		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
+
+		if(side == 0) {
+			return (type == 3) ? iconsBack[3] : iconsTop[0];
 		} else if(side == 1) {
 			return iconsTop[type];
+		} else if(side == 3) {
+			return iconsFront[type];
+		} else if(side == 2) {
+			return iconsBack[type];
 		} else {
 			return iconsSide[type];
 		}
@@ -192,7 +210,9 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			}
 		}
 
-		if(side == front.ordinal()) {
+		if(side == 0) {
+			return (type == 3) ? (isOn ? iconsBackOn[3] : iconsBack[3]) : (isOn ? iconsTopOn[0] : iconsTop[0]);
+		} else if(side == front.ordinal()) {
 			return isOn ? iconsFrontOn[type] : iconsFront[type];
 		} else if(side == front.getOpposite().ordinal()) {
 			return isOn ? iconsBackOn[type] : iconsBack[type];
@@ -237,7 +257,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 	@Override
 	public void onBlockPlacedBy(World world, int x, int y, int z, EntityLivingBase player, ItemStack stack) {
-		int type = stack != null ? getTypeIndex(stack.getItemDamage()) : 0;
+		int type = stack != null ? stack.getItemDamage() : 0;
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
 
 		int rot = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
@@ -265,13 +285,13 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	@Override
 	public void getSubBlocks(Item item, CreativeTabs tab, List list) {
 		for(int i = 0; i < SteamMachineType.values().length; i++) {
-			list.add(new ItemStack(item, 1, packMeta(i, 2)));
+			list.add(new ItemStack(item, 1, i));
 		}
 	}
 
 	@Override
 	public String getUnlocalizedName(ItemStack stack) {
-		int type = stack != null ? getTypeIndex(stack.getItemDamage()) : 0;
+		int type = stack != null ? stack.getItemDamage() : 0;
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
 		return super.getUnlocalizedName() + "." + SteamMachineType.values()[type].name().toLowerCase();
 	}
