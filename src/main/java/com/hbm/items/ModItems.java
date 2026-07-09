@@ -124,6 +124,7 @@ public class ModItems {
 
 	public static Item niter;
 	public static Item ingot_copper;
+	public static Item ingot_tin;
 	public static Item ingot_red_copper;
 	public static Item ingot_tungsten;
 	public static Item ingot_tungsten_carbide;
@@ -150,6 +151,7 @@ public class ModItems {
 	public static Item ingot_advanced_alloy;
 	public static Item ingot_tcalloy;
 	public static Item ingot_cdalloy;
+	public static Item ingot_tin_bronze;
 	public static Item ingot_bismuth_bronze;
 	public static Item ingot_arsenic_bronze;
 	public static Item ingot_bscco;
@@ -311,6 +313,7 @@ public class ModItems {
 	public static Item plate_steel;
 	public static Item plate_iron;
 	public static Item ingot_lead;
+	public static Item ingot_solder;
 	public static Item nugget_lead;
 	public static Item ingot_bismuth;
 	public static Item nugget_bismuth;
@@ -330,6 +333,7 @@ public class ModItems {
 	public static Item nugget_schrabidium;
 	public static Item plate_schrabidium;
 	public static Item plate_copper;
+	public static Item plate_tin;
 	public static Item nugget_beryllium;
 	public static Item plate_gold;
 	public static Item hazmat_cloth;
@@ -341,6 +345,7 @@ public class ModItems {
 	public static Item rag_piss;
 	public static Item filter_coal;
 	public static Item plate_advanced_alloy;
+	public static Item plate_tin_bronze;
 	public static Item plate_combine_steel;
 	public static Item plate_mixed;
 	public static Item plate_paa;
@@ -428,6 +433,7 @@ public class ModItems {
 	public static Item crystal_niter;
 	public static Item crystal_copper;
 	public static Item crystal_copper_sulfate;
+	public static Item crystal_tin;
 	public static Item crystal_tungsten;
 	public static Item crystal_aluminium;
 	public static Item crystal_fluorite;
@@ -474,6 +480,7 @@ public class ModItems {
 	public static Item powder_copper;
 	public static Item powder_copper_sulfate;
 	public static Item powder_copper_sulfate_tiny;
+	public static Item powder_tin;
 	public static Item powder_gold;
 	public static Item powder_iron;
 	public static Item powder_titanium;
@@ -500,6 +507,7 @@ public class ModItems {
 
 	public static Item powder_advanced_alloy;
 	public static Item powder_tcalloy;
+	public static Item powder_tin_bronze;
 	public static Item powder_coal;
 	public static Item powder_coal_tiny;
 	public static Item powder_combine_steel;
@@ -584,6 +592,7 @@ public class ModItems {
 
 	public static Item coil_copper;
 	public static Item coil_copper_torus;
+	public static Item coil_tin;
 	public static Item coil_tungsten;
 	@Deprecated public static Item tank_steel;
 	public static Item motor;
@@ -2314,12 +2323,14 @@ public class ModItems {
 		ingot_advanced_alloy = new Item().setUnlocalizedName("ingot_advanced_alloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_advanced_alloy");
 		ingot_tcalloy = new Item().setUnlocalizedName("ingot_tcalloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_tcalloy");
 		ingot_cdalloy = new Item().setUnlocalizedName("ingot_cdalloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_cdalloy");
+		ingot_tin_bronze = new Item().setUnlocalizedName("ingot_tin_bronze").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_tin_bronze");
 		ingot_bismuth_bronze = new Item().setUnlocalizedName("ingot_bismuth_bronze").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_bismuth_bronze");
 		ingot_arsenic_bronze = new Item().setUnlocalizedName("ingot_arsenic_bronze").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_arsenic_bronze");
 		ingot_bscco = new Item().setUnlocalizedName("ingot_bscco").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_bscco");
 
 		niter = new Item().setUnlocalizedName("niter").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":salpeter");
 		ingot_copper = new Item().setUnlocalizedName("ingot_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_copper");
+		ingot_tin = new Item().setUnlocalizedName("ingot_tin").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_tin");
 		ingot_red_copper = new Item().setUnlocalizedName("ingot_red_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_red_copper");
 		ingot_tungsten = new Item().setUnlocalizedName("ingot_tungsten").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_tungsten");
 		ingot_tungsten_carbide = new Item().setUnlocalizedName("ingot_tungsten_carbide").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_tungsten_carbide");
@@ -2331,14 +2342,17 @@ public class ModItems {
 		plate_iron = new Item().setUnlocalizedName("plate_iron").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_iron");
 		ingot_lead = new Item().setUnlocalizedName("ingot_lead").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_lead");
 		plate_lead = new Item().setUnlocalizedName("plate_lead").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_lead");
+		ingot_solder = new Item().setUnlocalizedName("ingot_solder").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_solder");
 		plate_dura_steel = new Item().setUnlocalizedName("plate_dura_steel").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_dura_steel");
 		ingot_schraranium = new ItemSchraranium().setUnlocalizedName("ingot_schraranium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_schraranium");
 		ingot_schrabidium = new ItemCustomLore().setRarity(EnumRarity.rare).setUnlocalizedName("ingot_schrabidium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_schrabidium");
 		ingot_schrabidate = new ItemCustomLore().setRarity(EnumRarity.rare).setUnlocalizedName("ingot_schrabidate").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_schrabidate");
 		plate_schrabidium = new ItemCustomLore().setRarity(EnumRarity.rare).setUnlocalizedName("plate_schrabidium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_schrabidium");
 		plate_copper = new Item().setUnlocalizedName("plate_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_copper");
+		plate_tin = new Item().setUnlocalizedName("plate_tin").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_tin");
 		plate_gold = new Item().setUnlocalizedName("plate_gold").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_gold");
 		plate_advanced_alloy = new Item().setUnlocalizedName("plate_advanced_alloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_advanced_alloy");
+		plate_tin_bronze = new Item().setUnlocalizedName("plate_tin_bronze").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_tin_bronze");
 		lithium = new Item().setUnlocalizedName("lithium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":lithium");
 		ingot_zirconium = new Item().setUnlocalizedName("ingot_zirconium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_zirconium");
 		ingot_semtex = new ItemLemon(4, 5, true).setUnlocalizedName("ingot_semtex").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":ingot_semtex");
@@ -2607,6 +2621,7 @@ public class ModItems {
 		crystal_niter = new Item().setUnlocalizedName("crystal_niter").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_niter");
 		crystal_copper = new Item().setUnlocalizedName("crystal_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_copper");
 		crystal_copper_sulfate = new Item().setUnlocalizedName("crystal_copper_sulfate").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_copper_sulfate");
+		crystal_tin = new Item().setUnlocalizedName("crystal_tin").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_tin");
 		crystal_tungsten = new Item().setUnlocalizedName("crystal_tungsten").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_tungsten");
 		crystal_aluminium = new Item().setUnlocalizedName("crystal_aluminium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_aluminium");
 		crystal_fluorite = new Item().setUnlocalizedName("crystal_fluorite").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":crystal_fluorite");
@@ -2651,6 +2666,7 @@ public class ModItems {
 		powder_copper = new Item().setUnlocalizedName("powder_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper");
 		powder_copper_sulfate = new Item().setUnlocalizedName("powder_copper_sulfate").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper_sulfate");
 		powder_copper_sulfate_tiny = new Item().setUnlocalizedName("powder_copper_sulfate_tiny").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_copper_sulfate_tiny");
+		powder_tin = new Item().setUnlocalizedName("powder_tin").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_tin");
 		powder_gold = new Item().setUnlocalizedName("powder_gold").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_gold");
 		powder_iron = new Item().setUnlocalizedName("powder_iron").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_iron");
 		powder_titanium = new Item().setUnlocalizedName("powder_titanium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_titanium");
@@ -2662,6 +2678,7 @@ public class ModItems {
 		fallout = new Item().setUnlocalizedName("fallout").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":fallout");
 		powder_advanced_alloy = new Item().setUnlocalizedName("powder_advanced_alloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_advanced_alloy");
 		powder_tcalloy = new Item().setUnlocalizedName("powder_tcalloy").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_tcalloy");
+		powder_tin_bronze = new Item().setUnlocalizedName("powder_tin_bronze").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_tin_bronze");
 		powder_coal = new Item().setUnlocalizedName("powder_coal").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_coal");
 		powder_coal_tiny = new Item().setUnlocalizedName("powder_coal_tiny").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_coal_tiny");
 		powder_combine_steel = new Item().setUnlocalizedName("powder_combine_steel").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":powder_combine_steel");
@@ -2753,6 +2770,7 @@ public class ModItems {
 
 		coil_copper = new Item().setUnlocalizedName("coil_copper").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":coil_copper");
 		coil_copper_torus = new Item().setUnlocalizedName("coil_copper_torus").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":coil_copper_torus");
+		coil_tin = new Item().setUnlocalizedName("coil_tin").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":coil_tin");
 		coil_tungsten = new Item().setUnlocalizedName("coil_tungsten").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":coil_tungsten");
 		tank_steel = new Item().setUnlocalizedName("tank_steel").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":tank_steel");
 		motor = new Item().setUnlocalizedName("motor").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":motor");
@@ -2977,6 +2995,7 @@ public class ModItems {
 		plate_welded = new ItemAutogen(MaterialShapes.WELDEDPLATE).setUnlocalizedName("plate_welded").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_welded");
 		wire_fine = new ItemAutogen(MaterialShapes.WIRE)
 				.aot(Mats.MAT_ALUMINIUM, "wire_aluminium").aot(Mats.MAT_COPPER, "wire_copper")
+				.aot(Mats.MAT_TIN, "wire_tin").aot(Mats.MAT_SOLDER, "wire_solder")
 				.aot(Mats.MAT_MINGRADE, "wire_red_copper").aot(Mats.MAT_GOLD, "wire_gold")
 				.aot(Mats.MAT_TUNGSTEN, "wire_tungsten").aot(Mats.MAT_ALLOY, "wire_advanced_alloy")
 				.aot(Mats.MAT_CARBON, "wire_carbon").aot(Mats.MAT_SCHRABIDIUM, "wire_schrabidium")
@@ -5138,6 +5157,7 @@ public class ModItems {
 		GameRegistry.registerItem(ingot_ra226, ingot_ra226.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_titanium, ingot_titanium.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_copper, ingot_copper.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_tin, ingot_tin.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_red_copper, ingot_red_copper.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_advanced_alloy, ingot_advanced_alloy.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_tungsten, ingot_tungsten.getUnlocalizedName());
@@ -5146,10 +5166,12 @@ public class ModItems {
 		GameRegistry.registerItem(ingot_steel, ingot_steel.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_tcalloy, ingot_tcalloy.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_cdalloy, ingot_cdalloy.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_tin_bronze, ingot_tin_bronze.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_bismuth_bronze, ingot_bismuth_bronze.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_arsenic_bronze, ingot_arsenic_bronze.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_bscco, ingot_bscco.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_lead, ingot_lead.getUnlocalizedName());
+		GameRegistry.registerItem(ingot_solder, ingot_solder.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_bismuth, ingot_bismuth.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_arsenic, ingot_arsenic.getUnlocalizedName());
 		GameRegistry.registerItem(ingot_calcium, ingot_calcium.getUnlocalizedName());
@@ -5329,6 +5351,7 @@ public class ModItems {
 		GameRegistry.registerItem(powder_copper, powder_copper.getUnlocalizedName());
 		GameRegistry.registerItem(powder_copper_sulfate, powder_copper_sulfate.getUnlocalizedName());
 		GameRegistry.registerItem(powder_copper_sulfate_tiny, powder_copper_sulfate_tiny.getUnlocalizedName());
+		GameRegistry.registerItem(powder_tin, powder_tin.getUnlocalizedName());
 		GameRegistry.registerItem(powder_red_copper, powder_red_copper.getUnlocalizedName());
 		GameRegistry.registerItem(powder_advanced_alloy, powder_advanced_alloy.getUnlocalizedName());
 		GameRegistry.registerItem(powder_tungsten, powder_tungsten.getUnlocalizedName());
@@ -5336,6 +5359,7 @@ public class ModItems {
 		GameRegistry.registerItem(powder_steel, powder_steel.getUnlocalizedName());
 		GameRegistry.registerItem(powder_steel_tiny, powder_steel_tiny.getUnlocalizedName());
 		GameRegistry.registerItem(powder_tcalloy, powder_tcalloy.getUnlocalizedName());
+		GameRegistry.registerItem(powder_tin_bronze, powder_tin_bronze.getUnlocalizedName());
 		GameRegistry.registerItem(powder_lead, powder_lead.getUnlocalizedName());
 		GameRegistry.registerItem(powder_bismuth, powder_bismuth.getUnlocalizedName());
 		GameRegistry.registerItem(powder_calcium, powder_calcium.getUnlocalizedName());
@@ -5458,6 +5482,7 @@ public class ModItems {
 		GameRegistry.registerItem(crystal_niter, crystal_niter.getUnlocalizedName());
 		GameRegistry.registerItem(crystal_copper, crystal_copper.getUnlocalizedName());
 		GameRegistry.registerItem(crystal_copper_sulfate, crystal_copper_sulfate.getUnlocalizedName());
+		GameRegistry.registerItem(crystal_tin, crystal_tin.getUnlocalizedName());
 		GameRegistry.registerItem(crystal_tungsten, crystal_tungsten.getUnlocalizedName());
 		GameRegistry.registerItem(crystal_aluminium, crystal_aluminium.getUnlocalizedName());
 		GameRegistry.registerItem(crystal_fluorite, crystal_fluorite.getUnlocalizedName());
@@ -5566,7 +5591,9 @@ public class ModItems {
 		GameRegistry.registerItem(plate_steel, plate_steel.getUnlocalizedName());
 		GameRegistry.registerItem(plate_lead, plate_lead.getUnlocalizedName());
 		GameRegistry.registerItem(plate_copper, plate_copper.getUnlocalizedName());
+		GameRegistry.registerItem(plate_tin, plate_tin.getUnlocalizedName());
 		GameRegistry.registerItem(plate_advanced_alloy, plate_advanced_alloy.getUnlocalizedName());
+		GameRegistry.registerItem(plate_tin_bronze, plate_tin_bronze.getUnlocalizedName());
 		GameRegistry.registerItem(plate_dura_steel, plate_dura_steel.getUnlocalizedName());
 		GameRegistry.registerItem(neutron_reflector, neutron_reflector.getUnlocalizedName());
 		GameRegistry.registerItem(plate_schrabidium, plate_schrabidium.getUnlocalizedName());
@@ -5619,6 +5646,7 @@ public class ModItems {
 		//Parts
 		GameRegistry.registerItem(coil_copper, coil_copper.getUnlocalizedName());
 		GameRegistry.registerItem(coil_copper_torus, coil_copper_torus.getUnlocalizedName());
+		GameRegistry.registerItem(coil_tin, coil_tin.getUnlocalizedName());
 		GameRegistry.registerItem(coil_advanced_alloy, coil_advanced_alloy.getUnlocalizedName());
 		GameRegistry.registerItem(coil_advanced_torus, coil_advanced_torus.getUnlocalizedName());
 		GameRegistry.registerItem(coil_gold, coil_gold.getUnlocalizedName());

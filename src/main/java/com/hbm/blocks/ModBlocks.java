@@ -62,6 +62,7 @@ public class ModBlocks {
 	public static Block ore_thorium;
 	public static Block ore_niter;
 	public static Block ore_copper;
+	public static Block ore_tin;
 	public static Block ore_tungsten;
 	public static Block ore_aluminium;
 	public static Block ore_fluorite;
@@ -144,6 +145,7 @@ public class ModBlocks {
 	public static Block cluster_titanium;
 	public static Block cluster_aluminium;
 	public static Block cluster_copper;
+	public static Block cluster_tin;
 
 	public static Block ore_oil;
 	public static Block ore_oil_rus;
@@ -177,6 +179,7 @@ public class ModBlocks {
 	public static Block block_sulfur;
 	public static Block block_niter;
 	public static Block block_copper;
+	public static Block block_tin;
 	public static Block block_red_copper;
 	public static Block block_tungsten;
 	public static Block block_aluminium;
@@ -319,7 +322,7 @@ public class ModBlocks {
 	public static Block spotlight_beam;
 	public static Block floodlight;
 	public static Block floodlight_beam;
-	
+
 	// Powered lights
 	public static Block spotlight_incandescent_powered;
 	public static Block spotlight_incandescent_powered_off;
@@ -1370,6 +1373,7 @@ public class ModBlocks {
 
 		ore_niter = new BlockOre(Material.rock).setBlockName("ore_niter").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_niter");
 		ore_copper = new BlockGeneric(Material.rock).setBlockName("ore_copper").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_copper");
+		ore_tin = new BlockGeneric(Material.rock).setBlockName("ore_tin").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_tin");
 		ore_tungsten = new BlockGeneric(Material.rock).setBlockName("ore_tungsten").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_tungsten");
 		ore_aluminium = new BlockGeneric(Material.rock).setBlockName("ore_aluminium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_aluminium");
 		ore_fluorite = new BlockOre(Material.rock).setBlockName("ore_fluorite").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_fluorite");
@@ -1385,6 +1389,7 @@ public class ModBlocks {
 		cluster_titanium = new BlockCluster(Material.rock).setBlockName("cluster_titanium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_titanium");
 		cluster_aluminium = new BlockCluster(Material.rock).setBlockName("cluster_aluminium").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_aluminium");
 		cluster_copper = new BlockCluster(Material.rock).setBlockName("cluster_copper").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_copper");
+		cluster_tin = new BlockCluster(Material.rock).setBlockName("cluster_tin").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(15.0F).setBlockTextureName(RefStrings.MODID + ":cluster_tin");
 
 		ore_nether_coal = new BlockNetherCoal(Material.rock, false, 5, true).setBlockName("ore_nether_coal").setCreativeTab(MainRegistry.blockTab).setLightLevel(10F/15F).setHardness(0.4F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_nether_coal");
 		ore_nether_smoldering = new BlockSmolder(Material.rock).setBlockName("ore_nether_smoldering").setCreativeTab(MainRegistry.blockTab).setLightLevel(1F).setHardness(0.4F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":ore_nether_smoldering");
@@ -1486,6 +1491,7 @@ public class ModBlocks {
 		block_sulfur = new BlockBeaconable(Material.iron).setBlockName("block_sulfur").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":block_sulfur");
 		block_niter = new BlockBeaconable(Material.iron).setBlockName("block_niter").setCreativeTab(MainRegistry.blockTab).setHardness(5.0F).setResistance(10.0F).setBlockTextureName(RefStrings.MODID + ":block_niter");
 		block_copper = new BlockBeaconable(Material.iron).setBlockName("block_copper").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeMetal).setHardness(5.0F).setResistance(20.0F).setBlockTextureName(RefStrings.MODID + ":block_copper");
+		block_tin = new BlockBeaconable(Material.iron).setBlockName("block_tin").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeMetal).setHardness(5.0F).setResistance(20.0F).setBlockTextureName(RefStrings.MODID + ":block_tin");
 		block_red_copper = new BlockBeaconable(Material.iron).setBlockName("block_red_copper").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeMetal).setHardness(5.0F).setResistance(25.0F).setBlockTextureName(RefStrings.MODID + ":block_red_copper");
 		block_tungsten = new BlockBeaconable(Material.iron).setBlockName("block_tungsten").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeMetal).setHardness(5.0F).setResistance(20.0F).setBlockTextureName(RefStrings.MODID + ":block_tungsten");
 		block_aluminium = new BlockBeaconable(Material.iron).setBlockName("block_aluminium").setCreativeTab(MainRegistry.blockTab).setStepSound(Block.soundTypeMetal).setHardness(5.0F).setResistance(20.0F).setBlockTextureName(RefStrings.MODID + ":block_aluminium");
@@ -1626,7 +1632,7 @@ public class ModBlocks {
 		spotlight_beam = new SpotlightBeam().setBlockName("spotlight_beam");
 		floodlight = new Floodlight(Material.iron).setBlockName("floodlight").setHardness(5.0F).setResistance(10.0F).setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":block_steel");
 		floodlight_beam = new FloodlightBeam().setBlockName("floodlight_beam");
-		
+
 		// Powered lights
 		spotlight_incandescent_powered = new SpotlightPowered(Material.iron, 2, LightType.INCANDESCENT, 40, true).setBlockName("spotlight_incandescent_powered").setBlockTextureName(RefStrings.MODID + ":cage_lamp");
 		spotlight_incandescent_powered_off = new SpotlightPowered(Material.iron, 2, LightType.INCANDESCENT, 40, false).setBlockName("spotlight_incandescent_powered_off").setCreativeTab(MainRegistry.blockTab).setBlockTextureName(RefStrings.MODID + ":cage_lamp_off");
@@ -2629,6 +2635,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(ore_sulfur, ore_sulfur.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_niter, ore_niter.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_copper, ore_copper.getUnlocalizedName());
+		GameRegistry.registerBlock(ore_tin, ore_tin.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_tungsten, ore_tungsten.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_aluminium, ore_aluminium.getUnlocalizedName());
 		GameRegistry.registerBlock(ore_fluorite, ore_fluorite.getUnlocalizedName());
@@ -2654,6 +2661,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(cluster_titanium, ItemBlockBase.class, cluster_titanium.getUnlocalizedName());
 		GameRegistry.registerBlock(cluster_aluminium, ItemBlockBase.class, cluster_aluminium.getUnlocalizedName());
 		GameRegistry.registerBlock(cluster_copper, ItemBlockBase.class, cluster_copper.getUnlocalizedName());
+		GameRegistry.registerBlock(cluster_tin, ItemBlockBase.class, cluster_tin.getUnlocalizedName());
 
 		//Bedrock ores
 		GameRegistry.registerBlock(ore_bedrock_oil, ore_bedrock_oil.getUnlocalizedName());
@@ -2762,6 +2770,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(block_sulfur, block_sulfur.getUnlocalizedName());
 		GameRegistry.registerBlock(block_niter, block_niter.getUnlocalizedName());
 		GameRegistry.registerBlock(block_copper, block_copper.getUnlocalizedName());
+		GameRegistry.registerBlock(block_tin, block_tin.getUnlocalizedName());
 		GameRegistry.registerBlock(block_red_copper, block_red_copper.getUnlocalizedName());
 		GameRegistry.registerBlock(block_advanced_alloy, block_advanced_alloy.getUnlocalizedName());
 		GameRegistry.registerBlock(block_tungsten, block_tungsten.getUnlocalizedName());
@@ -2884,7 +2893,7 @@ public class ModBlocks {
 		GameRegistry.registerBlock(spotlight_beam, spotlight_beam.getUnlocalizedName());
 		register(floodlight);
 		GameRegistry.registerBlock(floodlight_beam, floodlight_beam.getUnlocalizedName());
-		
+
 		// Powered lights
 		register(spotlight_incandescent_powered);
 		register(spotlight_incandescent_powered_off);

@@ -30,7 +30,7 @@ public class ItemPoolsLegacy {
 	public static final String POOL_NUKE_MISC = "POOL_NUKE_MISC";
 	public static final String POOL_VERTIBIRD = "POOL_VERTIBIRD";
 	public static final String POOL_SPACESHIP = "POOL_SPACESHIP";
-	
+
 	public static void init() {
 
 		//"generic" set, found commonly in chests in many structures
@@ -51,6 +51,7 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.gun_maresleg, 0, 1, 1, 1),
 					weighted(ModItems.casing, EnumCasingType.SMALL.ordinal(), 4, 10, 3),
 					weighted(ModItems.casing, EnumCasingType.SHOTSHELL.ordinal(), 4, 10, 3),
+					weighted(ModItems.bolt, Mats.MAT_TBRONZE.id, 4, 16, 3),
 					weighted(ModItems.cordite, 0, 4, 6, 5),
 					weighted(ModItems.battery_generic, 0, 1, 1, 4),
 					weighted(ModItems.battery_advanced, 0, 1, 1, 2),
@@ -99,7 +100,7 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.gas_mask_filter, 0, 1, 1, 2)
 			};
 		}};
-		
+
 		//"hidden" loot
 		new ItemPool(POOL_EXPENSIVE) {{
 			this.pool = new WeightedRandomChestContent[] {
@@ -137,7 +138,7 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.blueprint_folder, 1, 1, 1, 1)
 			};
 		}};
-		
+
 		//nuclear waste products found in powerplants
 		new ItemPool(POOL_NUKE_TRASH) {{
 			this.pool = new WeightedRandomChestContent[] {
@@ -154,7 +155,7 @@ public class ItemPoolsLegacy {
 					weighted(ModBlocks.yellow_barrel, 0, 1, 1, 2)
 			};
 		}};
-		
+
 		//all sorts of nuclear related items, mostly fissile isotopes found in nuclear powerplants
 		new ItemPool(POOL_NUKE_MISC) {{
 			this.pool = new WeightedRandomChestContent[] {
@@ -184,7 +185,7 @@ public class ItemPoolsLegacy {
 					weighted(ModBlocks.yellow_barrel, 0, 1, 3, 3)
 			};
 		}};
-		
+
 		//loot found in vertibirds
 		new ItemPool(POOL_VERTIBIRD) {{
 			this.pool = new WeightedRandomChestContent[] {
@@ -212,7 +213,7 @@ public class ItemPoolsLegacy {
 					weighted(ModItems.bomb_caller, 2, 1, 1, 2)
 			};
 		}};
-		
+
 		//spaceship double chests
 		new ItemPool(POOL_SPACESHIP) {{
 			this.pool = new WeightedRandomChestContent[] {

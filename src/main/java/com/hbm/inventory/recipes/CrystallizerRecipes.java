@@ -71,6 +71,7 @@ public class CrystallizerRecipes extends SerializableRecipe {
 		registerRecipe(new OreDictStack(S.ore()),			new CrystallizerRecipe(ModItems.crystal_sulfur, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(KNO.ore()),			new CrystallizerRecipe(ModItems.crystal_niter, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(CU.ore()),			new CrystallizerRecipe(ModItems.crystal_copper, baseTime).prod(0.05F));
+		registerRecipe(new OreDictStack(TIN.ore()),			new CrystallizerRecipe(ModItems.crystal_tin, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(W.ore()),			new CrystallizerRecipe(ModItems.crystal_tungsten, baseTime).prod(0.05F), sulfur);
 		registerRecipe(new OreDictStack(AL.ore()),			new CrystallizerRecipe(ModItems.crystal_aluminium, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(F.ore()),			new CrystallizerRecipe(ModItems.crystal_fluorite, baseTime).prod(0.05F));
@@ -241,7 +242,7 @@ public class CrystallizerRecipes extends SerializableRecipe {
 		if(dustCinnabar != null && !dustCinnabar.isEmpty()) {
 			registerRecipe(new OreDictStack(CINNABAR.dust()), new CrystallizerRecipe(new ItemStack(ModItems.cinnebar), utilityTime), new FluidStack(Fluids.PEROXIDE, 50));
 		}
-		
+
 		registerRecipe(new ComparableStack(ModBlocks.moon_turf), new CrystallizerRecipe(new ItemStack(ModItems.chunk_ore, 1, EnumChunkType.MOONSTONE.ordinal()), 1200).setReq(16));
 	}
 
@@ -344,7 +345,7 @@ public class CrystallizerRecipes extends SerializableRecipe {
 			this.duration = duration;
 			this.acidAmount = 500;
 		}
-		
+
 		public CrystallizerRecipe prod(float productivity) {
 			this.productivity = productivity;
 			return this;
@@ -374,7 +375,7 @@ public class CrystallizerRecipes extends SerializableRecipe {
 		input.stacksize = 1;
 		cRecipe.acidAmount = fluid.fill;
 		this.registerRecipe(input, cRecipe, fluid);
-		
+
 		if(obj.has("productivity")) cRecipe.prod(obj.get("productivity").getAsFloat());
 	}
 

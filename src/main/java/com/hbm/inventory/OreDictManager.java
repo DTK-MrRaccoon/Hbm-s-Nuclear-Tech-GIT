@@ -164,6 +164,8 @@ public class OreDictManager {
 	public static final DictFrame CU = new DictFrame("Copper");
 	public static final DictFrame MINGRADE = new DictFrame("Mingrade");
 	public static final DictFrame ALLOY = new DictFrame("AdvancedAlloy");
+	/** TIN */
+	public static final DictFrame TIN = new DictFrame("Tin");
 	/** TUNGSTEN */
 	public static final DictFrame W = new DictFrame("Tungsten");
 	public static final DictFrame WC = new DictFrame("TungstenCarbide");
@@ -174,6 +176,8 @@ public class OreDictManager {
 	public static final DictFrame TCALLOY = new DictFrame("TcAlloy");
 	/** CADMIUM STEEL */
 	public static final DictFrame CDALLOY = new DictFrame("CdAlloy");
+	/** TIN BRONZE */
+	public static final DictFrame TBRONZE = new DictFrame("TinBronze");
 	/** BISMUTH BRONZE */
 	public static final DictFrame BBRONZE = new DictFrame("BismuthBronze");
 	/** ARSENIC BRONZE */
@@ -182,6 +186,7 @@ public class OreDictManager {
 	public static final DictFrame BSCCO = new DictFrame("BSCCO");
 	/** LEAD */
 	public static final DictFrame PB = new DictFrame("Lead");
+	public static final DictFrame SOLDER = new DictFrame("Solder");
 	public static final DictFrame BI = new DictFrame("Bismuth");
 	public static final DictFrame AS = new DictFrame("Arsenic");
 	public static final DictFrame CA = new DictFrame("Calcium");
@@ -384,6 +389,7 @@ public class OreDictManager {
 		 */
 		TI																	.ingot(ingot_titanium)												.dust(powder_titanium)			.plate(plate_titanium)			.block(block_titanium)		.ore(ore_titanium);
 		CU																	.ingot(ingot_copper)												.dust(powder_copper)			.plate(plate_copper)			.block(block_copper)		.ore(ore_copper, ore_gneiss_copper);
+		TIN																	.ingot(ingot_tin)												.dust(powder_tin)			.plate(plate_tin)			.block(block_tin)		.ore(ore_tin);
 		MINGRADE															.ingot(ingot_red_copper)											.dust(powder_red_copper)										.block(block_red_copper);
 		ALLOY																.ingot(ingot_advanced_alloy)										.dust(powder_advanced_alloy)	.plate(plate_advanced_alloy)	.block(block_advanced_alloy);
 		W																	.ingot(ingot_tungsten)												.dust(powder_tungsten)											.block(block_tungsten)		.ore(ore_tungsten, ore_nether_tungsten)	.oreNether(ore_nether_tungsten);
@@ -392,10 +398,12 @@ public class OreDictManager {
 		STEEL																.ingot(ingot_steel)				.dustSmall(powder_steel_tiny)		.dust(powder_steel)				.plate(plate_steel)				.block(block_steel);
 		TCALLOY																.ingot(ingot_tcalloy)												.dust(powder_tcalloy)											.block(block_tcalloy);
 		CDALLOY																.ingot(ingot_cdalloy)																												.block(block_cdalloy);
+		TBRONZE																.ingot(ingot_tin_bronze)												.dust(powder_tin_bronze)			.plate(plate_tin_bronze);
 		BBRONZE																.ingot(ingot_bismuth_bronze);
 		ABRONZE																.ingot(ingot_arsenic_bronze);
 		BSCCO																.ingot(ingot_bscco);
 		PB			.nugget(nugget_lead)									.ingot(ingot_lead)													.dust(powder_lead)				.plate(plate_lead)				.block(block_lead)			.ore(ore_lead);
+		SOLDER																.ingot(ingot_solder);
 		BI			.nugget(nugget_bismuth)		.billet(billet_bismuth)		.ingot(ingot_bismuth)												.dust(powder_bismuth)											.block(block_bismuth);
 		AS			.nugget(nugget_arsenic)									.ingot(ingot_arsenic);
 		CA																	.ingot(ingot_calcium)												.dust(powder_calcium);
@@ -909,12 +917,12 @@ public class OreDictManager {
 			for(Block b : blocks) registerStack(tag, new ItemStack(b));
 			return this;
 		}
-		
+
 		public DictFrame hazIngot() {
 			hazMult = HazardRegistry.ingot;
 			return autoRegHazard(INGOT);
 		}
-		
+
 		// TODO: rethink this. currently, keys are only registered on-demand if the dict frame has a valid entry, even though we can maximize compatibility
 		// by simply registereing all known shapes in the haz reg, whether it exists or not
 		public DictFrame autoRegHazard(MaterialShapes shape) {

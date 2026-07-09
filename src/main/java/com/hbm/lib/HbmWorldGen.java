@@ -127,6 +127,7 @@ public class HbmWorldGen implements IWorldGenerator {
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.sulfurSpawn, 8, 5, 30, ModBlocks.ore_sulfur);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.aluminiumSpawn, 6, 5, 40, ModBlocks.ore_aluminium);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperSpawn, 6, 5, 45, ModBlocks.ore_copper);
+			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.tinSpawn, 6, 5, 45, ModBlocks.ore_tin);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.fluoriteSpawn, 4, 5, 45, ModBlocks.ore_fluorite);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.niterSpawn, 6, 5, 30, ModBlocks.ore_niter);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.tungstenSpawn, 8, 5, 30, ModBlocks.ore_tungsten);
@@ -142,6 +143,7 @@ public class HbmWorldGen implements IWorldGenerator {
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.titaniumClusterSpawn, 6, 15, 30, ModBlocks.cluster_titanium);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.aluminiumClusterSpawn, 6, 15, 35, ModBlocks.cluster_aluminium);
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.copperClusterSpawn, 6, 15, 20, ModBlocks.cluster_copper);
+			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.tinClusterSpawn, 6, 15, 20, ModBlocks.cluster_tin);
 
 			DungeonToolbox.generateOre(world, rand, i, j, WorldConfig.limestoneSpawn, 16, 25, 30, ModBlocks.stone_resource, EnumStoneType.LIMESTONE.ordinal());
 
@@ -389,7 +391,7 @@ public class HbmWorldGen implements IWorldGenerator {
 
 					world.setBlock(x, y, z, ModBlocks.soyuz_capsule, 3, 2);
 					TileEntity tile = world.getTileEntity(x, y, z);
-					
+
 					if(tile instanceof TileEntitySoyuzCapsule) {
 						TileEntitySoyuzCapsule cap = (TileEntitySoyuzCapsule) tile;
 						cap.setInventorySlotContents(rand.nextInt(cap.getSizeInventory()), new ItemStack(ModItems.record_glass));
@@ -435,11 +437,11 @@ public class HbmWorldGen implements IWorldGenerator {
 
 				if(world.getBlock(x, y - 1, z).canPlaceTorchOnTop(world, x, y - 1, z)) {
 					world.setBlock(x, y, z, ModBlocks.safe, rand.nextInt(4) + 2, 2);
-					
+
 					TileEntity tile = world.getTileEntity(x, y, z);
 					if(tile instanceof TileEntitySafe) {
 						TileEntitySafe safe = (TileEntitySafe) tile;
-	
+
 						switch(rand.nextInt(10)) {
 						case 0: case 1: case 2: case 3:
 							safe.setMod(1);
@@ -458,10 +460,10 @@ public class HbmWorldGen implements IWorldGenerator {
 							WeightedRandomChestContent.generateChestContents(rand, ItemPool.getPool(ItemPoolsSingle.POOL_VAULT_UNBREAKABLE), safe, rand.nextInt(2) + 1);
 							break;
 						}
-	
+
 						safe.setPins(rand.nextInt(999) + 1);
 						safe.lock();
-	
+
 						if(rand.nextInt(10) < 3) safe.fillWithSpiders(); // 30% chance; those safes have been sitting there for ages, they gotta have some spiders in them
 					}
 
@@ -522,30 +524,30 @@ public class HbmWorldGen implements IWorldGenerator {
 				world.setBlock(x, y, z, ModBlocks.stone_keyhole);
 			}
 		}
-		
+
 		genBlueprintChest(world, rand, i, j, 5000, 5000);
 	}
-	
+
 	private static void genBlueprintChest(World world, Random rand, int i, int j, int boundsX, int boundsZ) {
 		if(Math.abs(i) < 100 && Math.abs(j) < 100) return;
 		if(rand.nextInt(20) < 10) return; // nextBoolean would have weird periodicity to it, hoping that a larger int range has more variance
 
 		int cX = Math.abs(i) % boundsX;
 		int cZ = Math.abs(j) % boundsZ;
-		
+
 		if(cX >= 0 && cX < 16 && cZ >= 0 && cZ < 16) {
 			int x = i + 8;
 			int z = j + 8;
 			int y = world.getHeightValue(x, z) - rand.nextInt(2);
-			
+
 			world.setBlock(x, y, z, Blocks.chest);
-			
+
 			for(int a = x - 1; a <= x + 1; a++) for(int b = y - 1; b <= y + 1; b++) for(int c = z - 1; c <= z + 1; c++) {
 				if(a != x || b != y || c != z) world.setBlock(a, b, c, Blocks.obsidian);
 			}
-			
+
 			TileEntity tile = Compat.getTileStandard(world, x, y, z);
-			
+
 			if(tile instanceof TileEntityChest) WeightedRandomChestContent.generateChestContents(rand, ItemPool.getPool(ItemPoolsSingle.POOL_BLUEPRINTS), (TileEntityChest) tile, 50);
 		}
 	}

@@ -102,6 +102,7 @@ public class Mats {
 	//Base metals
 	public static final NTMMaterial MAT_TITANIUM		= makeSmeltable(2200,		TI,				0xF7F3F2, 0x4F4C4B, 0xA99E79).setAutogen(FRAGMENT, DUST, PLATE, DENSEWIRE, CASTPLATE, WELDEDPLATE, SHELL, BLOCK).m();
 	public static final NTMMaterial MAT_COPPER			= makeSmeltable(2900,		CU,				0xFDCA88, 0x601E0D, 0xC18336).setAutogen(FRAGMENT, WIRE, DUST, PLATE, DENSEWIRE, CASTPLATE, WELDEDPLATE, SHELL, PIPE, BLOCK).m();
+	public static final NTMMaterial MAT_TIN				= makeSmeltable(2500,		TIN,			0xFFFFFF, 0x848484, 0xDADADA).setAutogen(FRAGMENT, WIRE, DUST, PLATE, DENSEWIRE, CASTPLATE, WELDEDPLATE, SHELL, PIPE, BLOCK).m();
 	public static final NTMMaterial MAT_TUNGSTEN		= makeSmeltable(7400,		W,				0x868686, 0x000000, 0x977474).setAutogen(FRAGMENT, WIRE, BOLT, DUST, DENSEWIRE, CASTPLATE, WELDEDPLATE, BLOCK).m();
 	public static final NTMMaterial MAT_ALUMINIUM		= makeSmeltable(1300,		AL,				0xFFFFFF, 0x344550, 0xD0B8EB).setAutogen(FRAGMENT, WIRE, DUST, PLATE, CASTPLATE, WELDEDPLATE, SHELL, PIPE, BLOCK).m();
 	public static final NTMMaterial MAT_LEAD			= makeSmeltable(8200,		PB,				0xA6A6B2, 0x03030F, 0x646470).setAutogen(FRAGMENT, NUGGET, WIRE, BOLT, DUST, PLATE, CASTPLATE, PIPE, BLOCK).m();
@@ -144,6 +145,7 @@ public class Mats {
 	public static final NTMMaterial MAT_FERRO		= makeSmeltable(_AS + 7,	FERRO,			0xB7B7C9, 0x101022, 0x6B6B8B).setAutogen(CASTPLATE, HEAVYBARREL, HEAVYRECEIVER).m();
 	public static final NTMMaterial MAT_TCALLOY		= makeSmeltable(_AS + 6,	TCALLOY,		0xD4D6D6, 0x323D3D, 0x9CA6A6).setAutogen(DUST, CASTPLATE, WELDEDPLATE, LIGHTBARREL, HEAVYBARREL, LIGHTRECEIVER, HEAVYRECEIVER).m();
 	public static final NTMMaterial MAT_CDALLOY		= makeSmeltable(_AS + 13,	CDALLOY,		0xF7DF8F, 0x604308, 0xFBD368).setAutogen(CASTPLATE, WELDEDPLATE, LIGHTBARREL, HEAVYBARREL, LIGHTRECEIVER, HEAVYRECEIVER).m();
+	public static final NTMMaterial MAT_TBRONZE		= makeSmeltable(_AS + 21,	TBRONZE,		0xEDAF5D, 0x8A1600, 0xE37E3A).setAutogen(BOLT, DUST, PLATE, CASTPLATE, WELDEDPLATE, SHELL).m();
 	public static final NTMMaterial MAT_BBRONZE		= makeSmeltable(_AS + 16,	BBRONZE,		0xE19A69, 0x485353, 0x987D65).setAutogen(CASTPLATE, LIGHTBARREL, LIGHTRECEIVER, HEAVYRECEIVER).m();
 	public static final NTMMaterial MAT_ABRONZE		= makeSmeltable(_AS + 17,	ABRONZE,		0xDB9462, 0x203331, 0x77644D).setAutogen(CASTPLATE, LIGHTBARREL, LIGHTRECEIVER, HEAVYRECEIVER).m();
 	public static final NTMMaterial MAT_BSCCO		= makeSmeltable(_AS + 18,	BSCCO,			0x767BF1, 0x000000, 0x5E62C0).setAutogen(DENSEWIRE).m();
@@ -156,6 +158,7 @@ public class Mats {
 	public static final NTMMaterial MAT_GUNMETAL	= makeSmeltable(_AS + 19,	GUNMETAL,		0xFFEF3F, 0xAD3600, 0xF9C62C).setAutogen(LIGHTBARREL, HEAVYBARREL, LIGHTRECEIVER, HEAVYRECEIVER, MECHANISM, STOCK, GRIP).n();
 	public static final NTMMaterial MAT_WEAPONSTEEL	= makeSmeltable(_AS + 20,	WEAPONSTEEL,	0xA0A0A0, 0x000000, 0x808080).setAutogen(CASTPLATE, SHELL, LIGHTBARREL, HEAVYBARREL, LIGHTRECEIVER, HEAVYRECEIVER, MECHANISM, STOCK, GRIP).n();
 	public static final NTMMaterial MAT_SATURN		= makeSmeltable(_AS + 4,	BIGMT,			0x3AC4DA, 0x09282C, 0x30A4B7).setAutogen(PLATE, CASTPLATE, SHELL, BLOCK, LIGHTBARREL, HEAVYBARREL, LIGHTRECEIVER, HEAVYRECEIVER, MECHANISM, STOCK, GRIP).m();
+	public static final NTMMaterial MAT_SOLDER		= makeSmeltable(_AS + 22,	SOLDER,			0xC3C3CB, 0x2D2D35, 0x75757D).setAutogen(WIRE).n();
 
 	//Extension
 	public static final NTMMaterial MAT_RAREEARTH	= makeNonSmeltable(_ES + 00, 		RAREEARTH,		0xC1BDBD, 0x384646, 0x7B7F7F).setAutogen(FRAGMENT).n();

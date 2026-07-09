@@ -42,13 +42,13 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 		// i cast: perpetually breaking and healing kneecaps
 		// i cast: used needle sandwich
 		if(GeneralConfig.enable528) {
-			
+
 			registerPair(new GenericRecipe("precass.chip").setup(100, 200L)
 					.inputItems(new ComparableStack(ModItems.circuit, 1, EnumCircuitType.SILICON),
 							new ComparableStack(ModItems.plate_polymer, 3),
 							new OreDictStack(GOLD.wireFine(), 4)).setPools(POOL_PREFIX_528 + "chip"),
 					DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
-			
+
 			registerPair(new GenericRecipe("precass.chip_bismoid").setup(200, 1_000L)
 					.inputItems(new ComparableStack(ModItems.circuit, 4, EnumCircuitType.SILICON),
 							new ComparableStack(ModItems.plate_polymer, 8),
@@ -65,14 +65,14 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new OreDictStack(GOLD.wireFine(), 8))
 				.inputFluids(new FluidStack(Fluids.HELIUM4, 4_000)).setPools(POOL_PREFIX_528 + "chip_quantum"),
 				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP_QUANTUM), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
-			
+
 		registerPair(new GenericRecipe("precass.atomic_clock").setup(200, 2_000L)
 					.inputItems(new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CHIP),
 						new OreDictStack(ANY_PLASTIC.ingot(), 4),
 						new OreDictStack(ZR.wireFine(), 8),
 						new OreDictStack(SR.dust(), 1)).setPools(POOL_PREFIX_528 + "strontium"),
 				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ATOMIC_CLOCK), 50, GeneralConfig.enableExpensiveMode ? 50 : 50);
-			
+
 			addFirstUpgrade(ModItems.upgrade_speed_1, ModItems.upgrade_speed_2, "precass.upgrade_speed_ii");
 			addSecondUpgrade(ModItems.upgrade_speed_2, ModItems.upgrade_speed_3, "precass.upgrade_speed_iii");
 			addFirstUpgrade(ModItems.upgrade_effect_1, ModItems.upgrade_effect_2, "precass.upgrade_effect_ii");
@@ -108,16 +108,16 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 							new ComparableStack(ModItems.circuit, 16, EnumCircuitType.BISMOID)),
 					new ItemStack(ModItems.upgrade_overdrive_3), 5, GeneralConfig.enableExpensiveMode ? 50 : 50);
 		}
-		
+
 		int min = 1_200;
-			
+
 		registerPair(new GenericRecipe("precass.controller").setup(400, 15_000L)
 				.inputItems(new ComparableStack(ModItems.circuit, 32, EnumCircuitType.CHIP),
 						new ComparableStack(ModItems.circuit, 32, EnumCircuitType.CAPACITOR),
 						new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CAPACITOR_TANTALIUM),
 						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.CONTROLLER_CHASSIS),
 						new ComparableStack(ModItems.upgrade_speed_1),
-						new OreDictStack(PB.wireFine(), 16))
+						new OreDictStack(SOLDER.wireFine(), 16))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 1_000)),
 				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER), 10, GeneralConfig.enableExpensiveMode ? 75 : 25);
 
@@ -127,7 +127,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ATOMIC_CLOCK),
 						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.CONTROLLER_CHASSIS),
 						new ComparableStack(ModItems.upgrade_speed_3),
-						new OreDictStack(PB.wireFine(), 24))
+						new OreDictStack(SOLDER.wireFine(), 24))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 4_000)),
 				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_ADVANCED), 10, GeneralConfig.enableExpensiveMode ? 50 : 75);
 
@@ -137,7 +137,7 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.circuit, 8, EnumCircuitType.ATOMIC_CLOCK),
 						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.CONTROLLER_ADVANCED),
 						new ComparableStack(ModItems.upgrade_overdrive_1),
-						new OreDictStack(PB.wireFine(), 32))
+						new OreDictStack(SOLDER.wireFine(), 32))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 6_000)),
 				DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_QUANTUM), 5, GeneralConfig.enableExpensiveMode ? 25 : 50);
 
@@ -159,18 +159,18 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 					new ChanceOutput(new ItemStack(Items.paper, 24, 0), 95))
 				));
 	}
-	
+
 	public void addFirstUpgrade(Item lower, Item higher, String name) {
-		
+
 		registerPair(new GenericRecipe(name).setup(300, 10_000)
 				.inputItems(new ComparableStack(ModItems.circuit, 8, EnumCircuitType.CHIP),
 						new ComparableStack(ModItems.circuit, 4, EnumCircuitType.CAPACITOR_TANTALIUM),
 						new ComparableStack(lower), new OreDictStack(ANY_PLASTIC.ingot(), 4)),
 				new ItemStack(higher), 15, 25); // upgrades are now actually valuable
 	}
-	
+
 	public void addSecondUpgrade(Item lower, Item higher, String name) {
-		
+
 		registerPair(new GenericRecipe(name).setup(400, 25_000)
 				.inputItems(new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CHIP),
 						new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CAPACITOR_TANTALIUM),
@@ -178,29 +178,29 @@ public class PrecAssRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.SOLVENT, 500)),
 				new ItemStack(higher), 5, 10); // admittedly this one's just me being a dick
 	}
-	
+
 	/** Registers a generic pair of faulty product and recycling of broken items. */
 	public void registerPair(GenericRecipe recipe, ItemStack output, int chance, int reclaim) {
 		recipe.outputItems(new ChanceOutputMulti(
 				new ChanceOutput(output, chance),
 				new ChanceOutput(BrokenItem.make(output), 100 - chance)
 				));
-		
+
 		this.register(recipe);
-		
+
 		float fReclaim = reclaim / 100F;
-		
+
 		IOutput[] recycle = new IOutput[recipe.inputItem.length];
 		for(int i = 0; i < recycle.length; i++) {
 			ItemStack stack = recipe.inputItem[i].extractForNEI().get(0).copy();
 			recycle[i] = new ChanceOutput(stack, fReclaim);
 		}
-		
+
 		FluidStack[] fluid = recipe.inputFluid != null ? new FluidStack[1] : null;
 		if(fluid != null) {
 			fluid[0] = new FluidStack(recipe.inputFluid[0].type, (int) Math.round(recipe.inputFluid[0].fill * fReclaim));
 		}
-		
+
 		this.register(new GenericRecipe(recipe.getInternalName() + ".recycle").setup(recipe.duration, recipe.power).setNameWrapper("precass.recycle")
 				.setIcon(BrokenItem.make(output))
 				.inputItems(new NBTStack(BrokenItem.make(output)))

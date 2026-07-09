@@ -43,8 +43,10 @@ public class ItemPoolsComponent {
 					weighted(ModItems.coil_tungsten, 0, 1, 2, 5),
 					weighted(ModItems.motor, 0, 1, 2, 4),
 					weighted(ModItems.coil_copper, 0, 1, 3, 4),
+					weighted(ModItems.coil_tin, 0, 1, 3, 2),
 					weighted(ModItems.coil_copper_torus, 0, 1, 2, 3),
 					weighted(ModItems.wire_fine, Mats.MAT_MINGRADE.id, 1, 8, 5),
+					weighted(ModItems.wire_fine, Mats.MAT_SOLDER.id, 1, 8, 5),
 					weighted(ModItems.piston_selenium, 0, 1, 1, 3),
 					weighted(ModItems.battery_pack, EnumBatteryPack.BATTERY_LEAD.ordinal(), 1, 1, 3),
 					weighted(ModItems.circuit, EnumCircuitType.VACUUM_TUBE.ordinal(), 1, 2, 4),
@@ -220,16 +222,17 @@ public class ItemPoolsComponent {
 				weighted(ModItems.canister_empty, 0, 4, 16, 10),
 				weighted(ModItems.circuit,EnumCircuitType.ANALOG.ordinal(), 1, 4, 1),
 				weighted(ModItems.circuit, EnumCircuitType.CAPACITOR.ordinal(), 1, 1, 3),
+				weighted(ModItems.coil_tin, 0, 1, 3, 4),
 			};
 		}};
-    
+
 		new ItemPool(POOL_RTG) {{
 			this.pool = new WeightedRandomChestContent[] {
 				weighted(ModItems.pellet_rtg_depleted, ItemRTGPelletDepleted.DepletedRTGMaterial.LEAD.ordinal(), 1, 1, 40),
 				weighted(ModItems.pellet_rtg_weak,0, 0, 1, 1),
 			};
 		}};
-		
+
 		new ItemPool(POOL_REPAIR_MATERIALS) {{
 			this.pool = new WeightedRandomChestContent[] {
 				weighted(ModItems.ingot_aluminium, 0, 2, 8, 3),
@@ -246,6 +249,7 @@ public class ItemPoolsComponent {
 				weighted(ModItems.circuit, EnumCircuitType.VACUUM_TUBE.ordinal(), 1, 2, 4),
 				weighted(ModItems.circuit, EnumCircuitType.ANALOG.ordinal(), 1, 3, 5),
 				weighted(ModItems.circuit, EnumCircuitType.CAPACITOR.ordinal(), 1, 1, 3),
+				weighted(ModItems.wire_fine, Mats.MAT_SOLDER.id, 1, 8, 5),
 			};
 		}};
 	}

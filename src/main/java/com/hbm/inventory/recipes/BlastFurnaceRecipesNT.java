@@ -29,6 +29,16 @@ public class BlastFurnaceRecipesNT extends GenericRecipes<BlastFurnaceRecipe> {
 	@Override
 	public void registerDefaults() {
 
+		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.tiningo").setDuration(600)
+				.inputItems(new OreDictStack(CU.ingot(), 3), new OreDictStack(TIN.ingot(), 1))
+				.outputItems(new ItemStack(ModItems.ingot_tin_bronze, 4)));
+		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.tindust").setDuration(400)
+				.inputItems(new OreDictStack(CU.dust(), 3), new OreDictStack(TIN.dust(), 1))
+				.outputItems(new ItemStack(ModItems.ingot_tin_bronze, 4)));
+		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.tinore").setDuration(800)
+				.inputItems(new OreDictStack(CU.ore(), 3), new OreDictStack(TIN.ore(), 1), new ComparableStack(ModItems.powder_flux))
+				.outputItems(new ItemStack(ModItems.ingot_tin_bronze, 4), new ItemStack(ModItems.ingot_raw, 2, Mats.MAT_SLAG.id)));
+
 		// 20s per ingot of steel produced
 		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.steelFromIngot").setDuration(800)
 				.inputItems(new OreDictStack(IRON.ingot(), 2), new OreDictStack(KEY_SAND))

@@ -14,6 +14,7 @@ public class WorldConfig {
 	public static int sulfurSpawn = 5;
 	public static int aluminiumSpawn = 7;
 	public static int copperSpawn = 12;
+	public static int tinSpawn = 11;
 	public static int fluoriteSpawn = 6;
 	public static int niterSpawn = 6;
 	public static int tungstenSpawn = 10;
@@ -62,6 +63,7 @@ public class WorldConfig {
 	public static int titaniumClusterSpawn = 2;
 	public static int aluminiumClusterSpawn = 3;
 	public static int copperClusterSpawn = 4;
+	public static int tinClusterSpawn = 3;
 	public static int alexandriteSpawn = 100;
 
 	public static int limestoneSpawn = 1;
@@ -136,6 +138,7 @@ public class WorldConfig {
 		sulfurSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.02_sulfurSpawnrate", "Amount of sulfur ore veins per chunk", 5);
 		aluminiumSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.03_aluminiumSpawnrate", "Amount of aluminium ore veins per chunk", 7);
 		copperSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.04_copperSpawnrate", "Amount of copper ore veins per chunk", 12);
+		tinSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.04_2_tinSpawnrate", "Amount of tin ore veins per chunk", 11);
 		fluoriteSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.05_fluoriteSpawnrate", "Amount of fluorite ore veins per chunk", 6);
 		niterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.06_niterSpawnrate", "Amount of niter ore veins per chunk", 6);
 		tungstenSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.07_tungstenSpawnrate", "Amount of tungsten ore veins per chunk", 10);
@@ -187,6 +190,7 @@ public class WorldConfig {
 		titaniumClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C01_titaniumClusterSpawn", "Amount of titanium cluster veins per chunk", 2);
 		aluminiumClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C02_aluminiumClusterSpawn", "Amount of aluminium cluster veins per chunk", 3);
 		copperClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C03_copperClusterSpawn", "Amount of copper cluster veins per chunk", 4);
+		tinClusterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.C04_coppertinClusterSpawn", "Amount of tin cluster veins per chunk", 3);
 
 		limestoneSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.L02_limestoneSpawn", "Amount of limestone block veins per chunk", 1);
 

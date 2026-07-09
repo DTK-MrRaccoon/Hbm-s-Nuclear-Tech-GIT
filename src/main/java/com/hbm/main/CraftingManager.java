@@ -117,10 +117,13 @@ public class CraftingManager {
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), new Object[] { "G", "W", "I", 'G', KEY_ANYPANE, 'W', CARBON.wireFine(), 'I', ModItems.plate_polymer });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', NB.nugget(), 'W', AL.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', NB.nugget(), 'W', CU.wireFine() });
+		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', NB.nugget(), 'W', TIN.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR, 2), new Object[] { "IAI", "W W", 'I', ModItems.plate_polymer, 'A', AL.dust(), 'W', AL.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR, 2), new Object[] { "IAI", "W W", 'I', ModItems.plate_polymer, 'A', AL.dust(), 'W', CU.wireFine() });
+		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR, 2), new Object[] { "IAI", "W W", 'I', ModItems.plate_polymer, 'A', AL.dust(), 'W', TIN.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR_TANTALIUM), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', TA.nugget(), 'W', AL.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR_TANTALIUM), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', TA.nugget(), 'W', CU.wireFine() });
+		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CAPACITOR_TANTALIUM), new Object[] { "I", "N", "W", 'I', ModItems.plate_polymer, 'N', TA.nugget(), 'W', TIN.wireFine() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB), new Object[] { "I", "P", 'I', ModItems.plate_polymer, 'P', CU.plate() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB, 4), new Object[] { "I", "P", 'I', ModItems.plate_polymer, 'P', GOLD.plate() });
 		addRecipeAuto(DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CONTROLLER_CHASSIS), new Object[] { "PPP", "CBB", "PPP", 'P', ANY_PLASTIC.ingot(), 'C', ModItems.crt_display, 'B', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB) });
@@ -152,6 +155,7 @@ public class CraftingManager {
 
 		addRecipeAuto(new ItemStack(ModItems.ingot_aluminium, 1), new Object[] { "###", "###", "###", '#', AL.wireFine() });
 		addRecipeAuto(new ItemStack(ModItems.ingot_copper, 1), new Object[] { "###", "###", "###", '#', CU.wireFine() });
+		addRecipeAuto(new ItemStack(ModItems.ingot_tin, 1), new Object[] { "###", "###", "###", '#', TIN.wireFine() });
 		addRecipeAuto(new ItemStack(ModItems.ingot_tungsten, 1), new Object[] { "###", "###", "###", '#', W.wireFine() });
 		addRecipeAuto(new ItemStack(ModItems.ingot_red_copper, 1), new Object[] { "###", "###", "###", '#', MINGRADE.wireFine() });
 		addRecipeAuto(new ItemStack(ModItems.ingot_advanced_alloy, 1), new Object[] { "###", "###", "###", '#', ALLOY.wireFine() });
@@ -176,6 +180,8 @@ public class CraftingManager {
 
 		addRecipeAuto(new ItemStack(ModItems.coil_copper, 1), new Object[] { "WWW", "WIW", "WWW", 'W', MINGRADE.wireFine(), 'I', IRON.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.coil_copper, 1), new Object[] { "WWW", "WIW", "WWW", 'W', MINGRADE.wireFine(), 'I', STEEL.ingot() });
+		addRecipeAuto(new ItemStack(ModItems.coil_tin, 1), new Object[] { "WWW", "WIW", "WWW", 'W', TIN.wireFine(), 'I', IRON.ingot() });
+		addRecipeAuto(new ItemStack(ModItems.coil_tin, 1), new Object[] { "WWW", "WIW", "WWW", 'W', TIN.wireFine(), 'I', STEEL.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.coil_advanced_alloy, 1), new Object[] { "WWW", "WIW", "WWW", 'W', ALLOY.wireFine(), 'I', IRON.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.coil_advanced_alloy, 1), new Object[] { "WWW", "WIW", "WWW", 'W', ALLOY.wireFine(), 'I', STEEL.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.coil_gold, 1), new Object[] { "WWW", "WIW", "WWW", 'W', GOLD.wireFine(), 'I', IRON.ingot() });
@@ -246,6 +252,7 @@ public class CraftingManager {
 		addRecipeAuto(DictFrame.fromOne(ModItems.plant_item, EnumPlantType.ROPE, 4), new Object[] { "W", "W", "W", 'W', DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.WEED) });
 		addShapelessAuto(new ItemStack(Items.string, 3), new Object[] { DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.WEED) });
 		addRecipeAuto(new ItemStack(Items.paper, 3), new Object[] { "SSS", 'S', ModItems.powder_sawdust });
+		addShapelessAuto(new ItemStack(ModItems.powder_tin_bronze, 2), new Object[] { CU.dust(), CU.dust(), CU.dust(), TIN.dust() });
 
 		addRecipeAuto(new ItemStack(ModItems.wrench, 1), new Object[] { " S ", " IS", "I  ", 'S', STEEL.ingot(), 'I', IRON.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.wrench_flipped, 1), new Object[] { "S", "D", "W", 'S', Items.iron_sword, 'D', ModItems.ducttape, 'W', ModItems.wrench });
@@ -275,7 +282,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_uf6_tank), 1), new Object[] { "WTW", "WTW", "SRS", 'S', IRON.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten,'R', MINGRADE.ingot() });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_puf6_tank), 1), new Object[] { "WTW", "WTW", "SRS", 'S', STEEL.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten,'R', MINGRADE.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_difurnace_extension, 1), new Object[] { " C ", "BGB", "BGB", 'C', CU.plate(), 'B', ModItems.ingot_firebrick, 'G', ModBlocks.steel_grate });
-		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_electric_furnace_off), 1), new Object[] { "BBB", "WFW", "RRR", 'B', BE.ingot(), 'R', ModItems.coil_tungsten, 'W', CU.plateCast(), 'F', Item.getItemFromBlock(Blocks.furnace) });
+		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_electric_furnace_off), 1), new Object[] { "BBB", "WFW", "RRR", 'B', BE.ingot(), 'R', ModItems.coil_tungsten, 'W', TBRONZE.plateCast(), 'F', Item.getItemFromBlock(Blocks.furnace) });
 		addRecipeAuto(new ItemStack(ModBlocks.red_wire_coated, 16), new Object[] { "WRW", "RIR", "WRW", 'W', ModItems.plate_polymer, 'I', MINGRADE.ingot(), 'R', MINGRADE.wireFine() });
 		addRecipeAuto(new ItemStack(ModBlocks.red_cable_paintable, 16), new Object[] { "WRW", "RIR", "WRW", 'W', STEEL.plate(), 'I', MINGRADE.ingot(), 'R', MINGRADE.wireFine() });
 		if (ModBlocks.oc_cable_paintable != null)
@@ -689,8 +696,8 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.fluid_switch, 1), new Object[] { "S", "W", 'S', REDSTONE.dust(), 'W', ModBlocks.fluid_duct_paintable });
 		addRecipeAuto(new ItemStack(ModBlocks.fluid_counter_valve, 1), new Object[] { "S", "W", 'S', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.CHIP), 'W', ModBlocks.fluid_switch });
 		addRecipeAuto(new ItemStack(ModBlocks.fluid_pump, 1), new Object[] { " S ", "PGP", "IMI", 'S', STEEL.shell(), 'P', STEEL.pipe(), 'G', GRAPHITE.ingot(), 'I', STEEL.ingot(), 'M', ModItems.motor });
-		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube, 8), new Object[] { "CRC", 'C', CU.plateCast(), 'R', ANY_RUBBER.ingot() });
-		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube, 24), new Object[] { "CRC", 'C', CU.plateWelded(), 'R', ANY_RUBBER.ingot() });
+		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube, 8), new Object[] { "CRC", 'C', TBRONZE.plateCast(), 'R', ANY_RUBBER.ingot() });
+		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube, 24), new Object[] { "CRC", 'C', TBRONZE.plateWelded(), 'R', ANY_RUBBER.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.pneumatic_tube_paintable, 4), new Object[] { "SAS", "A A", "SAS", 'S', STEEL.plate(), 'A', ModBlocks.pneumatic_tube});
 		addRecipeAuto(new ItemStack(ModBlocks.pipe_anchor, 2), new Object[] { "P", "P", "S", 'P', STEEL.pipe(), 'S', STEEL.ingot() });
 		addRecipeAuto(new ItemStack(ModBlocks.heat_pipe, 16), new Object[] { " C ", "CBC", " C ", 'C', CU.plateCast(), 'B', CU.block() });
@@ -715,7 +722,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.ams_core_wormhole, 1), new Object[] { "DPD", "PSP", "DPD", 'D', ModItems.plate_dineutronium, 'P', ModItems.powder_spark_mix, 'S', ModItems.singularity });
 		addRecipeAuto(new ItemStack(ModItems.ams_core_eyeofharmony, 1), new Object[] { "ALA", "LSL", "ALA", 'A', ModItems.plate_dalekanium, 'L', new ItemStack(ModItems.fluid_barrel_full, 1, Fluids.LAVA.getID()), 'S', ModItems.black_hole });
 		addRecipeAuto(new ItemStack(ModItems.ams_core_thingy), new Object[] { "NSN", "NGN", "G G", 'N', GOLD.nugget(), 'G', GOLD.ingot(), 'S', ModItems.battery_spark_cell_10000 });
-		addRecipeAuto(new ItemStack(ModItems.photo_panel), new Object[] { " G ", "IPI", " C ", 'G', KEY_ANYPANE, 'I', ModItems.plate_polymer, 'P', NETHERQUARTZ.dust(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.PCB) });
+		addRecipeAuto(new ItemStack(ModItems.photo_panel, 3), new Object[] { "WWW", "SSS", "WWW", 'S', SI.billet(), 'W', TIN.wireFine() });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_satlinker), new Object[] { "PSP", "SCS", "PSP", 'P', STEEL.plate(), 'S', STAR.ingot(), 'C', ModItems.sat_chip });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_keyforge), new Object[] { "PCP", "WSW", "WSW", 'P', STEEL.plate(), 'S', W.ingot(), 'C', ModItems.padlock, 'W', KEY_PLANKS });
 		addRecipeAuto(new ItemStack(ModItems.sat_chip), new Object[] { "WWW", "CIC", "WWW", 'W', MINGRADE.wireFine(), 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.ADVANCED), 'I', ANY_PLASTIC.ingot() });

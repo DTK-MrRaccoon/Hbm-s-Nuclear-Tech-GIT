@@ -3,6 +3,7 @@ package com.hbm.itempool;
 import static com.hbm.lib.HbmChestContents.weighted;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.inventory.material.Mats;
 import com.hbm.items.ModItems;
 import com.hbm.items.machine.ItemCircuit.EnumCircuitType;
 import com.hbm.items.weapon.sedna.factory.GunFactory.EnumAmmo;
@@ -34,6 +35,7 @@ public class ItemPoolsSingle {
 					weighted(ModItems.ammo_standard, EnumAmmo.BMG50_FMJ.ordinal(), 24, 48, 1),
 					weighted(ModItems.ammo_standard, EnumAmmo.P9_JHP.ordinal(), 48, 64, 2),
 					weighted(ModItems.circuit, EnumCircuitType.CHIP.ordinal(), 3, 6, 1),
+					weighted(ModItems.wire_fine, Mats.MAT_SOLDER.id, 1, 2, 20),
 					weighted(ModItems.gas_mask_m65, 0, 1, 1, 1),
 					weighted(ModItems.grenade_if_he, 0, 1, 1, 1),
 					weighted(ModItems.grenade_if_incendiary, 0, 1, 1, 1),
