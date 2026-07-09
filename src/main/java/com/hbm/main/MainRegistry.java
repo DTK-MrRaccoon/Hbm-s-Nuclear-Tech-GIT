@@ -362,7 +362,7 @@ public class MainRegistry {
 				}
 			}
 		});
-		
+
 		DispenserBehaviorHandler.init();
 		MicroBlocksCompatHandler.preInit();
 	}
@@ -554,7 +554,7 @@ public class MainRegistry {
 		// IMPORTANT: fluids have to load before recipes. weird shit happens if not.
 		Fluids.reloadFluids();
 		FluidContainerRegistry.register();
-		
+
 		MagicRecipes.register();
 		LemegetonRecipes.register();
 		SILEXRecipes.register();
@@ -1469,6 +1469,8 @@ public class MainRegistry {
 		ignoreMappings.add("hbm:tile.machine_spp_top");
 		ignoreMappings.add("hbm:item.sliding_blast_door_skin");
 		ignoreMappings.add("hbm:tile.dummy_block_vault");
+		ignoreMappings.add("hbm:item.hand_drill_desh");
+		ignoreMappings.add("hbm:item.screwdriver_desh");
 
 		/// REMAP ///
 		remapItems.put("hbm:item.gadget_explosive8", ModItems.early_explosive_lenses);

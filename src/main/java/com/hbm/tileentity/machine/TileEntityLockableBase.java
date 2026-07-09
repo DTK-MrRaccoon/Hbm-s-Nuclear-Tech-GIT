@@ -109,13 +109,13 @@ public abstract class TileEntityLockableBase extends TileEntityLoadedBase {
 		ItemStack stack = player.getHeldItem();
 		double chanceOfSuccess = this.lockMod * 100;
 
-		if(stack != null && stack.getItem() == ModItems.pin && (player.inventory.hasItem(ModItems.screwdriver) || player.inventory.hasItem(ModItems.screwdriver_desh))) {
+		if(stack != null && stack.getItem() == ModItems.pin && (player.inventory.hasItem(ModItems.screwdriver))) {
 
 			stack.stackSize--;
 			canPick = true;
 		}
 
-		if(stack != null && (stack.getItem() == ModItems.screwdriver || stack.getItem() == ModItems.screwdriver_desh) && player.inventory.hasItem(ModItems.pin)) {
+		if(stack != null && (stack.getItem() == ModItems.screwdriver && player.inventory.hasItem(ModItems.pin))) {
 
 			player.inventory.consumeInventoryItem(ModItems.pin);
 			player.inventoryContainer.detectAndSendChanges();

@@ -144,10 +144,11 @@ public class ToolRecipes {
 
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.toolbox), new Object[] { "CCC", "CIC", 'C', CU.plate(), 'I', IRON.ingot() });
 
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver, 1), new Object[] { "  I", " I ", "S  ", 'S', STEEL.ingot(), 'I', IRON.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver_desh, 1), new Object[] { "  I", " I ", "S  ", 'S', ANY_PLASTIC.ingot(), 'I', DESH.ingot() });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill), new Object[] { " D", "S ", " S", 'D', DURA.ingot(), 'S', KEY_STICK });
-		CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill_desh), new Object[] { " D", "S ", " S", 'D', DESH.ingot(), 'S', ANY_PLASTIC.ingot() });
+		registerTieredWrenchRecipes();
+		registerTieredHammerRecipes();
+		registerTieredMortarRecipes();
+		registerTieredScrewdriverRecipes();
+		registerTieredHandDrillRecipes();
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set), new Object[] { "GIG", "GCG", 'G', KEY_ANYGLASS, 'I', IRON.ingot(), 'C', CU.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set_boron), new Object[] { "GIG", "GCG", 'G', ModBlocks.glass_boron, 'I', STEEL.ingot(), 'C', CO.ingot() });
 		CraftingManager.addRecipeAuto(ItemBlowtorch.getEmptyTool(ModItems.blowtorch), new Object[] { "CC ", " I ", "CCC", 'C', CU.plate(), 'I', IRON.ingot() });
@@ -157,11 +158,11 @@ public class ToolRecipes {
 
 		//Bobmazon
 		CraftingManager.addShapelessAuto(new ItemStack(ModItems.bobmazon), new Object[] { Items.book, Items.gold_nugget, Items.string, KEY_BLUE });
-		
+
 		//Blueprints
 		//CraftingManager.addShapelessAuto(new ItemStack(ModItems.blueprint_folder, 1, 0), new Object[] { ModItems.blueprints, ModItems.blueprints, ModItems.blueprints });
 		//CraftingManager.addShapelessAuto(new ItemStack(ModItems.blueprint_folder, 1, 1), new Object[] { ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.blueprints, ModItems.fragment_meteorite });
-		
+
 		//Carts
 		CraftingManager.addRecipeAuto(ItemModMinecart.createCartItem(EnumCartBase.WOOD, EnumMinecart.EMPTY), new Object[] { "P P", "WPW", 'P',KEY_SLAB, 'W', KEY_PLANKS });
 		CraftingManager.addRecipeAuto(ItemModMinecart.createCartItem(EnumCartBase.STEEL, EnumMinecart.EMPTY), new Object[] { "P P", "IPI", 'P', STEEL.plate(), 'I', STEEL.ingot() });
@@ -204,6 +205,41 @@ public class ToolRecipes {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_axe, 1), new Object[] { "BS", "BW", " P", 'B', ModItems.blades_desh, 'S', SA326.block(), 'W', ModItems.desh_axe, 'P', ANY_PLASTIC.ingot() });
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_shovel, 1), new Object[] { "B", "W", "P", 'B', SA326.block(), 'W', ModItems.desh_shovel, 'P', ANY_PLASTIC.ingot() });
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.schrabidium_hoe, 1), new Object[] { "IW", " S", " S", 'I', SA326.ingot(), 'W', ModItems.desh_hoe, 'S', ANY_PLASTIC.ingot() });
+		}
+	}
+
+	private static void registerTieredWrenchRecipes() {
+		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
+		for(int tier = 0; tier < 3; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.wrench, 1, tier), new Object[] { " S ", " IS", "I  ", 'I', IRON.ingot(), 'S', parts[tier] });
+		}
+	}
+
+	private static void registerTieredHammerRecipes() {
+		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
+		for(int tier = 0; tier < 3; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer, 1, tier), new Object[] { "III", "ISI", " S ", 'I', parts[tier], 'S', KEY_STICK });
+		}
+	}
+
+	private static void registerTieredMortarRecipes() {
+		Object[] parts = new Object[] { Items.flint, IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
+		for(int tier = 0; tier < 4; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.mortar, 1, tier), new Object[] { " I ", "SIS", "SSS", 'I', parts[tier], 'S', KEY_COBBLESTONE });
+		}
+	}
+
+	private static void registerTieredScrewdriverRecipes() {
+		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot(), DESH.ingot() };
+		for(int tier = 0; tier < 4; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver, 1, tier), new Object[] { "  I", " I ", "S  ", 'I', parts[tier], 'S', STEEL.ingot() });
+		}
+	}
+
+	private static void registerTieredHandDrillRecipes() {
+		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot(), DESH.ingot() };
+		for(int tier = 0; tier < 4; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill, 1, tier), new Object[] { " D", "S ", " S", 'D', parts[tier], 'S', KEY_STICK });
 		}
 	}
 
