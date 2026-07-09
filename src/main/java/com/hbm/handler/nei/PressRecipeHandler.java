@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.MachineSteamMulti;
 import com.hbm.handler.imc.ICompatNHNEI;
 import com.hbm.interfaces.Untested;
 import com.hbm.inventory.RecipesCommon.AStack;
@@ -34,7 +35,8 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 		return new ItemStack[]{
 				new ItemStack(ModBlocks.machine_press),
 				new ItemStack(ModBlocks.machine_epress),
-				new ItemStack(ModBlocks.machine_conveyor_press)};
+				new ItemStack(ModBlocks.machine_conveyor_press),
+				new ItemStack(ModBlocks.machine_steam_multi, MachineSteamMulti.SteamMachineType.PRESS.ordinal())};
 	}
 	@Override
 	public String getRecipeID() {
@@ -81,9 +83,9 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 	@Override
 	public void loadCraftingRecipes(String outputId, Object... results) {
 		if((outputId.equals("pressing")) && getClass() == PressRecipeHandler.class) {
-			
+
 			HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-			
+
 			for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), recipe.getKey().getKey(), recipe.getValue()));
 			}
@@ -94,9 +96,9 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public void loadCraftingRecipes(ItemStack result) {
-		
+
 		HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-		
+
 		for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 			if(NEIServerUtils.areStacksSameType(recipe.getValue(), result))
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), recipe.getKey().getKey(), recipe.getValue()));
@@ -114,13 +116,13 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient) {
-		
+
 		HashMap<Pair<AStack, StampType>, ItemStack> recipes = PressRecipes.recipes;
-		
+
 		for(Map.Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
 			AStack in = recipe.getKey().getKey();
 			StampType stamp = recipe.getKey().getValue();
-			
+
 			if(in.matchesRecipe(ingredient, true))
 				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), new ComparableStack(ingredient), recipe.getValue()));
 			else if(ingredient.getItem() instanceof ItemStamp && ((ItemStamp)ingredient.getItem()).getStampType(ingredient.getItem(), ingredient.getItemDamage()) == stamp)

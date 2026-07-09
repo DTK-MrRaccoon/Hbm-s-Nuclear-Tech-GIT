@@ -203,6 +203,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.tank_steel, 2), new Object[] { "STS", "S S", "STS", 'S', STEEL.plate(), 'T', TI.plate() });
 		addRecipeAuto(new ItemStack(ModItems.motor, 2), new Object[] { " R ", "ICI", "ITI", 'R', MINGRADE.wireFine(), 'T', ModItems.coil_copper_torus, 'I', IRON.plate(), 'C', ModItems.coil_copper });
 		addRecipeAuto(new ItemStack(ModItems.motor, 2), new Object[] { " R ", "ICI", " T ", 'R', MINGRADE.wireFine(), 'T', ModItems.coil_copper_torus, 'I', STEEL.plate(), 'C', ModItems.coil_copper });
+		addRecipeAuto(new ItemStack(ModItems.motor, 2), new Object[] { "TRT", "CCC", "TRT", 'R', TIN.wireFine(), 'T', ModItems.bronze_parts, 'C', ModItems.coil_tin });
 		addRecipeAuto(new ItemStack(ModItems.motor_desh, 1), new Object[] { "PCP", "DMD", "PCP", 'P', ANY_PLASTIC.ingot(), 'C', ModItems.coil_gold_torus, 'D', DESH.ingot(), 'M', ModItems.motor });
 		addRecipeAuto(new ItemStack(ModItems.motor_bismuth, 1), new Object[] { "BCB", "SDS", "BCB", 'B', BI.nugget(), 'C', ModBlocks.hadron_coil_alloy, 'S', STEEL.plateCast(), 'D', DURA.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.deuterium_filter, 1), new Object[] { "TST", "SCS", "TST", 'T', ANY_RESISTANTALLOY.ingot(), 'S', S.dust(), 'C', ModItems.catalyst_clay });
@@ -227,6 +228,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.turbine_tungsten, 1), new Object[] { "BBB", "BSB", "BBB", 'B', ModItems.blade_tungsten, 'S', DURA.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.ring_starmetal, 1), new Object[] { " S ", "S S", " S ", 'S', STAR.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.flywheel_beryllium, 1), new Object[] { "IBI", "BTB", "IBI", 'B', BE.block(), 'I', IRON.plateCast(), 'T', DURA.pipe() });
+		addRecipeAuto(new ItemStack(ModItems.bronze_parts, 1), new Object[] { "SSS", "S  ", "S  ", 'S', TBRONZE.plate() });
 
 		addShapelessAuto(new ItemStack(ModItems.cmug_empty, 1), new Object[] {Items.clay_ball });
 		addRecipeAuto(new ItemStack(ModItems.glass_empty, 1), new Object[] { "G G", "GGG", " G ", 'G', Blocks.glass });
@@ -253,6 +255,7 @@ public class CraftingManager {
 		addShapelessAuto(new ItemStack(Items.string, 3), new Object[] { DictFrame.fromOne(ModBlocks.plant_flower, EnumFlowerType.WEED) });
 		addRecipeAuto(new ItemStack(Items.paper, 3), new Object[] { "SSS", 'S', ModItems.powder_sawdust });
 		addShapelessAuto(new ItemStack(ModItems.powder_tin_bronze, 2), new Object[] { CU.dust(), CU.dust(), CU.dust(), TIN.dust() });
+		addShapelessAuto(new ItemStack(ModItems.powder_tin_bronze, 2), new Object[] { CU.ore(), CU.ore(), CU.ore(), TIN.ore() });
 
 		addRecipeAuto(new ItemStack(ModItems.wrench, 1), new Object[] { " S ", " IS", "I  ", 'S', STEEL.ingot(), 'I', IRON.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.wrench_flipped, 1), new Object[] { "S", "D", "W", 'S', Items.iron_sword, 'D', ModItems.ducttape, 'W', ModItems.wrench });
@@ -369,11 +372,13 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.furnace_iron), new Object[] { "III", "IFI", "BBB", 'I', IRON.ingot(), 'F', Blocks.furnace, 'B', Blocks.stonebrick });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_mixer), new Object[] { "PIP", "GCG", "PMP", 'P', STEEL.plate(), 'I', DURA.ingot(), 'G', KEY_ANYPANE, 'C', DictFrame.fromOne(ModItems.circuit, EnumCircuitType.VACUUM_TUBE), 'M', ModItems.motor });
 
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.FURNACE.ordinal()), new Object[] { "SCS", "TCT", "SCS", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.SHREDDER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', ModItems.turbine_titanium });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.PRESS.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', STEEL.block() });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', CU.plate(), 'T', ModItems.tank_steel, 'E', CU.pipe(), });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.OSMIRIDIUM_FURNACE.ordinal()), new Object[] { "OCO", "TCT", "OCO", 'O', OSMIRIDIUM.plateCast(), 'C', CU.plate(), 'T', ModItems.tank_steel });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.FURNACE.ordinal()), new Object[] { "SCS", "TCT", "SCS", 'S', STEEL.plate(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.SHREDDER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel, 'E', ModItems.turbine_titanium });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.PRESS.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel, 'E', STEEL.block() });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel, 'E', CU.pipe(), });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_SHREDDER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', TBRONZE.plate(), 'C', CU.pipe(), 'T', TBRONZE.shell(), 'E', ModItems.bronze_parts });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', TBRONZE.plate(), 'C', ModItems.bronze_parts, 'T', TBRONZE.shell(), 'E', CU.pipe(), });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.OSMIRIDIUM_FURNACE.ordinal()), new Object[] { "OCO", "TCT", "OCO", 'O', OSMIRIDIUM.plateCast(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel });
 
 		addRecipeAuto(new ItemStack(ModBlocks.fan), new Object[] { "BPB", "PRP", "BPB", 'B', STEEL.bolt(), 'P', IRON.plate(), 'R', REDSTONE.dust() });
 		addRecipeAuto(new ItemStack(ModBlocks.piston_inserter), new Object[] { "ITI", "TPT", "ITI", 'P', DictFrame.fromOne(ModItems.part_generic, EnumPartType.PISTON_PNEUMATIC), 'I', IRON.plate(), 'T', STEEL.bolt() });
@@ -408,11 +413,15 @@ public class CraftingManager {
 		addShapelessAuto(new ItemStack(ModItems.overfuse, 1), new Object[] { STEEL.bolt(), NP237.dust(), I.dust(), TH232.dust(), AT.dust(), ND.dust(), CU.plateCast(), ModItems.black_hole, CS.dust() });
 		addShapelessAuto(new ItemStack(ModItems.overfuse, 1), new Object[] { STEEL.bolt(), ST.dust(), BR.dust(), CO.dust(), TS.dust(), NB.dust(), CU.plateCast(), ModItems.black_hole, CE.dust() });
 
+		addRecipeAuto(new ItemStack(ModItems.blades_tin, 1), new Object[] { " P ", "PIP", " P ", 'P', TIN.plate(), 'I', TIN.ingot() });
+		addRecipeAuto(new ItemStack(ModItems.blades_bronze, 1), new Object[] { " P ", "PIP", " P ", 'P', TBRONZE.plate(), 'I', TBRONZE.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.blades_steel, 1), new Object[] { " P ", "PIP", " P ", 'P', STEEL.plate(), 'I', STEEL.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.blades_titanium, 1), new Object[] { " P ", "PIP", " P ", 'P', TI.plate(), 'I', TI.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.blades_advanced_alloy, 1), new Object[] { " P ", "PIP", " P ", 'P', ALLOY.plate(), 'I', ALLOY.ingot() });
 		addRecipeAuto(new ItemStack(ModItems.blades_desh, 1), new Object[] { " P ", "PBP", " P ", 'P', ModItems.plate_desh, 'B', ModItems.blades_advanced_alloy }); //4 desh ingots still needed to do anything
 
+		addRecipeAuto(new ItemStack(ModItems.blades_tin, 1), new Object[] { "PIP", 'P', TIN.plate(), 'I', new ItemStack(ModItems.blades_tin, 1, OreDictionary.WILDCARD_VALUE) });
+		addRecipeAuto(new ItemStack(ModItems.blades_bronze, 1), new Object[] { "PIP", 'P', TBRONZE.plate(), 'I', new ItemStack(ModItems.blades_bronze, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModItems.blades_steel, 1), new Object[] { "PIP", 'P', STEEL.plate(), 'I', new ItemStack(ModItems.blades_steel, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModItems.blades_titanium, 1), new Object[] { "PIP", 'P', TI.plate(), 'I', new ItemStack(ModItems.blades_titanium, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModItems.blades_advanced_alloy, 1), new Object[] { "PIP", 'P', ALLOY.plate(), 'I', new ItemStack(ModItems.blades_advanced_alloy, 1, OreDictionary.WILDCARD_VALUE) });

@@ -51,17 +51,14 @@ public class TileEntitySteamFurnace extends TileEntitySteamMachineBase {
 
 		if(temperature < 20) temperature = 20;
 		if(temperature > maxTemperature) temperature = maxTemperature;
+	}
 
-		if(isProcessing && temperature >= 100) {
-			progress += Math.max(1, temperature / 100);
-			if(progress >= maxProgress) {
-				progress = 0;
-				processItem();
-				this.markDirty();
-			}
-		} else {
-			if(progress > 0) progress--;
+	@Override
+	protected float getProgressIncrement(boolean isProcessing, int steamAvailable) {
+		if (isProcessing && steamAvailable > 0) {
+			return (float) steamAvailable / (float) getRequiredSteamPerTick();
 		}
+		return 0.0F;
 	}
 
 	@Override

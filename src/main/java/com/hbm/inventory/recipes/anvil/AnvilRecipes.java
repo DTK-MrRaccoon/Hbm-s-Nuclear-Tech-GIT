@@ -242,6 +242,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.ingot(), 8),
 						new OreDictStack(CU.plate(), 4),
+						new ComparableStack(ModItems.bronze_parts, 12),
 						new ComparableStack(ModItems.motor, 2),
 						exp ? new ComparableStack(ModItems.circuit, 2, EnumCircuitType.ANALOG) : new ComparableStack(ModItems.circuit, 4, EnumCircuitType.VACUUM_TUBE)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_assembly_machine))).setTier(2));
@@ -251,6 +252,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.ingot(), 6),
 						new OreDictStack(CU.plate(), 2),
+						new ComparableStack(ModItems.bronze_parts, 12),
 						new ComparableStack(ModItems.motor, 1),
 						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.VACUUM_TUBE.ordinal())
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_assembler))).setTier(1));
@@ -340,7 +342,8 @@ public class AnvilRecipes extends SerializableRecipe {
 						new ComparableStack(Blocks.stonebrick, 8),
 						new ComparableStack(ModItems.ingot_firebrick, 16),
 						new OreDictStack(IRON.ingot(), 4),
-						new OreDictStack(TBRONZE.plate(), 8),
+						new OreDictStack(CU.plate(), 8),
+						new ComparableStack(ModItems.bronze_parts, 2),
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_rotary_furnace))).setTier(2));
 
 		constructionRecipes.add(new AnvilConstructionRecipe(
@@ -348,6 +351,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(KEY_PLANKS, 16),
 						new OreDictStack(STEEL.plate(), 6),
 						new OreDictStack(TBRONZE.ingot(), 8),
+						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.coil_copper, 4),
 						new ComparableStack(ModItems.gear_large, 1, 0)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_stirling))).setTier(2));
@@ -366,6 +370,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new ComparableStack(ModBlocks.reinforced_stone, 16),
 						new OreDictStack(STEEL.plate(), 12),
 						new OreDictStack(TBRONZE.shell(), 2),
+						new ComparableStack(ModItems.bronze_parts, 6),
 						new ComparableStack(ModItems.coil_copper, 4),
 						new ComparableStack(ModItems.gear_large, 1)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_steam_engine))).setTier(2));
@@ -397,6 +402,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.plateCast(), 2),
 						new ComparableStack(ModItems.coil_copper, 4),
+						new ComparableStack(ModItems.bronze_parts, 2),
 						new OreDictStack(W.bolt(), 4),
 						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.VACUUM_TUBE.ordinal())
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_soldering_station))).setTier(2));
@@ -406,6 +412,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(STEEL.plateCast(), 4),
 						new OreDictStack(W.ingot(), 8),
 						new ComparableStack(ModBlocks.machine_transformer, 1),
+						new ComparableStack(ModItems.bronze_parts, 4),
 						new ComparableStack(ModItems.arc_electrode, 2)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_arc_welder))).setTier(2));
 
@@ -420,7 +427,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.plate(), 4),
 						new OreDictStack(IRON.ingot(), 12),
-						new OreDictStack(CU.ingot(), 2),
+						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.VACUUM_TUBE.ordinal()),
 						new ComparableStack(ModItems.sawblade)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_autosaw))).setTier(2));
@@ -429,7 +436,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.plate(), 8),
 						new OreDictStack(IRON.ingot(), 12),
-						new OreDictStack(CU.ingot(), 2),
+						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.VACUUM_TUBE.ordinal()),
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_thresher))).setTier(2));
 

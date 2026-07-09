@@ -16,6 +16,7 @@ import net.minecraft.util.ResourceLocation;
 public class GUISteamBoiler extends GuiInfoContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_steam_boiler_small.png");
+	private static final ResourceLocation bronzeTexture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_steam_boiler_small_bronze.png");
 	private final TileEntitySteamBoiler boiler;
 
 	public GUISteamBoiler(InventoryPlayer invPlayer, TileEntitySteamBoiler te) {
@@ -43,7 +44,7 @@ public class GUISteamBoiler extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float partialTicks, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.boiler.isBronze() ? bronzeTexture : texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, this.xSize, this.ySize);
 
 		if(this.boiler.burnTime > 0 && this.boiler.maxBurnTime > 0) {

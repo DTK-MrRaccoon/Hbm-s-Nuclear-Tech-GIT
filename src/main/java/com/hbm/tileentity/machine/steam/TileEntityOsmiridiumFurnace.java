@@ -58,18 +58,14 @@ public class TileEntityOsmiridiumFurnace extends TileEntitySteamMachineBase {
 
 		if(temperature < 20) temperature = 20;
 		if(temperature > maxTemperature) temperature = maxTemperature;
+	}
 
-		if(isProcessing && temperature >= 500) {
-			progress += Math.max(2, temperature / 50);
-			if(progress >= maxProgress) {
-				progress = 0;
-				processItem();
-				this.markDirty();
-			}
-		} else {
-			if(progress > 0) progress -= 2;
-			if(progress < 0) progress = 0;
+	@Override
+	protected float getProgressIncrement(boolean isProcessing, int steamAvailable) {
+		if (isProcessing && steamAvailable > 0) {
+			return (float) steamAvailable / (float) getRequiredSteamPerTick();
 		}
+		return 0.0F;
 	}
 
 	@Override

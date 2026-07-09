@@ -50,20 +50,17 @@ public class TileEntitySteamPress extends TileEntitySteamMachineBase {
 
 			if(pressure > maxPressure) pressure = maxPressure;
 			if(pressure < 0) pressure = 0;
-
-			if(pressure >= 50) {
-				progress += Math.max(1, (pressure / 10) / 100);
-				if(progress >= maxProgress) {
-					progress = 0;
-					processItem();
-					pressure = Math.max(0, pressure - 40);
-					this.markDirty();
-				}
-			}
 		} else {
 			if(pressure > 0) pressure--;
-			if(progress > 0) progress--;
 		}
+	}
+
+	@Override
+	protected float getProgressIncrement(boolean isProcessing, int steamAvailable) {
+		if (isProcessing && steamAvailable > 0) {
+			return (float) steamAvailable / (float) getRequiredSteamPerTick();
+		}
+		return 0.0F;
 	}
 
 	@Override

@@ -26,7 +26,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 	public final FluidTank spentSteam;
 	public int progress;
 	public int maxProgress = 100;
-
+	protected float progressFraction = 0.0F;
 	public int steamConsumedLastTick = 0;
 	protected int steamRemainder = 0;
 	protected ForgeDirection frontDirection = ForgeDirection.NORTH;
@@ -49,6 +49,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 
 	protected abstract int getRequiredSteamPerTick();
 	protected abstract void updateMachineMetrics(boolean isProcessing, int steamAvailable);
+	protected abstract float getProgressIncrement(boolean isProcessing, int steamAvailable);
 	protected int getSteamToWasteRatio() { return 100; }
 	protected abstract void serializeMachine(ByteBuf buf);
 	protected abstract void deserializeMachine(ByteBuf buf);
@@ -204,6 +205,29 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 
 			updateMachineMetrics(canRun, steamAvailable);
 
+			float increment = 0.0F;
+			if (canRun && steamAvailable > 0) {
+				increment = getProgressIncrement(canRun, steamAvailable);
+			}
+			if (increment > 0.0F) {
+				progressFraction += increment;
+				while (progressFraction >= 1.0F) {
+					progress++;
+					progressFraction -= 1.0F;
+					if (progress >= maxProgress) {
+						progress = 0;
+						progressFraction = 0.0F;
+						processItem();
+						this.markDirty();
+					}
+				}
+			} else {
+				if (progress > 0) {
+					progress--;
+					progressFraction = 0.0F;
+				}
+			}
+
 			this.outputSpentSteam();
 
 			if(spentSteam.getFill() >= spentSteam.getMaxFill()) {
@@ -241,6 +265,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		spentSteam.serialize(buf);
 		buf.writeInt(progress);
 		buf.writeInt(maxProgress);
+		buf.writeFloat(progressFraction);
 		buf.writeInt(steamConsumedLastTick);
 		buf.writeByte(this.getFrontDirection().ordinal());
 		serializeMachine(buf);
@@ -253,6 +278,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		spentSteam.deserialize(buf);
 		progress = buf.readInt();
 		maxProgress = buf.readInt();
+		progressFraction = buf.readFloat();
 		steamConsumedLastTick = buf.readInt();
 		this.frontDirection = readFacing(buf.readByte());
 		deserializeMachine(buf);
@@ -263,6 +289,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		super.readFromNBT(nbt);
 		progress = nbt.getInteger("progress");
 		steamRemainder = nbt.getInteger("remainder");
+		progressFraction = nbt.getFloat("progressFraction");
 		steam.readFromNBT(nbt, "steam");
 		spentSteam.readFromNBT(nbt, "spent");
 		steamConsumedLastTick = nbt.getInteger("consumedLast");
@@ -276,6 +303,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 		super.writeToNBT(nbt);
 		nbt.setInteger("progress", progress);
 		nbt.setInteger("remainder", steamRemainder);
+		nbt.setFloat("progressFraction", progressFraction);
 		steam.writeToNBT(nbt, "steam");
 		spentSteam.writeToNBT(nbt, "spent");
 		nbt.setInteger("consumedLast", steamConsumedLastTick);
@@ -348,7 +376,7 @@ public abstract class TileEntitySteamMachineBase extends TileEntityMachineBase i
 	}
 
 	@Override
-	public net.minecraft.util.AxisAlignedBB getRenderBoundingBox() {
+	public AxisAlignedBB getRenderBoundingBox() {
 		return TileEntity.INFINITE_EXTENT_AABB;
 	}
 

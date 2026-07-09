@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.machine.MachineSteamMulti;
 import com.hbm.handler.imc.ICompatNHNEI;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.gui.GUIMachineShredder;
@@ -26,7 +27,9 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler implements ICom
 	@Override
 	public ItemStack[] getMachinesForRecipe() {
 		return new ItemStack[]{
-				new ItemStack(ModBlocks.machine_shredder)};
+				new ItemStack(ModBlocks.machine_shredder),
+				new ItemStack(ModBlocks.machine_steam_multi, MachineSteamMulti.SteamMachineType.SHREDDER.ordinal()),
+				new ItemStack(ModBlocks.machine_steam_multi, MachineSteamMulti.SteamMachineType.BRONZE_SHREDDER.ordinal())};
 	}
 	@Override
 	public String getRecipeID() {
@@ -185,6 +188,8 @@ public class ShredderRecipeHandler extends TemplateRecipeHandler implements ICom
 		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
 		fuels.add(new ItemStack(ModItems.blades_advanced_alloy));
 		fuels.add(new ItemStack(ModItems.blades_steel));
+		fuels.add(new ItemStack(ModItems.blades_tin));
+		fuels.add(new ItemStack(ModItems.blades_bronze));
 		fuels.add(new ItemStack(ModItems.blades_titanium));
 		fuels.add(new ItemStack(ModItems.blades_desh));
 		return fuels;

@@ -18,26 +18,38 @@ import net.minecraftforge.common.util.ForgeDirection;
 public class TileEntitySteamShredder extends TileEntitySteamMachineBase {
 
 	public int speed = 0;
-	public final int maxSpeed = 100;
+	public int maxSpeed = 100;
+	public boolean bronze = false;
 
 	public TileEntitySteamShredder() {
-		super(4, 16000, 160);
+		this(false);
+	}
+
+	public TileEntitySteamShredder(boolean bronze) {
+		super(4, bronze ? 8000 : 16000, bronze ? 50 : 100);
+		this.bronze = bronze;
+		this.maxSpeed = bronze ? 50 : 100;
+	}
+
+	public boolean isBronze() {
+		return this.bronze;
 	}
 
 	@Override
 	public String getName() {
-		return "container.steamShredder";
+		return this.bronze ? "container.steamShredderBronze" : "container.steamShredder";
 	}
 
 	@Override
 	protected int getRequiredSteamPerTick() {
-		return 333;
+		return this.bronze ? 333 : 166;
 	}
 
 	@Override
 	protected void updateMachineMetrics(boolean isProcessing, int steamAvailable) {
 		if(isProcessing && steamAvailable > 0) {
-			int targetSpeed = (int) (maxSpeed * ((double) steamAvailable / 333.0D));
+			int requiredSteam = this.getRequiredSteamPerTick();
+			int targetSpeed = (int) (maxSpeed * ((double) steamAvailable / (double) requiredSteam));
 
 			if(speed < targetSpeed) {
 				speed++;
@@ -47,38 +59,42 @@ public class TileEntitySteamShredder extends TileEntitySteamMachineBase {
 
 			if(speed > maxSpeed) speed = maxSpeed;
 			if(speed < 0) speed = 0;
-
-			progress += Math.max(1, speed / 20);
-			if(progress >= maxProgress) {
-				progress = 0;
-				processItem();
-				this.markDirty();
-			}
 		} else {
 			if(speed > 0) speed -= 2;
 			if(speed < 0) speed = 0;
-			if(progress > 0) progress--;
 		}
 	}
 
 	@Override
+	protected float getProgressIncrement(boolean isProcessing, int steamAvailable) {
+		if (isProcessing && steamAvailable > 0) {
+			return (float) steamAvailable / (float) getRequiredSteamPerTick();
+		}
+		return 0.0F;
+	}
+
+	@Override
 	protected void serializeMachine(ByteBuf buf) {
+		buf.writeBoolean(this.bronze);
 		buf.writeInt(speed);
 	}
 
 	@Override
 	protected void deserializeMachine(ByteBuf buf) {
+		this.bronze = buf.readBoolean();
 		this.speed = buf.readInt();
 	}
 
 	@Override
 	protected void readMachineNBT(NBTTagCompound nbt) {
+		this.bronze = nbt.getBoolean("bronze");
 		this.speed = nbt.getInteger("speed");
 	}
 
 	@Override
 	protected void writeMachineNBT(NBTTagCompound nbt) {
-		nbt.setInteger("pressure", speed);
+		nbt.setInteger("speed", speed);
+		nbt.setBoolean("bronze", bronze);
 	}
 
 	@Override

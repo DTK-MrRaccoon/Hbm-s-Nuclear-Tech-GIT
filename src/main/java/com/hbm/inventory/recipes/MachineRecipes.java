@@ -92,6 +92,8 @@ public class MachineRecipes {
 		ArrayList<ItemStack> fuels = new ArrayList<ItemStack>();
 		fuels.add(new ItemStack(ModItems.blades_advanced_alloy));
 		fuels.add(new ItemStack(ModItems.blades_steel));
+		fuels.add(new ItemStack(ModItems.blades_tin));
+		fuels.add(new ItemStack(ModItems.blades_bronze));
 		fuels.add(new ItemStack(ModItems.blades_titanium));
 		fuels.add(new ItemStack(ModItems.blades_desh));
 		return fuels;

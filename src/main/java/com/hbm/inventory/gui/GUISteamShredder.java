@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import com.hbm.inventory.container.ContainerSteamShredder;
 import com.hbm.inventory.gui.element.GUIElements;
 import com.hbm.inventory.gui.element.GUIElements.Gauge;
+import com.hbm.items.machine.ItemBlades;
 import com.hbm.lib.RefStrings;
 import com.hbm.tileentity.machine.steam.TileEntitySteamShredder;
 
@@ -16,6 +17,7 @@ import net.minecraft.util.ResourceLocation;
 public class GUISteamShredder extends GuiInfoContainer {
 
 	private static final ResourceLocation texture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_steam_shredder.png");
+	private static final ResourceLocation bronzeTexture = new ResourceLocation(RefStrings.MODID + ":textures/gui/gui_steam_shredder_bronze.png");
 	private final TileEntitySteamShredder shredder;
 
 	public GUISteamShredder(InventoryPlayer invPlayer, TileEntitySteamShredder te) {
@@ -31,6 +33,12 @@ public class GUISteamShredder extends GuiInfoContainer {
 		shredder.steam.renderTankInfo(this, mouseX, mouseY, guiLeft + 8, guiTop + 16, 16, 51);
 		shredder.spentSteam.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 16, 16, 51);
 		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 135, guiTop + 30, 18, 18, mouseX, mouseY, new String[] { "Speed: " + shredder.speed + " / " + shredder.maxSpeed + " RPM", "Flow: " + shredder.steamConsumedLastTick + " mB/t" });
+
+		boolean hasBladeLeft = shredder.slots[2] != null && shredder.slots[2].getItem() instanceof ItemBlades && shredder.slots[2].getItemDamage() < shredder.slots[2].getMaxDamage();
+		boolean hasBladeRight = shredder.slots[3] != null && shredder.slots[3].getItem() instanceof ItemBlades && shredder.slots[3].getItemDamage() < shredder.slots[3].getMaxDamage();
+
+		if(!hasBladeLeft || !hasBladeRight) {this.drawCustomInfoStat(mouseX, mouseY, guiLeft - 16, guiTop + 36, 16, 16, guiLeft - 8, guiTop + 36 + 16, new String[] { "Error: Shredder blades are broken or missing!" });
+		}
 	}
 
 	@Override
@@ -43,7 +51,7 @@ public class GUISteamShredder extends GuiInfoContainer {
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int mouseX, int mouseY) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
+		Minecraft.getMinecraft().getTextureManager().bindTexture(this.shredder.isBronze() ? bronzeTexture : texture);
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		int prog = (int)((double)shredder.progress * 26D / (double)shredder.maxProgress);
@@ -54,5 +62,11 @@ public class GUISteamShredder extends GuiInfoContainer {
 
 		float fill = (float)shredder.speed / (float)shredder.maxSpeed;
 		GUIElements.renderGauge(Gauge.ROUND_SMALL, guiLeft + 135, guiTop + 30, this.zLevel, fill);
+
+		boolean hasBladeLeft = shredder.slots[2] != null && shredder.slots[2].getItem() instanceof ItemBlades && shredder.slots[2].getItemDamage() < shredder.slots[2].getMaxDamage();
+		boolean hasBladeRight = shredder.slots[3] != null && shredder.slots[3].getItem() instanceof ItemBlades && shredder.slots[3].getItemDamage() < shredder.slots[3].getMaxDamage();
+
+		if(!hasBladeLeft || !hasBladeRight) {this.drawInfoPanel(guiLeft - 16, guiTop + 36, 16, 16, 6);
+		}
 	}
 }

@@ -44,18 +44,33 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 	public int ashLevelCoal;
 	public int ashLevelMisc;
 
+	public boolean bronze = false;
+
 	protected ForgeDirection frontDirection = ForgeDirection.NORTH;
 	private boolean wasActiveLastTick = false;
 
 	public TileEntitySteamBoiler() {
+		this(false);
+	}
+
+	public TileEntitySteamBoiler(boolean bronze) {
 		super(4, 50);
+		this.bronze = bronze;
 		this.water = new FluidTank(Fluids.WATER, 1000);
 		this.steam = new FluidTank(Fluids.STEAM, 10000);
 	}
 
+	public boolean isBronze() {
+		return this.bronze;
+	}
+
+	protected double getSteamProductionMultiplier() {
+		return this.bronze ? 0.5D : 1.0D;
+	}
+
 	@Override
 	public String getName() {
-		return "container.steamBoilerSmall";
+		return this.bronze ? "container.steamBoilerSmallBronze" : "container.steamBoilerSmall";
 	}
 
 	public ForgeDirection getFrontDirection() {
@@ -85,7 +100,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 		int fuel = TileEntityFurnace.getItemBurnTime(slots[0]);
 		if(fuel <= 0) return;
 
-		this.maxBurnTime = this.burnTime = fuel * 7;
+		this.maxBurnTime = this.burnTime = fuel * (this.bronze ? 3 : 7);
 
 		EnumAshType type = TileEntityFireboxBase.getAshFromFuel(slots[0]);
 		if(type == EnumAshType.WOOD) ashLevelWood += fuel;
@@ -153,6 +168,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 					else if(heat >= 250) steamProduction = 50 + (heat - 250) * 25 / 100;
 					else steamProduction = 10 + (heat - 100) * 40 / 150;
 
+					steamProduction = Math.max(1, (int)Math.round(steamProduction * this.getSteamProductionMultiplier()));
 					int process = Math.min(steamProduction, room);
 
 					if(process > 0) {
@@ -221,6 +237,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 		buf.writeInt(ashLevelWood);
 		buf.writeInt(ashLevelCoal);
 		buf.writeInt(ashLevelMisc);
+		buf.writeBoolean(this.bronze);
 		buf.writeByte(this.getFrontDirection().ordinal());
 		water.serialize(buf);
 		steam.serialize(buf);
@@ -236,6 +253,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 		ashLevelWood = buf.readInt();
 		ashLevelCoal = buf.readInt();
 		ashLevelMisc = buf.readInt();
+		bronze = buf.readBoolean();
 		frontDirection = readFacing(buf.readByte());
 		water.deserialize(buf);
 		steam.deserialize(buf);
@@ -259,6 +277,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 		ashLevelWood = nbt.getInteger("ashLevelWood");
 		ashLevelCoal = nbt.getInteger("ashLevelCoal");
 		ashLevelMisc = nbt.getInteger("ashLevelMisc");
+		bronze = nbt.getBoolean("bronze");
 		frontDirection = readFacing(nbt.getByte("frontDir"));
 		water.readFromNBT(nbt, "water");
 		steam.readFromNBT(nbt, "steam");
@@ -276,6 +295,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 		nbt.setInteger("ashLevelCoal", ashLevelCoal);
 		nbt.setInteger("ashLevelMisc", ashLevelMisc);
 		nbt.setByte("frontDir", (byte)this.getFrontDirection().ordinal());
+		nbt.setBoolean("bronze", bronze);
 		water.writeToNBT(nbt, "water");
 		steam.writeToNBT(nbt, "steam");
 	}

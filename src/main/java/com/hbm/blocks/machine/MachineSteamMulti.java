@@ -37,7 +37,9 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		SHREDDER,
 		PRESS,
 		BOILER,
-		OSMIRIDIUM_FURNACE
+		OSMIRIDIUM_FURNACE,
+		BRONZE_SHREDDER,
+		BRONZE_BOILER
 	}
 
 	private static final ForgeDirection[] FACING_DIR = new ForgeDirection[] {
@@ -90,10 +92,12 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	public TileEntity createNewTileEntity(World world, int meta) {
 		switch(getTypeIndex(meta)) {
 			case 0: return new TileEntitySteamFurnace();
-			case 1: return new TileEntitySteamShredder();
+			case 1: return new TileEntitySteamShredder(false);
 			case 2: return new TileEntitySteamPress();
-			case 3: return new TileEntitySteamBoiler();
+			case 3: return new TileEntitySteamBoiler(false);
 			case 4: return new TileEntityOsmiridiumFurnace();
+			case 5: return new TileEntitySteamShredder(true);
+			case 6: return new TileEntitySteamBoiler(true);
 			default: return new TileEntitySteamFurnace();
 		}
 	}
@@ -126,6 +130,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsFrontOn[3] = reg.registerIcon(base + "machine_boiler_front_lit");
 		this.iconsFront[4] = reg.registerIcon(base + "osmiridium_furnace_front");
 		this.iconsFrontOn[4] = reg.registerIcon(base + "osmiridium_furnace_front_on");
+		this.iconsFront[5] = reg.registerIcon(base + "steam_shredder_front_bronze");
+		this.iconsFrontOn[5] = this.iconsFront[5];
+		this.iconsFront[6] = reg.registerIcon(base + "machine_boiler_front_bronze");
+		this.iconsFrontOn[6] = reg.registerIcon(base + "machine_boiler_front_bronze_lit");
 
 		this.iconsTop[0] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[0] = this.iconsTop[0];
@@ -137,6 +145,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsTopOn[3] = this.iconsTop[3];
 		this.iconsTop[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
 		this.iconsTopOn[4] = this.iconsTop[4];
+		this.iconsTop[5] = reg.registerIcon(base + "steam_shredder_top_bronze");
+		this.iconsTopOn[5] = reg.registerIcon(base + "steam_shredder_top_bronze_on");
+		this.iconsTop[6] = reg.registerIcon(base + "steam_machine_pipe_bronze");
+		this.iconsTopOn[6] = this.iconsTop[6];
 
 		this.iconsBack[0] = this.iconsTop[0];
 		this.iconsBackOn[0] = this.iconsTopOn[0];
@@ -148,6 +160,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsBackOn[3] = this.iconsBack[3];
 		this.iconsBack[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
 		this.iconsBackOn[4] = this.iconsBack[4];
+		this.iconsBack[5] = reg.registerIcon(base + "steam_machine_pipe_bronze");
+		this.iconsBackOn[5] = this.iconsBack[5];
+		this.iconsBack[6] = reg.registerIcon(base + "steam_machine_pipe_bronze");
+		this.iconsBackOn[6] = this.iconsBack[6];
 
 		this.iconSide = reg.registerIcon(base + "steam_machine_base");
 		this.iconsSide[0] = this.iconSide;
@@ -160,6 +176,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsSideOn[3] = this.iconsSide[3];
 		this.iconsSide[4] = reg.registerIcon(base + "osmiridium_furnace_base");
 		this.iconsSideOn[4] = this.iconsSide[4];
+		this.iconsSide[5] = reg.registerIcon(base + "steam_machine_base_bronze");
+		this.iconsSideOn[5] = this.iconsSide[5];
+		this.iconsSide[6] = reg.registerIcon(base + "machine_boiler_side_bronze");
+		this.iconsSideOn[6] = this.iconsSide[6];
 		this.blockIcon = this.iconSide;
 	}
 
@@ -239,7 +259,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			float off = 0.52F;
 			float var = rand.nextFloat() * 0.6F - 0.3F;
 
-			if(type == 3) {
+			if(type == 3 || type == 6) {
 				if(dir == ForgeDirection.WEST) {
 					world.spawnParticle("smoke", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
