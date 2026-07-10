@@ -3,18 +3,16 @@ package com.hbm.items.tool;
 import java.util.List;
 import java.util.Locale;
 
-import com.google.common.collect.Multimap;
 import com.hbm.blocks.BlockDummyable;
 import com.hbm.blocks.IBlockSideRotation;
 import com.hbm.blocks.machine.BlockMachineBase;
 import com.hbm.blocks.machine.MachineSteamMulti;
-import com.hbm.blocks.ModBlocks;
+import com.hbm.blocks.network.CableDiode;
 import com.hbm.lib.RefStrings;
 import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.machine.steam.TileEntitySteamBoiler;
 import com.hbm.tileentity.machine.steam.TileEntitySteamMachineBase;
 import com.hbm.tileentity.network.TileEntityPipelineBase;
-import com.hbm.util.i18n.I18nUtil;
 
 import api.hbm.block.IToolable;
 import api.hbm.block.IToolable.ToolType;
@@ -23,12 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -36,7 +31,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChatComponentText;
 import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.IIcon;
-import net.minecraft.util.MathHelper;
 import net.minecraft.util.Vec3;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -71,7 +65,7 @@ public class ItemTieredTool extends Item {
 		}
 	}
 
-	private final Role role;
+	public final Role role;
 	private final String[] tierNames;
 	private final int[] tierLevels;
 	private final int[] durability;
@@ -105,10 +99,6 @@ public class ItemTieredTool extends Item {
 	public int getTierLevel(int meta) {
 		if(meta < 0 || meta >= this.tierLevels.length) return this.tierLevels[0];
 		return this.tierLevels[meta];
-	}
-
-	public int getTierLevel(ItemStack stack) {
-		return this.getTierLevel(stack == null ? 0 : stack.getItemDamage());
 	}
 
 	public String getTierName(int meta) {
@@ -181,7 +171,6 @@ public class ItemTieredTool extends Item {
 	@Override
 	public String getItemStackDisplayName(ItemStack stack) {
 		if(!this.role.showTierInName) return this.role.displayName;
-
 		return this.getMaterialLabel(stack.getItemDamage()) + " " + this.role.displayName;
 	}
 
@@ -215,7 +204,6 @@ public class ItemTieredTool extends Item {
 	public boolean showDurabilityBar(ItemStack stack) {
 		int max = this.getMaxToolDamage(stack);
 		if (max <= 0) return false;
-
 		return this.getStoredDamage(stack) > 0;
 	}
 
@@ -249,6 +237,159 @@ public class ItemTieredTool extends Item {
 		ItemStack copy = stack.copy();
 		this.setStoredDamage(copy, wear);
 		return copy;
+	}
+
+	private ForgeDirection getFacingFromSide(int side) {
+		if(side == 0) return ForgeDirection.UP;
+		if(side == 1) return ForgeDirection.DOWN;
+		if(side == 2) return ForgeDirection.NORTH;
+		if(side == 3) return ForgeDirection.SOUTH;
+		if(side == 4) return ForgeDirection.WEST;
+		if(side == 5) return ForgeDirection.EAST;
+		return ForgeDirection.NORTH;
+	}
+
+	private int getMetadataFromFacing(ForgeDirection dir) {
+		if(dir == ForgeDirection.UP) return 1;
+		if(dir == ForgeDirection.DOWN) return 0;
+		if(dir == ForgeDirection.NORTH) return 2;
+		if(dir == ForgeDirection.SOUTH) return 3;
+		if(dir == ForgeDirection.WEST) return 4;
+		if(dir == ForgeDirection.EAST) return 5;
+		return 2;
+	}
+
+	private boolean rotateBlock(World world, int x, int y, int z, Block block, int side, boolean sneak) {
+		TileEntity te = world.getTileEntity(x, y, z);
+		int meta = world.getBlockMetadata(x, y, z);
+
+		if(block instanceof MachineSteamMulti || block instanceof BlockMachineBase || block instanceof IBlockSideRotation) {
+			if(side == 0 || side == 1) {
+				return false;
+			}
+		}
+
+		ForgeDirection target;
+		if(sneak) {
+			ForgeDirection clicked = this.getFacingFromSide(side);
+			target = clicked.getOpposite();
+		} else {
+			target = this.getFacingFromSide(side);
+		}
+		int targetMeta = this.getMetadataFromFacing(target);
+
+		if(block instanceof CableDiode) {
+			if(sneak && meta == targetMeta) {
+				if(!world.isRemote) {
+					Item droppedItem = Item.getItemFromBlock(block);
+					if(droppedItem != null) {
+						ItemStack drop = new ItemStack(droppedItem, 1, meta);
+						world.setBlockToAir(x, y, z);
+						EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
+						world.spawnEntityInWorld(item);
+					}
+				}
+				return true;
+			}
+
+			if(!world.isRemote) {
+				world.setBlockMetadataWithNotify(x, y, z, targetMeta, 3);
+				world.markBlockForUpdate(x, y, z);
+				world.notifyBlocksOfNeighborChange(x, y, z, block);
+			}
+			return true;
+		}
+
+		if(block instanceof MachineSteamMulti) {
+			if(te instanceof TileEntitySteamMachineBase) {
+				TileEntitySteamMachineBase machine = (TileEntitySteamMachineBase) te;
+				ForgeDirection current = machine.getFrontDirection();
+
+				if(sneak && current == target) {
+					if(!world.isRemote) {
+						int type = MachineSteamMulti.getTypeIndex(meta);
+						Item droppedItem = Item.getItemFromBlock(block);
+						if(droppedItem != null) {
+							ItemStack drop = new ItemStack(droppedItem, 1, type);
+							world.setBlockToAir(x, y, z);
+							EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
+							world.spawnEntityInWorld(item);
+						}
+					}
+					return true;
+				}
+
+				if(!world.isRemote) {
+					machine.setFrontDirection(target);
+					int rot = (target == ForgeDirection.EAST || target == ForgeDirection.WEST) ? 1 : 0;
+					int type = MachineSteamMulti.getTypeIndex(meta);
+					int packed = MachineSteamMulti.packMeta(type, rot);
+					world.setBlockMetadataWithNotify(x, y, z, packed, 3);
+					world.markBlockForUpdate(x, y, z);
+					world.notifyBlocksOfNeighborChange(x, y, z, block);
+				}
+				return true;
+			}
+
+			if(te instanceof TileEntitySteamBoiler) {
+				TileEntitySteamBoiler boiler = (TileEntitySteamBoiler) te;
+				ForgeDirection current = boiler.getFrontDirection();
+
+				if(sneak && current == target) {
+					if(!world.isRemote) {
+						int type = MachineSteamMulti.getTypeIndex(meta);
+						Item droppedItem = Item.getItemFromBlock(block);
+						if(droppedItem != null) {
+							ItemStack drop = new ItemStack(droppedItem, 1, type);
+							world.setBlockToAir(x, y, z);
+							EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
+							world.spawnEntityInWorld(item);
+						}
+					}
+					return true;
+				}
+
+				if(!world.isRemote) {
+					boiler.setFrontDirection(target);
+					int rot = (target == ForgeDirection.EAST || target == ForgeDirection.WEST) ? 1 : 0;
+					int type = MachineSteamMulti.getTypeIndex(meta);
+					int packed = MachineSteamMulti.packMeta(type, rot);
+					world.setBlockMetadataWithNotify(x, y, z, packed, 3);
+					world.markBlockForUpdate(x, y, z);
+					world.notifyBlocksOfNeighborChange(x, y, z, block);
+				}
+				return true;
+			}
+		}
+
+		if(block instanceof BlockMachineBase || block instanceof IBlockSideRotation) {
+			if(sneak && meta == targetMeta) {
+				if(!world.isRemote) {
+					Item droppedItem = Item.getItemFromBlock(block);
+					if(droppedItem != null) {
+						ItemStack drop = new ItemStack(droppedItem, 1, meta);
+						world.setBlockToAir(x, y, z);
+						EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
+						world.spawnEntityInWorld(item);
+					}
+				}
+				return true;
+			}
+
+			if(!world.isRemote) {
+				if(te instanceof TileEntitySteamMachineBase) {
+					((TileEntitySteamMachineBase) te).setFrontDirection(target);
+				} else if(te instanceof TileEntitySteamBoiler) {
+					((TileEntitySteamBoiler) te).setFrontDirection(target);
+				}
+
+				world.setBlockMetadataWithNotify(x, y, z, targetMeta, 3);
+				world.markBlockForUpdate(x, y, z);
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	@Override
@@ -290,6 +431,7 @@ public class ItemTieredTool extends Item {
 								first.addConnection(x, y, z);
 								second.addConnection(x1, y1, z1);
 								player.addChatMessage(new ChatComponentText("Pipe end"));
+								stack.stackTagCompound = null;
 								break;
 							case 1:
 								player.addChatMessage(new ChatComponentText("Pipe error - Pipes are not the same type"));
@@ -306,9 +448,8 @@ public class ItemTieredTool extends Item {
 						}
 					} else {
 						player.addChatMessage(new ChatComponentText("Pipe error"));
+						stack.stackTagCompound = null;
 					}
-
-					stack.stackTagCompound = null;
 				}
 
 				player.swingItem();
@@ -316,45 +457,7 @@ public class ItemTieredTool extends Item {
 				return true;
 			}
 
-			if(block instanceof MachineSteamMulti) {
-				return this.rotateSteamMachine(stack, player, world, x, y, z, block);
-			}
-
-			if(block instanceof BlockMachineBase || block instanceof IBlockSideRotation) {
-				int meta = world.getBlockMetadata(x, y, z);
-				int target = this.getFacingMeta(player, player.isSneaking());
-
-				if(meta == target && !player.isSneaking()) {
-					if(!world.isRemote) {
-						Item droppedItem = Item.getItemFromBlock(block);
-						if(droppedItem != null) {
-							ItemStack drop = new ItemStack(droppedItem, 1, meta);
-							world.setBlockToAir(x, y, z);
-							EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
-							world.spawnEntityInWorld(item);
-						}
-					}
-				} else {
-					if(!world.isRemote) {
-						world.setBlockMetadataWithNotify(x, y, z, target, 3);
-
-						ForgeDirection teFacing = ForgeDirection.UNKNOWN;
-						if(target == 2) teFacing = ForgeDirection.NORTH;
-						else if(target == 3) teFacing = ForgeDirection.SOUTH;
-						else if(target == 4) teFacing = ForgeDirection.WEST;
-						else if(target == 5) teFacing = ForgeDirection.EAST;
-
-						if(teFacing != ForgeDirection.UNKNOWN) {
-							if(te instanceof TileEntitySteamMachineBase) {
-								((TileEntitySteamMachineBase) te).setFrontDirection(teFacing);
-							} else if(te instanceof TileEntitySteamBoiler) {
-								((TileEntitySteamBoiler) te).setFrontDirection(teFacing);
-							}
-						}
-						world.markBlockForUpdate(x, y, z);
-					}
-				}
-
+			if(this.rotateBlock(world, x, y, z, block, side, player.isSneaking())) {
 				if(!world.isRemote) this.damageTool(stack, player, 1);
 				return true;
 			}
@@ -371,71 +474,6 @@ public class ItemTieredTool extends Item {
 		}
 
 		return false;
-	}
-
-	private boolean rotateSteamMachine(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, Block block) {
-		TileEntity te = world.getTileEntity(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
-		int type = MachineSteamMulti.getTypeIndex(meta);
-		ForgeDirection current = ForgeDirection.NORTH;
-		ForgeDirection target = this.getSteamFacing(player, player.isSneaking());
-
-		if(te instanceof TileEntitySteamMachineBase) {
-			current = ((TileEntitySteamMachineBase) te).getFrontDirection();
-		} else if(te instanceof TileEntitySteamBoiler) {
-			current = ((TileEntitySteamBoiler) te).getFrontDirection();
-		}
-
-		if(!player.isSneaking() && current == target) {
-			if(!world.isRemote) {
-				Item droppedItem = Item.getItemFromBlock(block);
-				if(droppedItem != null) {
-					ItemStack drop = new ItemStack(droppedItem, 1, type);
-					world.setBlockToAir(x, y, z);
-					EntityItem item = new EntityItem(world, x + 0.5D, y + 0.5D, z + 0.5D, drop);
-					world.spawnEntityInWorld(item);
-				}
-			}
-		} else if(!world.isRemote) {
-			int rot = this.getSteamRotation(target);
-			int packed = MachineSteamMulti.packMeta(type, rot);
-			world.setBlockMetadataWithNotify(x, y, z, packed, 3);
-
-			if(te instanceof TileEntitySteamMachineBase) {
-				((TileEntitySteamMachineBase) te).setFrontDirection(target);
-			} else if(te instanceof TileEntitySteamBoiler) {
-				((TileEntitySteamBoiler) te).setFrontDirection(target);
-			}
-
-			world.markBlockForUpdate(x, y, z);
-			world.notifyBlocksOfNeighborChange(x, y, z, block);
-		}
-
-		if(!world.isRemote) this.damageTool(stack, player, 1);
-		return true;
-	}
-
-	private ForgeDirection getSteamFacing(EntityPlayer player, boolean reverse) {
-		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		if(reverse) i = (i + 2) & 3;
-		if(i == 0) return ForgeDirection.NORTH;
-		if(i == 1) return ForgeDirection.EAST;
-		if(i == 2) return ForgeDirection.SOUTH;
-		return ForgeDirection.WEST;
-	}
-
-	private int getSteamRotation(ForgeDirection direction) {
-		if(direction == ForgeDirection.EAST || direction == ForgeDirection.WEST) return 1;
-		return 0;
-	}
-	private int getFacingMeta(EntityPlayer player, boolean reverse) {
-		int i = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		if(reverse) i = (i + 2) & 3;
-
-		if(i == 0) return 2;
-		if(i == 1) return 5;
-		if(i == 2) return 3;
-		return 4;
 	}
 
 	@Override

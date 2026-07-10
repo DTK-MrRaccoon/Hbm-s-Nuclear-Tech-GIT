@@ -118,6 +118,7 @@ public class CableDiode extends BlockContainer implements IEnergyConnectorBlock,
 		list.add(EnumChatFormatting.YELLOW + "Use screwdriver to increase throughput");
 		list.add(EnumChatFormatting.YELLOW + "Use hand drill to decrease throughput");
 		list.add(EnumChatFormatting.YELLOW + "Use defuser to change network priority");
+		list.add(EnumChatFormatting.YELLOW + "Use wrench to rotate");
 	}
 
 	@Override

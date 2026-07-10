@@ -9,6 +9,8 @@ import com.hbm.main.MainRegistry;
 import com.hbm.tileentity.TileEntityMachineBase;
 import com.hbm.tileentity.machine.steam.*;
 
+import api.hbm.block.IToolable;
+import api.hbm.block.IToolable.ToolType;
 import cpw.mods.fml.common.network.internal.FMLNetworkHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -310,6 +312,10 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 	@Override
 	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float hitX, float hitY, float hitZ) {
+		if(player.getHeldItem() != null && IToolable.ToolType.getType(player.getHeldItem()) == ToolType.WRENCH) {
+			return false;
+		}
+
 		if(world.isRemote) return true;
 		if(player.isSneaking()) return false;
 
