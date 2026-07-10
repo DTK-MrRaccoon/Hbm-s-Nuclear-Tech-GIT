@@ -38,10 +38,12 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		FURNACE,
 		SHREDDER,
 		PRESS,
+		HAMMER,
 		BOILER,
-		OSMIRIDIUM_FURNACE,
 		BRONZE_SHREDDER,
-		BRONZE_BOILER
+		BRONZE_HAMMER,
+		BRONZE_BOILER,
+		OSMIRIDIUM_FURNACE
 	}
 
 	private static final ForgeDirection[] FACING_DIR = new ForgeDirection[] {
@@ -72,13 +74,13 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 	}
 
 	public static int getTypeIndex(int meta) {
-		int type = meta & 7;
+		int type = meta & 15;
 		if(type >= SteamMachineType.values().length) type = SteamMachineType.values().length - 1;
 		return type;
 	}
 
 	public static int getRotationIndex(int meta) {
-		return (meta >> 3) & 1;
+		return 0;
 	}
 
 	public static ForgeDirection getFacing(int meta) {
@@ -87,7 +89,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 
 	public static int packMeta(int type, int rotation) {
 		if(type < 0 || type >= SteamMachineType.values().length) type = 0;
-		return type | ((rotation & 1) << 3);
+		return type;
 	}
 
 	@Override
@@ -96,10 +98,12 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			case 0: return new TileEntitySteamFurnace();
 			case 1: return new TileEntitySteamShredder(false);
 			case 2: return new TileEntitySteamPress();
-			case 3: return new TileEntitySteamBoiler(false);
-			case 4: return new TileEntityOsmiridiumFurnace();
+			case 3: return new TileEntitySteamHammer(false);
+			case 4: return new TileEntitySteamBoiler(false);
 			case 5: return new TileEntitySteamShredder(true);
-			case 6: return new TileEntitySteamBoiler(true);
+			case 6: return new TileEntitySteamHammer(true);
+			case 7: return new TileEntitySteamBoiler(true);
+			case 8: return new TileEntityOsmiridiumFurnace();
 			default: return new TileEntitySteamFurnace();
 		}
 	}
@@ -128,14 +132,18 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsFrontOn[1] = this.iconsFront[1];
 		this.iconsFront[2] = reg.registerIcon(base + "steam_press_front");
 		this.iconsFrontOn[2] = reg.registerIcon(base + "steam_press_front_on");
-		this.iconsFront[3] = reg.registerIcon(base + "machine_boiler_front");
-		this.iconsFrontOn[3] = reg.registerIcon(base + "machine_boiler_front_lit");
-		this.iconsFront[4] = reg.registerIcon(base + "osmiridium_furnace_front");
-		this.iconsFrontOn[4] = reg.registerIcon(base + "osmiridium_furnace_front_on");
+		this.iconsFront[3] = reg.registerIcon(base + "steam_hammer_front");
+		this.iconsFrontOn[3] = reg.registerIcon(base + "steam_hammer_front_on");
+		this.iconsFront[4] = reg.registerIcon(base + "machine_boiler_front");
+		this.iconsFrontOn[4] = reg.registerIcon(base + "machine_boiler_front_lit");
 		this.iconsFront[5] = reg.registerIcon(base + "steam_shredder_front_bronze");
 		this.iconsFrontOn[5] = this.iconsFront[5];
-		this.iconsFront[6] = reg.registerIcon(base + "machine_boiler_front_bronze");
-		this.iconsFrontOn[6] = reg.registerIcon(base + "machine_boiler_front_bronze_lit");
+		this.iconsFront[6] = reg.registerIcon(base + "steam_hammer_front_bronze");
+		this.iconsFrontOn[6] = reg.registerIcon(base + "steam_hammer_front_bronze_on");
+		this.iconsFront[7] = reg.registerIcon(base + "machine_boiler_front_bronze");
+		this.iconsFrontOn[7] = reg.registerIcon(base + "machine_boiler_front_bronze_lit");
+		this.iconsFront[8] = reg.registerIcon(base + "osmiridium_furnace_front");
+		this.iconsFrontOn[8] = reg.registerIcon(base + "osmiridium_furnace_front_on");
 
 		this.iconsTop[0] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[0] = this.iconsTop[0];
@@ -145,12 +153,16 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsTopOn[2] = this.iconsTop[2];
 		this.iconsTop[3] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[3] = this.iconsTop[3];
-		this.iconsTop[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
+		this.iconsTop[4] = reg.registerIcon(base + "steam_machine_pipe");
 		this.iconsTopOn[4] = this.iconsTop[4];
 		this.iconsTop[5] = reg.registerIcon(base + "steam_shredder_top_bronze");
 		this.iconsTopOn[5] = reg.registerIcon(base + "steam_shredder_top_bronze_on");
 		this.iconsTop[6] = reg.registerIcon(base + "steam_machine_pipe_bronze");
 		this.iconsTopOn[6] = this.iconsTop[6];
+		this.iconsTop[7] = reg.registerIcon(base + "steam_machine_pipe_bronze");
+		this.iconsTopOn[7] = this.iconsTop[7];
+		this.iconsTop[8] = reg.registerIcon(base + "osmiridium_furance_top");
+		this.iconsTopOn[8] = this.iconsTop[8];
 
 		this.iconsBack[0] = this.iconsTop[0];
 		this.iconsBackOn[0] = this.iconsTopOn[0];
@@ -158,14 +170,18 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsBackOn[1] = this.iconsTopOn[0];
 		this.iconsBack[2] = this.iconsTop[2];
 		this.iconsBackOn[2] = this.iconsTopOn[2];
-		this.iconsBack[3] = reg.registerIcon(base + "steam_machine_pipe");
-		this.iconsBackOn[3] = this.iconsBack[3];
-		this.iconsBack[4] = reg.registerIcon(base + "osmiridium_furnace_pipe");
-		this.iconsBackOn[4] = this.iconsBack[4];
+		this.iconsBack[3] = this.iconsTop[3];
+		this.iconsBackOn[3] = this.iconsTopOn[3];
+		this.iconsBack[4] = this.iconsTop[4];
+		this.iconsBackOn[4] = this.iconsTopOn[4];
 		this.iconsBack[5] = reg.registerIcon(base + "steam_machine_pipe_bronze");
 		this.iconsBackOn[5] = this.iconsBack[5];
-		this.iconsBack[6] = reg.registerIcon(base + "steam_machine_pipe_bronze");
-		this.iconsBackOn[6] = this.iconsBack[6];
+		this.iconsBack[6] = this.iconsTop[6];
+		this.iconsBackOn[6] = this.iconsTopOn[6];
+		this.iconsBack[7] = this.iconsTop[7];
+		this.iconsBackOn[7] = this.iconsTopOn[7];
+		this.iconsBack[8] = this.iconsTop[8];
+		this.iconsBackOn[8] = this.iconsTopOn[8];
 
 		this.iconSide = reg.registerIcon(base + "steam_machine_base");
 		this.iconsSide[0] = this.iconSide;
@@ -174,14 +190,18 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 		this.iconsSideOn[1] = this.iconSide;
 		this.iconsSide[2] = this.iconSide;
 		this.iconsSideOn[2] = this.iconSide;
-		this.iconsSide[3] = reg.registerIcon(base + "machine_boiler_side");
+		this.iconsSide[3] = reg.registerIcon(base + "steam_machine_base");
 		this.iconsSideOn[3] = this.iconsSide[3];
-		this.iconsSide[4] = reg.registerIcon(base + "osmiridium_furnace_base");
+		this.iconsSide[4] = reg.registerIcon(base + "machine_boiler_side");
 		this.iconsSideOn[4] = this.iconsSide[4];
 		this.iconsSide[5] = reg.registerIcon(base + "steam_machine_base_bronze");
 		this.iconsSideOn[5] = this.iconsSide[5];
-		this.iconsSide[6] = reg.registerIcon(base + "machine_boiler_side_bronze");
+		this.iconsSide[6] = reg.registerIcon(base + "steam_machine_base_bronze");
 		this.iconsSideOn[6] = this.iconsSide[6];
+		this.iconsSide[7] = reg.registerIcon(base + "machine_boiler_side_bronze");
+		this.iconsSideOn[7] = this.iconsSide[7];
+		this.iconsSide[8] = reg.registerIcon(base + "osmiridium_furnace_base");
+		this.iconsSideOn[8] = this.iconsSide[8];
 		this.blockIcon = this.iconSide;
 	}
 
@@ -261,7 +281,7 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 			float off = 0.52F;
 			float var = rand.nextFloat() * 0.6F - 0.3F;
 
-			if(type == 3 || type == 6) {
+			if(type == 0 || type == 4 || type == 7 || type == 8) {
 				if(dir == ForgeDirection.WEST) {
 					world.spawnParticle("smoke", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", cX - off, cY, cZ + var, 0.0D, 0.0D, 0.0D);
@@ -274,16 +294,6 @@ public class MachineSteamMulti extends BlockEnumMulti implements ITileEntityProv
 				} else if(dir == ForgeDirection.SOUTH) {
 					world.spawnParticle("smoke", cX + var, cY, cZ + off, 0.0D, 0.0D, 0.0D);
 					world.spawnParticle("flame", cX + var, cY, cZ + off, 0.0D, 0.0D, 0.0D);
-				}
-			} else if(type == 0 || type == 4) {
-				if(dir == ForgeDirection.WEST) {
-					world.spawnParticle("smoke", cX - off, cY, cZ + var, 0.0D, 0.02D, 0.0D);
-				} else if(dir == ForgeDirection.EAST) {
-					world.spawnParticle("smoke", cX + off, cY, cZ + var, 0.0D, 0.02D, 0.0D);
-				} else if(dir == ForgeDirection.NORTH) {
-					world.spawnParticle("smoke", cX + var, cY, cZ - off, 0.0D, 0.02D, 0.0D);
-				} else if(dir == ForgeDirection.SOUTH) {
-					world.spawnParticle("smoke", cX + var, cY, cZ + off, 0.0D, 0.02D, 0.0D);
 				}
 			}
 		}

@@ -44,10 +44,10 @@ public class BlastFurnaceRecipes extends SerializableRecipe {
 	@Override
 	public void registerDefaults() {
 		/* STEEL */
-		addRecipe(IRON,			COAL,										new ItemStack(ModItems.ingot_steel, 1));
-		addRecipe(IRON,			ANY_COKE,									new ItemStack(ModItems.ingot_steel, 1));
-		addRecipe(IRON.ore(),	COAL,										new ItemStack(ModItems.ingot_steel, 2));
-		addRecipe(IRON.ore(),	ANY_COKE,									new ItemStack(ModItems.ingot_steel, 3));
+		addRecipe(IRON,			COAL,										new ItemStack(ModItems.powder_steel_tiny, 1));
+		addRecipe(IRON,			ANY_COKE,									new ItemStack(ModItems.powder_steel_tiny, 6));
+		addRecipe(IRON.ore(),	COAL,										new ItemStack(ModItems.powder_steel_tiny, 3));
+		addRecipe(IRON.ore(),	ANY_COKE,									new ItemStack(ModItems.ingot_steel, 1));
 		addRecipe(IRON.ore(),	new ComparableStack(ModItems.powder_flux),	new ItemStack(ModItems.ingot_steel, 3));
 
 		addRecipe(CU,									REDSTONE,										new ItemStack(ModItems.ingot_red_copper, 2));

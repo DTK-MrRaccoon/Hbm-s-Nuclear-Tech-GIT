@@ -209,35 +209,35 @@ public class ToolRecipes {
 	}
 
 	private static void registerTieredWrenchRecipes() {
-		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
+		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot() };
 		for(int tier = 0; tier < 3; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.wrench, 1, tier), new Object[] { " S ", " IS", "I  ", 'I', IRON.ingot(), 'S', parts[tier] });
 		}
 	}
 
 	private static void registerTieredHammerRecipes() {
-		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
-		for(int tier = 0; tier < 3; tier++) {
+		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), FERRO.ingot() };
+		for(int tier = 0; tier < 4; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer, 1, tier), new Object[] { "III", "ISI", " S ", 'I', parts[tier], 'S', KEY_STICK });
 		}
 	}
 
 	private static void registerTieredMortarRecipes() {
-		Object[] parts = new Object[] { Items.flint, IRON.ingot(), TBRONZE.ingot(), STEEL.ingot() };
-		for(int tier = 0; tier < 4; tier++) {
+		Object[] parts = new Object[] { Items.flint, TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), FERRO.ingot() };
+		for(int tier = 0; tier < 5; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.mortar, 1, tier), new Object[] { " I ", "SIS", "SSS", 'I', parts[tier], 'S', KEY_COBBLESTONE });
 		}
 	}
 
 	private static void registerTieredScrewdriverRecipes() {
-		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot(), DESH.ingot() };
+		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), DESH.ingot() };
 		for(int tier = 0; tier < 4; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.screwdriver, 1, tier), new Object[] { "  I", " I ", "S  ", 'I', parts[tier], 'S', STEEL.ingot() });
 		}
 	}
 
 	private static void registerTieredHandDrillRecipes() {
-		Object[] parts = new Object[] { IRON.ingot(), TBRONZE.ingot(), STEEL.ingot(), DESH.ingot() };
+		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), DESH.ingot() };
 		for(int tier = 0; tier < 4; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill, 1, tier), new Object[] { " D", "S ", " S", 'D', parts[tier], 'S', KEY_STICK });
 		}

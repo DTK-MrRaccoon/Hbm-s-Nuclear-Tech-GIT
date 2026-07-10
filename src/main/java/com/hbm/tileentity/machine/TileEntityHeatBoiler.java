@@ -45,6 +45,8 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 	public boolean isOn;
 	public boolean hasExploded = false;
 
+	private int lastWaterLevel = -1;
+
 	private AudioWrapper audio;
 	private int audioTime;
 
@@ -76,6 +78,32 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 			if(!this.hasExploded) {
 				this.setupTanks();
 				this.updateConnections();
+
+				if(lastWaterLevel == -1) {
+					lastWaterLevel = tanks[0].getFill();
+				}
+				if(this.heat > 32000 && tanks[0].getFill() > 0 && lastWaterLevel == 0) {
+					this.hasExploded = true;
+					BlockDummyable.safeRem = true;
+					for(int x = xCoord - 1; x <= xCoord + 1; x++) {
+						for(int y = yCoord + 2; y <= yCoord + 3; y++) {
+							for(int z = zCoord - 1; z <= zCoord + 1; z++) {
+								worldObj.setBlockToAir(x, y, z);
+							}
+						}
+					}
+					worldObj.setBlockToAir(xCoord, yCoord + 1, zCoord);
+
+					ExplosionVNT xnt = new ExplosionVNT(worldObj, xCoord + 0.5, yCoord + 2, zCoord + 0.5, 5F);
+					xnt.setEntityProcessor(new EntityProcessorStandard().withRangeMod(3F));
+					xnt.setPlayerProcessor(new PlayerProcessorStandard());
+					xnt.setSFX(new ExplosionEffectStandard());
+					xnt.explode();
+
+					BlockDummyable.safeRem = false;
+					return;
+				}
+
 				this.tryPullHeat();
 				int lastHeat = this.heat;
 
@@ -94,6 +122,7 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 				if(this.tanks[1].getFill() > 0) {
 					this.sendFluid();
 				}
+				lastWaterLevel = tanks[0].getFill();
 			}
 
 			buf.writeBoolean(this.muffled);
@@ -190,15 +219,15 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 				return;
 			}
 		}
-		
+
 		if(con instanceof IHeatPipe) {
 			IHeatPipe pipe = (IHeatPipe) con;
 			int diff = pipe.getHeatStored() - this.heat;
-			
+
 			if(diff == 0) {
 				return;
 			}
-			
+
 			if(diff > 0) {
 				diff = (int) Math.ceil(diff * diffusion);
 				diff = Math.min(diff, this.maxHeat - this.heat);
@@ -347,7 +376,7 @@ public class TileEntityHeatBoiler extends TileEntityLoadedBase implements IBufPa
 					xCoord + 2,
 					yCoord + 4,
 					zCoord + 2
-					);
+			);
 		}
 
 		return bb;

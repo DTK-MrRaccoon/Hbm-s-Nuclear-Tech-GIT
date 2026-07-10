@@ -49,6 +49,8 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 
 	public boolean bronze = false;
 
+	private int lastWaterLevel = -1;
+
 	protected ForgeDirection frontDirection = ForgeDirection.NORTH;
 	private boolean wasActiveLastTick = false;
 
@@ -86,13 +88,19 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 	}
 
 	private void subscribeWater() {
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		ForgeDirection back = this.getFrontDirection().getOpposite();
+		ForgeDirection[] validDirs = new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.DOWN, back };
+
+		for(ForgeDirection dir : validDirs) {
 			this.trySubscribe(water.getTankType(), worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
 		}
 	}
 
 	private void sendSteam() {
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS) {
+		ForgeDirection back = this.getFrontDirection().getOpposite();
+		ForgeDirection[] validDirs = new ForgeDirection[] { ForgeDirection.UP, ForgeDirection.DOWN, back };
+
+		for(ForgeDirection dir : validDirs) {
 			this.sendFluid(steam, worldObj, xCoord + dir.offsetX, yCoord + dir.offsetY, zCoord + dir.offsetZ, dir);
 		}
 	}
@@ -127,6 +135,10 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 			}
 		}
 
+		if(!this.bronze) {
+			this.maxHeatCap *= 2;
+		}
+
 		int threshold = 2000;
 		while(processAsh(ashLevelWood, EnumAshType.WOOD, threshold)) ashLevelWood -= threshold;
 		while(processAsh(ashLevelCoal, EnumAshType.COAL, threshold)) ashLevelCoal -= threshold;
@@ -143,6 +155,15 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 	@Override
 	public void updateEntity() {
 		if(!worldObj.isRemote) {
+			if(lastWaterLevel == -1) {
+				lastWaterLevel = water.getFill();
+			}
+			if(heat >= 100 && water.getFill() > 0 && lastWaterLevel == 0) {
+				this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+				this.worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 4.0F, true);
+				return;
+			}
+
 			boolean burning = burnTime > 0;
 			if(!burning) {
 				startBurning();
@@ -152,8 +173,9 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 			if(burning) {
 				burnTime--;
 				if(this.worldObj.getTotalWorldTime() % 4 == 0) {
-					if(heat < maxHeatCap) heat++;
+					if(heat < maxHeatCap) heat += (this.bronze ? 1 : 2);
 					else if(heat > maxHeatCap) heat--;
+					if(heat > maxHeatCap) heat = maxHeatCap;
 				}
 				if(worldObj.getTotalWorldTime() % 40 == 0) {
 					this.pollute(PollutionType.SOOT, 0.125F);
@@ -166,9 +188,11 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 				int room = steam.getMaxFill() - steam.getFill();
 				if(room > 0 && water.getFill() > 0) {
 					int steamProduction = 10;
-					if(heat >= 500) steamProduction = 100;
+					if(heat >= 1000) steamProduction = 150;
+					else if(heat >= 500) steamProduction = 100 + (heat - 500) * 50 / 500;
 					else if(heat >= 350) steamProduction = 75 + (heat - 350) * 25 / 150;
 					else if(heat >= 250) steamProduction = 50 + (heat - 250) * 25 / 100;
+					else if(heat >= 200) steamProduction = 40 + (heat - 200) * 10 / 50;
 					else steamProduction = 10 + (heat - 100) * 40 / 150;
 
 					steamProduction = Math.max(1, (int)Math.round(steamProduction * this.getSteamProductionMultiplier()));
@@ -195,7 +219,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 			}
 
 			if(heat < 0) heat = 0;
-			if(heat > 500) heat = 500;
+			if(heat > (this.bronze ? 500 : 1000)) heat = (this.bronze ? 500 : 1000);
 
 			if(burning && worldObj.getTotalWorldTime() % 4 == 0) {
 				int threshold = (int)(smoke.getMaxFill() * 0.90);
@@ -214,6 +238,11 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 
 			if(water.loadTank(2, 3, slots)) {
 				this.markDirty();
+				if(heat >= 100 && water.getFill() > 0 && lastWaterLevel == 0) {
+					this.worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+					this.worldObj.createExplosion(null, xCoord + 0.5, yCoord + 0.5, zCoord + 0.5, 2.0F, true);
+					return;
+				}
 			}
 
 			this.sendSteam();
@@ -226,6 +255,7 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 			}
 
 			this.networkPackNT(50);
+			lastWaterLevel = water.getFill();
 		}
 	}
 
@@ -375,7 +405,8 @@ public class TileEntitySteamBoiler extends TileEntityMachinePolluting implements
 
 	@Override
 	public boolean canConnect(FluidType type, ForgeDirection dir) {
-		return dir != ForgeDirection.UNKNOWN;
+		ForgeDirection back = this.getFrontDirection().getOpposite();
+		return dir == ForgeDirection.UP || dir == ForgeDirection.DOWN || dir == back;
 	}
 
 	@Override

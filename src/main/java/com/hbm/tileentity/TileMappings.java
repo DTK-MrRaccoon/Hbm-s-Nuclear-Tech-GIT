@@ -224,13 +224,14 @@ public class TileMappings {
 		put(TileEntityFloodlightBeam.class, "tileentity_floodlight_beam");
 		put(TileEntityLantern.class, "tileentity_lantern_ordinary");
 		put(TileEntityLanternBehemoth.class, "tileentity_lantern_behemoth");
-		
+
 		put(TileEntitySteamFurnace.class, "tileentity_steam_furnace");
 		put(TileEntitySteamBoiler.class, "tileentity_steam_boiler");
 		put(TileEntityOsmiridiumFurnace.class, "tileentity_steam_furnace_osmiridium");
 		put(TileEntitySteamPress.class, "tileentity_steam_press");
+		put(TileEntitySteamHammer.class, "tileentity_steam_hammer");
 		put(TileEntitySteamShredder.class, "tileentity_steam_shredder");
-		
+
 		// Powered lights
 		put(TileEntitySpotlightPowered.class, "tileentity_spotlight_powered");
 		put(TileEntitySpotlightModularPowered.class, "tileentity_spotlight_modular_powered");

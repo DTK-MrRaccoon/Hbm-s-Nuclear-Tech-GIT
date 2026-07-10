@@ -119,15 +119,15 @@ public class ItemTieredTool extends Item {
 
 	private String getMaterialLabel(int meta) {
 		String name = this.getTierName(meta);
-		if("tbronze".equals(name) || "bronze".equals(name)) return "Tin Bronze";
+		if("bronze".equals(name)) return "Tin Bronze";
 		if("flint".equals(name)) return "Flint";
+		if("ferrouranium".equals(name)) return "Ironuranium";
 		if(name == null || name.isEmpty()) return this.role.displayName;
 		return name.substring(0, 1).toUpperCase(Locale.US) + name.substring(1);
 	}
 
 	private String getTextureTierName(int meta) {
 		String name = this.getTierName(meta);
-		if("tbronze".equals(name)) return "bronze";
 		return name;
 	}
 

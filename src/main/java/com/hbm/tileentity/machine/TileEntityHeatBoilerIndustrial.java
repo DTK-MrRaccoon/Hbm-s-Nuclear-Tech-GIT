@@ -176,15 +176,15 @@ public class TileEntityHeatBoilerIndustrial extends TileEntityLoadedBase impleme
 				return;
 			}
 		}
-		
+
 		if(con instanceof IHeatPipe) {
 			IHeatPipe pipe = (IHeatPipe) con;
 			int diff = pipe.getHeatStored() - this.heat;
-			
+
 			if(diff == 0) {
 				return;
 			}
-			
+
 			if(diff > 0) {
 				diff = (int) Math.ceil(diff * diffusion);
 				diff = Math.min(diff, this.maxHeat - this.heat);

@@ -31,7 +31,8 @@ public class GUISteamBoiler extends GuiInfoContainer {
 		super.drawScreen(mouseX, mouseY, f);
 		boiler.water.renderTankInfo(this, mouseX, mouseY, guiLeft + 26, guiTop + 17, 16, 52);
 		boiler.steam.renderTankInfo(this, mouseX, mouseY, guiLeft + 98, guiTop + 17, 16, 52);
-		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 133, guiTop + 16, 18, 18, mouseX, mouseY, new String[] { "Fuel: " + boiler.burnTime + " / " + boiler.maxBurnTime, "Heat: " + boiler.heat + " / 500", "Water: " + boiler.water.getFill() + " / " + boiler.water.getMaxFill() + " mB", "Steam: " + boiler.steam.getFill() + " / " + boiler.steam.getMaxFill() + " mB"});
+		int maxHeat = boiler.isBronze() ? 500 : 1000;
+		this.drawCustomInfoStat(mouseX, mouseY, guiLeft + 133, guiTop + 16, 18, 18, mouseX, mouseY, new String[] { "Fuel: " + boiler.burnTime + " / " + boiler.maxBurnTime, "Heat: " + boiler.heat + " / " + maxHeat, "Water: " + boiler.water.getFill() + " / " + boiler.water.getMaxFill() + " mB", "Steam: " + boiler.steam.getFill() + " / " + boiler.steam.getMaxFill() + " mB"});
 	}
 
 	@Override
@@ -53,7 +54,8 @@ public class GUISteamBoiler extends GuiInfoContainer {
 		}
 
 		if(this.boiler.heat > 0) {
-			int heat = this.boiler.heat * 15 / 500;
+			int maxHeat = this.boiler.isBronze() ? 500 : 1000;
+			int heat = this.boiler.heat * 15 / maxHeat;
 			this.drawTexturedModalRect(guiLeft + 67, guiTop + 17 + 15 - heat, 194, 15 - heat, 14, heat + 1);
 		}
 

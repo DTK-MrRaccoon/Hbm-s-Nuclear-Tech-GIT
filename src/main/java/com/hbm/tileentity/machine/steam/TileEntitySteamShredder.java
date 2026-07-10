@@ -1,6 +1,7 @@
 package com.hbm.tileentity.machine.steam;
 
 import com.hbm.inventory.container.ContainerSteamShredder;
+import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.gui.GUISteamShredder;
 import com.hbm.inventory.recipes.ShredderRecipes;
 import com.hbm.items.machine.ItemBlades;
@@ -148,6 +149,30 @@ public class TileEntitySteamShredder extends TileEntitySteamMachineBase {
 	@Override
 	public boolean canExtractItem(int slot, ItemStack stack, int side) {
 		if(slot == 1) return true;
+		return false;
+	}
+
+	@Override
+	protected void updateFluidConnections() {
+		ForgeDirection back = getBackDirection();
+		ForgeDirection down = ForgeDirection.DOWN;
+
+		// Subscribing only to BACK and DOWN (UP removed)
+		this.trySubscribe(steam.getTankType(), worldObj, xCoord + back.offsetX, yCoord + back.offsetY, zCoord + back.offsetZ, back);
+		this.trySubscribe(steam.getTankType(), worldObj, xCoord + down.offsetX, yCoord + down.offsetY, zCoord + down.offsetZ, down);
+	}
+
+	@Override
+	public boolean canConnect(FluidType type, ForgeDirection dir) {
+		if(type == steam.getTankType()) {
+			// Removed ForgeDirection.UP from the allowed steam inputs
+			return dir == ForgeDirection.DOWN || dir == getBackDirection();
+		}
+
+		if(type == spentSteam.getTankType()) {
+			return dir == getBackDirection() || dir == ForgeDirection.DOWN;
+		}
+
 		return false;
 	}
 
