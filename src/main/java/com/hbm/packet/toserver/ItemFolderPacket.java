@@ -26,7 +26,7 @@ public class ItemFolderPacket implements IMessage {
 
 	public ItemFolderPacket()
 	{
-		
+
 	}
 
 	public ItemFolderPacket(ItemStack stack)
@@ -48,28 +48,28 @@ public class ItemFolderPacket implements IMessage {
 	}
 
 	public static class Handler implements IMessageHandler<ItemFolderPacket, IMessage> {
-		
+
 		/*
 		 * While it is still horrible, it is arguably less horrible than it was before.
 		 */
 		@Override
 		public IMessage onMessage(ItemFolderPacket m, MessageContext ctx) {
-			
+
 			//if(!Minecraft.getMinecraft().theWorld.isRemote)
 					EntityPlayer p = ctx.getServerHandler().playerEntity;
 					ItemStack stack = new ItemStack(Item.getItemById(m.item), 1, m.meta);
-					
+
 					if(p.capabilities.isCreativeMode) {
-						
+
 						if(stack.getItem() == ModItems.assembly_template) {
 							ComparableStack out = AssemblerRecipes.recipeList.get(stack.getItemDamage());
-							
+
 							if(out != null) {
 								stack.setItemDamage(0);
 								ItemAssemblyTemplate.writeType(stack, out);
 							}
 						}
-						
+
 						p.inventory.addItemStackToInventory(stack);
 						return null;
 					}
@@ -94,94 +94,98 @@ public class ItemFolderPacket implements IMessage {
 						tryMakeItem(p, stack, ModItems.plate_polymer, "plateSteel");
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_stone_plate || 
-							stack.getItem() == ModItems.stamp_stone_wire || 
+					if(stack.getItem() == ModItems.stamp_stone_plate ||
+							stack.getItem() == ModItems.stamp_stone_wire ||
 							stack.getItem() == ModItems.stamp_stone_circuit) {
 						tryConvert(p, ModItems.stamp_stone_flat, stack.getItem());
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_iron_plate || 
-							stack.getItem() == ModItems.stamp_iron_wire || 
+					if(stack.getItem() == ModItems.stamp_iron_plate ||
+							stack.getItem() == ModItems.stamp_iron_wire ||
 							stack.getItem() == ModItems.stamp_iron_circuit) {
 						tryConvert(p, ModItems.stamp_iron_flat, stack.getItem());
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_steel_plate || 
-							stack.getItem() == ModItems.stamp_steel_wire || 
+					if(stack.getItem() == ModItems.stamp_steel_plate ||
+							stack.getItem() == ModItems.stamp_steel_wire ||
 							stack.getItem() == ModItems.stamp_steel_circuit) {
 						tryConvert(p, ModItems.stamp_steel_flat, stack.getItem());
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_titanium_plate || 
-							stack.getItem() == ModItems.stamp_titanium_wire || 
+					if(stack.getItem() == ModItems.stamp_titanium_plate ||
+							stack.getItem() == ModItems.stamp_titanium_wire ||
 							stack.getItem() == ModItems.stamp_titanium_circuit) {
 						tryConvert(p, ModItems.stamp_titanium_flat, stack.getItem());
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_obsidian_plate || 
-							stack.getItem() == ModItems.stamp_obsidian_wire || 
+					if(stack.getItem() == ModItems.stamp_obsidian_plate ||
+							stack.getItem() == ModItems.stamp_obsidian_wire ||
 							stack.getItem() == ModItems.stamp_obsidian_circuit) {
 						tryConvert(p, ModItems.stamp_obsidian_flat, stack.getItem());
 						return null;
 					}
-					if(stack.getItem() == ModItems.stamp_desh_plate || 
-							stack.getItem() == ModItems.stamp_desh_wire || 
+					if(stack.getItem() == ModItems.stamp_desh_plate ||
+							stack.getItem() == ModItems.stamp_desh_wire ||
 							stack.getItem() == ModItems.stamp_desh_circuit) {
 						tryConvert(p, ModItems.stamp_desh_flat, stack.getItem());
 						return null;
 					}
+					if(stack.getItem() == ModItems.stamp_steel_gear) {
+						tryConvert(p, ModItems.stamp_steel_flat, stack.getItem());
+						return null;
+					}
 			//}
-			
+
 			return null;
 		}
-		
+
 		private void tryMakeItem(EntityPlayer player, ItemStack output, Object... ingredients) {
-			
+
 			//check
 			for(Object o : ingredients) {
-				
+
 				if(o instanceof Item) {
 					if(!player.inventory.hasItem((Item)o))
 						return;
 				}
-				
+
 				if(o instanceof String) {
 					if(!InventoryUtil.hasOreDictMatches(player, (String)o, 1))
 						return;
 				}
 			}
-			
+
 			//consume
 			for(Object o : ingredients) {
-				
+
 				if(o instanceof Item) {
 					player.inventory.consumeInventoryItem((Item)o);
 				}
-				
+
 				if(o instanceof String) {
 					InventoryUtil.consumeOreDictMatches(player, (String)o, 1);
 				}
 			}
-			
+
 			if(output.getItem() == ModItems.assembly_template) {
 				ComparableStack out = AssemblerRecipes.recipeList.get(output.getItemDamage());
-				
+
 				if(out != null) {
 					output.setItemDamage(0);
 					ItemAssemblyTemplate.writeType(output, out);
 				}
 			}
-			
+
 			if(!player.inventory.addItemStackToInventory(output))
 				player.dropPlayerItemWithRandomChoice(output, true);
 		}
-		
+
 		private void tryConvert(EntityPlayer player, Item target, Item result) {
-			
+
 			for(int i = 0; i < player.inventory.mainInventory.length; i++) {
-				
+
 				ItemStack stack = player.inventory.mainInventory[i];
-				
+
 				if(stack != null && stack.getItem() == target) {
 					player.inventory.mainInventory[i] = new ItemStack(result, stack.stackSize, stack.getItemDamage());
 					return;

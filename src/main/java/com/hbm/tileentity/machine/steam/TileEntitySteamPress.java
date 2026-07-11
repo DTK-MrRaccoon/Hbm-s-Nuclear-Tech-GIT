@@ -113,7 +113,7 @@ public class TileEntitySteamPress extends TileEntitySteamMachineBase {
 			}
 		}
 
-		decrStackSize(1, 1);
+		decrStackSize(1, PressRecipes.getInputAmount(slots[1], slots[0]));
 	}
 
 	@Override

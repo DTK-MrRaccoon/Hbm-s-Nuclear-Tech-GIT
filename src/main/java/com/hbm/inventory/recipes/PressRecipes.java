@@ -55,6 +55,19 @@ public class PressRecipes extends SerializableRecipe {
 		return null;
 	}
 
+	public static int getInputAmount(ItemStack ingredient, ItemStack stamp) {
+		if(ingredient == null || stamp == null || !(stamp.getItem() instanceof ItemStamp))
+			return 1;
+
+		StampType type = ((ItemStamp) stamp.getItem()).getStampType(stamp.getItem(), stamp.getItemDamage());
+
+		for(Entry<Pair<AStack, StampType>, ItemStack> recipe : recipes.entrySet()) {
+			if(recipe.getKey().getValue() == type && recipe.getKey().getKey().matchesRecipe(ingredient, true))
+				return recipe.getKey().getKey().stacksize;
+		}
+		return 1;
+	}
+
 	@Override
 	public void registerDefaults() {
 
@@ -101,6 +114,10 @@ public class PressRecipes extends SerializableRecipe {
 		}
 
 		makeRecipe(StampType.CIRCUIT, new OreDictStack(SI.billet()),						DictFrame.fromOne(ModItems.circuit, EnumCircuitType.SILICON));
+
+		makeRecipe(StampType.GEAR, new OreDictStack(TBRONZE.ingot(), 4),					Mats.MAT_TBRONZE.make(ModItems.gear));
+		makeRecipe(StampType.GEAR, new OreDictStack(IRON.ingot(), 4),						Mats.MAT_IRON.make(ModItems.gear));
+		makeRecipe(StampType.GEAR, new OreDictStack(STEEL.ingot(), 4),						Mats.MAT_STEEL.make(ModItems.gear));
 
 		makeRecipe(StampType.PRINTING1, new ComparableStack(Items.paper), DictFrame.fromOne(ModItems.page_of_, EnumPages.PAGE1));
 		makeRecipe(StampType.PRINTING2, new ComparableStack(Items.paper), DictFrame.fromOne(ModItems.page_of_, EnumPages.PAGE2));

@@ -126,6 +126,10 @@ public class AnvilRecipes extends SerializableRecipe {
 		smithingRecipes.add(new AnvilSmithingMold(20, new OreDictStack(ALLOY.wireDense(), 1),  new OreDictStack("wireDense", 1)));
 		smithingRecipes.add(new AnvilSmithingMold(21, new OreDictStack(ALLOY.wireDense(), 9),  new OreDictStack("wireDense", 9)));
 
+		smithingRecipes.add(new AnvilSmithingMold(29, new OreDictStack(IRON.gear()),  new OreDictStack("gear")));
+		smithingRecipes.add(new AnvilSmithingMold(29, new OreDictStack(TBRONZE.gear()),  new OreDictStack("gear")));
+		smithingRecipes.add(new AnvilSmithingMold(29, new OreDictStack(STEEL.gear()),  new OreDictStack("gear")));
+
 		smithingRecipes.add(new AnvilSmithingCyanideRecipe());
 		smithingRecipes.add(new AnvilSmithingRenameRecipe());
 	}
@@ -242,7 +246,9 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.ingot(), 8),
 						new OreDictStack(CU.plate(), 4),
-						new ComparableStack(ModItems.bronze_parts, 12),
+						new OreDictStack(IRON.gear(), 4),
+						new OreDictStack(TBRONZE.gear(), 4),
+						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.motor, 2),
 						exp ? new ComparableStack(ModItems.circuit, 2, EnumCircuitType.ANALOG) : new ComparableStack(ModItems.circuit, 4, EnumCircuitType.VACUUM_TUBE)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_assembly_machine))).setTier(2));
@@ -353,6 +359,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(TBRONZE.ingot(), 8),
 						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.coil_copper, 4),
+						new OreDictStack(TBRONZE.gear(), 4),
 						new ComparableStack(ModItems.gear_large, 1, 0)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_stirling))).setTier(2));
 
@@ -362,6 +369,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(BE.ingot(), 6),
 						new OreDictStack(CU.ingot(), 8),
 						new ComparableStack(ModItems.coil_gold, 16),
+						new OreDictStack(STEEL.gear(), 4),
 						new ComparableStack(ModItems.gear_large, 1, 1)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_stirling_steel))).setTier(2));
 
@@ -372,6 +380,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(TBRONZE.shell(), 2),
 						new ComparableStack(ModItems.bronze_parts, 6),
 						new ComparableStack(ModItems.coil_copper, 4),
+						new OreDictStack(TBRONZE.gear(), 4),
 						new ComparableStack(ModItems.gear_large, 1)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_steam_engine))).setTier(2));
 
@@ -381,6 +390,7 @@ public class AnvilRecipes extends SerializableRecipe {
 						new OreDictStack(STEEL.plate(), 6),
 						new OreDictStack(CU.ingot(), 8),
 						new OreDictStack(IRON.ingot(), 4),
+						new OreDictStack(IRON.gear(), 4),
 						new ComparableStack(ModItems.sawblade)
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_sawmill))).setTier(2));
 
@@ -427,6 +437,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.plate(), 4),
 						new OreDictStack(IRON.ingot(), 12),
+						new OreDictStack(TBRONZE.gear(), 6),
 						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.circuit, 2, EnumCircuitType.VACUUM_TUBE.ordinal()),
 						new ComparableStack(ModItems.sawblade)
@@ -436,6 +447,7 @@ public class AnvilRecipes extends SerializableRecipe {
 				new AStack[] {
 						new OreDictStack(STEEL.plate(), 8),
 						new OreDictStack(IRON.ingot(), 12),
+						new OreDictStack(TBRONZE.gear(), 6),
 						new ComparableStack(ModItems.bronze_parts, 2),
 						new ComparableStack(ModItems.circuit, 1, EnumCircuitType.VACUUM_TUBE.ordinal()),
 				}, new AnvilOutput(new ItemStack(ModBlocks.machine_thresher))).setTier(2));

@@ -356,6 +356,7 @@ public class ModItems {
 	public static Item plate_euphemium;
 	public static Item bolt;
 	public static Item bolt_spike;
+	public static Item gear;
 	public static Item plate_polymer;
 	public static Item plate_kevlar;
 	public static Item plate_dineutronium;
@@ -708,6 +709,7 @@ public class ModItems {
 	public static Item stamp_steel_plate;
 	public static Item stamp_steel_wire;
 	public static Item stamp_steel_circuit;
+	public static Item stamp_steel_gear;
 	public static Item stamp_titanium_flat;
 	public static Item stamp_titanium_plate;
 	public static Item stamp_titanium_wire;
@@ -2373,6 +2375,7 @@ public class ModItems {
 		plate_euphemium = new ItemCustomLore().setRarity(EnumRarity.epic).setUnlocalizedName("plate_euphemium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_euphemium");
 		bolt = new ItemAutogen(MaterialShapes.BOLT).oun("boltntm").setUnlocalizedName("bolt").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":bolt");
 		bolt_spike = new ItemCustomLore().setUnlocalizedName("bolt_spike").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":bolt_spike");
+		gear = new ItemAutogen(MaterialShapes.GEAR).oun("gearntm").setUnlocalizedName("gear").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":gear");
 		plate_polymer = new Item().setUnlocalizedName("plate_polymer").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_polymer");
 		plate_kevlar = new Item().setUnlocalizedName("plate_kevlar").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_kevlar");
 		plate_dineutronium = new Item().setUnlocalizedName("plate_dineutronium").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":plate_dineutronium");
@@ -2966,6 +2969,7 @@ public class ModItems {
 		stamp_steel_plate = new ItemStamp(192, StampType.PLATE).setUnlocalizedName("stamp_steel_plate").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_steel_plate");
 		stamp_steel_wire = new ItemStamp(192, StampType.WIRE).setUnlocalizedName("stamp_steel_wire").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_steel_wire");
 		stamp_steel_circuit = new ItemStamp(192, StampType.CIRCUIT).setUnlocalizedName("stamp_steel_circuit").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_steel_circuit");
+		stamp_steel_gear = new ItemStamp(192, StampType.GEAR).setUnlocalizedName("stamp_steel_gear").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_steel_gear");
 		stamp_titanium_flat = new ItemStamp(256, StampType.FLAT).setUnlocalizedName("stamp_titanium_flat").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_titanium_flat");
 		stamp_titanium_plate = new ItemStamp(256, StampType.PLATE).setUnlocalizedName("stamp_titanium_plate").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_titanium_plate");
 		stamp_titanium_wire = new ItemStamp(256, StampType.WIRE).setUnlocalizedName("stamp_titanium_wire").setMaxStackSize(1).setCreativeTab(MainRegistry.controlTab).setTextureName(RefStrings.MODID + ":stamp_titanium_wire");
@@ -5633,9 +5637,10 @@ public class ModItems {
 		GameRegistry.registerItem(shell, shell.getUnlocalizedName());
 		GameRegistry.registerItem(pipe, pipe.getUnlocalizedName());
 
-		//Bolts
+		//Bolts and gears
 		GameRegistry.registerItem(bolt, bolt.getUnlocalizedName());
 		GameRegistry.registerItem(bolt_spike, bolt_spike.getUnlocalizedName());
+		GameRegistry.registerItem(gear, gear.getUnlocalizedName());
 
 		//Cloth
 		GameRegistry.registerItem(hazmat_cloth, hazmat_cloth.getUnlocalizedName());
@@ -5948,6 +5953,7 @@ public class ModItems {
 		GameRegistry.registerItem(stamp_steel_plate, stamp_steel_plate.getUnlocalizedName());
 		GameRegistry.registerItem(stamp_steel_wire, stamp_steel_wire.getUnlocalizedName());
 		GameRegistry.registerItem(stamp_steel_circuit, stamp_steel_circuit.getUnlocalizedName());
+		GameRegistry.registerItem(stamp_steel_gear, stamp_steel_gear.getUnlocalizedName());
 		GameRegistry.registerItem(stamp_titanium_flat, stamp_titanium_flat.getUnlocalizedName());
 		GameRegistry.registerItem(stamp_titanium_plate, stamp_titanium_plate.getUnlocalizedName());
 		GameRegistry.registerItem(stamp_titanium_wire, stamp_titanium_wire.getUnlocalizedName());

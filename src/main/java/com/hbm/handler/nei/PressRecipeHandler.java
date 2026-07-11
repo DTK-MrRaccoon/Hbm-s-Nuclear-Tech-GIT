@@ -53,7 +53,6 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 		PositionedStack stamp;
 
 		public SmeltingSet(Object stamp, AStack input, ItemStack result) {
-			input.stacksize = 1;
 			this.input = new PositionedStack(input.extractForNEI(), 83 - 35, 5 + 36 + 1);
 			this.result = new PositionedStack(result, 83 + 28, 5 + 18 + 1);
 			this.stamp = new PositionedStack(stamp, 83 - 35, 6, false);
@@ -124,7 +123,7 @@ public class PressRecipeHandler extends TemplateRecipeHandler implements ICompat
 			StampType stamp = recipe.getKey().getValue();
 
 			if(in.matchesRecipe(ingredient, true))
-				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), new ComparableStack(ingredient), recipe.getValue()));
+				this.arecipes.add(new SmeltingSet(ItemStamp.stamps.get(recipe.getKey().getValue()), in, recipe.getValue()));
 			else if(ingredient.getItem() instanceof ItemStamp && ((ItemStamp)ingredient.getItem()).getStampType(ingredient.getItem(), ingredient.getItemDamage()) == stamp)
 				this.arecipes.add(new SmeltingSet(ingredient, recipe.getKey().getKey(), recipe.getValue()));
 		}

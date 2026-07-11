@@ -57,7 +57,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 		if(player.getHeldItem() == null)
 			return;
-		
+
 		Item item = player.getHeldItem().getItem();
 
 		this.isJournal = item != ModItems.template_folder;
@@ -67,13 +67,14 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 			for(ItemStack i : ItemStamp.stamps.get(StampType.PLATE)) allStacks.add(i.copy());
 			for(ItemStack i : ItemStamp.stamps.get(StampType.WIRE)) allStacks.add(i.copy());
 			for(ItemStack i : ItemStamp.stamps.get(StampType.CIRCUIT)) allStacks.add(i.copy());
-			
+			for(ItemStack i : ItemStamp.stamps.get(StampType.GEAR)) allStacks.add(i.copy());
+
 			// Tracks
 			for(int i = 1; i < ItemCassette.TrackType.values().length; i++) {
 				allStacks.add(new ItemStack(ModItems.siren_track, 1, i));
 			}
 		}
-		
+
 		// Assembly Templates
 		for(int i = 0; i < AssemblerRecipes.recipeList.size(); i++) {
 			ComparableStack comp = AssemblerRecipes.recipeList.get(i);
@@ -89,44 +90,44 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				ChemplantRecipes.ChemRecipe chem = ChemplantRecipes.recipes.get(i);
 				allStacks.add(new ItemStack(ModItems.chemistry_template, 1, chem.getId()));
 			}
-			
+
 			// Crucible Templates
 			for(int i = 0; i < CrucibleRecipes.recipes.size(); i++) {
 				allStacks.add(new ItemStack(ModItems.crucible_template, 1, CrucibleRecipes.recipes.get(i).getId()));
 			}
-			
+
 			// Mixing Vat Templates
 			for(int i = 0; i < MixingVatRecipes.recipes.size(); i++) {
 				MixingVatRecipes.MixingRecipe mix = MixingVatRecipes.recipes.get(i);
 				allStacks.add(new ItemStack(ModItems.mixing_vat_template, 1, mix.getId()));
 			}
 		}
-		
+
 		search(null);
 	}
-	
+
 	private void search(String sub) {
-		
+
 		stacks.clear();
-		
+
 		this.currentPage = 0;
-		
+
 		if(sub == null || sub.isEmpty()) {
 			stacks.addAll(allStacks);
 			updateButtons();
 			return;
 		}
-		
+
 		sub = sub.toLowerCase(Locale.US);
-		
+
 		outer:
 		for(ItemStack stack : allStacks) {
-			
+
 			for(Object o : stack.getTooltip(MainRegistry.proxy.me(), true)) {
-				
+
 				if(o instanceof String) {
 					String text = (String) o;
-					
+
 					if(text.toLowerCase(Locale.US).contains(sub)) {
 						stacks.add(stack);
 						continue outer;
@@ -134,7 +135,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 				}
 			}
 		}
-		
+
 		updateButtons();
 	}
 
@@ -217,7 +218,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 	@Override
 	protected void mouseClicked(int i, int j, int k) {
-		
+
 		if(i >= guiLeft + 45 && i < guiLeft + 117 && j >= guiTop + 211 && j < guiTop + 223) {
 			this.search.setFocused(true);
 		} else  {
@@ -244,12 +245,12 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 
 	protected void drawGuiContainerBackgroundLayer(float f, int i, int j) {
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		
+
 		if(!isJournal)
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 		else
 			Minecraft.getMinecraft().getTextureManager().bindTexture(texture_journal);
-		
+
 		drawTexturedModalRect(guiLeft, guiTop, 0, 0, xSize, ySize);
 
 		if(search.isFocused())
@@ -259,18 +260,18 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 			b.drawButton(b.isMouseOnButton(i, j));
 		for(FolderButton b : buttons)
 			b.drawIcon(b.isMouseOnButton(i, j));
-		
+
 		search.drawTextBox();
 	}
 
 	@Override
 	protected void keyTyped(char p_73869_1_, int p_73869_2_) {
-		
+
 		if (this.search.textboxKeyTyped(p_73869_1_, p_73869_2_)) {
 			this.search(this.search.getText());
 			return;
 		}
-		
+
 		if(p_73869_2_ == 1 || p_73869_2_ == this.mc.gameSettings.keyBindInventory.getKeyCode()) {
 			this.mc.thePlayer.closeScreen();
 		}
@@ -309,12 +310,12 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		}
 
 		public void drawButton(boolean b) {
-			
+
 			if(!isJournal)
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texture);
 			else
 				Minecraft.getMinecraft().getTextureManager().bindTexture(texture_journal);
-			
+
 			drawTexturedModalRect(xPos, yPos, b ? 176 + 18 : 176, type == 1 ? 18 : (type == 2 ? 36 : 0), 18, 18);
 		}
 
@@ -344,7 +345,7 @@ public class GUIScreenTemplateFolder extends GuiScreen {
 		public void drawString(int x, int y) {
 			if(info == null || info.isEmpty())
 				return;
-			
+
 			if(stack != null) {
 				GUIScreenTemplateFolder.this.renderToolTip(stack, x, y);
 			} else {

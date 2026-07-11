@@ -58,6 +58,7 @@ public class ShredderRecipes extends SerializableRecipe {
 			//1 ingot unit, metal
 			generateRecipes("ingot", name, matches, 1);
 			generateRecipes("plate", name, matches, 1);
+			generateRecipes("gear", name, matches, 4);
 			//1 ingot unit, crystalline
 			generateRecipes("gem", name, matches, 1);
 			generateRecipes("crystal", name, matches, 1);
@@ -290,6 +291,7 @@ public class ShredderRecipes extends SerializableRecipe {
 		ShredderRecipes.setRecipe(ModItems.pipes_steel, new ItemStack(ModItems.powder_steel, 27));
 		ShredderRecipes.setRecipe(new ItemStack(ModItems.bedrock_ore, 1, OreDictionary.WILDCARD_VALUE), new ItemStack(Blocks.gravel));
 		ShredderRecipes.setRecipe(ModItems.bronze_parts, new ItemStack(ModItems.powder_tin_bronze, 1));
+		ShredderRecipes.setRecipe(new ItemStack(ModItems.gear, 1, 3), new ItemStack(ModItems.powder_sawdust, 4));
 
 		/* can recycling */
 		ShredderRecipes.setRecipe(ModItems.food_can_empty,  new ItemStack(ModItems.powder_steel, 2));

@@ -104,7 +104,8 @@ public class TileEntityMachineEPress extends TileEntityMachineBase implements IE
 							} else {
 								slots[3].stackSize += output.stackSize;
 							}
-							this.decrStackSize(2, 1);
+
+							this.decrStackSize(2, PressRecipes.getInputAmount(slots[2], slots[1]));
 
 							if(slots[1].getMaxDamage() != 0) {
 								slots[1].setItemDamage(slots[1].getItemDamage() + 1);

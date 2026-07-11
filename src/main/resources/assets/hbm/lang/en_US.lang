@@ -2393,6 +2393,7 @@ item.bobmazon_materials.name=Bobmazon: Materials
 item.bobmazon_tools.name=Bobmazon: Tools
 item.bobmazon_weapons.name=Bobmazon: Weapons and Explosives
 item.boltntm.name=%s Bolt
+item.gearntm.name=%s Gear
 item.bolt_compound.name=Reinforced Turbine Shaft
 item.bolt_spike.name=Railroad Spike
 item.bolt_spike.desc=Radiates a threatening aura, somehow
@@ -4821,6 +4822,7 @@ item.stamp_obsidian_flat.name=Flat Stamp (Obsidian)
 item.stamp_obsidian_plate.name=Plate Stamp (Obsidian)
 item.stamp_obsidian_wire.name=Wire Stamp (Obsidian)
 item.stamp_steel_circuit.name=Circuit Stamp (Steel)
+item.stamp_steel_gear.name=Gear Stamp (Steel)
 item.stamp_steel_flat.name=Flat Stamp (Steel)
 item.stamp_steel_plate.name=Plate Stamp (Steel)
 item.stamp_steel_wire.name=Wire Stamp (Steel)
@@ -5314,6 +5316,7 @@ shape.stock=Stock
 shape.wireFine=Wires
 shape.wireDense=Dense Wire
 shape.wiresDense=Dense Wires
+shape.gear=Gear
 
 soundCategory.ntmMachines=NTM Machines
 

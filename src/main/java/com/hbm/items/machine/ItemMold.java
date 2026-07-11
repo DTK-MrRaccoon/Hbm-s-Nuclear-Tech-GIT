@@ -51,6 +51,7 @@ public class ItemMold extends Item {
 
 		registerMold(new MoldShape(		19, S, "plate_cast", MaterialShapes.CASTPLATE));
 		registerMold(new MoldShape(		20, S, "wire_dense", MaterialShapes.DENSEWIRE));
+		registerMold(new MoldShape(		29, S, "gear", MaterialShapes.GEAR));
 
 		registerMold(new MoldMulti(		5, S, "blade", MaterialShapes.INGOT.q(3),
 				Mats.MAT_TITANIUM, new ItemStack(ModItems.blade_titanium),
