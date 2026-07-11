@@ -284,7 +284,7 @@ public class CraftingManager {
 		//addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_difurnace_off), 1), new Object[] { "T T", "PHP", "TFT", 'T', W.ingot(), 'P', ModItems.board_copper, 'H', Blocks.hopper, 'F', Blocks.furnace });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_uf6_tank), 1), new Object[] { "WTW", "WTW", "SRS", 'S', IRON.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten,'R', MINGRADE.ingot() });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_puf6_tank), 1), new Object[] { "WTW", "WTW", "SRS", 'S', STEEL.plate(), 'W', ModItems.coil_tungsten, 'T', ModItems.tank_steel, 'W', ModItems.coil_tungsten,'R', MINGRADE.ingot() });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_difurnace_extension, 1), new Object[] { "HC ", "BGB", "BGB", 'C', CU.plate(), 'B', ModItems.ingot_firebrick, 'G', ModBlocks.steel_grate, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_difurnace_extension, 1), new Object[] { "HCD", "BGB", "BGB", 'C', CU.plate(), 'B', ModItems.ingot_firebrick, 'G', ModBlocks.steel_grate, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE), 'D', new ItemStack(ModItems.hand_drill, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(Item.getItemFromBlock(ModBlocks.machine_electric_furnace_off), 1), new Object[] { "BBB", "WFW", "RRR", 'B', BE.ingot(), 'R', ModItems.coil_tungsten, 'W', TBRONZE.plateCast(), 'F', Item.getItemFromBlock(Blocks.furnace) });
 		addRecipeAuto(new ItemStack(ModBlocks.red_wire_coated, 16), new Object[] { "WRW", "RIR", "WRW", 'W', ModItems.plate_polymer, 'I', MINGRADE.ingot(), 'R', MINGRADE.wireFine() });
 		addRecipeAuto(new ItemStack(ModBlocks.red_cable_paintable, 16), new Object[] { "WRW", "RIR", "WRW", 'W', STEEL.plate(), 'I', MINGRADE.ingot(), 'R', MINGRADE.wireFine() });
@@ -377,7 +377,7 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.PRESS.ordinal()), new Object[] { "GES", "TCT", "SEG", 'S', STEEL.plate(), 'G', STEEL.gear(), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', ModItems.tank_steel, 'E', STEEL.block() });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.HAMMER.ordinal()), new Object[] { "GES", "TCT", "SEG", 'S', STEEL.plate(), 'G', STEEL.gear(), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', ModItems.tank_steel, 'E', STEEL.shell() });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', STEEL.plate(), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', ModItems.tank_steel, 'E', CU.pipe(), });
-		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_SHREDDER.ordinal()), new Object[] { "GCS", "TET", "SWG", 'S', TBRONZE.plate(), 'G', TBRONZE.gear(), 'W', new ItemStack(ModItems.screwdriver, 1, OreDictionary.WILDCARD_VALUE), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', TBRONZE.shell(), 'E', ModItems.bronze_parts });
+		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_SHREDDER.ordinal()), new Object[] { "GCS", "TET", "SWG", 'S', TBRONZE.plate(), 'G', TBRONZE.gear(), 'W', new ItemStack(ModItems.file, 1, OreDictionary.WILDCARD_VALUE), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', TBRONZE.shell(), 'E', ModItems.bronze_parts });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_HAMMER.ordinal()), new Object[] { "GTS", "ECE", "STG", 'S', TBRONZE.plate(), 'G', TBRONZE.gear(), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', TBRONZE.shell(), 'E', ModItems.bronze_parts });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.BRONZE_BOILER.ordinal()), new Object[] { "SES", "TCT", "SES", 'S', TBRONZE.plate(), 'C', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), 'T', TBRONZE.shell(), 'E', CU.pipe(), });
 		addRecipeAuto(new ItemStack(ModBlocks.machine_steam_multi, 1, SteamMachineType.OSMIRIDIUM_FURNACE.ordinal()), new Object[] { "OCO", "TCT", "OCO", 'O', OSMIRIDIUM.plateCast(), 'C', ModItems.bronze_parts, 'T', ModItems.tank_steel });
@@ -1125,10 +1125,10 @@ public class CraftingManager {
 		addRecipeAuto(new ItemStack(ModItems.gear_large, 1, 1), new Object[] { "III", "ICI", "III", 'I', STEEL.plate(), 'C', TI.ingot()});
 		addRecipeAuto(new ItemStack(ModItems.sawblade), new Object[] { "III", "ICI", "III", 'I', STEEL.plate(), 'C', IRON.ingot()});
 
-		addRecipeAuto(new ItemStack(ModBlocks.foundry_basin), new Object[] { "BHB", "B B", "BSB", 'B', ModItems.ingot_firebrick, 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
+		addRecipeAuto(new ItemStack(ModBlocks.foundry_basin), new Object[] { "B B", "BHB", "BSB", 'B', ModItems.ingot_firebrick, 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModBlocks.foundry_mold), new Object[] { "BHB", "BSB", 'B', ModItems.ingot_firebrick, 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModBlocks.foundry_channel, 4), new Object[] { "BHB", " S ", 'B', ModItems.ingot_firebrick, 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
-		addRecipeAuto(new ItemStack(ModBlocks.foundry_tank), new Object[] { "BHB", "I I", "BSB", 'B', ModItems.ingot_firebrick, 'I', STEEL.ingot(), 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
+		addRecipeAuto(new ItemStack(ModBlocks.foundry_tank), new Object[] { "B B", "IHI", "BSB", 'B', ModItems.ingot_firebrick, 'I', STEEL.ingot(), 'S', Blocks.stone_slab, 'H', new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		addShapelessAuto(new ItemStack(ModBlocks.foundry_outlet), new Object[] { ModBlocks.foundry_channel, STEEL.plate(), new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		addShapelessAuto(new ItemStack(ModBlocks.foundry_slagtap), new Object[] { ModBlocks.foundry_channel, Blocks.stonebrick, new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		addRecipeAuto(new ItemStack(ModItems.mold_base), new Object[] { " B ", "BIB", " B ", 'B', ModItems.ingot_firebrick, 'I', IRON.ingot() });
@@ -1185,7 +1185,7 @@ public class CraftingManager {
 		}
 
 		for(NTMMaterial mat : Mats.orderedList) {
-			if(mat.autogen.contains(MaterialShapes.BOLT)) for(String name : mat.names) addRecipeAuto(new ItemStack(ModItems.bolt, 16, mat.id), new Object[] { "# ", "#W", 'W', new ItemStack(ModItems.wrench, 1, OreDictionary.WILDCARD_VALUE), '#', MaterialShapes.INGOT.name() + name });
+			if(mat.autogen.contains(MaterialShapes.BOLT)) for(String name : mat.names) addRecipeAuto(new ItemStack(ModItems.bolt, 16, mat.id), new Object[] { "# ", "#F", 'F', new ItemStack(ModItems.file, 1, OreDictionary.WILDCARD_VALUE), '#', MaterialShapes.INGOT.name() + name });
 		}
 
 		addRecipeAuto(Mats.MAT_WOOD.make(ModItems.gear), new Object[] { "BPB", "PWP", "BPB", 'B', KEY_STICK, 'P', KEY_PLANKS, 'W', new ItemStack(ModItems.hand_drill, 1, OreDictionary.WILDCARD_VALUE) });

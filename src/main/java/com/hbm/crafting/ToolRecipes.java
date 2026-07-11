@@ -21,6 +21,7 @@ import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
 
 /**
  * For mining and utility tools
@@ -149,6 +150,8 @@ public class ToolRecipes {
 		registerTieredMortarRecipes();
 		registerTieredScrewdriverRecipes();
 		registerTieredHandDrillRecipes();
+		registerTieredFileRecipes();
+		registerTieredWirecutterRecipes();
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set), new Object[] { "GIG", "GCG", 'G', KEY_ANYGLASS, 'I', IRON.ingot(), 'C', CU.ingot() });
 		CraftingManager.addRecipeAuto(new ItemStack(ModItems.chemistry_set_boron), new Object[] { "GIG", "GCG", 'G', ModBlocks.glass_boron, 'I', STEEL.ingot(), 'C', CO.ingot() });
 		CraftingManager.addRecipeAuto(ItemBlowtorch.getEmptyTool(ModItems.blowtorch), new Object[] { "CC ", " I ", "CCC", 'C', CU.plate(), 'I', IRON.ingot() });
@@ -211,14 +214,14 @@ public class ToolRecipes {
 	private static void registerTieredWrenchRecipes() {
 		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot() };
 		for(int tier = 0; tier < 3; tier++) {
-			CraftingManager.addRecipeAuto(new ItemStack(ModItems.wrench, 1, tier), new Object[] { " S ", " IS", "I  ", 'I', IRON.ingot(), 'S', parts[tier] });
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.wrench, 1, tier), new Object[] { " SH", " IS", "I  ", 'I', IRON.ingot(), 'S', parts[tier], 'H',  new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		}
 	}
 
 	private static void registerTieredHammerRecipes() {
 		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), FERRO.ingot() };
 		for(int tier = 0; tier < 4; tier++) {
-			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer, 1, tier), new Object[] { "III", "ISI", " S ", 'I', parts[tier], 'S', KEY_STICK });
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hammer, 1, tier), new Object[] { "II ", "IIS", "II ", 'I', parts[tier], 'S', KEY_STICK });
 		}
 	}
 
@@ -240,6 +243,20 @@ public class ToolRecipes {
 		Object[] parts = new Object[] { TBRONZE.ingot(), IRON.ingot(), STEEL.ingot(), DESH.ingot() };
 		for(int tier = 0; tier < 4; tier++) {
 			CraftingManager.addRecipeAuto(new ItemStack(ModItems.hand_drill, 1, tier), new Object[] { " D", "S ", " S", 'D', parts[tier], 'S', KEY_STICK });
+		}
+	}
+
+	private static void registerTieredFileRecipes() {
+		Object[] parts = new Object[] { IRON.plate(), STEEL.plate() };
+		for(int tier = 0; tier < 2; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.file, 1, tier), new Object[] { "D  ", " D ", "  S", 'D', parts[tier], 'S', KEY_STICK });
+		}
+	}
+
+	private static void registerTieredWirecutterRecipes() {
+		Object[] parts = new Object[] { IRON.plate(), STEEL.plate() };
+		for(int tier = 0; tier < 2; tier++) {
+			CraftingManager.addRecipeAuto(new ItemStack(ModItems.wirecutter, 1, tier), new Object[] { "DFD", "HDS", "B B", 'D', parts[tier], 'S', KEY_STICK, 'B', IRON.bolt(), 'F',  new ItemStack(ModItems.file, 1, OreDictionary.WILDCARD_VALUE), 'S',  new ItemStack(ModItems.screwdriver, 1, OreDictionary.WILDCARD_VALUE), 'H',  new ItemStack(ModItems.hammer, 1, OreDictionary.WILDCARD_VALUE) });
 		}
 	}
 

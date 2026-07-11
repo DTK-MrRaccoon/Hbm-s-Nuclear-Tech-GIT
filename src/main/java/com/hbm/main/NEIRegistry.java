@@ -55,6 +55,7 @@ public class NEIRegistry {
 		handlers.add(new ToolingHandler());
 		handlers.add(new HammerRecipeHandler());
 		handlers.add(new MortarRecipeHandler());
+		handlers.add(new WirecutterRecipeHandler());
 		handlers.add(new ConstructionHandler());
 		handlers.add(new SatelliteHandler());
 		handlers.add(new DairyHandler());

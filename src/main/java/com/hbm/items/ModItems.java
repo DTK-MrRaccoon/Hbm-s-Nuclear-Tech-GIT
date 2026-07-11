@@ -1724,6 +1724,8 @@ public class ModItems {
 	//in the event that i forget about the meaning of the word "sparingly", please throw a brick at my head
 	public static Item screwdriver;
 	public static Item hand_drill;
+	public static Item file;
+	public static Item wirecutter;
 	public static Item wrench_archineer;
 	public static Item chemistry_set;
 	public static Item chemistry_set_boron;
@@ -4080,6 +4082,8 @@ public class ModItems {
 
 		screwdriver = new ItemTieredScrewdriver().setUnlocalizedName("screwdriver");
 		hand_drill = new ItemTieredHandDrill().setUnlocalizedName("hand_drill");
+		file = new ItemTieredFile().setUnlocalizedName("file");
+		wirecutter = new ItemTieredWirecutter().setUnlocalizedName("wirecutter");
 		wrench_archineer = new ItemToolingWeapon(ToolType.WRENCH, 1000, 12F).setUnlocalizedName("wrench_archineer").setTextureName(RefStrings.MODID + ":wrench_archineer_hd");
 		chemistry_set = new ItemCraftingDegradation(100).setUnlocalizedName("chemistry_set");
 		chemistry_set_boron = new ItemCraftingDegradation(0).setUnlocalizedName("chemistry_set_boron");
@@ -6034,6 +6038,8 @@ public class ModItems {
 		GameRegistry.registerItem(euphemium_capacitor, euphemium_capacitor.getUnlocalizedName());
 		GameRegistry.registerItem(screwdriver, screwdriver.getUnlocalizedName());
 		GameRegistry.registerItem(hand_drill, hand_drill.getUnlocalizedName());
+		GameRegistry.registerItem(file, file.getUnlocalizedName());
+		GameRegistry.registerItem(wirecutter, wirecutter.getUnlocalizedName());
 		GameRegistry.registerItem(chemistry_set, chemistry_set.getUnlocalizedName());
 		GameRegistry.registerItem(chemistry_set_boron, chemistry_set_boron.getUnlocalizedName());
 		GameRegistry.registerItem(blowtorch, blowtorch.getUnlocalizedName());

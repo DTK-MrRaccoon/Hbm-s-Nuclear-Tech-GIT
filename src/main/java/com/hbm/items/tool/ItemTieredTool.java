@@ -42,7 +42,9 @@ public class ItemTieredTool extends Item {
 		HAMMER("hammer", "Hammer", 3, 128, false, true, true, null),
 		MORTAR("mortar", "Mortar", 4, 32, false, true, true, null),
 		SCREWDRIVER("screwdriver", "Screwdriver", 3, 96, true, true, false, ToolType.SCREWDRIVER),
-		DRILL("hand_drill", "Hand Drill", 3, 180, true, true, false, ToolType.HAND_DRILL);
+		DRILL("hand_drill", "Hand Drill", 3, 180, true, true, false, ToolType.HAND_DRILL),
+		FILE("file", "File", 2, 64, false, true, true, null),
+		WIRECUTTER("wirecutter", "Wire Cutter", 2, 96, false, true, false, null);
 
 		public final String baseName;
 		public final String displayName;
@@ -119,7 +121,7 @@ public class ItemTieredTool extends Item {
 
 	private String getMaterialLabel(int meta) {
 		String name = this.getTierName(meta);
-		if("bronze".equals(name)) return "Tin Bronze";
+//		if("bronze".equals(name)) return "Tin Bronze";
 		if("flint".equals(name)) return "Flint";
 		if("ferrouranium".equals(name)) return "Ironuranium";
 		if(name == null || name.isEmpty()) return this.role.displayName;
@@ -203,7 +205,7 @@ public class ItemTieredTool extends Item {
 	@Override
 	public boolean showDurabilityBar(ItemStack stack) {
 		int max = this.getMaxToolDamage(stack);
-		if (max <= 0) return false;
+		if(max <= 0) return false;
 		return this.getStoredDamage(stack) > 0;
 	}
 
@@ -216,7 +218,9 @@ public class ItemTieredTool extends Item {
 
 	@Override
 	public boolean hasContainerItem(ItemStack stack) {
-		return this.getStoredDamage(stack) < this.getMaxToolDamage(stack);
+		int max = this.getMaxToolDamage(stack);
+		if(max <= 0) return true;
+		return this.getStoredDamage(stack) < max;
 	}
 
 	@Override
@@ -229,9 +233,9 @@ public class ItemTieredTool extends Item {
 		if(stack == null) return null;
 
 		int max = this.getMaxToolDamage(stack);
+		if(max <= 0) return stack.copy();
 		int wear = this.getStoredDamage(stack) + 1;
 
-		if(max <= 0) return stack.copy();
 		if(wear >= max) return null;
 
 		ItemStack copy = stack.copy();
@@ -463,7 +467,7 @@ public class ItemTieredTool extends Item {
 			}
 		}
 
-		if(this.role == Role.HAMMER || this.role == Role.MORTAR || this.role == Role.SCREWDRIVER || this.role == Role.DRILL) {
+		if(this.role == Role.HAMMER || this.role == Role.MORTAR || this.role == Role.SCREWDRIVER || this.role == Role.DRILL || this.role == Role.FILE || this.role == Role.WIRECUTTER) {
 			if(block instanceof IToolable) {
 				ToolType type = this.role.toolType;
 				if(type != null && ((IToolable) block).onScrew(world, player, x, y, z, side, fX, fY, fZ, type)) {
