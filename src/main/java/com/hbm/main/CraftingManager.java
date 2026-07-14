@@ -1188,6 +1188,10 @@ public class CraftingManager {
 			if(mat.autogen.contains(MaterialShapes.BOLT)) for(String name : mat.names) addRecipeAuto(new ItemStack(ModItems.bolt, 16, mat.id), new Object[] { "# ", "#F", 'F', new ItemStack(ModItems.file, 1, OreDictionary.WILDCARD_VALUE), '#', MaterialShapes.INGOT.name() + name });
 		}
 
+		for(NTMMaterial mat : Mats.orderedList) {
+			if(mat.autogen.contains(MaterialShapes.SCREW)) for(String name : mat.names) addRecipeAuto(new ItemStack(ModItems.screw, 1, mat.id), new Object[] { " #", "#F", 'F', new ItemStack(ModItems.file, 1, OreDictionary.WILDCARD_VALUE), '#', MaterialShapes.BOLT.name() + name });
+		}
+
 		addRecipeAuto(Mats.MAT_WOOD.make(ModItems.gear), new Object[] { "BPB", "PWP", "BPB", 'B', KEY_STICK, 'P', KEY_PLANKS, 'W', new ItemStack(ModItems.hand_drill, 1, OreDictionary.WILDCARD_VALUE) });
 
 		addRecipeAuto(Mats.MAT_TBRONZE.make(ModItems.gear), new Object[] { "BPB", "PWP", "BPB", 'B', TBRONZE.bolt(), 'P', TBRONZE.plate(), 'W', new ItemStack(ModItems.wrench, 1, 0) });

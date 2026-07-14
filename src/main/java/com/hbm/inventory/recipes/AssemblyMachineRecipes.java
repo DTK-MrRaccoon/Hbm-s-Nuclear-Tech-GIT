@@ -19,7 +19,9 @@ import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.FluidType;
 import com.hbm.inventory.fluid.Fluids;
+import com.hbm.inventory.material.MaterialShapes;
 import com.hbm.inventory.material.Mats;
+import com.hbm.inventory.material.NTMMaterial;
 import com.hbm.inventory.recipes.loader.GenericRecipe;
 import com.hbm.inventory.recipes.loader.GenericRecipes;
 import com.hbm.items.ModItems;
@@ -91,6 +93,22 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputItems(new OreDictStack(DNT.ingot(), 4), new ComparableStack(ModItems.powder_spark_mix, 2), new OreDictStack(DESH.ingot(), 1)));
 
 		this.register(new GenericRecipe("ass.bronzeparts").setup(60, 100).outputItems(new ItemStack(ModItems.bronze_parts, 1)).inputItems(new OreDictStack(TBRONZE.ingot())));
+
+		// screw
+		String autoScrew = "autoswitch.screws";
+		for(NTMMaterial mat : Mats.orderedList) {
+			if(mat.autogen.contains(MaterialShapes.SCREW)) {
+				String name = mat.names[0];
+
+				this.register(new GenericRecipe("ass.screw." + name.toLowerCase())
+						.setup(100, 50)
+						.outputItems(new ItemStack(ModItems.screw, 4, mat.id))
+						.inputItems(new OreDictStack("ingot" + name, 1))
+						.setPools(GenericRecipes.POOL_PREFIX_ALT + "screws")
+						.setGroup(autoScrew, this)
+				);
+			}
+		}
 
 		// expensive parts
 		this.register(new GenericRecipe("ass.exsteelplating").setup(200, 400).outputItems(new ItemStack(ModItems.item_expensive, 1, EnumExpensiveType.STEEL_PLATING.ordinal()))

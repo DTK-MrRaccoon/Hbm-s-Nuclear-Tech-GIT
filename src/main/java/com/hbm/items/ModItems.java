@@ -632,6 +632,7 @@ public class ModItems {
 
 	public static Item shell;
 	public static Item pipe;
+	public static Item screw;
 	public static Item fins_flat;
 	public static Item fins_small_steel;
 	public static Item fins_big_steel;
@@ -2804,6 +2805,7 @@ public class ModItems {
 
 		shell = new ItemAutogen(MaterialShapes.SHELL).oun("shellntm").setUnlocalizedName("shell").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":shell");
 		pipe = new ItemAutogen(MaterialShapes.PIPE).oun("pipentm").setUnlocalizedName("pipe").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":pipe");
+		screw = new ItemAutogen(MaterialShapes.SCREW).oun("screwntm").setUnlocalizedName("screw").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":screw");
 		fins_flat = new Item().setUnlocalizedName("fins_flat").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":fins_flat");
 		fins_small_steel = new Item().setUnlocalizedName("fins_small_steel").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":fins_small_steel");
 		fins_big_steel = new Item().setUnlocalizedName("fins_big_steel").setCreativeTab(MainRegistry.partsTab).setTextureName(RefStrings.MODID + ":fins_big_steel");
@@ -5643,6 +5645,7 @@ public class ModItems {
 
 		//Bolts and gears
 		GameRegistry.registerItem(bolt, bolt.getUnlocalizedName());
+		GameRegistry.registerItem(screw, screw.getUnlocalizedName());
 		GameRegistry.registerItem(bolt_spike, bolt_spike.getUnlocalizedName());
 		GameRegistry.registerItem(gear, gear.getUnlocalizedName());
 

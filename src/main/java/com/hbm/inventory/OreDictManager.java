@@ -573,6 +573,8 @@ public class OreDictManager {
 				OreDictionary.registerOre(MaterialShapes.SHELL.name() + name, new ItemStack(ModItems.shell, 1, mat.id));
 			if (mat.autogen.contains(MaterialShapes.PIPE)) for (String name : mat.names)
 				OreDictionary.registerOre(MaterialShapes.PIPE.name() + name, new ItemStack(ModItems.pipe, 1, mat.id));
+			if (mat.autogen.contains(MaterialShapes.SCREW)) for (String name : mat.names)
+				OreDictionary.registerOre(MaterialShapes.SCREW.name() + name, new ItemStack(ModItems.screw, 1, mat.id));
 			if (mat.autogen.contains(MaterialShapes.FRAGMENT)) for (String name : mat.names)
 				OreDictionary.registerOre(MaterialShapes.FRAGMENT.name() + name, new ItemStack(ModItems.bedrock_ore_fragment, 1, mat.id));
 			if (mat.autogen.contains(MaterialShapes.WIRE)) for (String name : mat.names)
@@ -788,6 +790,7 @@ public class OreDictManager {
 		public String wireDense() {		return DENSEWIRE.name()			+ mats[0]; }
 		public String shell() {			return SHELL.name()				+ mats[0]; }
 		public String pipe() {			return PIPE.name()				+ mats[0]; }
+		public String screw() {			return SCREW.name()				+ mats[0]; }
 		public String billet() {		return BILLET.name()			+ mats[0]; }
 		public String block() {			return BLOCK.name()				+ mats[0]; }
 		public String ore() {			return ORE.name()				+ mats[0]; }

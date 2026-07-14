@@ -2394,6 +2394,7 @@ item.bobmazon_tools.name=Bobmazon: Tools
 item.bobmazon_weapons.name=Bobmazon: Weapons and Explosives
 item.boltntm.name=%s Bolt
 item.gearntm.name=%s Gear
+item.screwntm.name=%s Screw
 item.bolt_compound.name=Reinforced Turbine Shaft
 item.bolt_spike.name=Railroad Spike
 item.bolt_spike.desc=Radiates a threatening aura, somehow
