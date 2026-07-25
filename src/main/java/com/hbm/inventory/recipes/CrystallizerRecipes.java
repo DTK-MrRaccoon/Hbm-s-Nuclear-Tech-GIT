@@ -61,6 +61,7 @@ public class CrystallizerRecipes extends SerializableRecipe {
 		registerRecipe(new OreDictStack(COAL.ore()),		new CrystallizerRecipe(ModItems.crystal_coal, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(IRON.ore()),		new CrystallizerRecipe(ModItems.crystal_iron, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(GOLD.ore()),		new CrystallizerRecipe(ModItems.crystal_gold, baseTime).prod(0.05F));
+		registerRecipe(new OreDictStack(GOLD.ore()),		new CrystallizerRecipe(new ItemStack(ModItems.crystal_gold, 3), baseTime).prod(0.25F), new FluidStack(Fluids.MERCURY, 500));
 		registerRecipe(new OreDictStack(REDSTONE.ore()),	new CrystallizerRecipe(ModItems.crystal_redstone, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(LAPIS.ore()),		new CrystallizerRecipe(ModItems.crystal_lapis, baseTime).prod(0.05F));
 		registerRecipe(new OreDictStack(DIAMOND.ore()),		new CrystallizerRecipe(ModItems.crystal_diamond, baseTime).prod(0.05F));
