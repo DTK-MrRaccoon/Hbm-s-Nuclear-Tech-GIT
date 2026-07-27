@@ -53,6 +53,11 @@ public class BlastFurnaceRecipesNT extends GenericRecipes<BlastFurnaceRecipe> {
 				.inputItems(new OreDictStack(IRON.ore()), new ComparableStack(ModItems.powder_flux))
 				.outputItems(new ItemStack(ModItems.ingot_steel, 3), new ItemStack(ModItems.ingot_raw, 2, Mats.MAT_SLAG.id)));
 
+		// the only place not corrupted by capitalism
+		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.stainless").setDuration(400)
+				.inputItems(new OreDictStack(STEEL.ingot()), new OreDictStack(NI.dust()))
+				.outputItems(new ItemStack(ModItems.ingot_stainless, 2)));
+
 		this.register((BlastFurnaceRecipe) new BlastFurnaceRecipe("blast.mingrade").setDuration(400)
 				.inputItems(new OreDictStack(CU.ingot()), new OreDictStack(REDSTONE.dust()))
 				.outputItems(new ItemStack(ModItems.ingot_red_copper, 2)));

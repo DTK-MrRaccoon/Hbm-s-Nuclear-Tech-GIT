@@ -54,6 +54,7 @@ public class ItemEnums {
 		RARE,
 		MALACHITE,
 		CRYOLITE,
+		PENTLANDITE,
 		MOONSTONE
 	}
 

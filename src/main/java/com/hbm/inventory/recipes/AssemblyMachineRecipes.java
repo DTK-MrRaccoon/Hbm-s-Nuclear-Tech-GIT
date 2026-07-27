@@ -405,7 +405,6 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("ass.elefluidpump").setup(400, 100).outputItems(new ItemStack(ModBlocks.electric_fluid_pump, 1))
 				.inputItems(new OreDictStack(STEEL.ingot(), 12), new OreDictStack(CU.plate(), 2), new OreDictStack(RUBBER.ingot(), 8), new OreDictStack(STEEL.shell(), 2), new OreDictStack(CU.pipe(), 4), new ComparableStack(ModItems.motor, 1)));
 
-
                 // Legacy machine recipes
 		this.register(new GenericRecipe("ass.assembler_legacy").setup(200, 100).outputItems(new ItemStack(ModBlocks.machine_assembler, 1))
 				.inputItems(new OreDictStack(STEEL.ingot(), 6), new OreDictStack(CU.plate(), 2), new ComparableStack(ModItems.motor, 1), new ComparableStack(ModItems.circuit, 1, EnumCircuitType.ANALOG)));
@@ -523,6 +522,15 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new ComparableStack(ModItems.circuit, 16, EnumCircuitType.CHIP_QUANTUM))
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 8_000))
 				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 8_000)));
+
+		this.register(new GenericRecipe("chem.batterynca").setup(100, 2_500)
+				.inputItems(new OreDictStack(LI.dust(), 8),
+						new OreDictStack(NI.dust(), 2),
+						new OreDictStack(CO.dust(), 8),
+						new OreDictStack(AL.dust(), 4),
+						new OreDictStack(ANY_PLASTIC.ingot(), 4))
+				.inputFluids(new FluidStack(Fluids.OXYGEN, 2_000))
+				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_NCA.ordinal())));
 
 //		this.register(new GenericRecipe("ass.fensusan").setup(1_200, 100).outputItems(new ItemStack(ModBlocks.machine_battery_redd, 1))
 //				.inputItems(new ComparableStack(ModItems.ingot_electronium, 64),

@@ -124,6 +124,7 @@ public class RodRecipes {
 		addRBMKRod(PU239, ModItems.rbmk_fuel_hep239);
 		addRBMKRod(PU241, ModItems.rbmk_fuel_hep241);
 		addRBMKRod(PU242, ModItems.rbmk_fuel_hep242);
+		CraftingManager.addRecipeAuto(new ItemStack(ModItems.rbmk_fuel_mepg, 1), new Object[] { "RPG", "PGP", "GPP", 'P', PURG.billet(), 'G', GALLIUM.ingot(), 'R', ModItems.rbmk_fuel_empty });
 		addRBMKRod(ModItems.billet_americium_fuel, ModItems.rbmk_fuel_lea);
 		addRBMKRod(AMRG, ModItems.rbmk_fuel_mea);
 		addRBMKRod(AM241, ModItems.rbmk_fuel_hea241);

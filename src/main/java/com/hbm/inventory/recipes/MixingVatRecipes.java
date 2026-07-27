@@ -9,6 +9,8 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonWriter;
+import com.hbm.blocks.BlockEnums;
+import com.hbm.blocks.ModBlocks;
 import com.hbm.inventory.FluidStack;
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.inventory.RecipesCommon.AStack;
@@ -30,23 +32,23 @@ public class MixingVatRecipes extends SerializableRecipe {
 
 	@Override
 	public void registerDefaults() {
-	
+
 		//acids 1-10
 		recipes.add(new MixingRecipe(1, "SULFURIC_ACID", 600)
 				.inputItems(new OreDictStack(S.dust()))
 				.inputFluids(new FluidStack(Fluids.PEROXIDE, 1200), new FluidStack(Fluids.WATER, 2000))
 				.outputFluids(new FluidStack(Fluids.SULFURIC_ACID, 2000)));
-	
+
 		recipes.add(new MixingRecipe(2, "NITRIC_ACID", 600)
 				.inputItems(new OreDictStack(KNO.dust()))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 1000))
 				.outputFluids(new FluidStack(Fluids.NITRIC_ACID, 2000)));
-	
+
 		recipes.add(new MixingRecipe(3, "PHOSPHORIC_ACID", 300)
 				.inputItems(new ComparableStack(ModItems.powder_fire, 2))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 750))
 				.outputFluids(new FluidStack(Fluids.PHOSPHORIC_ACID, 1000)));
-	
+
 		recipes.add(new MixingRecipe(4, "HYDROFLUORIC_ACID", 35)
 				.inputFluids(new FluidStack(Fluids.LIQUID_FLUORITE, 200), new FluidStack(Fluids.SULFURIC_ACID, 800))
 				.inputItems(new OreDictStack(KNO.dust(), 1))
@@ -56,37 +58,37 @@ public class MixingVatRecipes extends SerializableRecipe {
 		recipes.add(new MixingRecipe(11, "PETROIL", 300)
 				.inputFluids(new FluidStack(Fluids.RECLAIMED, 800), new FluidStack(Fluids.LUBRICANT, 200))
 				.outputFluids(new FluidStack(Fluids.PETROIL, 1000)));
-	
+
 		recipes.add(new MixingRecipe(12, "PETROIL_LEADED", 600)
 				.inputItems(new ComparableStack(ModItems.fuel_additive, 1))
 				.inputFluids(new FluidStack(Fluids.PETROIL, 10000))
 				.outputFluids(new FluidStack(Fluids.PETROIL_LEADED, 12000)));
-	
+
 		recipes.add(new MixingRecipe(13, "GASOLINE_LEADED", 600)
 				.inputItems(new ComparableStack(ModItems.fuel_additive, 1))
 				.inputFluids(new FluidStack(Fluids.GASOLINE, 10000))
 				.outputFluids(new FluidStack(Fluids.GASOLINE_LEADED, 12000)));
-	
+
 		recipes.add(new MixingRecipe(14, "COALGAS_LEADED", 600)
 				.inputItems(new ComparableStack(ModItems.fuel_additive, 1))
 				.inputFluids(new FluidStack(Fluids.COALGAS, 10000))
 				.outputFluids(new FluidStack(Fluids.COALGAS_LEADED, 12000)));
-	
+
 		recipes.add(new MixingRecipe(15, "BIOFUEL", 150)
 				.inputFluids(new FluidStack(Fluids.BIOGAS, 1500), new FluidStack(Fluids.ETHANOL, 250))
 				.outputFluids(new FluidStack(Fluids.BIOFUEL, 1250)));
-	
+
 		//nuclear stuff 31-50
 		recipes.add(new MixingRecipe(31, "LIQUIDFLUORITE", 300)
 				.inputItems(new OreDictStack(F.dust(), 8))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 2500), new FluidStack(Fluids.PHOSPHORIC_ACID, 1500))
 				.outputFluids(new FluidStack(Fluids.LIQUID_FLUORITE, 4000)));
-	
+
 		recipes.add(new MixingRecipe(32, "YELLOWCAKE", 250)
 				.inputItems(new OreDictStack(U.billet(), 2))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 1000), new FluidStack(Fluids.PEROXIDE, 500))
 				.outputItems(new ItemStack(ModItems.powder_yellowcake)));
-	
+
 		recipes.add(new MixingRecipe(33, "URANIUM_OXIDE_SLURRY", 150)
 				.inputItems(new ComparableStack(ModItems.powder_yellowcake))
 				.inputFluids(new FluidStack(Fluids.WATER, 1000))
@@ -101,33 +103,48 @@ public class MixingVatRecipes extends SerializableRecipe {
 				.inputItems(new ComparableStack(ModItems.powder_green_salt))
 				.inputFluids(new FluidStack(Fluids.FLUORINE_GAS, 1000))
 				.outputFluids(new FluidStack(Fluids.UF6, 1200)));
-	
+
 		recipes.add(new MixingRecipe(36, "PUF6", 150)
 				.inputItems(new OreDictStack(PU.dust()), new OreDictStack(F.dust(), 3))
 				.inputFluids(new FluidStack(Fluids.WATER, 1000))
 				.outputFluids(new FluidStack(Fluids.PUF6, 900)));
-	
+
 		//normal mixing 51-100
 		recipes.add(new MixingRecipe(51, "COOLANT", 150)
 				.inputItems(new OreDictStack(KNO.dust()))
 				.inputFluids(new FluidStack(Fluids.WATER, 1800))
 				.outputFluids(new FluidStack(Fluids.COOLANT, 2000)));
-	
+
 		recipes.add(new MixingRecipe(52, "CRYOGEL", 150)
 				.inputItems(new ComparableStack(ModItems.powder_ice))
 				.inputFluids(new FluidStack(Fluids.COOLANT, 1800))
 				.outputFluids(new FluidStack(Fluids.CRYOGEL, 2000)));
-	
+
 		recipes.add(new MixingRecipe(53, "NUTRIENTPASTE", 3000)
 				.inputItems(new ComparableStack(Items.rotten_flesh, 8))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 2000))
 				.outputFluids(new FluidStack(Fluids.NUTRIENTPASTE, 8000)));
-	
+
 		//processing 101-200
 		recipes.add(new MixingRecipe(101, "AQUEOUS_COPPER", 300)
 				.inputItems(new ComparableStack(ModItems.chunk_ore, 1, ItemEnums.EnumChunkType.MALACHITE.ordinal()))
 				.inputFluids(new FluidStack(Fluids.SODIUM_HYDROXIDE, 250))
 				.outputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 1000)));
+
+		recipes.add(new MixingRecipe(102, "AQUEOUS_COPPERALT", 100)
+				.inputItems(new ComparableStack(ModItems.chunk_ore, 1, ItemEnums.EnumChunkType.MALACHITE.ordinal()))
+				.inputFluids(new FluidStack(Fluids.BRINE, 250))
+				.outputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 1000)));
+
+		recipes.add(new MixingRecipe(103, "CONGLOMERA", 150)
+				.inputItems(new ComparableStack(ModBlocks.stone_resource, 1, BlockEnums.EnumStoneType.CONGLOMERATE.ordinal()))
+				.inputFluids(new FluidStack(Fluids.AQUEOUS_NICKEL, 250))
+				.outputFluids(new FluidStack(Fluids.CONGLOMERA, 1000)));
+
+		recipes.add(new MixingRecipe(104, "AQUEOUS_NICKEL", 150)
+				.inputItems(new ComparableStack(ModItems.chunk_ore, 1, ItemEnums.EnumChunkType.PENTLANDITE.ordinal()))
+				.inputFluids(new FluidStack(Fluids.BRINE, 250))
+				.outputFluids(new FluidStack(Fluids.AQUEOUS_NICKEL, 1000)));
 	}
 
 	public static class MixingRecipe {
@@ -218,28 +235,28 @@ public class MixingVatRecipes extends SerializableRecipe {
 			writer.name("id").value(mix.id);
 			writer.name("name").value(mix.name);
 			writer.name("duration").value(mix.duration);
-			
+
 			writer.name("fluidInput").beginArray();
-			for(FluidStack input : mix.inputFluids) { 
-				if(input != null) this.writeFluidStack(input, writer); 
+			for(FluidStack input : mix.inputFluids) {
+				if(input != null) this.writeFluidStack(input, writer);
 			}
 			writer.endArray();
-			
+
 			writer.name("itemInput").beginArray();
-			for(AStack input : mix.inputs) { 
-				if(input != null) this.writeAStack(input, writer); 
+			for(AStack input : mix.inputs) {
+				if(input != null) this.writeAStack(input, writer);
 			}
 			writer.endArray();
-			
+
 			writer.name("fluidOutput").beginArray();
-			for(FluidStack output : mix.outputFluids) { 
-				if(output != null) this.writeFluidStack(output, writer); 
+			for(FluidStack output : mix.outputFluids) {
+				if(output != null) this.writeFluidStack(output, writer);
 			}
 			writer.endArray();
-			
+
 			writer.name("itemOutput").beginArray();
-			for(ItemStack output : mix.outputs) { 
-				if(output != null) this.writeItemStack(output, writer); 
+			for(ItemStack output : mix.outputs) {
+				if(output != null) this.writeItemStack(output, writer);
 			}
 			writer.endArray();
 		} catch(Exception ex) {

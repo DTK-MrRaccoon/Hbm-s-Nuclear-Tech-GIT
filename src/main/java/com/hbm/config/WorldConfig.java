@@ -15,6 +15,8 @@ public class WorldConfig {
 	public static int aluminiumSpawn = 7;
 	public static int copperSpawn = 12;
 	public static int tinSpawn = 11;
+	public static int nickelSpawn = 9;
+	public static int zincSpawn = 8;
 	public static int fluoriteSpawn = 6;
 	public static int niterSpawn = 6;
 	public static int tungstenSpawn = 10;
@@ -84,6 +86,7 @@ public class WorldConfig {
 
 	public static boolean enableSulfurCave = true;
 	public static boolean enableAsbestosCave = true;
+	public static boolean enableConglomerate = true;
 
 //	public static int radioStructure = 500;
 	public static int antennaStructure = 250;
@@ -139,6 +142,8 @@ public class WorldConfig {
 		aluminiumSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.03_aluminiumSpawnrate", "Amount of aluminium ore veins per chunk", 7);
 		copperSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.04_copperSpawnrate", "Amount of copper ore veins per chunk", 12);
 		tinSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.04_2_tinSpawnrate", "Amount of tin ore veins per chunk", 11);
+		nickelSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.24_nickelSpawnrate", "Amount of nickel ore veins per chunk", 12);
+		zincSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.25_zincSpawnrate", "Amount of zinc ore veins per chunk", 8);
 		fluoriteSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.05_fluoriteSpawnrate", "Amount of fluorite ore veins per chunk", 6);
 		niterSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.06_niterSpawnrate", "Amount of niter ore veins per chunk", 6);
 		tungstenSpawn = CommonConfig.createConfigInt(config, CATEGORY_OREGEN, "2.07_tungstenSpawnrate", "Amount of tungsten ore veins per chunk", 10);
@@ -210,6 +215,7 @@ public class WorldConfig {
 
 		enableSulfurCave = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.C00_enableSulfurCave", "Toggles sulfur caves", true);
 		enableAsbestosCave = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.C01_enableAsbestosCave", "Toggles asbestos caves", true);
+		enableConglomerate = CommonConfig.createConfigBool(config, CATEGORY_OREGEN, "2.C02_enableConglomerateCave", "Toggles conglomerate caves", true);
 
 		final String CATEGORY_DUNGEON = CommonConfig.CATEGORY_DUNGEONS;
 //		radioStructure = CommonConfig.createConfigInt(config, CATEGORY_DUNGEON, "4.00_radioSpawn", "Spawn radio station on every nTH chunk", 500);

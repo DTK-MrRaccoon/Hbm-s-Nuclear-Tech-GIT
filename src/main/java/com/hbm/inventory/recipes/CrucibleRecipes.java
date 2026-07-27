@@ -52,6 +52,10 @@ public class CrucibleRecipes extends SerializableRecipe {
 				.inputs(new MaterialStack(Mats.MAT_IRON, n * 2), new MaterialStack(Mats.MAT_CARBON, n * 3), new MaterialStack(Mats.MAT_FLUX, n))
 				.outputs(new MaterialStack(Mats.MAT_STEEL, n * 2)));
 
+		recipes.add(new CrucibleRecipe(20, "crucible.stainless", 20, new ItemStack(ModItems.ingot_stainless))
+				.inputs(new MaterialStack(Mats.MAT_STEEL, n), new MaterialStack(Mats.MAT_NICKEL, n))
+				.outputs(new MaterialStack(Mats.MAT_STAINLESS, n * 2)));
+
 		if(Compat.isModLoaded(Compat.MOD_GT6)) {
 			recipes.add(new CrucibleRecipe(9, "crucible.steelWrought", 20, new ItemStack(ModItems.ingot_steel))
 					.inputs(new MaterialStack(Mats.MAT_WROUGHTIRON, n * 2), new MaterialStack(Mats.MAT_CARBON, n * 3), new MaterialStack(Mats.MAT_FLUX, n))

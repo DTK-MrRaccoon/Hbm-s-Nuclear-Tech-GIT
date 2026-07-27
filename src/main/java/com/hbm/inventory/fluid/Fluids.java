@@ -133,6 +133,8 @@ public class Fluids {
 	public static FluidType SOLVENT;			//oranic solvent in fact
 	public static FluidType BLOOD;				//BLOOD ORB! BLOOD ORB! BLOOD ORB!
 	public static FluidType BLOOD_HOT;
+	public static FluidType BRINE;
+	public static FluidType CONGLOMERA;
 	public static FluidType PHEROMONE;
 	public static FluidType PHEROMONE_M;
 	public static FluidType SYNGAS;
@@ -189,6 +191,7 @@ public class Fluids {
 	public static FluidType SODIUM_ALUMINATE;
 	public static FluidType BAUXITE_SOLUTION;
 	public static FluidType ALUMINA;
+	public static FluidType AQUEOUS_NICKEL;
 	public static FluidType CONCRETE;
 	public static FluidType DHC;
 	public static FluidType NITROGEN;
@@ -469,6 +472,9 @@ public class Fluids {
 		HOTOIL_RUSSIAN_DS =		new FluidType("HOTOIL_RUSSIAN_DS",	0x6b3f24, 2, 3, 0, EnumSymbol.NONE).setTemp(350).addTraits(LIQUID, VISCOUS, P_OIL);
 		AIRBLAST =				new FluidType("AIRBLAST",			0xFFDADA, 0, 3, 0, EnumSymbol.NONE).setTemp(1_200).addTraits(GASEOUS);
 		FLUE =					new FluidType("FLUE",			0x131313, 1, 4, 1, EnumSymbol.NONE).addContainers(new CD_Gastank(0xFF4545, 0xFFE97F)).addTraits(new FT_Flammable(10_000), GASEOUS, new FT_Polluting().burn(PollutionType.SOOT, SOOT_GAS).release(PollutionType.SOOT, SOOT_GAS * 25));
+		AQUEOUS_NICKEL =		new FluidType("AQUEOUS_NICKEL",		0xDACEBA, 0, 0, 0, EnumSymbol.NONE).addTraits(LIQUID);
+		BRINE =					new FluidType("BRINE",				0xD1A73E, 3, 3, 3, EnumSymbol.NONE).addTraits(LIQUID, VISCOUS);
+		CONGLOMERA =			new FluidType("CONGLOMERA",			0x364D47, 0, 0, 2, EnumSymbol.NONE).addTraits(LIQUID, VISCOUS);
 
 		// ^ ^ ^ ^ ^ ^ ^ ^
 		//ADD NEW FLUIDS HERE
@@ -598,6 +604,8 @@ public class Fluids {
 		metaOrder.add(HYDRAZINE);
 		metaOrder.add(DHC);
 		metaOrder.add(BALEFIRE);
+		metaOrder.add(BRINE);
+		metaOrder.add(CONGLOMERA);
 		metaOrder.add(DICYANOACETYLENE);
 		//processing fluids
 		metaOrder.add(SALIENT);
@@ -630,6 +638,7 @@ public class Fluids {
 		metaOrder.add(AQUEOUS_COPPER);
 		metaOrder.add(COPPERSULFATE);
 		metaOrder.add(ALUMINA);
+		metaOrder.add(AQUEOUS_NICKEL);
 		metaOrder.add(CONCRETE);
 		//acids solvents
 		metaOrder.add(PEROXIDE);
@@ -985,7 +994,7 @@ public class Fluids {
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public static HashMap<String, FluidType> fluidMigration = new HashMap(); // since reloading would create new fluid instances, and those break existing machines
 
 	public static void reloadFluids(){

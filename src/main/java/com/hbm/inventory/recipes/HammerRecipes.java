@@ -40,6 +40,7 @@ public class HammerRecipes {
 
 		setRecipe(new ItemStack(ModItems.hammer, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.IRON.ingot()) }, new ItemStack(ModItems.plate_iron));
 		setRecipe(new ItemStack(ModItems.hammer, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.STEEL.ingot()) }, new ItemStack(ModItems.plate_steel));
+		setRecipe(new ItemStack(ModItems.hammer, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.NI.ingot()) }, new ItemStack(ModItems.plate_nickel));
 
 		setRecipe(new ItemStack(ModItems.hammer, 1, 3), 3, new Object[] { new OreDictStack(OreDictManager.TI.ingot()) }, new ItemStack(ModItems.plate_titanium));
 

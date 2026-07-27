@@ -32,8 +32,10 @@ public class ItemBatteryPack extends ItemEnumMulti implements IBatteryItem {
 	public static enum EnumBatteryPack {
 		BATTERY_REDSTONE       ("battery_redstone",         100L, false, false),
 		BATTERY_LEAD           ("battery_lead",           1_000L, false, false),
+		BATTERY_NICKEL         ("battery_nickel",         2_500L, false, false),
 		BATTERY_LITHIUM        ("battery_lithium",       10_000L, false, false),
-		BATTERY_SODIUM         ("battery_sodium",        50_000L, false, false),
+		BATTERY_SODIUM         ("battery_sodium",        25_000L, false, false),
+		BATTERY_NCA            ("battery_nca",           50_000L, false, false),
 		BATTERY_SCHRABIDIUM    ("battery_schrabidium",  250_000L, false, false),
 		BATTERY_QUANTUM        ("battery_quantum",    1_000_000L, 20 * 60 * 60, false),
 
@@ -44,7 +46,8 @@ public class ItemBatteryPack extends ItemEnumMulti implements IBatteryItem {
 		CAPACITOR_BISMUTH      ("capacitor_bismuth",  2_500_000L, true, false),
 		CAPACITOR_SPARK        ("capacitor_spark",   10_000_000L, true, false),
 
-		BATTERY_MERCURY        ("battery_mercury",      8_000L, false, true);
+		BATTERY_MERCURY        ("battery_mercury",        8_000L, false, true),
+		BATTERY_FLUORINE       ("battery_fluorine",     300_000L, false, true);
 
 		public ResourceLocation texture;
 		public long capacity;

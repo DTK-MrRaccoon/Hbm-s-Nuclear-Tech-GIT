@@ -7,6 +7,7 @@ import com.hbm.inventory.OreDictManager;
 import com.hbm.inventory.RecipesCommon.AStack;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
 import com.hbm.inventory.RecipesCommon.OreDictStack;
+import com.hbm.items.ItemEnums;
 import com.hbm.items.ModItems;
 import com.hbm.items.tool.ItemTieredMortar;
 
@@ -53,6 +54,9 @@ public class MortarRecipes {
 		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.TI.ore()) }, new ItemStack(ModItems.powder_titanium));
 		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.TI.ingot()) }, new ItemStack(ModItems.powder_titanium));
 		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.TI.plate()) }, new ItemStack(ModItems.powder_titanium));
+		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.NI.ore()) }, OreDictManager.DictFrame.fromOne(ModItems.chunk_ore, ItemEnums.EnumChunkType.PENTLANDITE, 2));
+		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.NI.ingot()) }, new ItemStack(ModItems.powder_nickel));
+		setRecipe(new ItemStack(ModItems.mortar, 1, 2), 2, new Object[] { new OreDictStack(OreDictManager.NI.plate()) }, new ItemStack(ModItems.powder_nickel));
 
 		setRecipe(new ItemStack(ModItems.mortar, 1, 4), 4, new Object[] { new OreDictStack(OreDictManager.W.ore()) }, new ItemStack(ModItems.powder_tungsten));
 		setRecipe(new ItemStack(ModItems.mortar, 1, 4), 4, new Object[] { new OreDictStack(OreDictManager.W.ingot()) }, new ItemStack(ModItems.powder_tungsten));

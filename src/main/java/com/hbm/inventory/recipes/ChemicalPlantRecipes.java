@@ -89,7 +89,7 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 
 		this.register(new GenericRecipe("chem.coppersulf").setup(50, 100).setIcon(ModItems.fluid_icon, Fluids.COPPERSULFATE.getID())
 				.inputFluids(new FluidStack(Fluids.AQUEOUS_COPPER, 500))
-				.outputItems(new ItemStack(ModItems.powder_copper, 2))
+				.outputItems(new ItemStack(ModItems.powder_nickel, 2), new ItemStack(ModItems.powder_copper, 2))
 				.outputFluids(new FluidStack(Fluids.COPPERSULFATE, 200)));
 
 		this.register(new GenericRecipe("chem.coppersulfatewash").setup(60, 100)
@@ -210,6 +210,12 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 						new OreDictStack(PB.ingot(), 4))
 				.inputFluids(new FluidStack(Fluids.SULFURIC_ACID, 8_000))
 				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_LEAD.ordinal())));
+		this.register(new GenericRecipe("chem.batterynickel").setup(100, 100)
+				.inputItems(new OreDictStack(STEEL.plate(), 4),
+						new OreDictStack(NI.plate(), 6),
+						new OreDictStack(IRON.plate(), 6))
+				.inputFluids(new FluidStack(Fluids.LYE, 4_000))
+				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_NICKEL.ordinal())));
 		this.register(new GenericRecipe("chem.batterylithium").setup(100, 1_000)
 				.inputItems(new OreDictStack(LI.dust(), 12),
 						new OreDictStack(CO.dust(), 8),
@@ -241,6 +247,14 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 		this.register(new GenericRecipe("chem.batterymercuryrecycle").setup(100, 100)
 				.inputItems(new ComparableStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_MERCURY.ordinal()))
 				.outputFluids(new FluidStack(Fluids.MERCURY, 3_000)));
+		this.register(new GenericRecipe("chem.batteryfluorine").setup(100, 100)
+				.inputItems(new OreDictStack(LI.dust(), 24),
+						new OreDictStack(ANY_PLASTIC.ingot(), 8))
+				.inputFluids(new FluidStack(Fluids.FLUORINE_GAS, 16_000))
+				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_FLUORINE.ordinal())));
+		this.register(new GenericRecipe("chem.batteryfluorinerecycle").setup(100, 100)
+				.inputItems(new ComparableStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_FLUORINE.ordinal()))
+				.outputFluids(new FluidStack(Fluids.FLUORINE_GAS, 1_600)));
 
 		/// SOLIDS ///
 		this.register(new GenericRecipe("chem.desh").setup(100, 100)
@@ -266,8 +280,13 @@ public class ChemicalPlantRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.AROMATICS, 500, GeneralConfig.enable528PressurizedRecipes ? 1 : 0), new FluidStack(Fluids.PETROLEUM, 500, GeneralConfig.enable528PressurizedRecipes ? 1 : 0))
 				.outputItems(new ItemStack(ModItems.ingot_bakelite)));
 
-		this.register(new GenericRecipe("chem.rubber").setup(100, 200)
-				.inputItems(new OreDictStack(S.dust()))
+		this.register(new GenericRecipe("chem.rubber").setup(600, 1200)
+				.inputItems(new OreDictStack(S.dust(), 3))
+				.inputFluids(new FluidStack(Fluids.UNSATURATEDS, 1000, GeneralConfig.enable528PressurizedRecipes ? 3 : 1))
+				.outputItems(new ItemStack(ModItems.ingot_rubber)));
+
+		this.register(new GenericRecipe("chem.rubberwzinc").setup(100, 400)
+				.inputItems(new OreDictStack(S.dust()), new OreDictStack(ZI.dust()))
 				.inputFluids(new FluidStack(Fluids.UNSATURATEDS, 500, GeneralConfig.enable528PressurizedRecipes ? 2 : 0))
 				.outputItems(new ItemStack(ModItems.ingot_rubber, 2)));
 
