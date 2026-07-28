@@ -8,10 +8,18 @@ import java.util.Map.Entry;
 
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.blocks.ModBlocks;
+import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
+import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.ItemEnums.EnumAshType;
+import com.hbm.items.special.ItemBedrockOreNew;
+import com.hbm.items.special.ItemBedrockOre.EnumBedrockOre;
+import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
+import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
+import com.hbm.items.special.ItemByproduct.EnumByproduct;
+import static com.hbm.inventory.material.Mats.*;
 import com.hbm.items.machine.ItemFELCrystal.EnumWavelengths;
 import com.hbm.items.special.ItemWasteLong;
 import com.hbm.items.special.ItemWasteShort;
@@ -914,6 +922,87 @@ public class SILEXRecipes {
 				.addOut(new ItemStack(ModItems.powder_boron), 5)
 				.addOut(new ItemStack(ModItems.powder_lithium), 10)
 				.addOut(new ItemStack(ModItems.fluorite), 5)
+				);
+
+		// LIGHT METAL ORES
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.BASE.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(600, 100, EnumWavelengths.UV)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 8))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 6))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.BASE_ROASTED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(700, 100, EnumWavelengths.UV)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 10))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 8))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.BASE_WASHED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(650, 100, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 4, MAT_TIN.id), 2))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(800, 150, EnumWavelengths.UV)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 15))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 12))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 3))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_ROASTED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(850, 150, EnumWavelengths.IR)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 18))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 14))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 5))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_NOSULFURIC.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(900, 200, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 20))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 16))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 8))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_NOSOLVENT.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(900, 200, EnumWavelengths.UV)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 22))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 18))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 10))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_NORAD.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(950, 200, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 25))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 20))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 12))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_FIRST.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(800, 150, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 28))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 14))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 4))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.PRIMARY_SECOND.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(800, 150, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 14))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 28))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 4))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.CRUMBS.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(400, 50, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 4))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 3))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 1))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.SULFURIC_WASHED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(700, 150, EnumWavelengths.UV)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 5))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 4))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 2))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.SOLVENT_WASHED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(700, 150, EnumWavelengths.IR)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 4))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 3))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 1))
+				);
+
+		recipes.put(new ComparableStack(ModItems.bedrock_ore, 1, BedrockOreGrade.RAD_WASHED.ordinal() << 4 | BedrockOreType.LIGHT_METAL.ordinal()), new SILEXRecipe(800, 200, EnumWavelengths.VISIBLE)
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_TIN.id), 3))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_ZINC.id), 2))
+				.addOut(new WeightedRandomObject(new ItemStack(ModItems.bedrock_ore_fragment, 1, MAT_NICKEL.id), 1))
 				);
 
 		recipes.put(new ComparableStack(ModItems.fluid_icon, 1, Fluids.FULLERENE.getID()),

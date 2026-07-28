@@ -165,7 +165,7 @@ public class OreDictManager {
 	public static final DictFrame MINGRADE = new DictFrame("Mingrade");
 	public static final DictFrame ALLOY = new DictFrame("AdvancedAlloy");
 	/** NICKEL */
-	public static final DictFrame NI = new DictFrame("NickelPure");
+	public static final DictFrame NI = new DictFrame("Nickel");
 	/** TIN */
 	public static final DictFrame TIN = new DictFrame("Tin");
 	/** TUNGSTEN */

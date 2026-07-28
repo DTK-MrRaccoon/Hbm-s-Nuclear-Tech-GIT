@@ -3459,7 +3459,7 @@ public class ModItems {
 				.setStats(40)
 				.setFunction(EnumBurnFunc.ARCH)
 				.setHeat(0.30D)
-				.setMeltingPoint(1986)
+				.setMeltingPoint(1570)
 				.setNeutronTypes(NType.FAST, NType.FAST)
 				.setTint(tintPlutonium)
 				.setUnlocalizedName("rbmk_fuel_mepg")
