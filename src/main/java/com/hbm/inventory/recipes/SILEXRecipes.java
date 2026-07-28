@@ -8,17 +8,12 @@ import java.util.Map.Entry;
 
 import static com.hbm.inventory.OreDictManager.*;
 import com.hbm.blocks.ModBlocks;
-import com.hbm.inventory.RecipesCommon;
 import com.hbm.inventory.RecipesCommon.ComparableStack;
-import com.hbm.inventory.RecipesCommon.OreDictStack;
 import com.hbm.inventory.fluid.Fluids;
 import com.hbm.items.ModItems;
 import com.hbm.items.ItemEnums.EnumAshType;
-import com.hbm.items.special.ItemBedrockOreNew;
-import com.hbm.items.special.ItemBedrockOre.EnumBedrockOre;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreGrade;
 import com.hbm.items.special.ItemBedrockOreNew.BedrockOreType;
-import com.hbm.items.special.ItemByproduct.EnumByproduct;
 import static com.hbm.inventory.material.Mats.*;
 import com.hbm.items.machine.ItemFELCrystal.EnumWavelengths;
 import com.hbm.items.special.ItemWasteLong;

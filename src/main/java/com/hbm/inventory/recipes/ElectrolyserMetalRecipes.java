@@ -80,6 +80,19 @@ public class ElectrolyserMetalRecipes extends SerializableRecipe {
 				new ItemStack(ModItems.sulfur, 2),
 				new ItemStack(ModItems.powder_lithium_tiny, 3)));
 
+		recipes.put(new ComparableStack(ModItems.crystal_zinc), new ElectrolysisMetalRecipe(
+				new MaterialStack(Mats.MAT_ZINC, MaterialShapes.INGOT.q(6)),
+				new MaterialStack(Mats.MAT_GALLIUM, MaterialShapes.INGOT.q(2)),
+				new ItemStack(ModItems.sulfur, 2),
+				new ItemStack(ModItems.powder_aluminium, 1),
+				new ItemStack(ModItems.powder_lithium_tiny, 3)));
+
+		recipes.put(new ComparableStack(ModItems.crystal_nickel), new ElectrolysisMetalRecipe(
+				new MaterialStack(Mats.MAT_NICKEL, MaterialShapes.INGOT.q(6)),
+				new MaterialStack(Mats.MAT_IRON, MaterialShapes.INGOT.q(2)),
+				new ItemStack(ModItems.powder_titanium, 1),
+				new ItemStack(ModItems.powder_lithium_tiny, 3)));
+
 		recipes.put(new ComparableStack(ModItems.crystal_tungsten), new ElectrolysisMetalRecipe(
 				new MaterialStack(Mats.MAT_TUNGSTEN, MaterialShapes.INGOT.q(6)),
 				new MaterialStack(Mats.MAT_IRON, MaterialShapes.INGOT.q(2)),
@@ -89,8 +102,8 @@ public class ElectrolyserMetalRecipes extends SerializableRecipe {
 				new MaterialStack(Mats.MAT_ALUMINIUM, MaterialShapes.INGOT.q(2)),
 				new MaterialStack(Mats.MAT_IRON, MaterialShapes.INGOT.q(2)),
 				new ItemStack(ModItems.chunk_ore, 4, ItemEnums.EnumChunkType.CRYOLITE.ordinal()),
-				new ItemStack(ModItems.powder_lithium_tiny, 3)));
-
+				new ItemStack(ModItems.powder_lithium_tiny, 3),
+				new ItemStack(ModItems.powder_gallium_tiny, 4)));
 
 		recipes.put(new ComparableStack(ModItems.crystal_beryllium), new ElectrolysisMetalRecipe(
 				new MaterialStack(Mats.MAT_BERYLLIUM, MaterialShapes.INGOT.q(6)),

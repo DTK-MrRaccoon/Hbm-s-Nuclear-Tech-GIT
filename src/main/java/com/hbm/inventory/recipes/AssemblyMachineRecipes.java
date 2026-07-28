@@ -528,7 +528,7 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 						new OreDictStack(NI.dust(), 2),
 						new OreDictStack(CO.dust(), 8),
 						new OreDictStack(AL.dust(), 4),
-						new OreDictStack(ANY_PLASTIC.ingot(), 4))
+						new OreDictStack(ANY_HARDPLASTIC.ingot(), 6))
 				.inputFluids(new FluidStack(Fluids.OXYGEN, 2_000))
 				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_NCA.ordinal())));
 
