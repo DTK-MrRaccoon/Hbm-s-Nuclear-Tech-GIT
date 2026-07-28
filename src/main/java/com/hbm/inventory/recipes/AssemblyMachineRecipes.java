@@ -523,12 +523,12 @@ public class AssemblyMachineRecipes extends GenericRecipes<GenericRecipe> {
 				.inputFluids(new FluidStack(Fluids.PERFLUOROMETHYL_COLD, 8_000))
 				.outputFluids(new FluidStack(Fluids.PERFLUOROMETHYL, 8_000)));
 
-		this.register(new GenericRecipe("chem.batterynca").setup(100, 2_500)
-				.inputItems(new OreDictStack(LI.dust(), 8),
-						new OreDictStack(NI.dust(), 2),
-						new OreDictStack(CO.dust(), 8),
-						new OreDictStack(AL.dust(), 4),
-						new OreDictStack(ANY_HARDPLASTIC.ingot(), 6))
+		this.register(new GenericRecipe("ass.batterynca").setup(100, 10_000)
+				.inputItems(new OreDictStack(LI.dust(), 12),
+						new OreDictStack(NI.dust(), 4),
+						new OreDictStack(CO.dust(), 12),
+						new OreDictStack(AL.dust(), 6),
+						new OreDictStack(ANY_HARDPLASTIC.ingot(), 8))
 				.inputFluids(new FluidStack(Fluids.OXYGEN, 2_000))
 				.outputItems(new ItemStack(ModItems.battery_pack, 1, EnumBatteryPack.BATTERY_NCA.ordinal())));
 
